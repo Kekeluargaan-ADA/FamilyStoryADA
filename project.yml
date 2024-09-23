@@ -1,0 +1,40 @@
+name: FamilyStoryADA
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: 1
+options:
+  bundleIdPrefix: id.ada.kekeluargaan.FamilyStoryADA
+targets:
+  FamilyStoryADA:
+    type: application
+    platform: iOS
+    info:
+        path: FamilyStoryADA/Info.plist
+    sources: [FamilyStoryADA]
+    resources: [Resources]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.BtmProduction.StorybookInteractive
+      INFOPLIST_FILE: FamilyStoryADA/Info.plist
+      GENERATE_INFOPLIST_FILE: true
+  FamilyStoryADATests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [FamilyStoryADATests]
+    dependencies:
+      - target: FamilyStoryADA
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FamilyStoryADA.app/FamilyStoryADA"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        INFOPLIST_FILE: FamilyStoryADA/Info.plist
+        GENERATE_INFOPLIST_FILE: true
+schemes:
+  FamilyStoryADA:
+    build:
+      targets:
+       FamilyStoryADA: all
+       FamilyStoryADATests: all
+    test:
+      targets:
+      - name: FamilyStoryADATests
+      gatherCoverageData: true
