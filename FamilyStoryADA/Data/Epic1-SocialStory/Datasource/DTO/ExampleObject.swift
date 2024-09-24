@@ -6,6 +6,6 @@
 //
 
 struct ExampleObject {
-    
+    var var1: String
 }
 
