@@ -11,8 +11,7 @@ import SwiftUI
 struct FamilyStoryADAApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .ignoresSafeArea()
+            ExampleView()
         }
     }
 }
