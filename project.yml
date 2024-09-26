@@ -9,7 +9,16 @@ targets:
     type: application
     platform: iOS
     info:
-        path: FamilyStoryADA/Info.plist
+      path: FamilyStoryADA/Info.plist
+      properties:
+        UIRequiresFullScreen: true
+        UIViewControllerBasedStatusBarAppearance: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+          UISceneConfigurations:
+            UIWindowSceneSessionRoleApplication:
+              - UISceneConfigurationName: "Default Configuration"
+                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
     sources: [FamilyStoryADA]
     resources: [Resources]
     settings:
