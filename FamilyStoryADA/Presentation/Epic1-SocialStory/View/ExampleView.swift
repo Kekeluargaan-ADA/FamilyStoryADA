@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ExampleView: View {
+    @ObservedObject var model: ExampleViewModel = ExampleViewModel(id: UUID(uuidString: "37bff686-7d09-4e53-aa90-fb465da131b5")!)
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(model.exampleData.first?.name ?? "")
     }
 }
 

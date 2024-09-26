@@ -5,7 +5,10 @@
 //  Created by Nathanael Juan Gauthama on 24/09/24.
 //
 
-struct ExampleObject {
-    
+import Foundation
+
+struct ExampleJSONObject: Codable {
+    let id: UUID
+    let name: String
 }
 
