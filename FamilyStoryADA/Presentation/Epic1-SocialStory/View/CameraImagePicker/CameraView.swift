@@ -43,7 +43,7 @@ struct CameraView: View {
                                 self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
                                 self.viewModel.zoom(with: currentZoomFactor)
                             })
-//                        .animation(.easeInOut, value: 0.5)
+                        //                        .animation(.easeInOut, value: 0.5)
                         
                         if isFocused {
                             FocusView(position: $focusLocation)
