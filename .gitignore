@@ -92,5 +92,6 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 #python gitignore
+__pycache__/
 *.pyc
 
