@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Nyalakan kamera untuk mengambil gambar</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Izinkan untuk menyimpan gambar</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
