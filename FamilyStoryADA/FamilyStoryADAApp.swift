@@ -11,7 +11,6 @@ import SwiftUI
 struct FamilyStoryADAApp: App {
     var body: some Scene {
         WindowGroup {
-//            ExampleView()
             CameraView()
                 .onAppear() {
                     let fileManager = FileManager.default
