@@ -24,11 +24,12 @@ async def async_download_images(keyword: str, max_num: int = 3):
         storage={'root_dir': 'images'}
     )
 
-    # Filter
-    filters = dict(license='commercial')
+    # Adjust the filters if needed
+    # filters = dict(license='commercial,modify') 
 
     crawl_start_time = time.time()
-    google_crawler.crawl(keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0)
+    google_crawler.crawl(keyword=keyword, max_num=max_num, file_idx_offset=0) # no filters
+    # google_crawler.crawl(keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0) # with filters
     crawl_end_time = time.time()
     print(f"Crawling completed in {crawl_end_time - crawl_start_time:.2f} seconds")
 
