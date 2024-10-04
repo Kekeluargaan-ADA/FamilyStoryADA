@@ -272,13 +272,6 @@ class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
                 try data.write(to: fileURL)
                 print("Image saved to app storage: \(fileURL.path)")
                 
-                // Check if the image file exists after saving
-//                if fileManager.fileExists(atPath: fileURL.path) {
-//                    print("Success: Image saved and verified at \(fileURL.path)")
-//                } else {
-//                    print("Error: Image file not found at \(fileURL.path) after saving.")
-//                }
-                
             } catch {
                 print("Error saving image to app storage: \(error)")
             }

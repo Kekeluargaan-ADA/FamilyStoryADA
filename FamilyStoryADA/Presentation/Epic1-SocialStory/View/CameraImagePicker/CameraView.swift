@@ -61,13 +61,18 @@ struct CameraView: View {
                     }
                     
                     HStack {
-                        PhotoThumbnail(image: $viewModel.capturedImage)
+                        PhotoPickerView(uiImage: $viewModel.capturedImage, pickerButton: PhotoThumbnail(image: $viewModel.capturedImage))
                         Spacer()
                         CaptureButton { viewModel.captureImage() }
                         Spacer()
                         CameraSwitchButton { viewModel.switchCamera() }
                     }
                     .padding(20)
+                }
+                
+                if viewModel.capturedImage != nil {
+                    let fileManager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//                    let fetchPath = fileManager.appendingPathComponent(viewModel.capturedImage)
                 }
             }
             .alert(isPresented: $viewModel.showAlertError) {
@@ -83,6 +88,9 @@ struct CameraView: View {
             .onAppear {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
+            }
+            .onChange(of: viewModel.capturedImage) {
+                
             }
         }
     }
@@ -108,9 +116,9 @@ struct PhotoThumbnail: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 
             } else {
-                Rectangle()
+                Image(systemName: "photo.fill")
                     .frame(width: 50, height: 50, alignment: .center)
-                    .foregroundColor(.black)
+                    .foregroundStyle(.white)
             }
         }
     }

@@ -18,8 +18,10 @@ class CameraViewModel: ObservableObject {
     @Published var showAlertError = false
     @Published var showSettingAlert = false
     @Published var isPermissionGranted: Bool = false
+    @Published var isImagePickerOpened: Bool = false
     
     @Published var capturedImage: UIImage?
+    @Published var capturedImageFileName: String?
     
     var alertError: AlertRequest!
     var session: AVCaptureSession = .init()
