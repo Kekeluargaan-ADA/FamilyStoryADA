@@ -46,9 +46,8 @@ class SampleImageCrawlViewModel: ObservableObject {
 
                 if let decodedResponse = try? JSONDecoder().decode(CrawlResponseObject.self, from: data) {
                     self.statusMessage = "\(decodedResponse.message) (Time taken: \(decodedResponse.timeTaken))"
-                    self.imageUrls = decodedResponse.imageUrls  // Set the image URLs
+                    self.imageUrls = decodedResponse.imageUrls
                     
-                    // Process each image URL to remove background
                     for imageUrl in self.imageUrls {
                         if let url = URL(string: imageUrl) {
                             self.downloadAndProcessImage(from: url)
@@ -93,8 +92,8 @@ class SampleImageCrawlViewModel: ObservableObject {
 
                 if let decodedResponse = try? JSONDecoder().decode(DeleteResponseObject.self, from: data!) {
                     self.statusMessage = decodedResponse.message
-                    self.processedImages.removeAll()  // Clear the processed images
-                    self.clearImageCache()  // Clear cache after deleting images
+                    self.processedImages.removeAll() 
+                    self.clearImageCache()
                 } else {
                     self.statusMessage = "Failed to parse response"
                 }

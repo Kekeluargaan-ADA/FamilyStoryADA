@@ -46,18 +46,23 @@ struct SampleImageCrawlView: View {
             Text(viewModel.statusMessage)
                 .padding()
 
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+            if !viewModel.processedImages.isEmpty {
+                TabView {
                     ForEach(viewModel.processedImages, id: \.self) { image in
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding()
                     }
                 }
+                .tabViewStyle(PageTabViewStyle())
+                .frame(height: 300)
+            } else {
+                Text("No images available.")
+                    .foregroundColor(.gray)
             }
         }
         .padding()
     }
 }
-
