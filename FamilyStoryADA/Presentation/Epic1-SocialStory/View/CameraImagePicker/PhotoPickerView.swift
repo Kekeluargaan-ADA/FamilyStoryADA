@@ -10,7 +10,7 @@ import PhotosUI
 
 struct PhotoPickerView<PickerButton: View>: View {
     @State var imageSelection: PhotosPickerItem? = nil
-    @Binding var uiImage: UIImage?
+    @Binding var selectedPhoto: PhotoRequest?
     let pickerButton: PickerButton
     
     var body: some View {
@@ -25,8 +25,7 @@ struct PhotoPickerView<PickerButton: View>: View {
         .onChange(of: imageSelection) {
             Task { @MainActor in
                 if let data = try? await imageSelection?.loadTransferable(type: Data.self) {
-                    uiImage = UIImage(data:data)
-                    print(uiImage)
+                    selectedPhoto = .init(photo: UIImage(data: data), path: CameraDelegate.saveImageToAppStorage(UIImage(data: data) ?? UIImage()))
                     return
                 }
             }
@@ -35,7 +34,7 @@ struct PhotoPickerView<PickerButton: View>: View {
 }
 
 #Preview {
-    PhotoPickerView(uiImage: .constant(UIImage()), pickerButton: Image(systemName: "camera.circle.fill")
+    PhotoPickerView(selectedPhoto: .constant(PhotoRequest(photo: UIImage(), path: "")), pickerButton: Image(systemName: "camera.circle.fill")
         .font(.system(size: 50))
         .foregroundColor(.gray)
     )
