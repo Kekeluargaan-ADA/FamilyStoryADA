@@ -15,6 +15,7 @@ struct CameraView: View {
     @State private var isScaled = false
     @State private var focusLocation: CGPoint = .zero
     @State private var currentZoomFactor: CGFloat = 1.0
+    @State private var image: UIImage? = nil
     
     var body: some View {
         GeometryReader { geometry in
@@ -61,13 +62,21 @@ struct CameraView: View {
                     }
                     
                     HStack {
-                        PhotoThumbnail(image: $viewModel.capturedImage)
+                        PhotoPickerView(selectedPhoto: $viewModel.capturedImage, pickerButton: PhotoThumbnail(image: $viewModel.capturedImage))
                         Spacer()
                         CaptureButton { viewModel.captureImage() }
                         Spacer()
                         CameraSwitchButton { viewModel.switchCamera() }
                     }
                     .padding(20)
+                }
+                
+                if let capturedImage = image {
+                    Image(uiImage: capturedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 300, height: 300)
+                    
                 }
             }
             .alert(isPresented: $viewModel.showAlertError) {
@@ -84,6 +93,19 @@ struct CameraView: View {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
             }
+            .onChange(of: viewModel.capturedImage) {
+                if let request = viewModel.capturedImage {
+                    print(request.path)
+                    let fileManager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                    let fetchPath = fileManager.appendingPathComponent(request.path ?? "")
+                    
+                    if let loadedImage = UIImage(contentsOfFile: fetchPath.path) {
+                        image = loadedImage
+                    } else {
+                        print("Image not found")
+                    }
+                }
+            }
         }
     }
     
@@ -96,21 +118,21 @@ struct CameraView: View {
 }
 
 struct PhotoThumbnail: View {
-    @Binding var image: UIImage?
+    @Binding var image: PhotoRequest?
     
     var body: some View {
         Group {
-            if let image {
-                Image(uiImage: image)
+            if let photo = image?.photo {
+                Image(uiImage: photo)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 
             } else {
-                Rectangle()
+                Image(systemName: "photo.fill")
                     .frame(width: 50, height: 50, alignment: .center)
-                    .foregroundColor(.black)
+                    .foregroundStyle(.white)
             }
         }
     }

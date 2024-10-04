@@ -18,7 +18,7 @@ enum Status {
 
 class CameraManager: ObservableObject {
     
-    @Published var capturedImage: UIImage? = nil
+    @Published var capturedImage: PhotoRequest? = nil
     @Published private var flashMode: AVCaptureDevice.FlashMode = .off
     
     @Published var status = Status.unconfigured
@@ -204,8 +204,8 @@ class CameraManager: ObservableObject {
                 videoConnection.videoOrientation = .portrait
             }
             
-            cameraDelegate = CameraDelegate { [weak self] image in
-                self?.capturedImage = image
+            cameraDelegate = CameraDelegate { [weak self] image, path in
+                self?.capturedImage = PhotoRequest(photo: image, path: path)
             }
             
             if let cameraDelegate {
@@ -217,29 +217,29 @@ class CameraManager: ObservableObject {
 
 class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
     
-    private let completion: (UIImage?) -> Void
+    private let completion: (UIImage?, String?) -> Void
     
-    init(completion: @escaping (UIImage?) -> Void) {
+    init(completion: @escaping (UIImage?, String?) -> Void) {
         self.completion = completion
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error {
             print("CameraManager: Error while capturing photo: \(error)")
-            completion(nil)
+            completion(nil, nil)
             return
         }
         
         if let imageData = photo.fileDataRepresentation(), let capturedImage = UIImage(data: imageData) {
-            saveImageToAppStorage(capturedImage)
-            saveImageToGallery(capturedImage)
-            completion(capturedImage)
+            let fileNamePath = CameraDelegate.saveImageToAppStorage(capturedImage)
+            CameraDelegate.saveImageToGallery(capturedImage)
+            completion(capturedImage, fileNamePath)
         } else {
             print("CameraManager: Image not fetched.")
         }
     }
     
-    func saveImageToGallery(_ image: UIImage) {
+    static func saveImageToGallery(_ image: UIImage) {
         PHPhotoLibrary.shared().performChanges {
             PHAssetChangeRequest.creationRequestForAsset(from: image)
         } completionHandler: { success, error in
@@ -252,10 +252,10 @@ class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
     }
     
     // Save image to the app's Documents directory
-    func saveImageToAppStorage(_ image: UIImage) {
+    static func saveImageToAppStorage(_ image: UIImage) -> String {
         guard let data = image.jpegData(compressionQuality: 1.0) else {
             print("Error: Could not create JPEG data from the image.")
-            return
+            return ""
         }
         
         // Create a unique filename
@@ -271,17 +271,11 @@ class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
                 // Write the image data to the file
                 try data.write(to: fileURL)
                 print("Image saved to app storage: \(fileURL.path)")
-                
-                // Check if the image file exists after saving
-//                if fileManager.fileExists(atPath: fileURL.path) {
-//                    print("Success: Image saved and verified at \(fileURL.path)")
-//                } else {
-//                    print("Error: Image file not found at \(fileURL.path) after saving.")
-//                }
-                
+                return filename
             } catch {
                 print("Error saving image to app storage: \(error)")
             }
         }
+        return ""
     }
 }
