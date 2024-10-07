@@ -14,7 +14,6 @@ struct CroppedPhotosPicker<Label: View>: View {
     
     struct SelectedImage: Identifiable {
         var id = UUID().uuidString
-        
         var image: UIImage
     }
     

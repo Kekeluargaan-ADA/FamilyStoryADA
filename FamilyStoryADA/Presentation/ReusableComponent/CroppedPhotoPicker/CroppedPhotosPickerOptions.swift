@@ -16,17 +16,17 @@ struct CroppedPhotosPickerOptions {
     var showActivitySheetOnDone: Bool?
     var imageCropFrame: CGRect?
     var angle: Int?
-    var aspectRatioPreset: CropViewControllerAspectRatioPreset?
+    var aspectRatioPreset: CropViewControllerAspectRatioPreset? = .preset4x3
     var customAspectRatio: CGSize?
     var customAspectRatioName: String?
-    var aspectRatioLockEnabled: Bool?
-    var aspectRatioLockDimensionSwapEnabled: Bool?
+    var aspectRatioLockEnabled: Bool? = true
+    var aspectRatioLockDimensionSwapEnabled: Bool? = false
     var resetAspectRatioEnabled: Bool?
     var toolbarPosition: CropViewControllerToolbarPosition?
-    var rotateClockwiseButtonHidden: Bool?
-    var rotateButtonsHidden: Bool?
+    var rotateClockwiseButtonHidden: Bool? = true
+    var rotateButtonsHidden: Bool? = true
     var resetButtonHidden: Bool?
-    var aspectRatioPickerButtonHidden: Bool?
+    var aspectRatioPickerButtonHidden: Bool? = true
     var doneButtonHidden: Bool?
     var cancelButtonHidden: Bool?
     var activityItems: [Any]?
