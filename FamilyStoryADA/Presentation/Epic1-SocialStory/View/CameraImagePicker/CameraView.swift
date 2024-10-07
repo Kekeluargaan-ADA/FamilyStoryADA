@@ -76,6 +76,8 @@ struct CameraView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 300, height: 300)
+                        .clipShape(ImageCropPath()) // Apply the custom shape
+                        .overlay(ImageCropPath().stroke(Color.white, lineWidth: 4)) // Add stroke if needed
                     
                 }
             }
