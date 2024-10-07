@@ -15,7 +15,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ExampleCropView: View {
     
     @State private var selection: UIImage?
     let croppingOptions = CroppedPhotosPickerOptions(doneButtonTitle: "Select",
@@ -42,5 +42,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    ExampleCropView()
 }

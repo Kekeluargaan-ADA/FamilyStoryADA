@@ -6,6 +6,10 @@ options:
   bundleIdPrefix: id.ada.kekeluargaan
   deploymentTarget:
     iOS: "17.0"
+packages:
+  TOCropViewController:
+    url: https://github.com/TimOliver/TOCropViewController.git
+    from: 2.7.2
 targets:
   FamilyStoryADA:
     type: application
@@ -28,6 +32,8 @@ targets:
           [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
         UISupportedInterfaceOrientations~ipad:
           [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+    dependencies:
+      - package: TOCropViewController
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: id.ada.kekeluargaan.FamilyStoryADA
       INFOPLIST_FILE: FamilyStoryADA/Info.plist
