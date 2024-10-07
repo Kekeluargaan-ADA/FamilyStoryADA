@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import CropViewController
+import TOCropViewController
 
 struct CroppedPhotosPicker<Label: View>: View {
     

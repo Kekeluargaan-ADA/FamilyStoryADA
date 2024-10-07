@@ -34,6 +34,9 @@ targets:
           [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
     dependencies:
       - package: TOCropViewController
+        products:
+          - CropViewController
+          - TOCropViewController
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: id.ada.kekeluargaan.FamilyStoryADA
       INFOPLIST_FILE: FamilyStoryADA/Info.plist

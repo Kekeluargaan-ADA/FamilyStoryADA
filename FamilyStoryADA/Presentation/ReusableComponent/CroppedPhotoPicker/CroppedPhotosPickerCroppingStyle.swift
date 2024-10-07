@@ -6,5 +6,6 @@
 //
 
 import CropViewController
+import TOCropViewController
 
 typealias CroppedPhotosPickerCroppingStyle = CropViewCroppingStyle

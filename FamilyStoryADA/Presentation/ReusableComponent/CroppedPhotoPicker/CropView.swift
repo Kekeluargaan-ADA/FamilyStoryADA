@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CropViewController
+import TOCropViewController
 
 struct CropView: UIViewControllerRepresentable {
     

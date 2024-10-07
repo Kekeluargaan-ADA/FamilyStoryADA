@@ -6,6 +6,7 @@
 //
 
 import CropViewController
+import TOCropViewController
 import UIKit
 
 extension CropViewController {

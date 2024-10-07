@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CropViewController
+import TOCropViewController
 
 struct CroppedPhotosPickerOptions {
     var minimumAspectRatio: CGFloat?
