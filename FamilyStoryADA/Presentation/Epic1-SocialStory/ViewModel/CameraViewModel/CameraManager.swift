@@ -18,7 +18,8 @@ enum Status {
 
 class CameraManager: ObservableObject {
     
-    @Published var capturedImage: PhotoRequest? = nil
+//    @Published var capturedImage: PhotoRequest? = nil
+    @Published var capturedImage: UIImage? = nil
     @Published private var flashMode: AVCaptureDevice.FlashMode = .off
     
     @Published var status = Status.unconfigured
@@ -176,7 +177,7 @@ class CameraManager: ObservableObject {
         setupVideoInput()
     }
     
-    func captureImage() {
+    func captureImage(completion: @escaping (Bool) -> Void) {
         sessionQueue.async { [weak self] in
             guard let self else { return }
             
@@ -204,8 +205,9 @@ class CameraManager: ObservableObject {
                 videoConnection.videoOrientation = .portrait
             }
             
-            cameraDelegate = CameraDelegate { [weak self] image, path in
-                self?.capturedImage = PhotoRequest(photo: image, path: path)
+            cameraDelegate = CameraDelegate { [weak self] image in
+                self?.capturedImage = image
+                completion(true)
             }
             
             if let cameraDelegate {
@@ -217,23 +219,28 @@ class CameraManager: ObservableObject {
 
 class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
     
-    private let completion: (UIImage?, String?) -> Void
+//    private let completion: (UIImage?, String?) -> Void
+        private let completion: (UIImage?) -> Void
     
-    init(completion: @escaping (UIImage?, String?) -> Void) {
-        self.completion = completion
-    }
+//    init(completion: @escaping (UIImage?, String?) -> Void) {
+//        self.completion = completion
+//    }
+    
+        init(completion: @escaping (UIImage?) -> Void) {
+            self.completion = completion
+        }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error {
             print("CameraManager: Error while capturing photo: \(error)")
-            completion(nil, nil)
+            completion(nil)
             return
         }
         
         if let imageData = photo.fileDataRepresentation(), let capturedImage = UIImage(data: imageData) {
-            let fileNamePath = CameraDelegate.saveImageToAppStorage(capturedImage)
-            CameraDelegate.saveImageToGallery(capturedImage)
-            completion(capturedImage, fileNamePath)
+//            let fileNamePath = CameraDelegate.saveImageToAppStorage(capturedImage)
+//            CameraDelegate.saveImageToGallery(capturedImage)
+            completion(capturedImage)
         } else {
             print("CameraManager: Image not fetched.")
         }
