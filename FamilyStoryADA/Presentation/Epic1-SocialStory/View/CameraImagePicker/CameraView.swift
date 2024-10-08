@@ -104,6 +104,7 @@ struct CameraView: View {
             }
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     // Create a separate function for the crop view navigation
@@ -114,6 +115,9 @@ struct CameraView: View {
                         viewModel.capturedImage = nil
                         viewModel.photosPickerItem = nil
                         self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                        CameraDelegate.saveImageToGallery(image.image)
+                        CameraDelegate.saveImageToAppStorage(image.image) //TODO: Save image path to appropriate directory
+                        //trigger that image is cropped
                     }didCropImageToRect: { _ in
                         
                     } didFinishCancelled: { _ in
