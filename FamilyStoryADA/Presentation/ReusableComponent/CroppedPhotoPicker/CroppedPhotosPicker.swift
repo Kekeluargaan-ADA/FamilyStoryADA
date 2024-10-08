@@ -15,6 +15,8 @@ struct CroppedPhotosPicker<Label: View>: View {
     private var style: CroppedPhotosPickerCroppingStyle
     private var options: CroppedPhotosPickerOptions
     @Binding private var selection: SelectedImage?
+    @Binding private var isCapturedImage: Bool
+    @Binding private var photosPickerItem: PhotosPickerItem?
     private var didCrop: ((CropView.CroppedRect) -> ())?
     private var didCancel: (() -> ())?
     @ViewBuilder private var label: () -> Label
@@ -22,18 +24,20 @@ struct CroppedPhotosPicker<Label: View>: View {
     init(style: CroppedPhotosPickerCroppingStyle = .default,
          options: CroppedPhotosPickerOptions = .init(),
          selection: Binding<SelectedImage?>,
+         isCapturedImage: Binding<Bool>,
+         photosPickerItem: Binding<PhotosPickerItem?>,
          didCrop: ((CropView.CroppedRect) -> Void)? = nil,
          didCancel: (() -> Void)? = nil,
          @ViewBuilder label: @escaping () -> Label) {
         self.style = style
         self.options = options
         self._selection = selection
+        self._isCapturedImage = isCapturedImage
+        self._photosPickerItem = photosPickerItem
         self.didCrop = didCrop
         self.didCancel = didCancel
         self.label = label
     }
-    
-    @State private var photosPickerItem: PhotosPickerItem?
 
     var body: some View {
         PhotosPicker(selection: $photosPickerItem) {
@@ -45,28 +49,9 @@ struct CroppedPhotosPicker<Label: View>: View {
                     let uiImage = await newValue.convert()
                     guard let uiImage else { return }
                     selection = SelectedImage(image: uiImage)
+                    isCapturedImage = true
                 }
             }
         }
-//        .sheet(item: $selectedImage) { selectedImage in
-//            CropView(image: selectedImage.image, croppingStyle: style, croppingOptions: options) { image in
-//                self.selectedImage = nil
-//                self.photosPickerItem = nil
-//                self.selection = image.image
-//                self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-//            } didCropToCircularImage: { image in
-//                self.selectedImage = nil
-//                self.photosPickerItem = nil
-//                self.selection = image.image
-//                self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-//            } didCropImageToRect: { _ in
-//                
-//            } didFinishCancelled: { _ in
-//                self.selectedImage = nil
-//                self.photosPickerItem = nil
-//                didCancel?()
-//            }
-//            .ignoresSafeArea()
-//        }
     }
 }

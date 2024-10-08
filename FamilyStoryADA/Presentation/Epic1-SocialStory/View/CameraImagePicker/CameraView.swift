@@ -19,90 +19,72 @@ struct CameraView: View {
     private var didCancel: (() -> ())?
     
     var body: some View {
-        //        NavigationView {
-        GeometryReader { geometry in
-            ZStack {
-                Color.black.edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: 0) {
-                    Button(action: {
-                        viewModel.switchFlash()
-                    }, label: {
-                        Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
-                            .font(.system(size: 20, weight: .medium, design: .default))
-                    })
-                    .accentColor(viewModel.isFlashOn ? .yellow : .white)
+        NavigationView {
+            GeometryReader { geometry in
+                ZStack {
+                    Color.black.edgesIgnoringSafeArea(.all)
                     
-                    ZStack {
-                        CameraPreview(session: viewModel.session) { tapPoint in
-                            isFocused = true
-                            focusLocation = tapPoint
-                            viewModel.setFocus(point: tapPoint)
-                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        }
-                        .gesture(MagnificationGesture()
-                            .onChanged { value in
-                                self.currentZoomFactor += value - 1.0 // Calculate the zoom factor change
-                                self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
-                                self.viewModel.zoom(with: currentZoomFactor)
-                            })
-                        //                        .animation(.easeInOut, value: 0.5)
+                    VStack(spacing: 0) {
+                        Button(action: {
+                            viewModel.switchFlash()
+                        }, label: {
+                            Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
+                                .font(.system(size: 20, weight: .medium, design: .default))
+                        })
+                        .accentColor(viewModel.isFlashOn ? .yellow : .white)
                         
-                        if isFocused {
-                            FocusView(position: $focusLocation)
-                                .scaleEffect(isScaled ? 0.8 : 1)
-                                .onAppear {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
-                                        self.isScaled = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                                            self.isFocused = false
-                                            self.isScaled = false
+                        ZStack {
+                            CameraPreview(session: viewModel.session) { tapPoint in
+                                isFocused = true
+                                focusLocation = tapPoint
+                                viewModel.setFocus(point: tapPoint)
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            }
+                            .gesture(MagnificationGesture()
+                                .onChanged { value in
+                                    self.currentZoomFactor += value - 1.0 // Calculate the zoom factor change
+                                    self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
+                                    self.viewModel.zoom(with: currentZoomFactor)
+                                })
+                            //                        .animation(.easeInOut, value: 0.5)
+                            
+                            if isFocused {
+                                FocusView(position: $focusLocation)
+                                    .scaleEffect(isScaled ? 0.8 : 1)
+                                    .onAppear {
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
+                                            self.isScaled = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                                                self.isFocused = false
+                                                self.isScaled = false
+                                            }
                                         }
                                     }
-                                }
+                            }
                         }
+                        
+                        HStack {
+                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
+                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
+                            }
+                            Spacer()
+                            CaptureButton {
+                                viewModel.captureImage()
+                            }
+                            Spacer()
+                            CameraSwitchButton { viewModel.switchCamera() }
+                        }
+                        .padding(20)
+                        
+                        NavigationLink(
+                            destination: cropView(),
+                            isActive: $viewModel.isPhotoCaptured,
+                            label: {
+                                EmptyView()
+                            }
+                        )
+                        .hidden()
                     }
-                    
-                    HStack {
-                        CroppedPhotosPicker(selection: $viewModel.capturedImage) {
-                            PhotoThumbnail(selectedImage: $viewModel.capturedImage)
-                        }
-                        Spacer()
-                        CaptureButton {
-                            viewModel.isPhotoCaptured.toggle()
-                            viewModel.captureImage()
-                        }
-                        Spacer()
-                        CameraSwitchButton { viewModel.switchCamera() }
-                    }
-                    .padding(20)
-                    
-                    //                        NavigationLink(
-                    //                            destination: {
-                    //                                if let capturedImage = viewModel.capturedImage?.image {
-                    //                                    CropView(image: capturedImage, croppingStyle: .default, croppingOptions: .init()) { image in
-                    //                                        viewModel.capturedImage = nil
-                    //                                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-                    //                                    } didCropToCircularImage: { image in
-                    //                                        viewModel.capturedImage = nil
-                    //                                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-                    //                                    } didCropImageToRect: { _ in
-                    //                                        // handle rect cropping result
-                    //                                    } didFinishCancelled: { _ in
-                    //                                        viewModel.capturedImage = nil
-                    //                                    }
-                    //                                    .ignoresSafeArea()
-                    //                                } else {
-                    //                                    EmptyView()
-                    //                                }
-                    //                            },
-                    //                            isActive: $viewModel.isPhotoCaptured,
-                    //                            label: {
-                    //                                EmptyView()
-                    //                            }
-                    //                        )
-                    //                        .hidden()
-                    //                    }
                 }
                 
             }
@@ -120,25 +102,31 @@ struct CameraView: View {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
             }
-            .sheet(item: $viewModel.capturedImage) { selectedImage in
-                if selectedImage != nil {
-                    CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
-                        viewModel.capturedImage = nil
-                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-                    } didCropToCircularImage: { image in
-                        viewModel.capturedImage = nil
-                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-                    } didCropImageToRect: { _ in
-                        
-                    } didFinishCancelled: { _ in
-                        viewModel.capturedImage = nil
-                    }
-                    .ignoresSafeArea()
-                }
-            }
             .navigationBarHidden(true)
         }
     }
+    
+    // Create a separate function for the crop view navigation
+        func cropView() -> some View {
+            if let selectedImage = viewModel.capturedImage {
+                return AnyView(
+                    CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
+                        viewModel.capturedImage = nil
+                        viewModel.photosPickerItem = nil
+                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                    }didCropImageToRect: { _ in
+                        
+                    } didFinishCancelled: { _ in
+                        viewModel.capturedImage = nil
+                        viewModel.photosPickerItem = nil
+                        viewModel.isPhotoCaptured = false
+                    }
+                    .ignoresSafeArea()
+                )
+            } else {
+                return AnyView(EmptyView())
+            }
+        }
     
     func openSettings() {
         let settingsUrl = URL(string: UIApplication.openSettingsURLString)

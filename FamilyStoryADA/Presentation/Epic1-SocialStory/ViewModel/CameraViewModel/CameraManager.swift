@@ -177,7 +177,7 @@ class CameraManager: ObservableObject {
         setupVideoInput()
     }
     
-    func captureImage() {
+    func captureImage(completion: @escaping (Bool) -> Void) {
         sessionQueue.async { [weak self] in
             guard let self else { return }
             
@@ -207,6 +207,7 @@ class CameraManager: ObservableObject {
             
             cameraDelegate = CameraDelegate { [weak self] image in
                 self?.capturedImage = image
+                completion(true)
             }
             
             if let cameraDelegate {
