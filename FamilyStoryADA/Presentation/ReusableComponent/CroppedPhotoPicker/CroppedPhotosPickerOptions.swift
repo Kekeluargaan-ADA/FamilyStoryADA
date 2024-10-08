@@ -16,9 +16,9 @@ struct CroppedPhotosPickerOptions {
     var showActivitySheetOnDone: Bool?
     var imageCropFrame: CGRect?
     var angle: Int?
-    var aspectRatioPreset: CropViewControllerAspectRatioPreset? = .preset4x3
-    var customAspectRatio: CGSize?
-    var customAspectRatioName: String?
+    var aspectRatioPreset: CropViewControllerAspectRatioPreset? = .presetCustom
+    var customAspectRatio: CGSize? = CGSize(width: 3, height: 4)
+    var customAspectRatioName: String? = "3x4"
     var aspectRatioLockEnabled: Bool? = true
     var aspectRatioLockDimensionSwapEnabled: Bool? = false
     var resetAspectRatioEnabled: Bool?

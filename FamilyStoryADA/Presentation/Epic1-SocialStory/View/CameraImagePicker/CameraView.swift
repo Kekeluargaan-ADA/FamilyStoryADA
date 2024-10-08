@@ -15,9 +15,11 @@ struct CameraView: View {
     @State private var isScaled = false
     @State private var focusLocation: CGPoint = .zero
     @State private var currentZoomFactor: CGFloat = 1.0
-    @State private var image: UIImage? = nil
+    private var didCrop: ((CropView.CroppedRect) -> ())?
+    private var didCancel: (() -> ())?
     
     var body: some View {
+        //        NavigationView {
         GeometryReader { geometry in
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
@@ -62,24 +64,47 @@ struct CameraView: View {
                     }
                     
                     HStack {
-                        PhotoPickerView(selectedPhoto: $viewModel.capturedImage, pickerButton: PhotoThumbnail(image: $viewModel.capturedImage))
+                        CroppedPhotosPicker(selection: $viewModel.capturedImage) {
+                            PhotoThumbnail(selectedImage: $viewModel.capturedImage)
+                        }
                         Spacer()
-                        CaptureButton { viewModel.captureImage() }
+                        CaptureButton {
+                            viewModel.isPhotoCaptured.toggle()
+                            viewModel.captureImage()
+                        }
                         Spacer()
                         CameraSwitchButton { viewModel.switchCamera() }
                     }
                     .padding(20)
+                    
+                    //                        NavigationLink(
+                    //                            destination: {
+                    //                                if let capturedImage = viewModel.capturedImage?.image {
+                    //                                    CropView(image: capturedImage, croppingStyle: .default, croppingOptions: .init()) { image in
+                    //                                        viewModel.capturedImage = nil
+                    //                                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                    //                                    } didCropToCircularImage: { image in
+                    //                                        viewModel.capturedImage = nil
+                    //                                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                    //                                    } didCropImageToRect: { _ in
+                    //                                        // handle rect cropping result
+                    //                                    } didFinishCancelled: { _ in
+                    //                                        viewModel.capturedImage = nil
+                    //                                    }
+                    //                                    .ignoresSafeArea()
+                    //                                } else {
+                    //                                    EmptyView()
+                    //                                }
+                    //                            },
+                    //                            isActive: $viewModel.isPhotoCaptured,
+                    //                            label: {
+                    //                                EmptyView()
+                    //                            }
+                    //                        )
+                    //                        .hidden()
+                    //                    }
                 }
                 
-                if let capturedImage = image {
-                    Image(uiImage: capturedImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 300)
-                        .clipShape(ImageCropPath()) // Apply the custom shape
-                        .overlay(ImageCropPath().stroke(Color.white, lineWidth: 4)) // Add stroke if needed
-                    
-                }
             }
             .alert(isPresented: $viewModel.showAlertError) {
                 Alert(title: Text(viewModel.alertError.title), message: Text(viewModel.alertError.message), dismissButton: .default(Text(viewModel.alertError.primaryButtonTitle), action: {
@@ -95,19 +120,23 @@ struct CameraView: View {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
             }
-            .onChange(of: viewModel.capturedImage) {
-                if let request = viewModel.capturedImage {
-                    print(request.path)
-                    let fileManager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                    let fetchPath = fileManager.appendingPathComponent(request.path ?? "")
-                    
-                    if let loadedImage = UIImage(contentsOfFile: fetchPath.path) {
-                        image = loadedImage
-                    } else {
-                        print("Image not found")
+            .sheet(item: $viewModel.capturedImage) { selectedImage in
+                if selectedImage != nil {
+                    CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
+                        viewModel.capturedImage = nil
+                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                    } didCropToCircularImage: { image in
+                        viewModel.capturedImage = nil
+                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                    } didCropImageToRect: { _ in
+                        
+                    } didFinishCancelled: { _ in
+                        viewModel.capturedImage = nil
                     }
+                    .ignoresSafeArea()
                 }
             }
+            .navigationBarHidden(true)
         }
     }
     
@@ -117,14 +146,19 @@ struct CameraView: View {
             UIApplication.shared.open(url, options: [:])
         }
     }
+    
+    func handleDidCrop(croppedRect: CropView.CroppedRect) {
+        viewModel.isPhotoCaptured = true
+        print("Photo taken from crop")
+    }
 }
 
 struct PhotoThumbnail: View {
-    @Binding var image: PhotoRequest?
+    @Binding var selectedImage: SelectedImage?
     
     var body: some View {
         Group {
-            if let photo = image?.photo {
+            if let photo = selectedImage?.image {
                 Image(uiImage: photo)
                     .resizable()
                     .aspectRatio(contentMode: .fill)

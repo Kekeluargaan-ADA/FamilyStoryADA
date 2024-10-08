@@ -12,3 +12,8 @@ struct PhotoRequest: Equatable {
     let photo: UIImage?
     let path: String?
 }
+
+struct SelectedImage: Identifiable {
+    var id = UUID().uuidString
+    var image: UIImage
+}
