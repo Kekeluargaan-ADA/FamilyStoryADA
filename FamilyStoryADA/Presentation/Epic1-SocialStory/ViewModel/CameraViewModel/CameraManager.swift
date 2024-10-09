@@ -34,7 +34,7 @@ class CameraManager: ObservableObject {
     var alertError: AlertRequest = AlertRequest()
     
     // Communicate with the session and other session objects with this queue.
-    private let sessionQueue = DispatchQueue(label: "id.ada.kekeluargaan.FamilyStoryADA.sessionQueue")
+    private let sessionQueue = DispatchQueue(label: "\(Project.bundleIdentifier).sessionQueue")
     
     func configureCaptureSession() {
         sessionQueue.async { [weak self] in
