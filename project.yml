@@ -57,11 +57,16 @@ targets:
     sources: [FamilyStoryADATests]
     dependencies:
       - target: FamilyStoryADA
+    info:
+      properties:
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundlePackageType: BNDL
     settings:
       base:
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FamilyStoryADA.app/FamilyStoryADA"
         BUNDLE_LOADER: "$(TEST_HOST)"
-        INFOPLIST_FILE: FamilyStoryADATests/Info.plist
         ENABLE_TESTABILITY: YES
 schemes:
   FamilyStoryADA:
