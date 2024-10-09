@@ -7,21 +7,21 @@ fi
 ls .
 # Change to the project directory
 cd ..
-# ALL STEPS AFTER CLONE PROJECT
 # Generate the Xcode project using XcodeGen
 echo "Generating Xcode project..."
 xcodegen
 echo "Check file on .xcodeproj"
-ls Chamelure.xcodeproj
+ls FamilyStoryADA.xcodeproj
 echo "Check file on project.xcworkspace"
 echo "Check file on xcshareddata"
-ls Chamelure.xcodeproj/project.xcworkspace/xcshareddata
-# BASED ON MY EXPERIENCE xcshareddata DIRECTORY IS NOT EXIST, YOU NEED TO CREATE THE DIRECTORY
-mkdir -p Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
-# Create the Package.resolved file
-touch Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+ls FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata
+
+# Ensure the xcshareddata and swiftpm directories exist
+mkdir -p FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+
+# Create the Package.resolved file in the correct path
 echo "Creating Package.resolved..."
-cat <<EOL > Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+cat <<EOL > FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 {
   "originHash" : "0271592b24e5dc1185a09e3f2d980d55521827815d397c9bce8e63d502a51e84",
   "pins" : [
@@ -39,13 +39,15 @@ cat <<EOL > Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package
 }
 EOL
 
-# Resolve package dependencies to generate Package.resolved
+# Resolve package dependencies
 echo "Resolving package dependencies..."
-xcodebuild -resolvePackageDependencies -project Chamelure.xcodeproj -scheme Chamelure
+xcodebuild -resolvePackageDependencies -project FamilyStoryADA.xcodeproj -scheme FamilyStoryADA
+
 # Check if Package.resolved was created
-if [ -f "Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" ]; then
+if [ -f "FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" ]; then
     echo "Package.resolved generated successfully."
 else
     echo "Failed to generate Package.resolved."
     exit 1
 fi
+
