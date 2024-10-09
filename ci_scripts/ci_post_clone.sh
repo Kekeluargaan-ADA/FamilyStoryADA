@@ -4,101 +4,48 @@ if ! command -v xcodegen &> /dev/null; then
     echo "XcodeGen not found. Installing..."
     brew install xcodegen
 fi
-
-# List current directory files
 ls .
-
 # Change to the project directory
 cd ..
-
+# ALL STEPS AFTER CLONE PROJECT
 # Generate the Xcode project using XcodeGen
 echo "Generating Xcode project..."
 xcodegen
-
-# Check for the .xcodeproj file
 echo "Check file on .xcodeproj"
-ls FamilyStoryADA.xcodeproj
-
-# Check for xcshareddata directory
+ls Chamelure.xcodeproj
+echo "Check file on project.xcworkspace"
 echo "Check file on xcshareddata"
-if [ ! -d "FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata" ]; then
-    echo "xcshareddata directory not found. Creating..."
-    mkdir -p FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
-fi
-
-# Check for Package.resolved file
-if [ ! -f "FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" ]; then
-    echo "Creating Package.resolved..."
-    touch FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-    cat <<EOL > FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+ls Chamelure.xcodeproj/project.xcworkspace/xcshareddata
+# BASED ON MY EXPERIENCE xcshareddata DIRECTORY IS NOT EXIST, YOU NEED TO CREATE THE DIRECTORY
+mkdir -p Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+# Create the Package.resolved file
+touch Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+echo "Creating Package.resolved..."
+cat <<EOL > Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 {
-  "pins" : [],
+  "originHash" : "0271592b24e5dc1185a09e3f2d980d55521827815d397c9bce8e63d502a51e84",
+  "pins" : [
+    {
+      "identity" : "tocropviewcontroller",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimOliver/TOCropViewController.git",
+      "state" : {
+        "revision" : "latest_revision_hash_here",
+        "version" : "2.6.0"
+      }
+    }
+  ],
   "version" : 3
 }
 EOL
-fi
 
 # Resolve package dependencies to generate Package.resolved
 echo "Resolving package dependencies..."
-xcodebuild -resolvePackageDependencies -project FamilyStoryADA.xcodeproj -scheme FamilyStoryADA
-
-# Check if Package.resolved was created successfully
-if [ -f "FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" ]; then
+xcodebuild -resolvePackageDependencies -project Chamelure.xcodeproj -scheme Chamelure
+# Check if Package.resolved was created
+if [ -f "Chamelure.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" ]; then
     echo "Package.resolved generated successfully."
 else
     echo "Failed to generate Package.resolved."
-    exit 1
-fi
-
-# Add Lottie as a package dependency
-echo "Adding Lottie package dependency..."
-cat <<EOL > Package.swift
-// swift-tools-version:5.9
-
-import PackageDescription
-
-let package = Package(
-    name: "TOCropViewController",
-    defaultLocalization: "en",
-    platforms: [.iOS(.v11)],
-    products: [
-        .library(
-            name: "TOCropViewController",
-            targets: ["TOCropViewController"]
-        ),
-        .library(
-            name: "CropViewController",
-            targets: ["CropViewController"]
-        )
-    ],
-    targets: [
-        .target(
-            name: "TOCropViewController",
-            path: "Objective-C/TOCropViewController/",
-			exclude:["Supporting/Info.plist"],
-            resources: [.process("Resources")],
-            publicHeadersPath: "include"
-        ),
-        .target(
-            name: "CropViewController",
-            dependencies: ["TOCropViewController"],
-            path: "Swift/CropViewController/",
-			exclude:["Info.plist"],
-            sources: ["CropViewController.swift"]
-        )
-    ]
-)
-EOL
-
-# Re-run xcodegen after modifying Package.swift
-echo "Regenerating Xcode project with XcodeGen..."
-xcodegen
-
-# Verify if Lottie has been added properly
-echo "Verifying Lottie package integration..."
-if grep -q "https://github.com/airbnb/lottie-ios.git" Package.swift; then
-    echo "Lottie package added successfully."
-else
-    echo "Failed to add Lottie package."
     exit 1
 fi
