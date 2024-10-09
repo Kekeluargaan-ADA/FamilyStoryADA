@@ -30,9 +30,18 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
         UISupportedInterfaceOrientations~iphone:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UISupportedInterfaceOrientations~ipad:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
     dependencies:
       - package: TOCropViewController
         products:
@@ -41,6 +50,7 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: kekeluargaan.FamilyStoryADA
       INFOPLIST_FILE: FamilyStoryADA/Info.plist
+      ENABLE_TESTABILITY: YES
   FamilyStoryADATests:
     type: bundle.unit-test
     platform: iOS
@@ -51,14 +61,21 @@ targets:
       base:
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FamilyStoryADA.app/FamilyStoryADA"
         BUNDLE_LOADER: "$(TEST_HOST)"
-        INFOPLIST_FILE: FamilyStoryADA/Info.plist
+        INFOPLIST_FILE: FamilyStoryADATests/Info.plist
+        ENABLE_TESTABILITY: YES
 schemes:
   FamilyStoryADA:
     build:
       targets:
-       FamilyStoryADA: all
-       FamilyStoryADATests: all
+        FamilyStoryADA: all
+        FamilyStoryADATests: all
     test:
       targets:
-      - name: FamilyStoryADATests
-      gatherCoverageData: true
+        - name: FamilyStoryADATests
+          gatherCoverageData: true
+    run:
+      config: Debug
+    analyze:
+      config: Debug
+    archive:
+      config: Release
