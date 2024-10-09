@@ -58,6 +58,7 @@ targets:
     dependencies:
       - target: FamilyStoryADA
     info:
+      path: FamilyStoryADATests/Info.plist
       properties:
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleName: $(PRODUCT_NAME)
