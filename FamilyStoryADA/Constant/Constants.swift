@@ -8,5 +8,5 @@
 import Foundation
 
 class Project {
-    static let bundleIdentifier = "ada.kekeluargaan.FamilyStoryADA"
+    static let bundleIdentifier = "kekeluargaan.FamilyStoryADA"
 }
