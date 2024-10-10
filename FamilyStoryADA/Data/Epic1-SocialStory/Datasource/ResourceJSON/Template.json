@@ -1,0 +1,96 @@
+[
+    {
+        "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
+        "templateName": "Dummy Template",
+        "templatePage": [
+            {
+                "pageId": "ff76e366-d832-45ca-8237-d81ebe7f6f22",
+                "pageText":
+                [
+                    {
+                        "componentId": "1e64ac54-63b2-40e2-aef8-b4df6c51684e",
+                        "componentContent": "Dummy Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.5,
+                            "yRatio": 0.5,
+                            "zRatio": 1
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentId": "e37b69e0-ebcd-430f-993d-787111cbca77",
+                        "componentContent": "DummyPic.jpg",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.5,
+                            "yRatio": 0.5,
+                            "zRatio": 0
+                        },
+                        "componentScale": 2.0,
+                        "componentRotation": 180.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentId": "14400df2-253f-405c-9045-781b91c04513",
+                        "componentContent": "DummyVideo.mp4",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.1,
+                            "yRatio": 0.2,
+                            "zRatio": 1
+                        },
+                        "componentScale": 1.5,
+                        "componentRotation": 90.0
+                    }
+                ],
+                "pageSoundPath": "ff76e366-d832-45ca-8237-d81ebe7f6f22.m4a"
+            },
+            {
+                "pageId": "189b11bc-c202-4186-88e0-aed5eae8d205",
+                "pageText":
+                [
+                    {
+                        "componentId": "c4e8b6d7-6463-481c-880c-5a47a35fc88d",
+                        "componentContent": "Dummy Text 2",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentId": "77ce5157-fa4b-469b-8fe2-2a3de2b88c65",
+                        "componentContent": "DumDum2.jpg",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.2,
+                            "yRatio": 0.1,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.5,
+                        "componentRotation": 180.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "189b11bc-c202-4186-88e0-aed5eae8d205.m4a"
+            }
+        ]
+    }
+]
+

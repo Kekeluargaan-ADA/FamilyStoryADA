@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FamilyStoryADAApp: App {
@@ -26,5 +27,9 @@ struct FamilyStoryADAApp: App {
 //                    }
 //                }
         }
+        .modelContainer(for:
+                User.self
+
+        )
     }
 }
