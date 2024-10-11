@@ -8,43 +8,48 @@
 import SwiftUI
 
 struct PlayStoryView: View {
-    @ObservedObject var model: ExampleViewModel = ExampleViewModel(id: UUID(uuidString: "37bff686-7d09-4e53-aa90-fb465da131b5")!)
     var body: some View {
-        // TODO: use cgwidth and height
         GeometryReader { geometry in
+            let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+            let heightRatio = ratios.heightRatio
+            let widthRatio = ratios.widthRatio
+            
             VStack {
+                Spacer()
                 HStack {
                     ZStack {
                         Circle()
                             .foregroundStyle(.gray)
-                            .frame(height: 64)
+                            .frame(height: 64 * heightRatio)
                         Image(systemName: "house")
                             .resizable()
-                            .frame(width: 31, height: 26)
+                            .frame(width: 31 * widthRatio, height: 26 * heightRatio)
                     }
                     Spacer()
                     Text("Cara Menyikat Gigi") // TODO: use data
-                        .font(.system(size: 26)) // TODO: change font size
+                        .font(.system(size: 26 * heightRatio)) // Adjust font size
                         .fontWeight(.medium)
                     Spacer()
                     ZStack {
                         Circle()
                             .foregroundStyle(.gray)
-                            .frame(height: 64)
-                        Image(systemName: "speaker.wave.2").resizable()
-                            .frame(width: 33, height: 26)
+                            .frame(height: 64 * heightRatio)
+                        Image(systemName: "speaker.wave.2")
+                            .resizable()
+                            .frame(width: 33 * widthRatio, height: 26 * heightRatio)
                     }
                 }
-                Spacer().frame(height: 21)
+                Spacer().frame(height: 21 * heightRatio)
                 Rectangle()
                     .foregroundStyle(.gray)
-                    .frame(width: 1055, height: 519)
-                Spacer().frame(height: 55)
+                    .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
+                Spacer().frame(height: 55 * heightRatio)
                 Text("Ambil sikat gigi.")
-                    .font(.system(size: 32))
+                    .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
+                Spacer().frame(height: 55 * heightRatio)
             }
-            .padding(47)
+            .padding(47 * heightRatio)
         }
     }
 }
@@ -52,3 +57,4 @@ struct PlayStoryView: View {
 #Preview {
     PlayStoryView()
 }
+
