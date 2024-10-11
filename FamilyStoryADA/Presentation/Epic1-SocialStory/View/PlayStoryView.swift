@@ -32,7 +32,7 @@ struct PlayStoryView: View {
                             .frame(width: 31 * widthRatio, height: 26 * heightRatio)
                     }
                     Spacer()
-                    Text(viewModel.templateName) // Updated to use template name
+                    Text(viewModel.templateName)
                         .font(.system(size: 26 * heightRatio))
                         .fontWeight(.medium)
                     Spacer()
@@ -50,15 +50,45 @@ struct PlayStoryView: View {
                     .foregroundStyle(.gray)
                     .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                 Spacer().frame(height: 55 * heightRatio)
-                Text(viewModel.pageText) // Updated to use page text
+                Text(viewModel.pageText)
                     .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
                 Spacer().frame(height: 55 * heightRatio)
+                
+                HStack {
+                    Button(action: {
+                        viewModel.goToPreviousPage()
+                    }) {
+                        Text("Previous")
+                            .font(.system(size: 18 * heightRatio))
+                            .padding()
+                            .background(Color.gray)
+                            .cornerRadius(10)
+                            .foregroundColor(.white)
+                    }
+                    .disabled(viewModel.currentPageIndex == 0)
+                    
+                    Spacer().frame(width: 20 * widthRatio)
+                    
+                    Button(action: {
+                        viewModel.goToNextPage()
+                    }) {
+                        Text("Next")
+                            .font(.system(size: 18 * heightRatio))
+                            .padding()
+                            .background(Color.gray)
+                            .cornerRadius(10)
+                            .foregroundColor(.white)
+                    }
+                    .disabled(viewModel.currentPageIndex >= viewModel.templatePages.count - 1)
+                }
+                .padding(.bottom, 20 * heightRatio)
             }
             .padding(47 * heightRatio)
         }
     }
 }
+
 
 
 #Preview {
@@ -68,5 +98,3 @@ struct PlayStoryView: View {
         pageId: UUID(uuidString: "ff76e366-d832-45ca-8237-d81ebe7f6f22")!
     )
 }
-
-
