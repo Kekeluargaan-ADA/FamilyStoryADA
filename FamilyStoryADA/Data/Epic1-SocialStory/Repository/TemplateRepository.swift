@@ -9,6 +9,7 @@ import Foundation
 
 internal protocol TemplateRepository {
     func fetchTemplates() -> ([TemplateJSONObject], ErrorHandler?)
+    func fetchTemplatesById(templateId: UUID) -> (TemplateJSONObject?, ErrorHandler?)
 }
 
 internal final class JSONTemplateRepository: TemplateRepository {
@@ -26,5 +27,21 @@ internal final class JSONTemplateRepository: TemplateRepository {
         }
     }
     
-    
+    func fetchTemplatesById(templateId: UUID) -> (TemplateJSONObject?, ErrorHandler?) {
+        let (templates, errorResult) = fetchTemplates()
+        
+        if let error = errorResult {
+            return (nil, error)
+        }
+        
+        let result = templates.filter {
+            $0.templateId == templateId
+        }.first
+        
+        guard result != nil else {
+            return (nil, ErrorHandler.fileNotFound)
+        }
+        
+        return (result, nil)
+    }
 }

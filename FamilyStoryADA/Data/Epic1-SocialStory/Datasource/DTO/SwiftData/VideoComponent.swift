@@ -20,7 +20,6 @@ class VideoComponent: StoryComponent {
     
     var componentRotation: Double
     
-    
     init(componentId: UUID, componentContent: String, componentRatio: Ratio, componentScale: Double, componentRotation: Double) {
         self.componentId = componentId
         self.componentContent = componentContent
@@ -28,4 +27,13 @@ class VideoComponent: StoryComponent {
         self.componentScale = componentScale
         self.componentRotation = componentRotation
     }
+    
+    init(template: ComponentJSONObject) {
+        self.componentId = template.componentId
+        self.componentContent = template.componentContent
+        self.componentRatio = Ratio(template: template.componentRatio)
+        self.componentScale = template.componentScale
+        self.componentRotation = template.componentRotation
+    }
 }
+
