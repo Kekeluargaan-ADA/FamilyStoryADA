@@ -46,43 +46,28 @@ struct PlayStoryView: View {
                     }
                 }
                 Spacer().frame(height: 21 * heightRatio)
-                Rectangle()
-                    .foregroundStyle(.gray)
-                    .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
+                HStack {
+                    Button(action: {
+                        viewModel.goToPreviousPage()
+                    }) {
+                        Circle()
+                    }
+                    .disabled(viewModel.currentPageIndex == 0)
+                    Rectangle()
+                        .foregroundStyle(.gray)
+                        .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
+                    Button(action: {
+                        viewModel.goToNextPage()
+                    }) {
+                        Circle()
+                    }
+                    .disabled(viewModel.currentPageIndex >= viewModel.templatePages.count - 1)
+                }
                 Spacer().frame(height: 55 * heightRatio)
                 Text(viewModel.pageText)
                     .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
                 Spacer().frame(height: 55 * heightRatio)
-                
-                HStack {
-                    Button(action: {
-                        viewModel.goToPreviousPage()
-                    }) {
-                        Text("Previous")
-                            .font(.system(size: 18 * heightRatio))
-                            .padding()
-                            .background(Color.gray)
-                            .cornerRadius(10)
-                            .foregroundColor(.white)
-                    }
-                    .disabled(viewModel.currentPageIndex == 0)
-                    
-                    Spacer().frame(width: 20 * widthRatio)
-                    
-                    Button(action: {
-                        viewModel.goToNextPage()
-                    }) {
-                        Text("Next")
-                            .font(.system(size: 18 * heightRatio))
-                            .padding()
-                            .background(Color.gray)
-                            .cornerRadius(10)
-                            .foregroundColor(.white)
-                    }
-                    .disabled(viewModel.currentPageIndex >= viewModel.templatePages.count - 1)
-                }
-                .padding(.bottom, 20 * heightRatio)
             }
             .padding(47 * heightRatio)
         }
