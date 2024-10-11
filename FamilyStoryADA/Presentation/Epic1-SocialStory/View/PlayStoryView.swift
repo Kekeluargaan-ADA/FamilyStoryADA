@@ -10,6 +10,7 @@ import SwiftUI
 struct PlayStoryView: View {
     @ObservedObject var model: ExampleViewModel = ExampleViewModel(id: UUID(uuidString: "37bff686-7d09-4e53-aa90-fb465da131b5")!)
     var body: some View {
+        // TODO: use cgwidth and height
         GeometryReader { geometry in
             VStack {
                 HStack {
@@ -35,18 +36,13 @@ struct PlayStoryView: View {
                     }
                 }
                 Spacer().frame(height: 21)
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 1054, height: 376.83908)
-                        .cornerRadius(1054)
-                    Rectangle()
-                        .foregroundColor(.gray)
-                      .frame(width: 1054, height: 330.58047)
-                      .cornerRadius(20)
-                      .offset(y: 188.41954)
-                }
-                Spacer()
+                Rectangle()
+                    .foregroundStyle(.gray)
+                    .frame(width: 1055, height: 519)
+                Spacer().frame(height: 55)
+                Text("Ambil sikat gigi.")
+                    .font(.system(size: 32))
+                    .fontWeight(.bold)
             }
             .padding(47)
         }
