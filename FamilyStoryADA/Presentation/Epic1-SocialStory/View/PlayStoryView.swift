@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct PlayStoryView: View {
+    @StateObject private var viewModel: PlayStoryViewModel
+    
+    init(templateRepository: TemplateRepository, templateId: UUID, pageId: UUID) {
+        _viewModel = StateObject(wrappedValue: PlayStoryViewModel(templateRepository: templateRepository, templateId: templateId, pageId: pageId))
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
@@ -26,8 +32,8 @@ struct PlayStoryView: View {
                             .frame(width: 31 * widthRatio, height: 26 * heightRatio)
                     }
                     Spacer()
-                    Text("Cara Menyikat Gigi") // TODO: use data
-                        .font(.system(size: 26 * heightRatio)) // Adjust font size
+                    Text(viewModel.templateName) // Updated to use template name
+                        .font(.system(size: 26 * heightRatio))
                         .fontWeight(.medium)
                     Spacer()
                     ZStack {
@@ -44,7 +50,7 @@ struct PlayStoryView: View {
                     .foregroundStyle(.gray)
                     .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                 Spacer().frame(height: 55 * heightRatio)
-                Text("Ambil sikat gigi.")
+                Text(viewModel.pageText) // Updated to use page text
                     .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
                 Spacer().frame(height: 55 * heightRatio)
@@ -54,7 +60,13 @@ struct PlayStoryView: View {
     }
 }
 
+
 #Preview {
-    PlayStoryView()
+    PlayStoryView(
+        templateRepository: JSONTemplateRepository(),
+        templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab")!,
+        pageId: UUID(uuidString: "ff76e366-d832-45ca-8237-d81ebe7f6f22")!
+    )
 }
+
 
