@@ -12,4 +12,5 @@ enum ErrorHandler: Error {
     case decodedFailed(Error)
     case encodedFailed(Error)
     case dataCorrupted
+    case removalFailure
 }

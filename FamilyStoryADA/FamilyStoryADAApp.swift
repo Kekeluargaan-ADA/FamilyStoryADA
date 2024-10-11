@@ -27,9 +27,16 @@ struct FamilyStoryADAApp: App {
 //                    }
 //                }
         }
-        .modelContainer(for:
-                User.self
-
-        )
+//        .modelContainer(for:
+//                [
+//                    User.self,
+//                    Story.self,
+//                    Page.self,
+//                    PictureComponent.self,
+//                    TextComponent.self,
+//                    VideoComponent.self,
+//                    Ratio.self    
+//                ]
+//        )
     }
 }

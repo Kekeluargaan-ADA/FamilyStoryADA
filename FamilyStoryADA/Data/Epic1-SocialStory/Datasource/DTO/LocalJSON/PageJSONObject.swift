@@ -8,7 +8,7 @@
 import Foundation
 
 struct PageJSONObject: Codable {
-    let pageId: String
+    let pageId: UUID
     let pageText: [ComponentJSONObject]
     let pagePicture: [ComponentJSONObject]
     let pageVideo: [ComponentJSONObject]
