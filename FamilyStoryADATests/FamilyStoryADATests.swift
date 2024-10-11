@@ -8,6 +8,7 @@
 import Testing
 @testable import FamilyStoryADA
 import Foundation
+import SwiftData
 
 struct FamilyStoryADATests {
     
@@ -26,5 +27,19 @@ struct FamilyStoryADATests {
         
         #expect(!listTemplate.0.isEmpty, "list template is null")
     }
-
+    
+    //TODO: Fix tests
+//    @MainActor @Test
+//    func testCreatingStory() {
+//        let storyRepository = SwiftDataStoryRepository.shared
+//        let templateId = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab")
+//        
+//        if let templateUUID = templateId{
+//            let (uuid, response) = storyRepository.addNewStory(templateId: templateUUID)
+//            
+//            print(uuid)
+//            #expect(response == nil, "Error creating model")
+//        }
+//    }
+    
 }

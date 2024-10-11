@@ -19,4 +19,10 @@ class Ratio {
         self.yRatio = yRatio
         self.zRatio = zRatio
     }
+    
+    init(template: RatioJSONObject) {
+        self.xRatio = template.xRatio
+        self.yRatio = template.yRatio
+        self.zRatio = template.zRatio
+    }
 }

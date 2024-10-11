@@ -27,4 +27,12 @@ class TextComponent: StoryComponent {
         self.componentScale = componentScale
         self.componentRotation = componentRotation
     }
+    
+    init(template: ComponentJSONObject) {
+        self.componentId = template.componentId
+        self.componentContent = template.componentContent
+        self.componentRatio = Ratio(template: template.componentRatio)
+        self.componentScale = template.componentScale
+        self.componentRotation = template.componentRotation
+    }
 }

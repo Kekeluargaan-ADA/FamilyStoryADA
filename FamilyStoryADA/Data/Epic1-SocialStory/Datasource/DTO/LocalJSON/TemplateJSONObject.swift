@@ -8,7 +8,8 @@
 import Foundation
 
 struct TemplateJSONObject: Codable {
-    let templateId: String
+    let templateId: UUID
     let templateName: String
+    let templateCategory: String
     let templatePage: [PageJSONObject]
 }
