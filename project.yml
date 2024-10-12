@@ -42,6 +42,13 @@ targets:
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
+        UTExportedTypeDeclarations:
+            - UTTypeConformsTo:
+                [
+                  "com.public.data"
+                ]
+              UTTypeDescription: "DraggablePage"
+              UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
     dependencies:
       - package: TOCropViewController
         products:
