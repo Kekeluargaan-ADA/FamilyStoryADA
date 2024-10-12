@@ -11,6 +11,9 @@ packages:
   TOCropViewController:
     url: https://github.com/TimOliver/TOCropViewController.git
     from: 2.7.2
+  generative-ai-swift:
+    url: https://github.com/google-gemini/generative-ai-swift.git
+    from: 0.5.6
 targets:
   FamilyStoryADA:
     type: application
@@ -36,12 +39,7 @@ targets:
             UIInterfaceOrientationLandscapeRight,
           ]
         UISupportedInterfaceOrientations~ipad:
-          [
-            UIInterfaceOrientationPortrait,
-            UIInterfaceOrientationPortraitUpsideDown,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
-          ]
+          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
         UTExportedTypeDeclarations:
             - UTTypeConformsTo:
                 [
@@ -54,6 +52,9 @@ targets:
         products:
           - CropViewController
           - TOCropViewController
+      - package: generative-ai-swift
+        products:
+          - GoogleGenerativeAI
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: kekeluargaan.FamilyStoryADA
       INFOPLIST_FILE: FamilyStoryADA/Info.plist
