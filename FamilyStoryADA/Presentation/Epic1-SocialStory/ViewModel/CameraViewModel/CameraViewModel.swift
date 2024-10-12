@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 import Photos
 import AVFoundation
+import PhotosUI
 
 class CameraViewModel: ObservableObject {
     
@@ -19,8 +20,11 @@ class CameraViewModel: ObservableObject {
     @Published var showSettingAlert = false
     @Published var isPermissionGranted: Bool = false
     @Published var isImagePickerOpened: Bool = false
+    @Published var isPhotoCaptured: Bool = false
     
-    @Published var capturedImage: PhotoRequest?
+//    @Published var capturedImage: PhotoRequest?
+    @Published var capturedImage: SelectedImage?
+    @Published var photosPickerItem: PhotosPickerItem?
     
     var alertError: AlertRequest!
     var session: AVCaptureSession = .init()
@@ -42,7 +46,9 @@ class CameraViewModel: ObservableObject {
         .store(in: &cancelables)
         
         cameraManager.$capturedImage.sink { [weak self] image in
-            self?.capturedImage = image
+            if let existImage = image {
+                self?.capturedImage = .init(image: existImage)
+            }
         }.store(in: &cancelables)
     }
     
@@ -100,7 +106,9 @@ class CameraViewModel: ObservableObject {
         requestGalleryPermission()
         let permission = checkGalleryPermissionStatus()
         if permission.rawValue != 2 {
-            cameraManager.captureImage()
+            cameraManager.captureImage() { status in
+                self.isPhotoCaptured = status
+            }
         }
     }
     

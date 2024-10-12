@@ -46,5 +46,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>DraggablePage</string>
+			<key>UTTypeIdentifier</key>
+			<string>kekeluargaan.FamilyStoryADA.draggablePage</string>
+		</dict>
+	</array>
 </dict>
 </plist>

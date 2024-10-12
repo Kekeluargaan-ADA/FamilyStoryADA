@@ -15,69 +15,78 @@ struct CameraView: View {
     @State private var isScaled = false
     @State private var focusLocation: CGPoint = .zero
     @State private var currentZoomFactor: CGFloat = 1.0
-    @State private var image: UIImage? = nil
+    private var didCrop: ((CropView.CroppedRect) -> ())?
+    private var didCancel: (() -> ())?
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                Color.black.edgesIgnoringSafeArea(.all)
-                
-                VStack(spacing: 0) {
-                    Button(action: {
-                        viewModel.switchFlash()
-                    }, label: {
-                        Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
-                            .font(.system(size: 20, weight: .medium, design: .default))
-                    })
-                    .accentColor(viewModel.isFlashOn ? .yellow : .white)
+        NavigationView {
+            GeometryReader { geometry in
+                ZStack {
+                    Color.black.edgesIgnoringSafeArea(.all)
                     
-                    ZStack {
-                        CameraPreview(session: viewModel.session) { tapPoint in
-                            isFocused = true
-                            focusLocation = tapPoint
-                            viewModel.setFocus(point: tapPoint)
-                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                        }
-                        .gesture(MagnificationGesture()
-                            .onChanged { value in
-                                self.currentZoomFactor += value - 1.0 // Calculate the zoom factor change
-                                self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
-                                self.viewModel.zoom(with: currentZoomFactor)
-                            })
-                        //                        .animation(.easeInOut, value: 0.5)
+                    VStack(spacing: 0) {
+                        Button(action: {
+                            viewModel.switchFlash()
+                        }, label: {
+                            Image(systemName: viewModel.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
+                                .font(.system(size: 20, weight: .medium, design: .default))
+                        })
+                        .accentColor(viewModel.isFlashOn ? .yellow : .white)
                         
-                        if isFocused {
-                            FocusView(position: $focusLocation)
-                                .scaleEffect(isScaled ? 0.8 : 1)
-                                .onAppear {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
-                                        self.isScaled = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                                            self.isFocused = false
-                                            self.isScaled = false
+                        ZStack {
+                            CameraPreview(session: viewModel.session) { tapPoint in
+                                isFocused = true
+                                focusLocation = tapPoint
+                                viewModel.setFocus(point: tapPoint)
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            }
+                            .gesture(MagnificationGesture()
+                                .onChanged { value in
+                                    self.currentZoomFactor += value - 1.0 // Calculate the zoom factor change
+                                    self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
+                                    self.viewModel.zoom(with: currentZoomFactor)
+                                })
+                            //                        .animation(.easeInOut, value: 0.5)
+                            
+                            if isFocused {
+                                FocusView(position: $focusLocation)
+                                    .scaleEffect(isScaled ? 0.8 : 1)
+                                    .onAppear {
+                                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6, blendDuration: 0)) {
+                                            self.isScaled = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                                                self.isFocused = false
+                                                self.isScaled = false
+                                            }
                                         }
                                     }
-                                }
+                            }
                         }
+                        
+                        HStack {
+                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
+                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
+                            }
+                            Spacer()
+                            CaptureButton {
+                                viewModel.captureImage()
+                            }
+                            Spacer()
+                            CameraSwitchButton { viewModel.switchCamera() }
+                        }
+                        .padding(20)
+                        
+                        NavigationLink(
+                            destination: cropView(),
+                            isActive: $viewModel.isPhotoCaptured,
+                            label: {
+                                EmptyView()
+                            }
+                        )
+                        .hidden()
                     }
-                    
-                    HStack {
-                        PhotoPickerView(selectedPhoto: $viewModel.capturedImage, pickerButton: PhotoThumbnail(image: $viewModel.capturedImage))
-                        Spacer()
-                        CaptureButton { viewModel.captureImage() }
-                        Spacer()
-                        CameraSwitchButton { viewModel.switchCamera() }
-                    }
-                    .padding(20)
                 }
                 
-                if let capturedImage = image {
-                    Image(uiImage: capturedImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 300)
-                    
-                }
             }
             .alert(isPresented: $viewModel.showAlertError) {
                 Alert(title: Text(viewModel.alertError.title), message: Text(viewModel.alertError.message), dismissButton: .default(Text(viewModel.alertError.primaryButtonTitle), action: {
@@ -93,21 +102,35 @@ struct CameraView: View {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
             }
-            .onChange(of: viewModel.capturedImage) {
-                if let request = viewModel.capturedImage {
-                    print(request.path)
-                    let fileManager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                    let fetchPath = fileManager.appendingPathComponent(request.path ?? "")
-                    
-                    if let loadedImage = UIImage(contentsOfFile: fetchPath.path) {
-                        image = loadedImage
-                    } else {
-                        print("Image not found")
+            .navigationBarHidden(true)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    // Create a separate function for the crop view navigation
+        func cropView() -> some View {
+            if let selectedImage = viewModel.capturedImage {
+                return AnyView(
+                    CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
+                        viewModel.capturedImage = nil
+                        viewModel.photosPickerItem = nil
+                        self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+                        CameraDelegate.saveImageToGallery(image.image)
+                        CameraDelegate.saveImageToAppStorage(image.image) //TODO: Save image path to appropriate directory
+                        //trigger that image is cropped
+                    }didCropImageToRect: { _ in
+                        
+                    } didFinishCancelled: { _ in
+                        viewModel.capturedImage = nil
+                        viewModel.photosPickerItem = nil
+                        viewModel.isPhotoCaptured = false
                     }
-                }
+                    .ignoresSafeArea()
+                )
+            } else {
+                return AnyView(EmptyView())
             }
         }
-    }
     
     func openSettings() {
         let settingsUrl = URL(string: UIApplication.openSettingsURLString)
@@ -115,14 +138,19 @@ struct CameraView: View {
             UIApplication.shared.open(url, options: [:])
         }
     }
+    
+    func handleDidCrop(croppedRect: CropView.CroppedRect) {
+        viewModel.isPhotoCaptured = true
+        print("Photo taken from crop")
+    }
 }
 
 struct PhotoThumbnail: View {
-    @Binding var image: PhotoRequest?
+    @Binding var selectedImage: SelectedImage?
     
     var body: some View {
         Group {
-            if let photo = image?.photo {
+            if let photo = selectedImage?.image {
                 Image(uiImage: photo)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
