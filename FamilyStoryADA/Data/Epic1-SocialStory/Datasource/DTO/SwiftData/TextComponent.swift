@@ -14,6 +14,7 @@ class TextComponent: StoryComponent {
     
     var componentContent: String
     
+    @Relationship(deleteRule: .cascade)
     var componentRatio: Ratio
     
     var componentScale: Double

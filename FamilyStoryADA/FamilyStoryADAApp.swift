@@ -14,7 +14,8 @@ struct FamilyStoryADAApp: App {
         WindowGroup {
 //            ExampleCropView()
 //            CameraView()
-            MiniQuizView()
+//            MiniQuizView()
+            StoryDashboardView()
 //                .onAppear() {
 //                    let fileManager = FileManager.default
 //                    let url = "4ECBB088-FD5C-42CF-8C5C-5AE0D6EC5962.jpg"
@@ -27,6 +28,9 @@ struct FamilyStoryADAApp: App {
 //                        }
 //                    }
 //                }
+                .modelContainer(for: [
+                    Story.self, Page.self, User.self, TextComponent.self, PictureComponent.self, VideoComponent.self
+                ])
         }
     }
 }

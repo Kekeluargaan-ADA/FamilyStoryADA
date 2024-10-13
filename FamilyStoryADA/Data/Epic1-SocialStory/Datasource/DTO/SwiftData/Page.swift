@@ -11,8 +11,11 @@ import SwiftData
 @Model
 class Page {
     var pageId: UUID
+    @Relationship(deleteRule: .cascade)
     var pageText: [TextComponent]
+    @Relationship(deleteRule: .cascade)
     var pagePicture: [PictureComponent]
+    @Relationship(deleteRule: .cascade)
     var pageVideo: [VideoComponent]
     var pageSoundPath: String
     

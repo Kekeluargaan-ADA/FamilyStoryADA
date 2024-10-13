@@ -13,6 +13,7 @@ public class Story {
     var storyId: UUID
     var templateId: UUID
     var templateCategory: String
+    @Relationship(deleteRule: .cascade)
     var pages: [Page]
     
     init(storyId: UUID, templateId: UUID, templateCategory: String, pages: [Page]) {

@@ -34,6 +34,7 @@ internal final class SwiftDataStoryRepository: StoryRepository {
     func fetchStories() -> ([Story], ErrorHandler?) {
         do {
             let stories = try modelContext.fetch(FetchDescriptor<Story>())
+            print(stories)
             return (stories, nil)
         } catch {
             return ([], ErrorHandler.fileNotFound)
@@ -92,4 +93,65 @@ internal final class SwiftDataStoryRepository: StoryRepository {
         
         return (nil, errorHandler)
     }
+}
+
+internal class DummyStoryRepository: StoryRepository {
+    func fetchStories() -> ([Story], ErrorHandler?) {
+        return (
+            [
+                Story(
+                    storyId: UUID(),
+                    templateId: UUID(),
+                    templateCategory: "Hygiene",
+                    pages: [
+                        Page(pageId: UUID(),
+                             pageText: [
+                                TextComponent(
+                                    componentId: UUID(),
+                                    componentContent: "Dummy Text",
+                                    componentRatio: Ratio(xRatio: 0.5,
+                                                          yRatio: 0.5,
+                                                          zRatio: 1
+                                                         ),
+                                    componentScale: 1.5,
+                                    componentRotation: 0
+                                )
+                             ], pagePicture: [
+                                PictureComponent(
+                                    componentId: UUID(),
+                                    componentContent: "DummyImage",
+                                    componentRatio: Ratio(xRatio: 0.5,
+                                                          yRatio: 0.5,
+                                                          zRatio: 1
+                                                         ),
+                                    componentScale: 1.5,
+                                    componentRotation: 0
+                                )
+                             ], pageVideo: [],
+                             pageSoundPath: "DummySound"
+                            )
+                    ]
+                )
+            ],
+            nil
+        )
+    }
+    
+    func fetchStoriesById(storyId: UUID) -> (Story?, ErrorHandler?) {
+        let (stories, error) = self.fetchStories()
+        
+        guard error == nil else { return (nil, error) }
+        
+        return (stories.first(where: {$0.storyId == storyId} ), nil)
+    }
+    
+    func removeStoryById(storyId: UUID) -> ErrorHandler? {
+        return nil
+    }
+    
+    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
+        return (UUID(), nil)
+    }
+    
+    
 }
