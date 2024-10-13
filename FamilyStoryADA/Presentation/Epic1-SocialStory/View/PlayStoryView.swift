@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlayStoryView: View {
     var story: Story
-    var page: Page
+    @State private var currentPageIndex: Int = 0
 
     var body: some View {
         GeometryReader { geometry in
@@ -47,19 +47,28 @@ struct PlayStoryView: View {
                 Spacer().frame(height: 21 * heightRatio)
                 HStack {
                     Button(action: {
+                        if currentPageIndex > 0 {
+                            currentPageIndex -= 1
+                        }
                     }) {
                         Circle()
                     }
+                    .disabled(currentPageIndex == 0)
+                    
                     Rectangle()
                         .foregroundStyle(.gray)
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     Button(action: {
+                        if currentPageIndex < story.pages.count - 1 {
+                            currentPageIndex += 1
+                        }
                     }) {
                         Circle()
                     }
+                    .disabled(currentPageIndex == story.pages.count - 1)
                 }
                 Spacer().frame(height: 55 * heightRatio)
-                Text(page.pageText.first?.componentContent ?? "No text available")
+                Text(story.pages[currentPageIndex].pageText.first?.componentContent ?? "No text available")
                     .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
                 Spacer().frame(height: 55 * heightRatio)
@@ -75,22 +84,38 @@ struct PlayStoryView: View {
             storyId: UUID(),
             templateId: UUID(),
             templateCategory: "Hygiene",
-            pages: []
-        ),
-        page: Page(
-            pageId: UUID(),
-            pageText: [
-                TextComponent(
-                    componentId: UUID(),
-                    componentContent: "Ambil sikat gigi.",
-                    componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
-                    componentScale: 1,
-                    componentRotation: 0
+            pages: [
+                Page(
+                    pageId: UUID(),
+                    pageText: [
+                        TextComponent(
+                            componentId: UUID(),
+                            componentContent: "Ambil sikat gigi.",
+                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
+                            componentScale: 1,
+                            componentRotation: 0
+                        )
+                    ],
+                    pagePicture: [],
+                    pageVideo: [],
+                    pageSoundPath: ""
+                ),
+                Page(
+                    pageId: UUID(),
+                    pageText: [
+                        TextComponent(
+                            componentId: UUID(),
+                            componentContent: "Basahi sikat gigi dengan air.",
+                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
+                            componentScale: 1,
+                            componentRotation: 0
+                        )
+                    ],
+                    pagePicture: [],
+                    pageVideo: [],
+                    pageSoundPath: ""
                 )
-            ],
-            pagePicture: [],
-            pageVideo: [],
-            pageSoundPath: ""
+            ]
         )
     )
 }
