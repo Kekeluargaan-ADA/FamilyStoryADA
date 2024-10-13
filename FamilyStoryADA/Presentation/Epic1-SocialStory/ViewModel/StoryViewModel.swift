@@ -7,9 +7,16 @@
 
 import Foundation
 
+enum SortOption {
+    case newest, oldest
+}
+
 class StoryViewModel: ObservableObject {
     @Published var stories: [Story] = []
     @Published var displayedStory: [Story]
+    
+    @Published var selectedOption: SortOption = .newest
+    
     private let storyUsecase: StoryUsecase
     
     init() {

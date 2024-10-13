@@ -22,18 +22,24 @@ struct StoryDashboardView: View {
             VStack {
                 HStack {
                     Text("My Story")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    Spacer(minLength: geometry.size.width / 2)
                     HStack {
-                        // TODO: Search Bar
-                        // TODO: Profile Button
+                        SearchBarView()
+                        ProfileButtonView(imageName: "")
                     }
                 }
+                .padding(.horizontal, 20)
                 ZStack {
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 28)
+                        .foregroundStyle(.tertiary.opacity(0.5))
                     VStack {
-                        HStack {
+                        HStack (spacing: 12) {
                             Spacer()
                             Text("Urutkan")
-                            //TODO: Sort selection
+                                .foregroundStyle(.black)
+                            DropdownFilterView()
                         }
                         ScrollView {
                             LazyVGrid(columns: flexibleColumn, spacing: 20) {
@@ -41,13 +47,23 @@ struct StoryDashboardView: View {
                                     if index == 0 {
                                         NewStoryCardView()
                                     } else {
-                                        // TODO: Make Story Card
+                                        // TODO: Fix data passing
+                                        StoryCardView(
+                                            imagePath: "DummyImage",
+                                            categoryName: item.templateCategory,
+                                            storyName: "Gosok gigi",
+                                            lastRead: Date(),
+                                            storyLength: 3
+                                        )
                                     }
                                 }
                             }
                         }
                     }
+                    .padding(.top, 12)
+                    .padding(.horizontal, 46)
                 }
+                .ignoresSafeArea()
             }
         }
     }
