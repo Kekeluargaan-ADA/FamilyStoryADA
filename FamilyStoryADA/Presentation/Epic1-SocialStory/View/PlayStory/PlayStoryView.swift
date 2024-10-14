@@ -22,7 +22,7 @@ struct PlayStoryView: View {
                     Rectangle()
                         .foregroundStyle(.gray)
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
-                    HStack(spacing: 0) {
+                    HStack {
                         Button(action: {
 
                         }) {
