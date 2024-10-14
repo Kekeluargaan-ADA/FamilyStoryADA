@@ -7,32 +7,32 @@
 
 import SwiftUI
 
-struct LibraryPreviewModality: View {
-    @State private var isPresentingModal = false
+//struct LibraryPreviewModality: View {
+//    @State private var isPresentingModal = false
+//
+//    var body: some View {
+//        VStack {
+//            Text("Main View")
+//                .font(.largeTitle)
+//
+//            Button(action: {
+//                isPresentingModal = true
+//            }) {
+//                Text("Show Modal")
+//                    .padding()
+//                    .background(Color.blue)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(10)
+//            }
+//            .sheet(isPresented: $isPresentingModal) {
+//                PagePreviewModalView(isPresented: $isPresentingModal)
+//            }
+//        }
+//    }
+//}
 
-    var body: some View {
-        VStack {
-            Text("Main View")
-                .font(.largeTitle)
-
-            Button(action: {
-                isPresentingModal = true
-            }) {
-                Text("Show Modal")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            .sheet(isPresented: $isPresentingModal) {
-                ModalView(isPresented: $isPresentingModal)
-            }
-        }
-    }
-}
-
-struct ModalView: View {
-        @Binding var isPresented: Bool
+struct PagePreviewModalView: View {
+    @Binding var isPresented: Bool
     let items = Array(1...10) // Example data
     
     let columns = [
@@ -41,24 +41,7 @@ struct ModalView: View {
     ]
     var body: some View {
         VStack {
-            HStack(){
-                Button(action: {
-                    isPresented = false
-                }) {
-                    Image(systemName: "x.circle.fill")
-                        .resizable()
-                        .frame(width: 64,height: 64)
-                        .foregroundStyle(.gray)
-                        .padding()
-                }
-                Spacer()
-                Text("Cara Menyikat Gigi")
-                    .font(.system(size: 32))
-                    .padding()
-                    .bold()
-                Spacer()
-            }
-            
+            PreviewModalHeader(isPresented: isPresented)
             HStack{
                 Rectangle()
                     .frame(width: 280,height: 172)
@@ -99,8 +82,9 @@ struct ModalView: View {
     }
 }
 
+
 #Preview{
-//    @State var isPresented = true // State for preview purposes
+    @Previewable @State var isPresented = true // State for preview purposes
 //    LibraryPreviewModality(isPresented: $isPresented)
-    LibraryPreviewModality()
+    PagePreviewModalView(isPresented: $isPresented)
 }
