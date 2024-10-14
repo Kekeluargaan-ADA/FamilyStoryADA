@@ -66,25 +66,26 @@ internal final class SwiftDataStoryRepository: StoryRepository {
     }
     
     func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
-        let templateRepository = JSONTemplateRepository()
-        let (template, errorHandler) = templateRepository.fetchTemplatesById(templateId: templateId)
+//        let templateRepository = JSONTemplateRepository()
+//        let (template, errorHandler) = templateRepository.fetchTemplatesById(templateId: templateId)
+//        
+//        if let error = errorHandler {
+//            return (nil, error)
+//        }
+//        
+//        if let storyTemplate = template {
+//            let newStory = StorySwiftData(template: storyTemplate)
+//            swiftDataManager.context.insert(newStory)
+//            do {
+//                try swiftDataManager.context.save()
+//            } catch {
+//                return (nil, errorHandler)
+//            }
+//            return (newStory.storyId, nil)
+//        }
         
-        if let error = errorHandler {
-            return (nil, error)
-        }
-        
-        if let storyTemplate = template {
-            let newStory = StorySwiftData(template: storyTemplate)
-            swiftDataManager.context.insert(newStory)
-            do {
-                try swiftDataManager.context.save()
-            } catch {
-                return (nil, errorHandler)
-            }
-            return (newStory.storyId, nil)
-        }
-        
-        return (nil, errorHandler)
+//        return (nil, errorHandler)
+        return (nil, nil)
     }
 }
 

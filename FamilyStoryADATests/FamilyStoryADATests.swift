@@ -28,18 +28,34 @@ struct FamilyStoryADATests {
         #expect(!listTemplate.0.isEmpty, "list template is null")
     }
     
-    //TODO: Fix tests
-    @MainActor @Test
+    @Test
     func testCreatingRatio() {
         let repo = SwiftDataRatioRepository()
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         _ = repo.addNewRatio(ratio: ratio)
         
-        let (ratios, error) = repo.fetchAllRatio()
-//        #expect(ratios.count != 0, "Ratio is nil")
+        let (ratios, _) = repo.fetchAllRatio()
+        #expect(ratios.count != 0, "Ratio is nil")
         
         #expect(ratios.last?.xRatio == 4.0, "not correct value")
+    }
+    
+    @Test
+    func testCreatingComponent() {
+        let repo = SwiftDataComponentRepository()
+        
+        let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
+        let component = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyContent", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        _ = repo.addNewComponent(component: component)
+        
+        let (components, _) = repo.fetchAllComponents()
+        print(components)
+        #expect(components.count != 0, "components is nil")
+        
+        #expect(components.contains(where: {ratio.ratioId == $0.componentRatioId} ), "Ratio not in")
+        #expect(components.last?.componentContent == "DummyContent", "not correct value")
+        
     }
     
 }

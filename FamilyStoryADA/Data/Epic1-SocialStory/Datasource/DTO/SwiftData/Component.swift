@@ -61,29 +61,31 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
         )
     }
     
-//    func convertToEntity(type: StoryComponentType) -> StoryComponentEntity {
-//        switch type {
-//        case .picture:
-//            return PictureComponentEntity(componentId: self.componentId,
-//                                          componentContent: self.componentContent,
-//                                          componentRatio: <#T##RatioEntity?#>,
-//                                          componentScale: self.componentScale,
-//                                          componentRotation: self.componentRotation
-//            )
-//        case .text:
-//            return TextComponentEntity(componentId: self.componentId,
-//                                          componentContent: self.componentContent,
-//                                          componentRatio: <#T##RatioEntity?#>,
-//                                          componentScale: self.componentScale,
-//                                          componentRotation: self.componentRotation
-//            )
-//        case .video:
-//            return VideoComponentEntity(componentId: self.componentId,
-//                                          componentContent: self.componentContent,
-//                                          componentRatio: <#T##RatioEntity?#>,
-//                                          componentScale: self.componentScale,
-//                                          componentRotation: self.componentRotation
-//            )
-//        }
-//    }
+    func convertToEntity(type: StoryComponentType) -> StoryComponentEntity {
+        let repo = SwiftDataRatioRepository()
+        let ratio = repo.fetchRatioById(ratioId: self.componentRatioId ?? UUID()).0
+        switch type {
+        case .picture:
+            return PictureComponentEntity(componentId: self.componentId,
+                                          componentContent: self.componentContent,
+                                          componentRatio: ratio?.convertToEntity(),
+                                          componentScale: self.componentScale,
+                                          componentRotation: self.componentRotation
+            )
+        case .text:
+            return TextComponentEntity(componentId: self.componentId,
+                                          componentContent: self.componentContent,
+                                          componentRatio: ratio?.convertToEntity(),
+                                          componentScale: self.componentScale,
+                                          componentRotation: self.componentRotation
+            )
+        case .video:
+            return VideoComponentEntity(componentId: self.componentId,
+                                          componentContent: self.componentContent,
+                                          componentRatio: ratio?.convertToEntity(),
+                                          componentScale: self.componentScale,
+                                          componentRotation: self.componentRotation
+            )
+        }
+    }
 }

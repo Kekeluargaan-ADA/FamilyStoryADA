@@ -26,26 +26,22 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
         self.pages = pages
     }
     
-    init (template: TemplateJSONObject) {
-        self.storyId = UUID()
-        self.storyName = ""
-        self.storyLastRead = Date()
-        self.templateId = template.templateId
-        self.templateCategory = template.templateCategory
-        self.pages = []
-        
-        setupDefaultStory(template: template)
-    }
-    
-    fileprivate func setupDefaultStory(template: TemplateJSONObject) {
-        for page in template.templatePage {
-            let page = PageSwiftData(template: page)
-            self.pages.append(page.pageId)
-        }
-    }
-    
-//    func convertToSwiftData<T>(source: T) -> any ISwiftDataAble {
-//        return StorySwiftData()
+//    init (template: TemplateJSONObject) {
+//        self.storyId = UUID()
+//        self.storyName = ""
+//        self.storyLastRead = Date()
+//        self.templateId = template.templateId
+//        self.templateCategory = template.templateCategory
+//        self.pages = []
+//        
+//        setupDefaultStory(template: template)
+//    }
+//    
+//    fileprivate func setupDefaultStory(template: TemplateJSONObject) {
+//        for page in template.templatePage {
+//            let page = PageSwiftData(template: page)
+//            self.pages.append(page.pageId)
+//        }
 //    }
     
 //    func convertToSwiftData(jsonTemplate: any IJSONAble) -> any ISwiftDataAble {

@@ -22,8 +22,6 @@ internal final class SwiftDataRatioRepository: RatioRepository {
     func fetchAllRatio() -> ([RatioSwiftData], ErrorHandler?) {
         do {
             let ratios = try swiftDataManager.context.fetch(FetchDescriptor<RatioSwiftData>())
-            print("ratio: \(ratios.first?.xRatio)")
-            print("Count: \(ratios.count)")
             return (ratios, nil)
         } catch {
             print("Error")
