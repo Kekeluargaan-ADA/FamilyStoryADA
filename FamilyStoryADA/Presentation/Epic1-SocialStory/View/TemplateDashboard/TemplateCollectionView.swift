@@ -24,15 +24,35 @@ struct TemplateCollectionView: View {
                         .foregroundStyle(.yellow)
                         .overlay(
                             VStack {
-                                TemplateCategoryView()
-                                    .padding(46 * widthRatio)
+                                HStack(spacing: 0) {
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(height: 64)
+                                    Spacer()
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(height: 64)
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(height: 64)
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(height: 64)
+                                    Circle()
+                                        .foregroundStyle(.gray)
+                                        .frame(height: 64)
+                                }
+                                .padding(.horizontal, 46 * widthRatio)
+                                .padding(.top, -32 * heightRatio)
                                 ScrollView {
                                     LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                         ForEach(0..<20, id: \.self) { _ in
                                             TemplateCardView()
+                                                .scaleEffect(1 * heightRatio)
                                         }
                                     }
                                     .padding(46 * widthRatio)
+                                    
                                 }
                             }
                         )
