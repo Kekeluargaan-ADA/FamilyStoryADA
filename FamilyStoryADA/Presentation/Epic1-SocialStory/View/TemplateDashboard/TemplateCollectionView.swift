@@ -23,12 +23,14 @@ struct TemplateCollectionView: View {
                         .frame(height: 756 * heightRatio)
                         .foregroundStyle(.yellow)
                         .overlay(
+                            ScrollView {
                             LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
-                                ForEach(0..<6, id: \.self) { _ in
+                                ForEach(0..<20, id: \.self) { _ in
                                     TemplateCardView()
                                 }
                             }
-                                .padding(46 * widthRatio)
+                            .padding(46 * widthRatio)
+                            }
                         )
                 }
             }
