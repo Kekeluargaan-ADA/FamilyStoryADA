@@ -24,26 +24,7 @@ struct TemplateCollectionView: View {
                         .foregroundStyle(.yellow)
                         .overlay(
                             VStack {
-                                HStack(spacing: 0) {
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .frame(height: 64)
-                                    Spacer()
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .frame(height: 64)
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .frame(height: 64)
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .frame(height: 64)
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .frame(height: 64)
-                                }
-                                .padding(.horizontal, 46 * widthRatio)
-                                .padding(.top, -32 * heightRatio)
+                                TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) 
                                 ScrollView {
                                     LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                         ForEach(0..<20, id: \.self) { _ in
@@ -52,7 +33,6 @@ struct TemplateCollectionView: View {
                                         }
                                     }
                                     .padding(46 * widthRatio)
-                                    
                                 }
                             }
                         )
@@ -66,5 +46,3 @@ struct TemplateCollectionView: View {
 #Preview {
     TemplateCollectionView()
 }
-
-
