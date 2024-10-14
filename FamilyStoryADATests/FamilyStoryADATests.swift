@@ -29,17 +29,17 @@ struct FamilyStoryADATests {
     }
     
     //TODO: Fix tests
-//    @MainActor @Test
-//    func testCreatingStory() {
-//        let storyRepository = SwiftDataStoryRepository.shared
-//        let templateId = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab")
-//        
-//        if let templateUUID = templateId{
-//            let (uuid, response) = storyRepository.addNewStory(templateId: templateUUID)
-//            
-//            print(uuid)
-//            #expect(response == nil, "Error creating model")
-//        }
-//    }
+    @MainActor @Test
+    func testCreatingRatio() {
+        let repo = SwiftDataRatioRepository()
+        
+        let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
+        _ = repo.addNewRatio(ratio: ratio)
+        
+        let (ratios, error) = repo.fetchAllRatio()
+//        #expect(ratios.count != 0, "Ratio is nil")
+        
+        #expect(ratios.last?.xRatio == 4.0, "not correct value")
+    }
     
 }

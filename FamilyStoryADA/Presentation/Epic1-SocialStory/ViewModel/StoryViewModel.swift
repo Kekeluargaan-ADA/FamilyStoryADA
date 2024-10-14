@@ -6,30 +6,39 @@
 //
 
 import Foundation
+import SwiftData
 
 enum SortOption {
     case newest, oldest
 }
 
 class StoryViewModel: ObservableObject {
-    @Published var stories: [Story] = []
-    @Published var displayedStory: [Story]
+    @Published var stories: [StoryEntity] = []
+    @Published var displayedStory: [StoryEntity]
     
     @Published var selectedOption: SortOption = .newest
     
     private let storyUsecase: StoryUsecase
     
+    @MainActor
     init() {
-        storyUsecase = DummyStoryUsecase()
-        stories = storyUsecase.fetchStories()
-        displayedStory = [Story]()
+        self.storyUsecase = ImplementedStoryUsecase()
+        self.stories = storyUsecase.fetchStories()
+        self.displayedStory = [StoryEntity]()
         
         updateStoryDisplay()
     }
     
     func updateStoryDisplay() {
-        displayedStory = [Story]()
-        displayedStory.append(Story(storyId: UUID(), templateId: UUID(), templateCategory: "", pages: []))
+        displayedStory = [StoryEntity]()
+        displayedStory.append(StoryEntity(storyId: UUID(),
+                                          storyName: "",
+                                          storyLastRead: Date(),
+                                          templateId: UUID(),
+                                          templateCategory: "",
+                                          pages: []
+                                         )
+        )
         displayedStory.append(contentsOf: stories)
     }
 }

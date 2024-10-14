@@ -9,15 +9,18 @@ import Foundation
 import SwiftData
 
 @Model
-public class Story {
+public class StorySwiftData: Identifiable, ISwiftDataAble {
     var storyId: UUID
+    var storyName: String
+    var storyLastRead: Date
     var templateId: UUID
     var templateCategory: String
-    @Relationship(deleteRule: .cascade)
-    var pages: [Page]
+    var pages: [UUID]
     
-    init(storyId: UUID, templateId: UUID, templateCategory: String, pages: [Page]) {
+    init(storyId: UUID, storyName: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [UUID]) {
         self.storyId = storyId
+        self.storyName = storyName
+        self.storyLastRead = storyLastRead
         self.templateId = templateId
         self.templateCategory = templateCategory
         self.pages = pages
@@ -25,6 +28,8 @@ public class Story {
     
     init (template: TemplateJSONObject) {
         self.storyId = UUID()
+        self.storyName = ""
+        self.storyLastRead = Date()
         self.templateId = template.templateId
         self.templateCategory = template.templateCategory
         self.pages = []
@@ -34,7 +39,24 @@ public class Story {
     
     fileprivate func setupDefaultStory(template: TemplateJSONObject) {
         for page in template.templatePage {
-            self.pages.append(Page(template: page))
+            let page = PageSwiftData(template: page)
+            self.pages.append(page.pageId)
         }
     }
+    
+//    func convertToSwiftData<T>(source: T) -> any ISwiftDataAble {
+//        return StorySwiftData()
+//    }
+    
+//    func convertToSwiftData(jsonTemplate: any IJSONAble) -> any ISwiftDataAble {
+//        <#code#>
+//    }
+//    
+//    func convertToSwiftData(entity: any IEntityAble) -> any ISwiftDataAble {
+//        <#code#>
+//    }
+//    
+//    func convertToEntity() -> any IEntityAble {
+//        <#code#>
+//    }
 }

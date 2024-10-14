@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayStoryView: View {
-    var story: Story
+    var story: StoryEntity
     @State private var currentPageIndex: Int = 0
     
     var body: some View {
@@ -84,9 +84,10 @@ struct PlayStoryView: View {
                     .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                 }
                 Spacer().frame(height: 55 * heightRatio)
-                Text(story.pages[currentPageIndex].pageText.first?.componentContent ?? "No text available")
-                    .font(.system(size: 32 * heightRatio))
-                    .fontWeight(.bold)
+                //TODO: Fix page
+//                Text(story.pages[currentPageIndex].pageText.first?.componentContent ?? "No text available")
+//                    .font(.system(size: 32 * heightRatio))
+//                    .fontWeight(.bold)
                 Spacer().frame(height: 55 * heightRatio)
             }
             .padding(47 * heightRatio)
@@ -94,44 +95,44 @@ struct PlayStoryView: View {
     }
 }
 
-#Preview {
-    PlayStoryView(
-        story: Story(
-            storyId: UUID(),
-            templateId: UUID(),
-            templateCategory: "Hygiene",
-            pages: [
-                Page(
-                    pageId: UUID(),
-                    pageText: [
-                        TextComponent(
-                            componentId: UUID(),
-                            componentContent: "Ambil sikat gigi.",
-                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
-                            componentScale: 1,
-                            componentRotation: 0
-                        )
-                    ],
-                    pagePicture: [],
-                    pageVideo: [],
-                    pageSoundPath: ""
-                ),
-                Page(
-                    pageId: UUID(),
-                    pageText: [
-                        TextComponent(
-                            componentId: UUID(),
-                            componentContent: "Basahi sikat gigi dengan air.",
-                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
-                            componentScale: 1,
-                            componentRotation: 0
-                        )
-                    ],
-                    pagePicture: [],
-                    pageVideo: [],
-                    pageSoundPath: ""
-                )
-            ]
-        )
-    )
-}
+//#Preview {
+//    PlayStoryView(
+//        story: Story(
+//            storyId: UUID(),
+//            templateId: UUID(),
+//            templateCategory: "Hygiene",
+//            pages: [
+//                Page(
+//                    pageId: UUID(),
+//                    pageText: [
+//                        TextComponent(
+//                            componentId: UUID(),
+//                            componentContent: "Ambil sikat gigi.",
+//                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
+//                            componentScale: 1,
+//                            componentRotation: 0
+//                        )
+//                    ],
+//                    pagePicture: [],
+//                    pageVideo: [],
+//                    pageSoundPath: ""
+//                ),
+//                Page(
+//                    pageId: UUID(),
+//                    pageText: [
+//                        TextComponent(
+//                            componentId: UUID(),
+//                            componentContent: "Basahi sikat gigi dengan air.",
+//                            componentRatio: Ratio(xRatio: 1, yRatio: 1, zRatio: 0),
+//                            componentScale: 1,
+//                            componentRotation: 0
+//                        )
+//                    ],
+//                    pagePicture: [],
+//                    pageVideo: [],
+//                    pageSoundPath: ""
+//                )
+//            ]
+//        )
+//    )
+//}

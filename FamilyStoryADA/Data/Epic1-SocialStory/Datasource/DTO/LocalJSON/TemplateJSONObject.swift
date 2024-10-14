@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TemplateJSONObject: Codable {
+struct TemplateJSONObject: Codable, IJSONAble {
     let templateId: UUID
     let templateName: String
     let templateCategory: String

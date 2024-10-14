@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class User {
+class UserSwiftData: Identifiable, ISwiftDataAble {
     var childId: UUID
     var childName: String
     var childPicturePath: String
@@ -19,4 +19,16 @@ class User {
         self.childName = childName
         self.childPicturePath = childPicturePath
     }
+    
+//    func convertToSwiftData(jsonTemplate: any IJSONAble) -> any ISwiftDataAble {
+//        <#code#>
+//    }
+//    
+//    func convertToSwiftData(entity: any IEntityAble) -> any ISwiftDataAble {
+//        <#code#>
+//    }
+//    
+//    func convertToEntity() -> any IEntityAble {
+//        <#code#>
+//    }
 }

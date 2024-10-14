@@ -6,12 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StoryDashboardView: View {
     
-    private let viewModel = StoryViewModel()
+    @State private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
-        
         GridItem(.flexible(minimum: 100, maximum: 200)),
         GridItem(.flexible(minimum: 100, maximum: 200)),
         GridItem(.flexible(minimum: 100, maximum: 200))
@@ -43,7 +43,7 @@ struct StoryDashboardView: View {
                         }
                         ScrollView {
                             LazyVGrid(columns: flexibleColumn, spacing: 20) {
-                                ForEach (Array(viewModel.stories.enumerated()), id: \.offset) { index, item in
+                                ForEach (Array(viewModel.displayedStory.enumerated()), id: \.offset) { index, item in
                                     if index == 0 {
                                         NewStoryCardView()
                                     } else {

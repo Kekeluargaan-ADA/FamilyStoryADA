@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct FamilyStoryADAApp: App {
+    
     var body: some Scene {
         WindowGroup {
 //            ExampleCropView()
@@ -29,7 +30,7 @@ struct FamilyStoryADAApp: App {
 //                    }
 //                }
                 .modelContainer(for: [
-                    Story.self, Page.self, User.self, TextComponent.self, PictureComponent.self, VideoComponent.self
+                    StorySwiftData.self, PageSwiftData.self, UserSwiftData.self, StoryComponentSwiftData.self, RatioSwiftData.self
                 ])
         }
     }

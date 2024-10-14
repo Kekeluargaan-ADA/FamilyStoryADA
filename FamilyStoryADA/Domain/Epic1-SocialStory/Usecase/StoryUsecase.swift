@@ -6,16 +6,64 @@
 //
 
 import Foundation
+import SwiftData
 
 
 protocol StoryUsecase {
-    func fetchStories() -> [Story]
-    func fetchStoryById(storyId: UUID) -> Story?
+    func fetchStories() -> [StoryEntity]
+    func fetchStoryById(storyId: UUID) -> StoryEntity?
     func addNewStory(templateId: UUID) -> UUID?
     func removeStory(storyId: UUID) -> Bool
 }
 
-// TODO: Make ImplementedStoryUsecase
+// TODO: Fix
+
+class ImplementedStoryUsecase: StoryUsecase {
+    private let repository: StoryRepository
+    
+    @MainActor
+    init() {
+        self.repository = SwiftDataStoryRepository()
+    }
+    
+    func fetchStories() -> [StoryEntity] {
+        let (stories, error) = repository.fetchStories()
+        
+        guard error == nil else {
+            return []
+        }
+//        return stories
+        return []
+    }
+    
+    func fetchStoryById(storyId: UUID) -> StoryEntity? {
+        let (story, error) = repository.fetchStoriesById(storyId: storyId)
+        
+        guard error == nil else {
+            return nil
+        }
+//        return story
+        return nil
+    }
+    
+    func addNewStory(templateId: UUID) -> UUID? {
+        let (storyId, error) = repository.addNewStory(templateId: templateId)
+        
+        guard error == nil else {
+            return nil
+        }
+        return storyId
+    }
+    
+    func removeStory(storyId: UUID) -> Bool {
+        let error = repository.removeStoryById(storyId: storyId)
+        
+        guard error == nil else {
+            return false
+        }
+        return true
+    }
+}
 
 class DummyStoryUsecase: StoryUsecase {
     
@@ -25,22 +73,24 @@ class DummyStoryUsecase: StoryUsecase {
         storyRepository = DummyStoryRepository()
     }
     
-    func fetchStories() -> [Story] {
+    func fetchStories() -> [StoryEntity] {
         let (stories, error) = storyRepository.fetchStories()
         
         guard error == nil else {
             return []
         }
-        return stories
+//        return stories
+        return []
     }
     
-    func fetchStoryById(storyId: UUID) -> Story? {
+    func fetchStoryById(storyId: UUID) -> StoryEntity? {
         let (story, error) = storyRepository.fetchStoriesById(storyId: storyId)
         
         guard error == nil else {
             return nil
         }
-        return story
+//        return story
+        return nil
     }
     
     func addNewStory(templateId: UUID) -> UUID? {
