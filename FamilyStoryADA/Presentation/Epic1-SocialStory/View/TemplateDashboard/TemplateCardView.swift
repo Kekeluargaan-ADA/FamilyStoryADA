@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct TemplateCardView: View {
+    var template: TemplateEntity
+
     var body: some View {
         Rectangle()
             .foregroundStyle(.gray)
@@ -15,13 +17,15 @@ struct TemplateCardView: View {
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {
-                        UnevenRoundedRectangle(cornerRadii: .init(topLeading: 12, topTrailing: 12))
+                        Image(template.templateCoverImagePath)
+                            .resizable()
+                            .scaledToFill()
                             .frame(height: 220)
-                            .foregroundStyle(.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                     Spacer()
                     HStack {
-                        Text("Judul Story")
+                        Text(template.templateName)
                             .bold()
                             .font(.system(size: 24))
                         Spacer()
@@ -35,6 +39,3 @@ struct TemplateCardView: View {
     }
 }
 
-#Preview {
-    TemplateCardView()
-}
