@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct PageJSONObject: Codable {
-    let pageId: UUID
+struct PageJSONObject: Codable, IJSONAble {
     let pageText: [ComponentJSONObject]
     let pagePicture: [ComponentJSONObject]
     let pageVideo: [ComponentJSONObject]

@@ -8,30 +8,40 @@
 import Foundation
 
 protocol TemplateUsecase {
-    func fetchTemplates() -> [TemplateJSONObject]
-    func fetchTemplateById(templateId: UUID) -> TemplateJSONObject?
+    func fetchTemplates() -> [TemplateEntity]
+    func fetchTemplateById(templateId: UUID) -> TemplateEntity?
 }
 
-class JSONTemplateUsecase: TemplateUsecase {
+public final class JSONTemplateUsecase: TemplateUsecase {
     
     private let templateRepository = JSONTemplateRepository()
     
-    func fetchTemplates() -> [TemplateJSONObject] {
+    func fetchTemplates() -> [TemplateEntity] {
         let (templates, error) = templateRepository.fetchTemplates()
-        
         guard error == nil else {
             return []
         }
-        return templates
+        
+        var templateEntities: [TemplateEntity] = []
+        
+        for template in templates {
+            let entity = TemplateEntity.convertToEntity(jsonTemplate: template)
+            templateEntities.append(entity)
+        }
+        return templateEntities
     }
     
-    func fetchTemplateById(templateId: UUID) -> TemplateJSONObject? {
+    func fetchTemplateById(templateId: UUID) -> TemplateEntity? {
         let (template, error) = templateRepository.fetchTemplatesById(templateId: templateId)
         
         guard error == nil else {
             return nil
         }
-        return template
+        
+        if let jsonTemplate = template {
+            return TemplateEntity.convertToEntity(jsonTemplate: jsonTemplate)
+        }
+        return nil
     }
     
     

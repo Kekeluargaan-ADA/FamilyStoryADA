@@ -24,7 +24,6 @@ struct PlayStoryView: View {
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     HStack {
                         Button(action: {
-
                         }) {
                             Circle()
                                 .foregroundStyle(.black)
@@ -35,6 +34,7 @@ struct PlayStoryView: View {
                                         .font(.system(size: 26 * heightRatio))
                                 )
                         }
+
                         .padding(.leading, -32 * heightRatio)
                         Spacer()
                         Button(action: {
@@ -49,11 +49,14 @@ struct PlayStoryView: View {
                                         .font(.system(size: 26 * heightRatio))
                                 )
                         }
+
                         .padding(.trailing, -32 * heightRatio)
                     }
                     .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                 }
                 Spacer().frame(height: 55 * heightRatio)
+
+
                 Text("Text")
                     .font(.system(size: 32 * heightRatio))
                     .fontWeight(.bold)
@@ -64,7 +67,7 @@ struct PlayStoryView: View {
     }
 }
 
+
 #Preview {
     PlayStoryView()
 }
-
