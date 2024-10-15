@@ -89,4 +89,23 @@ struct FamilyStoryADATests {
         #expect(pages.first?.pageSoundPath == "DummySound.mp4", "not correct value")
     }
     
+    @Test
+    func testFetchStoryEntity() {
+        let storyUsecase = ImplementedStoryUsecase()
+        
+        if let templateUUID = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
+            let storyId = storyUsecase.addNewStory(templateId: templateUUID)
+            
+            #expect(storyId != nil, "story has not been created")
+            
+            if let fixedStoryId = storyId {
+                let storyEntity = storyUsecase.fetchStoryById(storyId: fixedStoryId)
+                
+                #expect(storyEntity != nil, "story entity has not been created")
+                
+                #expect(!(storyEntity?.pages.isEmpty ?? true), "have no page")
+            }
+        }
+    }
+    
 }
