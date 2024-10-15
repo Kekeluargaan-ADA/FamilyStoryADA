@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TemplateCollectionView: View {
+    @StateObject private var viewModel = TemplateViewModel(templateUsecase: JSONTemplateUsecase())
+    
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var body: some View {
@@ -24,11 +26,11 @@ struct TemplateCollectionView: View {
                         .foregroundStyle(.yellow)
                         .overlay(
                             VStack {
-                                TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) 
+                                TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio)
                                 ScrollView {
                                     LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
-                                        ForEach(0..<20, id: \.self) { _ in
-                                            TemplateCardView()
+                                        ForEach(viewModel.templates, id: \.templateId) { template in
+                                            TemplateCardView(template: template)
                                                 .scaleEffect(1 * heightRatio)
                                         }
                                     }
@@ -40,6 +42,9 @@ struct TemplateCollectionView: View {
             }
         }
         .ignoresSafeArea()
+        .onAppear {
+            viewModel.fetchTemplates()
+        }
     }
 }
 

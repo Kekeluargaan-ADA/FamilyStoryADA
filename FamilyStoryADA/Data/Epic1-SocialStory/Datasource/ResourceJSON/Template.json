@@ -91,6 +91,99 @@
             "DummyImage2",
             "DummyImage3"
         ]
+    },
+    {
+        "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ac",
+        "templateName": "Cara Makan Sereal",
+        "templateDescription": "Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang",
+        "templateCategory": "Feeding",
+        "templatePage": [
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Dummy Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.5,
+                            "yRatio": 0.5,
+                            "zRatio": 1
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "DummyPic.jpg",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.5,
+                            "yRatio": 0.5,
+                            "zRatio": 0
+                        },
+                        "componentScale": 2.0,
+                        "componentRotation": 180.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "DummyVideo.mp4",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.1,
+                            "yRatio": 0.2,
+                            "zRatio": 1
+                        },
+                        "componentScale": 1.5,
+                        "componentRotation": 90.0
+                    }
+                ],
+                "pageSoundPath": "Sound1.m4a"
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Dummy Text 2",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "DumDum2.jpg",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.2,
+                            "yRatio": 0.1,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.5,
+                        "componentRotation": 180.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "sound2.m4a"
+            }
+        ],
+        "templateCoverImagePath": "DummyImage",
+        "templatePreviewImagePath": [
+            "DummyImage2",
+            "DummyImage3"
+        ]
     }
-]
 
+]
