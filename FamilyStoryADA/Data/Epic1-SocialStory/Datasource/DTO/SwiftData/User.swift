@@ -20,15 +20,17 @@ class UserSwiftData: Identifiable, ISwiftDataAble {
         self.childPicturePath = childPicturePath
     }
     
-//    func convertToSwiftData(jsonTemplate: any IJSONAble) -> any ISwiftDataAble {
-//        <#code#>
-//    }
-//    
-//    func convertToSwiftData(entity: any IEntityAble) -> any ISwiftDataAble {
-//        <#code#>
-//    }
-//    
-//    func convertToEntity() -> any IEntityAble {
-//        <#code#>
-//    }
+    static func convertToSwiftData(entity: UserEntity) -> UserSwiftData {
+        return UserSwiftData(childId: entity.childId,
+                             childName: entity.childName,
+                             childPicturePath: entity.childPicturePath
+        )
+    }
+    
+    func convertToEntity() -> UserEntity {
+        return UserEntity(childId: self.childId,
+                          childName: self.childName,
+                          childPicturePath: self.childPicturePath
+        )
+    }
 }

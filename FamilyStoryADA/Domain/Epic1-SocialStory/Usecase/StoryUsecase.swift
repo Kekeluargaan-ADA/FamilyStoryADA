@@ -47,12 +47,14 @@ class ImplementedStoryUsecase: StoryUsecase {
     }
     
     func addNewStory(templateId: UUID) -> UUID? {
-        let (storyId, error) = repository.addNewStory(templateId: templateId)
-        
-        guard error == nil else {
-            return nil
-        }
-        return storyId
+        //TODO: Fix repo - usecase connection
+//        let (storyId, error) = repository.addNewStory(templateId: templateId)
+//        
+//        guard error == nil else {
+//            return nil
+//        }
+//        return storyId
+        return nil
     }
     
     func removeStory(storyId: UUID) -> Bool {
@@ -94,12 +96,12 @@ class DummyStoryUsecase: StoryUsecase {
     }
     
     func addNewStory(templateId: UUID) -> UUID? {
-        let (storyId, error) = storyRepository.addNewStory(templateId: templateId)
-        
-        guard error == nil else {
-            return nil
-        }
-        return storyId
+//        let (storyId, error) = storyRepository.addNewStory(templateId: templateId)
+//        
+//        guard error == nil else {
+//            return nil
+//        }
+        return UUID()
     }
     
     func removeStory(storyId: UUID) -> Bool {

@@ -26,33 +26,83 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
         self.pages = pages
     }
     
-//    init (template: TemplateJSONObject) {
-//        self.storyId = UUID()
-//        self.storyName = ""
-//        self.storyLastRead = Date()
-//        self.templateId = template.templateId
-//        self.templateCategory = template.templateCategory
-//        self.pages = []
-//        
-//        setupDefaultStory(template: template)
-//    }
-//    
-//    fileprivate func setupDefaultStory(template: TemplateJSONObject) {
-//        for page in template.templatePage {
-//            let page = PageSwiftData(template: page)
-//            self.pages.append(page.pageId)
-//        }
-//    }
+    //    init (template: TemplateJSONObject) {
+    //        self.storyId = UUID()
+    //        self.storyName = ""
+    //        self.storyLastRead = Date()
+    //        self.templateId = template.templateId
+    //        self.templateCategory = template.templateCategory
+    //        self.pages = []
+    //
+    //        setupDefaultStory(template: template)
+    //    }
+    //
+    //    fileprivate func setupDefaultStory(template: TemplateJSONObject) {
+    //        for page in template.templatePage {
+    //            let page = PageSwiftData(template: page)
+    //            self.pages.append(page.pageId)
+    //        }
+    //    }
     
-//    func convertToSwiftData(jsonTemplate: any IJSONAble) -> any ISwiftDataAble {
-//        <#code#>
-//    }
-//    
-//    func convertToSwiftData(entity: any IEntityAble) -> any ISwiftDataAble {
-//        <#code#>
-//    }
-//    
-//    func convertToEntity() -> any IEntityAble {
-//        <#code#>
-//    }
+    static private func convertToUUIDArray(templatePages: [PageJSONObject]) -> [UUID] {
+        var array: [UUID] = []
+        for templatePage in templatePages {
+            let page = PageSwiftData.convertToSwiftData(jsonTemplate: templatePage)
+            array.append(page.pageId)
+        }
+        return array
+    }
+    
+    static func convertToSwiftData(jsonTemplate: TemplateJSONObject) -> StorySwiftData {
+        return StorySwiftData(storyId: UUID(),
+                              storyName: jsonTemplate.templateName,
+                              storyLastRead: Date(),
+                              templateId: jsonTemplate.templateId,
+                              templateCategory: jsonTemplate.templateCategory,
+                              pages: convertToUUIDArray(templatePages: jsonTemplate.templatePage
+                                                       )
+        )
+    }
+    
+    static private func convertToUUIDArray(pageEntities: [PageEntity]) -> [UUID] {
+        var array: [UUID] = []
+        for pageEntity in pageEntities {
+            array.append(pageEntity.pageId)
+        }
+        return array
+    }
+    
+    static func convertToSwiftData(entity: StoryEntity) -> StorySwiftData {
+        return StorySwiftData(storyId: entity.storyId,
+                              storyName: entity.storyName,
+                              storyLastRead: entity.storyLastRead,
+                              templateId: entity.templateId,
+                              templateCategory: entity.templateCategory,
+                              pages: convertToUUIDArray(pageEntities: entity.pages)
+        )
+    }
+    
+    private func convertToEntitiesArray(pageIds: [UUID]) -> [PageEntity] {
+        let repo = SwiftDataPageRepository()
+        
+        var array: [PageEntity] = []
+        for id in pageIds {
+            let page = repo.fetchPageById(pageId: id)
+            
+            if let result = page.0 {
+                array.append(result.convertToEntity())
+            }
+        }
+        return array
+    }
+    
+    func convertToEntity() -> StoryEntity {
+        return StoryEntity(storyId: self.storyId,
+                           storyName: self.storyName,
+                           storyLastRead: self.storyLastRead,
+                           templateId: self.templateId,
+                           templateCategory: self.templateCategory,
+                           pages: convertToEntitiesArray(pageIds: self.pages)
+        )
+    }
 }

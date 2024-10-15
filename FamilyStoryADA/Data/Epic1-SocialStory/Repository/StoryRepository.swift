@@ -13,16 +13,12 @@ internal protocol StoryRepository {
     func fetchStories() -> ([StorySwiftData], ErrorHandler?)
     func fetchStoriesById(storyId: UUID) -> (StorySwiftData?, ErrorHandler?)
     func removeStoryById(storyId: UUID) -> ErrorHandler?
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?)
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?)
 }
 
 internal final class SwiftDataStoryRepository: StoryRepository {
     
     private let swiftDataManager = SwiftDataManager.shared
-    
-    init() {
-//        self.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
-    }
     
     func fetchStories() -> ([StorySwiftData], ErrorHandler?) {
         do {
@@ -65,27 +61,10 @@ internal final class SwiftDataStoryRepository: StoryRepository {
         return nil
     }
     
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
-//        let templateRepository = JSONTemplateRepository()
-//        let (template, errorHandler) = templateRepository.fetchTemplatesById(templateId: templateId)
-//        
-//        if let error = errorHandler {
-//            return (nil, error)
-//        }
-//        
-//        if let storyTemplate = template {
-//            let newStory = StorySwiftData(template: storyTemplate)
-//            swiftDataManager.context.insert(newStory)
-//            do {
-//                try swiftDataManager.context.save()
-//            } catch {
-//                return (nil, errorHandler)
-//            }
-//            return (newStory.storyId, nil)
-//        }
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?) {
+        swiftDataManager.context.insert(story)
         
-//        return (nil, errorHandler)
-        return (nil, nil)
+        return (story.storyId, nil)
     }
 }
 
@@ -143,7 +122,7 @@ internal class DummyStoryRepository: StoryRepository {
         return nil
     }
     
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?) {
         return (UUID(), nil)
     }
     

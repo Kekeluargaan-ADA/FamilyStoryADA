@@ -55,7 +55,38 @@ struct FamilyStoryADATests {
         
         #expect(components.contains(where: {ratio.ratioId == $0.componentRatioId} ), "Ratio not in")
         #expect(components.last?.componentContent == "DummyContent", "not correct value")
+    }
+    
+    @Test
+    func testCreatingPage() {
+        let repo = SwiftDataPageRepository()
         
+        let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
+        let imageComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyImage", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let textComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText1", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let textComponent2 = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText2", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let page = PageSwiftData(pageId: UUID(),
+                                 pageText: [
+                                    textComponent.componentId,
+                                    textComponent2.componentId
+                                 ],
+                                 pagePicture: [
+                                    imageComponent.componentId
+                                 ],
+                                 pageVideo: [
+                                    
+                                 ],
+                                 pageSoundPath: "DummySound.mp4"
+        )
+        _ = repo.addNewPage(page: page)
+        
+        let (pages, error) = repo.fetchAllPages()
+        
+        #expect(error == nil, "Error fetching")
+        #expect(pages.count != 0, "components is nil")
+        
+        #expect(pages.contains(where: { $0.pagePicture.contains(where: {$0 == imageComponent.componentId}) } ), "Page picture not in")
+        #expect(pages.first?.pageSoundPath == "DummySound.mp4", "not correct value")
     }
     
 }
