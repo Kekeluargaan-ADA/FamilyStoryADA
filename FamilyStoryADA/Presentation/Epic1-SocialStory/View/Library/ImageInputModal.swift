@@ -20,7 +20,7 @@ struct ImageInputModal: View {
 
 
 #Preview{
-    @Previewable @State var isPresented = true // State for preview purposes
+//    @Previewable @State var isPresented = true // State for preview purposes
 //    LibraryPreviewModality(isPresented: $isPresented)
-    PreviewImageModal(isPresented: $isPresented)
+//    PreviewImageModal(isPresented: $isPresented)
 }
