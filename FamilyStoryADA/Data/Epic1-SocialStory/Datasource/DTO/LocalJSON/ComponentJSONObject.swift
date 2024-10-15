@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct ComponentJSONObject: Codable {
-    let componentId: UUID
+struct ComponentJSONObject: Codable, IJSONAble {
     let componentContent: String
     let componentRatio: RatioJSONObject
     let componentScale: Double

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RatioJSONObject: Codable {
+struct RatioJSONObject: Codable, IJSONAble {
     let xRatio: Double
     let yRatio: Double
     let zRatio: Int

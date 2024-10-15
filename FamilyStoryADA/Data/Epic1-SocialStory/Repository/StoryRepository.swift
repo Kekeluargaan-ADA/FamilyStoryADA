@@ -10,30 +10,19 @@ import SwiftData
 import SwiftUICore
 
 internal protocol StoryRepository {
-    func fetchStories() -> ([Story], ErrorHandler?)
-    func fetchStoriesById(storyId: UUID) -> (Story?, ErrorHandler?)
+    func fetchStories() -> ([StorySwiftData], ErrorHandler?)
+    func fetchStoriesById(storyId: UUID) -> (StorySwiftData?, ErrorHandler?)
     func removeStoryById(storyId: UUID) -> ErrorHandler?
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?)
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?)
 }
 
 internal final class SwiftDataStoryRepository: StoryRepository {
     
-    private let modelContainer: ModelContainer
-    private let modelContext: ModelContext
+    private let swiftDataManager = SwiftDataManager.shared
     
-    @MainActor
-    static let shared = SwiftDataStoryRepository()
-    
-    @MainActor
-    private init() {
-        // TODO: Handle error
-        self.modelContainer = try! ModelContainer(for: Story.self)
-        self.modelContext = modelContainer.mainContext
-    }
-    
-    func fetchStories() -> ([Story], ErrorHandler?) {
+    func fetchStories() -> ([StorySwiftData], ErrorHandler?) {
         do {
-            let stories = try modelContext.fetch(FetchDescriptor<Story>())
+            let stories = try swiftDataManager.context.fetch(FetchDescriptor<StorySwiftData>())
             print(stories)
             return (stories, nil)
         } catch {
@@ -41,7 +30,7 @@ internal final class SwiftDataStoryRepository: StoryRepository {
         }
     }
     
-    func fetchStoriesById(storyId: UUID) -> (Story?, ErrorHandler?) {
+    func fetchStoriesById(storyId: UUID) -> (StorySwiftData?, ErrorHandler?) {
         let (stories, errorHandler) = fetchStories()
         
         if let error = errorHandler {
@@ -67,77 +56,61 @@ internal final class SwiftDataStoryRepository: StoryRepository {
         }
         
         if let deletedData = data {
-            modelContext.delete(deletedData)
+            swiftDataManager.context.delete(deletedData)
         }
         return nil
     }
     
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
-        let templateRepository = JSONTemplateRepository()
-        let (template, errorHandler) = templateRepository.fetchTemplatesById(templateId: templateId)
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?) {
+        swiftDataManager.context.insert(story)
         
-        if let error = errorHandler {
-            return (nil, error)
-        }
-        
-        if let storyTemplate = template {
-            let newStory = Story(template: storyTemplate)
-            modelContext.insert(newStory)
-            do {
-                try modelContext.save()
-            } catch {
-                return (nil, errorHandler)
-            }
-            return (newStory.storyId, nil)
-        }
-        
-        return (nil, errorHandler)
+        return (story.storyId, nil)
     }
 }
 
 internal class DummyStoryRepository: StoryRepository {
-    func fetchStories() -> ([Story], ErrorHandler?) {
+    func fetchStories() -> ([StorySwiftData], ErrorHandler?) {
         return (
-            [
-                Story(
-                    storyId: UUID(),
-                    templateId: UUID(),
-                    templateCategory: "Hygiene",
-                    pages: [
-                        Page(pageId: UUID(),
-                             pageText: [
-                                TextComponent(
-                                    componentId: UUID(),
-                                    componentContent: "Dummy Text",
-                                    componentRatio: Ratio(xRatio: 0.5,
-                                                          yRatio: 0.5,
-                                                          zRatio: 1
-                                                         ),
-                                    componentScale: 1.5,
-                                    componentRotation: 0
-                                )
-                             ], pagePicture: [
-                                PictureComponent(
-                                    componentId: UUID(),
-                                    componentContent: "DummyImage",
-                                    componentRatio: Ratio(xRatio: 0.5,
-                                                          yRatio: 0.5,
-                                                          zRatio: 1
-                                                         ),
-                                    componentScale: 1.5,
-                                    componentRotation: 0
-                                )
-                             ], pageVideo: [],
-                             pageSoundPath: "DummySound"
-                            )
-                    ]
-                )
-            ],
-            nil
+//            [
+//                Story(
+//                    storyId: UUID(),
+//                    templateId: UUID(),
+//                    templateCategory: "Hygiene",
+//                    pages: [
+//                        Page(pageId: UUID(),
+//                             pageText: [
+//                                TextComponent(
+//                                    componentId: UUID(),
+//                                    componentContent: "Dummy Text",
+//                                    componentRatio: Ratio(xRatio: 0.5,
+//                                                          yRatio: 0.5,
+//                                                          zRatio: 1
+//                                                         ),
+//                                    componentScale: 1.5,
+//                                    componentRotation: 0
+//                                )
+//                             ], pagePicture: [
+//                                PictureComponent(
+//                                    componentId: UUID(),
+//                                    componentContent: "DummyImage",
+//                                    componentRatio: Ratio(xRatio: 0.5,
+//                                                          yRatio: 0.5,
+//                                                          zRatio: 1
+//                                                         ),
+//                                    componentScale: 1.5,
+//                                    componentRotation: 0
+//                                )
+//                             ], pageVideo: [],
+//                             pageSoundPath: "DummySound"
+//                            )
+//                    ]
+//                )
+//            ],
+            [], nil
         )
     }
     
-    func fetchStoriesById(storyId: UUID) -> (Story?, ErrorHandler?) {
+    func fetchStoriesById(storyId: UUID) -> (StorySwiftData?, ErrorHandler?) {
         let (stories, error) = self.fetchStories()
         
         guard error == nil else { return (nil, error) }
@@ -149,7 +122,7 @@ internal class DummyStoryRepository: StoryRepository {
         return nil
     }
     
-    func addNewStory(templateId: UUID) -> (UUID?, ErrorHandler?) {
+    func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?) {
         return (UUID(), nil)
     }
     
