@@ -33,6 +33,7 @@ class StoryViewModel: ObservableObject {
         displayedStory = [StoryEntity]()
         displayedStory.append(StoryEntity(storyId: UUID(),
                                           storyName: "",
+                                          storyCoverImagePath: "",
                                           storyLastRead: Date(),
                                           templateId: UUID(),
                                           templateCategory: "",

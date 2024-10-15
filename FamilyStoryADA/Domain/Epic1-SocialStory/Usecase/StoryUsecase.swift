@@ -68,7 +68,7 @@ public final class ImplementedStoryUsecase: StoryUsecase {
     }
     
     func removeStory(storyId: UUID) -> Bool {
-        //TODO: Remove entity also (maybe?)
+        //TODO: Remove entity also (maybe?) dont think so
         let error = repository.removeStoryById(storyId: storyId)
         
         guard error == nil else {

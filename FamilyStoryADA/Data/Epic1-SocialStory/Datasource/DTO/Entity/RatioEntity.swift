@@ -19,11 +19,4 @@ public class RatioEntity: IEntityAble {
         self.yRatio = yRatio
         self.zRatio = zRatio
     }
-    
-    init(data: RatioSwiftData) {
-        self.ratioId = data.ratioId
-        self.xRatio = data.xRatio
-        self.yRatio = data.yRatio
-        self.zRatio = data.zRatio
-    }
 }

@@ -12,14 +12,16 @@ import SwiftData
 public class StorySwiftData: Identifiable, ISwiftDataAble {
     var storyId: UUID
     var storyName: String
+    var storyCoverImagePath: String
     var storyLastRead: Date
     var templateId: UUID
     var templateCategory: String
     var pages: [UUID]
     
-    init(storyId: UUID, storyName: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [UUID]) {
+    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [UUID]) {
         self.storyId = storyId
         self.storyName = storyName
+        self.storyCoverImagePath = storyCoverImagePath
         self.storyLastRead = storyLastRead
         self.templateId = templateId
         self.templateCategory = templateCategory
@@ -59,6 +61,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     static func convertToSwiftData(jsonTemplate: TemplateJSONObject) -> StorySwiftData {
         return StorySwiftData(storyId: UUID(),
                               storyName: jsonTemplate.templateName,
+                              storyCoverImagePath: jsonTemplate.templateCoverImagePath,
                               storyLastRead: Date(),
                               templateId: jsonTemplate.templateId,
                               templateCategory: jsonTemplate.templateCategory,
@@ -78,6 +81,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     static func convertToSwiftData(entity: StoryEntity) -> StorySwiftData {
         return StorySwiftData(storyId: entity.storyId,
                               storyName: entity.storyName,
+                              storyCoverImagePath: entity.storyCoverImagePath,
                               storyLastRead: entity.storyLastRead,
                               templateId: entity.templateId,
                               templateCategory: entity.templateCategory,
@@ -102,6 +106,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     func convertToEntity() -> StoryEntity {
         return StoryEntity(storyId: self.storyId,
                            storyName: self.storyName,
+                           storyCoverImagePath: self.storyCoverImagePath,
                            storyLastRead: self.storyLastRead,
                            templateId: self.templateId,
                            templateCategory: self.templateCategory,

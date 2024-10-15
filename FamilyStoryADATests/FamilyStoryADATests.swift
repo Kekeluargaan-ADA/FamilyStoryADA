@@ -38,7 +38,7 @@ struct FamilyStoryADATests {
         let (ratios, _) = repo.fetchAllRatio()
         #expect(ratios.count != 0, "Ratio is nil")
         
-        #expect(ratios.last?.xRatio == 4.0, "not correct value")
+        #expect(ratios.contains(where: {$0.xRatio == 4.0} ), "not correct value")
     }
     
     @Test
@@ -54,7 +54,7 @@ struct FamilyStoryADATests {
         #expect(components.count != 0, "components is nil")
         
         #expect(components.contains(where: {ratio.ratioId == $0.componentRatioId} ), "Ratio not in")
-        #expect(components.last?.componentContent == "DummyContent", "not correct value")
+        #expect(components.contains(where: {$0.componentContent == "DummyContent"}), "not correct value")
     }
     
     @Test

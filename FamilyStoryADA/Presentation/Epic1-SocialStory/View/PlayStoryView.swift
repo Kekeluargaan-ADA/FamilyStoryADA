@@ -28,7 +28,7 @@ struct PlayStoryView: View {
                                 .font(.system(size: 26 * heightRatio))
                         )
                     Spacer()
-                    Text(story.templateCategory) // TODO: change to story title
+                    Text(story.storyName)
                         .font(.system(size: 26 * heightRatio))
                         .fontWeight(.medium)
                     Spacer()

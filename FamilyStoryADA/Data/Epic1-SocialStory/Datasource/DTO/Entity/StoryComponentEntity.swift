@@ -21,12 +21,4 @@ public class StoryComponentEntity: IEntityAble {
         self.componentScale = componentScale
         self.componentRotation = componentRotation
     }
-    
-    init(data: StoryComponentSwiftData) {
-        self.componentId = data.componentId
-        self.componentContent = data.componentContent
-//        self.componentRatio = RatioEntity(data: ) // TODO: Implement Repository
-        self.componentScale = data.componentScale
-        self.componentRotation = data.componentRotation
-    }
 }
