@@ -45,9 +45,12 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     //    }
     
     static private func convertToUUIDArray(templatePages: [PageJSONObject]) -> [UUID] {
+        let repo = SwiftDataPageRepository()
         var array: [UUID] = []
         for templatePage in templatePages {
             let page = PageSwiftData.convertToSwiftData(jsonTemplate: templatePage)
+            //MARK: Save Sub-types
+            _ = repo.addNewPage(page: page)
             array.append(page.pageId)
         }
         return array

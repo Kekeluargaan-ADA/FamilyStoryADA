@@ -16,14 +16,13 @@ protocol StoryUsecase {
     func removeStory(storyId: UUID) -> Bool
 }
 
-// TODO: Fix
-
-class ImplementedStoryUsecase: StoryUsecase {
+public final class ImplementedStoryUsecase: StoryUsecase {
     private let repository: StoryRepository
+    private let templateRepository: TemplateRepository
     
-    @MainActor
     init() {
         self.repository = SwiftDataStoryRepository()
+        self.templateRepository = JSONTemplateRepository()
     }
     
     func fetchStories() -> [StoryEntity] {
@@ -32,8 +31,14 @@ class ImplementedStoryUsecase: StoryUsecase {
         guard error == nil else {
             return []
         }
-//        return stories
-        return []
+        
+        var storyEntities: [StoryEntity] = []
+        for story in stories {
+            let storyEntity = story.convertToEntity()
+            storyEntities.append(storyEntity)
+        }
+        
+        return storyEntities
     }
     
     func fetchStoryById(storyId: UUID) -> StoryEntity? {
@@ -42,22 +47,28 @@ class ImplementedStoryUsecase: StoryUsecase {
         guard error == nil else {
             return nil
         }
-//        return story
-        return nil
+        return story?.convertToEntity()
     }
     
     func addNewStory(templateId: UUID) -> UUID? {
-        //TODO: Fix repo - usecase connection
-//        let (storyId, error) = repository.addNewStory(templateId: templateId)
-//        
-//        guard error == nil else {
-//            return nil
-//        }
-//        return storyId
+        
+        
+        let (template, error) = templateRepository.fetchTemplatesById(templateId: templateId)
+        
+        guard error == nil else {
+            return nil
+        }
+        
+        if let jsonTemplate = template {
+            let newStory = StorySwiftData.convertToSwiftData(jsonTemplate: jsonTemplate)
+            let (storyId, _) = repository.addNewStory(story: newStory)
+            return storyId
+        }
         return nil
     }
     
     func removeStory(storyId: UUID) -> Bool {
+        //TODO: Remove entity also (maybe?)
         let error = repository.removeStoryById(storyId: storyId)
         
         guard error == nil else {
@@ -76,31 +87,31 @@ class DummyStoryUsecase: StoryUsecase {
     }
     
     func fetchStories() -> [StoryEntity] {
-        let (stories, error) = storyRepository.fetchStories()
-        
-        guard error == nil else {
-            return []
-        }
-//        return stories
+        //        let (stories, error) = storyRepository.fetchStories()
+        //
+        //        guard error == nil else {
+        //            return []
+        //        }
+        //        return stories
         return []
     }
     
     func fetchStoryById(storyId: UUID) -> StoryEntity? {
-        let (story, error) = storyRepository.fetchStoriesById(storyId: storyId)
-        
-        guard error == nil else {
-            return nil
-        }
-//        return story
+        //        let (story, error) = storyRepository.fetchStoriesById(storyId: storyId)
+        //
+        //        guard error == nil else {
+        //            return nil
+        //        }
+        //        return story
         return nil
     }
     
     func addNewStory(templateId: UUID) -> UUID? {
-//        let (storyId, error) = storyRepository.addNewStory(templateId: templateId)
-//        
-//        guard error == nil else {
-//            return nil
-//        }
+        //        let (storyId, error) = storyRepository.addNewStory(templateId: templateId)
+        //
+        //        guard error == nil else {
+        //            return nil
+        //        }
         return UUID()
     }
     

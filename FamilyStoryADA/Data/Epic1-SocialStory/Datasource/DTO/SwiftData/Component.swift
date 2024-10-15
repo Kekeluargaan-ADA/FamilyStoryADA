@@ -43,7 +43,10 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
 //    }
     
     static func convertToSwiftData(jsonTemplate: ComponentJSONObject) -> StoryComponentSwiftData {
+        let repo = SwiftDataRatioRepository()
         let ratio = RatioSwiftData.convertToSwiftData(jsonTemplate: jsonTemplate.componentRatio)
+        //MARK: Saving sub-types
+        _ = repo.addNewRatio(ratio: ratio)
         return StoryComponentSwiftData(componentId: UUID(),
                                        componentContent: jsonTemplate.componentContent,
                                        componentRatioId: ratio.ratioId,

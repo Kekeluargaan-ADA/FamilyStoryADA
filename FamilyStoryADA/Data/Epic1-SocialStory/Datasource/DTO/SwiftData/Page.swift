@@ -62,9 +62,12 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     }
     
     static private func convertToUUIDArray(jsonTemplate: [ComponentJSONObject]) -> [UUID] {
+        let repo = SwiftDataComponentRepository()
         var array: [(UUID)] = []
         for object in jsonTemplate {
             let component = StoryComponentSwiftData.convertToSwiftData(jsonTemplate: object)
+            //MARK: Saving sub-types
+            _ = repo.addNewComponent(component: component)
             array.append(component.componentId)
         }
         return array

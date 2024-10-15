@@ -1,7 +1,8 @@
 [
     {
         "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
-        "templateName": "Dummy Template",
+        "templateName": "Cara Menyikat Gigi",
+        "templateDescription": "Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang",
         "templateCategory": "Hygiene",
         "templatePage": [
             {
@@ -84,6 +85,11 @@
                 ],
                 "pageSoundPath": "sound2.m4a"
             }
+        ],
+        "templateCoverImagePath": "DummyImage",
+        "templatePreviewImagePath": [
+            "DummyImage2",
+            "DummyImage3"
         ]
     }
 ]
