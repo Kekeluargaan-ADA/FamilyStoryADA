@@ -8,22 +8,26 @@
 import SwiftUI
 
 struct DropdownFilterView: View {
-    //TODO: Pass things in viewmodel
-    @State private var selectedOption = "Terbaru"
-    @State private var options = ["Terbaru", "Popular", "Harga Terendah", "Harga Tertinggi"]
+    
+    @Binding var selectedOption: SortOption
 
         var body: some View {
             Menu {
-                ForEach(options, id: \.self) { option in
-                    Button(action: {
-                        selectedOption = option
-                    }) {
-                        Text(option)
-                    }
+                Button(action: {
+                    selectedOption = SortOption.newest
+                }) {
+                    Text(SortOption.newest.rawValue)
+                }
+                Button(action: {
+                    print("Oldest")
+                    selectedOption = SortOption.oldest
+                    print(selectedOption)
+                }) {
+                    Text(SortOption.oldest.rawValue)
                 }
             } label: {
                 HStack {
-                    Text(selectedOption)
+                    Text(selectedOption.rawValue)
                         .font(.system(size: 16, weight: .medium))
                     Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .medium))
@@ -36,5 +40,5 @@ struct DropdownFilterView: View {
 }
 
 #Preview {
-    DropdownFilterView()
+    DropdownFilterView(selectedOption: .constant(.oldest))
 }

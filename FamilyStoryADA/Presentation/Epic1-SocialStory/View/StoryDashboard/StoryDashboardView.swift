@@ -10,7 +10,7 @@ import SwiftData
 
 struct StoryDashboardView: View {
     
-    @State private var viewModel: StoryViewModel = StoryViewModel()
+    @ObservedObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
         GridItem(.flexible(minimum: 100, maximum: 200)),
         GridItem(.flexible(minimum: 100, maximum: 200)),
@@ -39,7 +39,7 @@ struct StoryDashboardView: View {
                             Spacer()
                             Text("Urutkan")
                                 .foregroundStyle(.black)
-                            DropdownFilterView()
+                            DropdownFilterView(selectedOption: $viewModel.selectedOption)
                         }
                         ScrollView {
                             LazyVGrid(columns: flexibleColumn, spacing: 20) {

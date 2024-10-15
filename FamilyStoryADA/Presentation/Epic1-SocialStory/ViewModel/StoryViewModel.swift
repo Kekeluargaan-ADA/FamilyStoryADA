@@ -8,8 +8,9 @@
 import Foundation
 import SwiftData
 
-enum SortOption {
-    case newest, oldest
+enum SortOption: String {
+    case newest = "Terbaru"
+    case oldest = "Terlama"
 }
 
 class StoryViewModel: ObservableObject {

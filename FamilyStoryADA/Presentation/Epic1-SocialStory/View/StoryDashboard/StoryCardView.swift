@@ -18,7 +18,7 @@ struct StoryCardView: View {
     var storyLength: Int
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 16)
                 .frame(width: 354, height: 320)
                 .foregroundStyle(.white)
@@ -49,6 +49,31 @@ struct StoryCardView: View {
             }
             .frame(width: 354, height: 320)
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            Menu {
+                Button(action: {
+                    // Action for Rename
+                }) {
+                    Label("Rename", systemImage: "character.cursor.ibeam")
+                }
+                
+                Button(action: {
+                    // Action for Ganti Cover
+                }) {
+                    Label("Ganti Cover", systemImage: "photo")
+                }
+                
+                Button(action: {
+                    // Action for Hapus
+                }) {
+                    Label("Hapus", systemImage: "trash.fill")
+                        .foregroundStyle(.red)
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(.title2)
+                    .foregroundStyle(.black)
+                    .padding()
+            }
         }
     }
 }
