@@ -46,6 +46,7 @@ struct TemplateCollectionView: View {
         .ignoresSafeArea()
         .onAppear {
             viewModel.fetchTemplates()
+            viewModel.filterTemplates(by: nil)
         }
     }
 }
