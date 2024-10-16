@@ -22,7 +22,7 @@ struct TemplateCategoriesView: View {
             }
             HStack(spacing: 20 * widthRatio) {
                 CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "All") {
-                    onCategorySelected(nil) // Pass nil for all categories
+                    onCategorySelected(nil)
                 }
                 CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Ambulating") {
                     onCategorySelected("Ambulating")

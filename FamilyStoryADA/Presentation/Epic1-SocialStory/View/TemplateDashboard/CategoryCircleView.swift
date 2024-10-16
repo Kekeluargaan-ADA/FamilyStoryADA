@@ -12,11 +12,11 @@ struct CategoryCircleView: View {
     let widthRatio: CGFloat
     let imageName: String
     let text: String
-    let onTap: () -> Void // Closure for handling button tap
+    let onTap: () -> Void
 
     var body: some View {
         Button(action: {
-            onTap() // Call the closure when the button is tapped
+            onTap()
         }) {
             Circle()
                 .foregroundStyle(.gray)
