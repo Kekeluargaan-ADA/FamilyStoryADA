@@ -10,6 +10,7 @@ import SwiftUI
 struct TemplateCategoriesView: View {
     let heightRatio: CGFloat
     let widthRatio: CGFloat
+    var onCategorySelected: (String?) -> Void 
     
     var body: some View {
         ZStack {
@@ -20,12 +21,24 @@ struct TemplateCategoriesView: View {
                 Spacer()
             }
             HStack(spacing: 20 * widthRatio) {
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "All")
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Ambulating")
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Hygiene")
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Feeding")
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Dressing")
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Toileting")
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "All") {
+                    onCategorySelected(nil) // Pass nil for all categories
+                }
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Ambulating") {
+                    onCategorySelected("Ambulating")
+                }
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Hygiene") {
+                    onCategorySelected("Hygiene")
+                }
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Feeding") {
+                    onCategorySelected("Feeding")
+                }
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Dressing") {
+                    onCategorySelected("Dressing")
+                }
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Toileting") {
+                    onCategorySelected("Toileting")
+                }
             }
         }
         .padding(.horizontal, 46 * widthRatio)
@@ -34,5 +47,5 @@ struct TemplateCategoriesView: View {
 }
 
 #Preview {
-    TemplateCategoriesView(heightRatio: 1.0, widthRatio: 1.0)
+    TemplateCategoriesView(heightRatio: 1, widthRatio: 1, onCategorySelected: {_ in })
 }
