@@ -103,15 +103,21 @@ struct StoryDashboardView: View {
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {
                     if let name = viewModel.currentlyEditedStory?.storyName {
-                        viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId})?.storyName = name
+                        guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
+
+                        story.storyName = name
                         
+                        viewModel.updateStory(story: story)
                         viewModel.updateStoryDisplay()
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyCoverImagePath) {
                     if let imagePath = viewModel.currentlyEditedStory?.storyCoverImagePath {
-                        viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId})?.storyCoverImagePath = imagePath
+                        guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
+
+                        story.storyCoverImagePath = imagePath
                         
+                        viewModel.updateStory(story: story)
                         viewModel.updateStoryDisplay()
                     }
                 }

@@ -71,7 +71,7 @@ class StoryViewModel: ObservableObject {
     }
     
     func updateStory(story: StoryEntity) {
-        
+        _ = storyUsecase.updateStory(story: story)
     }
     
     //debug func

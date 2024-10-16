@@ -78,8 +78,26 @@ public final class ImplementedStoryUsecase: StoryUsecase {
     }
     
     func updateStory(story: StoryEntity) -> Bool {
-        // TODO: 
-        return true
+        // TODO:
+        let (swiftDataStory, error) = repository.fetchStoriesById(storyId: story.storyId)
+        
+        guard error == nil else {
+            return false
+        }
+        
+        if let data = swiftDataStory {
+            guard repository.removeStoryById(storyId: data.storyId) == nil else {
+                return false
+            }
+            
+            let (storyId, error) = repository.addNewStory(story: StorySwiftData.convertToSwiftData(entity: story))
+            
+            guard storyId == story.storyId && error == nil else {
+                return false
+            }
+            return true
+        }
+        return false
     }
 }
 
