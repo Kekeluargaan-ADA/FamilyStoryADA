@@ -10,13 +10,15 @@ import Foundation
 class TemplateEntity: IEntityAble {
     var templateId: UUID
     var templateName: String
+    var templateCategory: String
     var templateDescription: String
     var templateCoverImagePath: String
     var tmplatePreviewImagePath: [String]
     
-    init(templateId: UUID, templateName: String, templateDescription: String, templateCoverImagePath: String, tmplatePreviewImagePath: [String]) {
+    init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, tmplatePreviewImagePath: [String]) {
         self.templateId = templateId
         self.templateName = templateName
+        self.templateCategory = templateCategory
         self.templateDescription = templateDescription
         self.templateCoverImagePath = templateCoverImagePath
         self.tmplatePreviewImagePath = tmplatePreviewImagePath
@@ -25,6 +27,7 @@ class TemplateEntity: IEntityAble {
     public static func convertToEntity(jsonTemplate: TemplateJSONObject) -> TemplateEntity {
         return TemplateEntity(templateId: jsonTemplate.templateId,
                               templateName: jsonTemplate.templateName,
+                              templateCategory: jsonTemplate.templateCategory,
                               templateDescription: jsonTemplate.templateDescription,
                               templateCoverImagePath: jsonTemplate.templateCoverImagePath,
                               tmplatePreviewImagePath: jsonTemplate.templatePreviewImagePath
