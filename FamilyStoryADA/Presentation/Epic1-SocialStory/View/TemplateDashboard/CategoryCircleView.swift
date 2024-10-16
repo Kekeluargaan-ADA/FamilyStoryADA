@@ -18,14 +18,11 @@ struct CategoryCircleView: View {
         Button(action: {
             onTap()
         }) {
-            Circle()
-                .foregroundStyle(.gray)
-                .frame(width: 64 * widthRatio, height: 64 * heightRatio)
+            ButtonCircle(heightRatio: heightRatio, buttonImage: imageName)
                 .overlay(
                     ZStack {
-                        Image(systemName: imageName)
                         Text(text)
-                            .offset(y: 48)
+                            .offset(y: heightRatio * 48)
                     }
                 )
         }
