@@ -8,14 +8,6 @@
 import SwiftUI
 
 struct StoryCardView: View {
-//    var imagePath: String
-//    
-//    // TODO: Change this into story object
-//    var categoryName: String
-//    var storyName: String
-//    // These attributes has not been implemented in the story object
-//    var lastRead: Date
-//    var storyLength: Int
     
     var story: StoryEntity
     
