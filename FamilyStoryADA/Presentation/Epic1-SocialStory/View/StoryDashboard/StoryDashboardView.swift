@@ -10,62 +10,120 @@ import SwiftData
 
 struct StoryDashboardView: View {
     
-    @State private var viewModel: StoryViewModel = StoryViewModel()
+    @StateObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
-        GridItem(.flexible(minimum: 100, maximum: 200)),
-        GridItem(.flexible(minimum: 100, maximum: 200)),
-        GridItem(.flexible(minimum: 100, maximum: 200))
+        GridItem(.fixed(354)),
+        GridItem(.fixed(354)),
+        GridItem(.fixed(354))
     ]
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                HStack {
-                    Text("My Story")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Spacer(minLength: geometry.size.width / 2)
-                    HStack {
-                        SearchBarView()
-                        ProfileButtonView(imageName: "")
-                    }
-                }
-                .padding(.horizontal, 20)
+        NavigationView {
+            GeometryReader { geometry in
                 ZStack {
-                    RoundedRectangle(cornerRadius: 28)
-                        .foregroundStyle(.tertiary.opacity(0.5))
+                    ZStack {
+                        StoryDashboardBackgroundView()
+                            .foregroundStyle(Color("FSYellow"))
+                            .padding(.top, 30)
+                            .padding(.horizontal, 24)
+                            .ignoresSafeArea()
+                        StoryDashboardBackgroundView()
+                            .foregroundStyle(Color("FSWhite"))
+                            .padding(.top, 38)
+                            .padding(.horizontal, 24)
+                            .ignoresSafeArea()
+                    }
                     VStack {
-                        HStack (spacing: 12) {
-                            Spacer()
-                            Text("Urutkan")
-                                .foregroundStyle(.black)
-                            DropdownFilterView()
+                        HStack {
+                            Text("My Story")
+                                .font(.system(size: 40))
+                                .fontWeight(.bold)
+                            Spacer(minLength: geometry.size.width / 2)
+                            HStack {
+                                SearchBarView()
+                                ProfileButtonView(imageName: "")
+                            }
                         }
-                        ScrollView {
-                            LazyVGrid(columns: flexibleColumn, spacing: 20) {
-                                ForEach (Array(viewModel.displayedStory.enumerated()), id: \.offset) { index, item in
-                                    if index == 0 {
-                                        NewStoryCardView()
-                                    } else {
-                                        // TODO: Fix data passing
-                                        StoryCardView(
-                                            imagePath: "DummyImage",
-                                            categoryName: item.templateCategory,
-                                            storyName: "Gosok gigi",
-                                            lastRead: Date(),
-                                            storyLength: 3
-                                        )
+                        .padding(.horizontal, 46)
+                        .padding(.top, 24)
+                        ZStack {
+                            VStack {
+                                HStack (spacing: 12) {
+                                    Spacer()
+                                    Text("Urutkan")
+                                        .foregroundStyle(.black)
+                                    DropdownFilterView(selectedOption: $viewModel.selectedOption)
+                                }
+                                .padding(.horizontal, 20)
+                                ScrollView {
+                                    LazyVGrid(columns: flexibleColumn, spacing: 26) {
+                                        ForEach (viewModel.displayedStory, id: \.storyId) { item in
+                                            if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
+                                                NavigationLink(destination: TemplateCollectionView()) { // NavigationLink to TemplateCollectionView
+                                                    NewStoryCardView()
+                                                        .padding(.horizontal, 10)
+                                                }
+                                            } else {
+                                                StoryCardView(
+                                                    viewModel: viewModel,
+                                                    storyName: item.storyName,
+                                                    imagePath: item.storyCoverImagePath,
+                                                    category: item.templateCategory,
+                                                    storyLength: item.storyLength,
+                                                    lastRead: item.storyLastRead,
+                                                    story: item
+                                                )
+                                                .padding(.horizontal, 10)
+                                            }
+                                        }
                                     }
                                 }
                             }
+                            .padding(.top, 12)
+                            .padding(.horizontal, 22)
                         }
+                        .ignoresSafeArea()
                     }
-                    .padding(.top, 12)
-                    .padding(.horizontal, 46)
                 }
-                .ignoresSafeArea()
+                .background(Color("FSBlue6"))
+                .onAppear() {
+                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID())
+                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                }
+                .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
+                    if let story = Binding($viewModel.currentlyEditedStory) {
+                        ZStack {
+                            Color("FSBlue1")
+                                .ignoresSafeArea()
+                            EditCoverModalView(story: story, imageOptionPath: ["DummyImage", "DummyImage2", "DummyImage3"])
+                        }
+                        .presentationDetents([.height(700)])
+                    }
+                }
+                .onChange(of: viewModel.currentlyEditedStory?.storyName) {
+                    if let name = viewModel.currentlyEditedStory?.storyName {
+                        guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
+
+                        story.storyName = name
+                        
+                        viewModel.updateStory(story: story)
+                        viewModel.updateStoryDisplay()
+                    }
+                }
+                .onChange(of: viewModel.currentlyEditedStory?.storyCoverImagePath) {
+                    if let imagePath = viewModel.currentlyEditedStory?.storyCoverImagePath {
+                        guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
+
+                        story.storyCoverImagePath = imagePath
+                        
+                        viewModel.updateStory(story: story)
+                        viewModel.updateStoryDisplay()
+                    }
+                }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
 

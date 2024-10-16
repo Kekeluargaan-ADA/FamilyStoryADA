@@ -13,14 +13,16 @@ class TemplateEntity: IEntityAble {
     var templateCategory: String
     var templateDescription: String
     var templateCoverImagePath: String
+    var templateOptionCoverImagePath: [String]
     var tmplatePreviewImagePath: [String]
     
-    init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, tmplatePreviewImagePath: [String]) {
+    init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, templateOptionCoverImagePath: [String], tmplatePreviewImagePath: [String]) {
         self.templateId = templateId
         self.templateName = templateName
         self.templateCategory = templateCategory
         self.templateDescription = templateDescription
         self.templateCoverImagePath = templateCoverImagePath
+        self.templateOptionCoverImagePath = templateOptionCoverImagePath
         self.tmplatePreviewImagePath = tmplatePreviewImagePath
     }
     
@@ -30,6 +32,7 @@ class TemplateEntity: IEntityAble {
                               templateCategory: jsonTemplate.templateCategory,
                               templateDescription: jsonTemplate.templateDescription,
                               templateCoverImagePath: jsonTemplate.templateCoverImagePath,
+                              templateOptionCoverImagePath: jsonTemplate.templateOptionCoverImagePath,
                               tmplatePreviewImagePath: jsonTemplate.templatePreviewImagePath
         )
     }

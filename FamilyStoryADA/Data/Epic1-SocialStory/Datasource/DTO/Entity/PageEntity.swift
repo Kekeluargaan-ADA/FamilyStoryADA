@@ -14,6 +14,14 @@ public class PageEntity: IEntityAble {
     var pageVideo: [VideoComponentEntity]
     var pageSoundPath: String
     
+    var componentTextWordCount: Int {
+        var wordCount = 0
+        for text in pageText {
+            wordCount += text.componentContent.components(separatedBy: " ").count
+        }
+        return wordCount
+    }
+    
     init(pageId: UUID, pageText: [TextComponentEntity], pagePicture: [PictureComponentEntity], pageVideo: [VideoComponentEntity], pageSoundPath: String) {
         self.pageId = pageId
         self.pageText = pageText

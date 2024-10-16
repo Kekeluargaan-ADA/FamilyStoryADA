@@ -15,14 +15,14 @@ struct SearchBarView: View {
                 TextField("Cari berdasarkan judul, kategori,...", text: $searchText)
                     .padding(10)
                     .cornerRadius(25)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(Color("FSBlue9"))
                 
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color("FSBlue9"))
                     .padding(.trailing, 10)
             }
             .padding(.horizontal, 16)
-            .background(Color.gray.opacity(0.3))
+            .background(Color("FSSecondaryBlue4"))
             .cornerRadius(25)
         }
 }

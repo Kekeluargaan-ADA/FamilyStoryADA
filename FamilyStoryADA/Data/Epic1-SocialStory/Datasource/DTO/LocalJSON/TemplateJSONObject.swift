@@ -14,5 +14,6 @@ struct TemplateJSONObject: Codable, IJSONAble {
     let templateCategory: String
     let templatePage: [PageJSONObject]
     let templateCoverImagePath: String
+    let templateOptionCoverImagePath: [String]
     let templatePreviewImagePath: [String]
 }

@@ -13,6 +13,7 @@ internal protocol PageRepository {
     func fetchPageById(pageId: UUID) -> (PageSwiftData?, ErrorHandler?)
     func removePageById(pageId: UUID) -> ErrorHandler?
     func addNewPage(page: PageSwiftData) -> (UUID?, ErrorHandler?)
+    func savePage() -> ErrorHandler?
 }
 
 internal final class SwiftDataPageRepository: PageRepository {
@@ -65,5 +66,13 @@ internal final class SwiftDataPageRepository: PageRepository {
         return (page.pageId, nil)
     }
     
-    
+    func savePage() -> ErrorHandler? {
+        do {
+            try swiftDataManager.context.save()
+        } catch {
+            return ErrorHandler.dataCorrupted
+        }
+        
+        return nil
+    }
 }

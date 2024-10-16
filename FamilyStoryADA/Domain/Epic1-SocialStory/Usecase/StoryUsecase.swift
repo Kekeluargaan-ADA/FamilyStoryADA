@@ -14,6 +14,7 @@ protocol StoryUsecase {
     func fetchStoryById(storyId: UUID) -> StoryEntity?
     func addNewStory(templateId: UUID) -> UUID?
     func removeStory(storyId: UUID) -> Bool
+    func updateStory(story: StoryEntity) -> Bool
 }
 
 public final class ImplementedStoryUsecase: StoryUsecase {
@@ -68,13 +69,35 @@ public final class ImplementedStoryUsecase: StoryUsecase {
     }
     
     func removeStory(storyId: UUID) -> Bool {
-        //TODO: Remove entity also (maybe?) dont think so
         let error = repository.removeStoryById(storyId: storyId)
         
         guard error == nil else {
             return false
         }
         return true
+    }
+    
+    func updateStory(story: StoryEntity) -> Bool {
+        // TODO:
+        let (swiftDataStory, error) = repository.fetchStoriesById(storyId: story.storyId)
+        
+        guard error == nil else {
+            return false
+        }
+        
+        if let data = swiftDataStory {
+            guard repository.removeStoryById(storyId: data.storyId) == nil else {
+                return false
+            }
+            
+            let (storyId, error) = repository.addNewStory(story: StorySwiftData.convertToSwiftData(entity: story))
+            
+            guard storyId == story.storyId && error == nil else {
+                return false
+            }
+            return true
+        }
+        return false
     }
 }
 
@@ -124,5 +147,8 @@ class DummyStoryUsecase: StoryUsecase {
         return true
     }
     
+    func updateStory(story: StoryEntity) -> Bool {
+        return true
+    }
     
 }

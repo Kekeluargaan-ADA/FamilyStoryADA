@@ -13,7 +13,7 @@ struct ProfileButtonView: View {
         ZStack {
             Circle()
                 .frame(width: 60, height: 60)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color("FSSecondaryBlue4"))
             if imageName != "" {
                 Image(imageName)
                     .resizable()
@@ -22,7 +22,7 @@ struct ProfileButtonView: View {
             } else {
                 Image(systemName: "person")
                     .font(.system(size: 26, weight: .bold))
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color("FSBlue9"))
             }
         }
     }

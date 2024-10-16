@@ -13,6 +13,7 @@ internal protocol UserRepository {
     func fetchUserById(userId: UUID) -> (UserSwiftData?, ErrorHandler?)
     func removeUserById(userId: UUID) -> ErrorHandler?
     func addNewUser(user: UserSwiftData) -> (UUID?, ErrorHandler?)
+    func saveUser() -> ErrorHandler?
 }
 
 internal final class SwiftDataUserRepository: UserRepository {
@@ -65,5 +66,13 @@ internal final class SwiftDataUserRepository: UserRepository {
         return (user.childId, nil)
     }
     
-    
+    func saveUser() -> ErrorHandler? {
+        do {
+            try swiftDataManager.context.save()
+        } catch {
+            return ErrorHandler.dataCorrupted
+        }
+        
+        return nil
+    }
 }

@@ -14,6 +14,7 @@ internal protocol StoryRepository {
     func fetchStoriesById(storyId: UUID) -> (StorySwiftData?, ErrorHandler?)
     func removeStoryById(storyId: UUID) -> ErrorHandler?
     func addNewStory(story: StorySwiftData) -> (UUID?, ErrorHandler?)
+    func saveStory() -> ErrorHandler?
 }
 
 internal final class SwiftDataStoryRepository: StoryRepository {
@@ -65,6 +66,16 @@ internal final class SwiftDataStoryRepository: StoryRepository {
         swiftDataManager.context.insert(story)
         
         return (story.storyId, nil)
+    }
+    
+    func saveStory() -> ErrorHandler? {
+        do {
+            try swiftDataManager.context.save()
+        } catch {
+            return ErrorHandler.dataCorrupted
+        }
+        
+        return nil
     }
 }
 
@@ -126,5 +137,7 @@ internal class DummyStoryRepository: StoryRepository {
         return (UUID(), nil)
     }
     
-    
+    func saveStory() -> ErrorHandler? {
+        return nil
+    }
 }
