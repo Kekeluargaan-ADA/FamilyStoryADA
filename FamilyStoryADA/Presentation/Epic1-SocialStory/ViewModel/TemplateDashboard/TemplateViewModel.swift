@@ -9,6 +9,7 @@ import SwiftUI
 
 class TemplateViewModel: ObservableObject {
     @Published var templates: [TemplateEntity] = []
+    @Published var filteredTemplates: [TemplateEntity] = []
     
     private let templateUsecase: TemplateUsecase
     
@@ -19,5 +20,13 @@ class TemplateViewModel: ObservableObject {
     
     func fetchTemplates() {
         templates = templateUsecase.fetchTemplates()
+    }
+    
+    func filterTemplates(by category: String?) {
+        if let category = category {
+            filteredTemplates = templates.filter { $0.templateCategory == category }
+        } else {
+            filteredTemplates = templates
+        }
     }
 }
