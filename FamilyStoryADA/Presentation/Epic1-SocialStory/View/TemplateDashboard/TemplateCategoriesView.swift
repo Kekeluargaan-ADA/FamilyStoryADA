@@ -18,7 +18,7 @@ struct TemplateCategoriesView: View {
                 ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", onTap: {})
                 Spacer()
             }
-            HStack(spacing: 20 * widthRatio) {
+            HStack() {
                 CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "All") {
                     onCategorySelected(nil)
                 }
@@ -38,6 +38,7 @@ struct TemplateCategoriesView: View {
                     onCategorySelected("Toileting")
                 }
             }
+            .offset(y: 14 * heightRatio)
         }
         .padding(.horizontal, 46 * widthRatio)
         .padding(.top, -32 * heightRatio)

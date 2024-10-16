@@ -15,13 +15,12 @@ struct CategoryCircleView: View {
     let onTap: () -> Void
     
     var body: some View {
-        ButtonCircle(heightRatio: heightRatio, buttonImage: buttonImage, onTap: onTap)
-            .overlay(
-                ZStack {
-                    Text(text)
-                        .offset(y: heightRatio * 48)
-                }
-            )
+        VStack {
+            ButtonCircle(heightRatio: heightRatio, buttonImage: buttonImage, onTap: onTap)
+            Spacer().frame(height: 8 * heightRatio)
+            Text(text)
+        }
+        .padding(20 * heightRatio)
     }
 }
 
