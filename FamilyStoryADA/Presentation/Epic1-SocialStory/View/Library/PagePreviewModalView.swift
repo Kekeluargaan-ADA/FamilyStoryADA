@@ -39,16 +39,19 @@ struct PagePreviewModalView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    
     var body: some View {
         VStack {
-            PreviewModalHeader(isPresented: isPresented)
-            HStack{
+            PreviewModalHeader(isPresented: isPresented) // Updated to pass a binding
+
+            HStack {
                 Rectangle()
-                    .frame(width: 280,height: 172)
+                    .frame(width: 280, height: 172)
                     .foregroundStyle(.gray)
-                VStack{
+                VStack {
                     Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief")
                     Button(action: {
+                        // Action for using the template
                     }) {
                         Text("Gunakan Template")
                             .foregroundColor(.white)
@@ -56,10 +59,12 @@ struct PagePreviewModalView: View {
                             .background(Color.green)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
-                }.frame(width:280,height: 172)
-            }.padding(25)
-                .background(.red)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
+                }
+                .frame(width: 280, height: 172)
+            }
+            .padding(25)
+            .background(.red)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
@@ -68,16 +73,14 @@ struct PagePreviewModalView: View {
                             Text("Preview Page \(item)")
                                 .font(.headline)
                                 .foregroundColor(.white)
-//                                .padding()
                                 .frame(width: 280, height: 200)
                                 .background(Color.blue)
                                 .cornerRadius(10)
                         }
                     }
                 }
-//                .padding()
-            }.frame(width: 650)
-            
+            }
+            .frame(width: 650)
         }
     }
 }

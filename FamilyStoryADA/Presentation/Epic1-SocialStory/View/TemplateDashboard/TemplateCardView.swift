@@ -8,6 +8,7 @@ import SwiftUI
 
 struct TemplateCardView: View {
     var template: TemplateEntity
+    @State private var isModalPresented = false
 
     var body: some View {
         Rectangle()
@@ -36,5 +37,11 @@ struct TemplateCardView: View {
                     Spacer().frame(height: 19)
                 }
             )
+            .onTapGesture {
+                isModalPresented = true
+            }
+            .sheet(isPresented: $isModalPresented) {
+                PagePreviewModalView(isPresented: $isModalPresented)
+            }
     }
 }
