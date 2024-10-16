@@ -10,7 +10,8 @@ import SwiftUI
 struct TemplateCategoriesView: View {
     let heightRatio: CGFloat
     let widthRatio: CGFloat
-    var onCategorySelected: (String?) -> Void 
+    @State private var selectedCategory: String? = nil
+    var onCategorySelected: (String?) -> Void
     
     var body: some View {
         ZStack {
@@ -18,23 +19,65 @@ struct TemplateCategoriesView: View {
                 ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", onTap: {})
                 Spacer()
             }
-            HStack() {
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "square.grid.2x2", text: "All") {
+            HStack {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "square.grid.2x2",
+                    text: "All",
+                    isSelected: selectedCategory == nil
+                ) {
+                    selectedCategory = nil
                     onCategorySelected(nil)
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "figure.walk", text: "Ambulating") {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "figure.walk",
+                    text: "Ambulating",
+                    isSelected: selectedCategory == "Ambulating" // 
+                ) {
+                    selectedCategory = "Ambulating"
                     onCategorySelected("Ambulating")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "shower", text: "Hygiene") {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "shower",
+                    text: "Hygiene",
+                    isSelected: selectedCategory == "Hygiene"
+                ) {
+                    selectedCategory = "Hygiene"
                     onCategorySelected("Hygiene")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "fork.knife", text: "Feeding") {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "fork.knife",
+                    text: "Feeding",
+                    isSelected: selectedCategory == "Feeding"
+                ) {
+                    selectedCategory = "Feeding"
                     onCategorySelected("Feeding")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "tshirt", text: "Dressing") {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "tshirt",
+                    text: "Dressing",
+                    isSelected: selectedCategory == "Dressing"
+                ) {
+                    selectedCategory = "Dressing"
                     onCategorySelected("Dressing")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "toilet", text: "Toileting") {
+                CategoryCircleView(
+                    heightRatio: heightRatio,
+                    widthRatio: widthRatio,
+                    buttonImage: "toilet",
+                    text: "Toileting",
+                    isSelected: selectedCategory == "Toileting"
+                ) {
+                    selectedCategory = "Toileting"
                     onCategorySelected("Toileting")
                 }
             }
@@ -46,5 +89,5 @@ struct TemplateCategoriesView: View {
 }
 
 #Preview {
-    TemplateCategoriesView(heightRatio: 1, widthRatio: 1, onCategorySelected: {_ in })
+    TemplateCategoriesView(heightRatio: 1, widthRatio: 1, onCategorySelected: { _ in })
 }
