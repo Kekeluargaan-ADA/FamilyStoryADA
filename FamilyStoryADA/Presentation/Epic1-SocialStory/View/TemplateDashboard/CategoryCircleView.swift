@@ -15,16 +15,19 @@ struct CategoryCircleView: View {
     let text: String
     
     var body: some View {
-        Circle()
-            .foregroundStyle(.gray)
-            .frame(height: 64)
-            .overlay(
-                ZStack {
-                    Image(systemName: imageName)
-                    Text(text)
-                        .offset(y: 48)
-                }
-            )
+        Button(action: {}) {
+            Circle()
+                .foregroundStyle(.gray)
+                .frame(height: 64)
+                .overlay(
+                    ZStack {
+                        Image(systemName: imageName)
+                        Text(text)
+                            .offset(y: 48)
+                    }
+                )
+        }
+        .buttonStyle(.plain)
     }
 }
 
