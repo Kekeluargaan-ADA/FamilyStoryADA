@@ -13,6 +13,7 @@ internal protocol RatioRepository {
     func fetchRatioById(ratioId: UUID) -> (RatioSwiftData?, ErrorHandler?)
     func removeRatioById(ratioId: UUID) -> ErrorHandler?
     func addNewRatio(ratio: RatioSwiftData) -> (UUID?, ErrorHandler?)
+    func saveRatio() -> ErrorHandler?
 }
 
 internal final class SwiftDataRatioRepository: RatioRepository {
@@ -66,5 +67,13 @@ internal final class SwiftDataRatioRepository: RatioRepository {
         return (ratio.ratioId, nil)
     }
     
-    
+    func saveRatio() -> ErrorHandler? {
+        do {
+            try swiftDataManager.context.save()
+        } catch {
+            return ErrorHandler.dataCorrupted
+        }
+        
+        return nil
+    }
 }

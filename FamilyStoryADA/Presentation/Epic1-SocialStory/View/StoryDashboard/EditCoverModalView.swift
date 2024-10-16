@@ -22,6 +22,7 @@ struct EditCoverModalView: View {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }) {
+                    //TODO: Change into component
                     Image(systemName: "xmark")
                         .foregroundColor(.gray)
                         .padding()
@@ -38,6 +39,7 @@ struct EditCoverModalView: View {
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
                 }) {
+                    //TODO: Change into component
                     Image(systemName: "checkmark.circle.fill")
                         .font(.largeTitle)
                         .foregroundColor(.blue)
@@ -45,14 +47,34 @@ struct EditCoverModalView: View {
                 .padding()
             }
             
-            TextField("Judul Story", text: $storyName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
+            ZStack() {
+                TextField("Judul Story...", text: $storyName)
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 32, weight: .medium))
+                    .frame(width: 580, height: 80)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        storyName = ""
+                    }, label: {
+                        Image(systemName: "x.circle")
+                            .resizable()
+                            .frame(width: 29, height: 29)
+                            .foregroundStyle(Color("FSGrey"))
+                    })
+                }
+                .padding(.horizontal, 60)
+            }
+            
+            
             
             VStack(spacing: 28) {
                 Image(imagePath)
                     .resizable()
                     .frame(width: 400, height: 248)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .aspectRatio(contentMode: .fill)
                     .clipped()
                 
@@ -62,16 +84,30 @@ struct EditCoverModalView: View {
                             Button(action:{
                                 imagePath = imageOption
                             }, label: {
-                                Image(imageOption)
-                                    .resizable()
-                                    .frame(width: 200, height: 124)
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipped()
-                                    .border(imagePath == imageOption ? Color.blue : Color.clear, width: 2)
+                                ZStack {
+                                    Image(imageOption)
+                                        .resizable()
+                                        .frame(width: 200, height: 124)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        .aspectRatio(contentMode: .fill)
+                                        .clipped()
+                                    if imagePath == imageOption {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(Color("FSBlue9"), lineWidth: 3)
+                                            .foregroundStyle(Color.clear)
+                                            .frame(width: 200, height: 124)
+                                            
+                                    }
+                                }
                             })
                         }
                     }
+                    .padding(28)
                 }
+                .background(Color("FSWhite"))
+                .frame(width: 580, height: 180)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(radius: 4, x:0, y: 4)
                 .padding(.horizontal)
             }
         }

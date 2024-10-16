@@ -59,7 +59,7 @@ struct StoryCardView: View {
                 }
                 
                 Button(action: {
-                    // TODO: Action for Hapus
+                    viewModel.deleteStory(storyId: story.storyId)
                 }) {
                     Label("Hapus Story", systemImage: "trash.fill")
                         .foregroundStyle(.red)

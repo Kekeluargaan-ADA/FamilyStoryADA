@@ -13,6 +13,7 @@ internal protocol ComponentRepository {
     func fetchComponentById(componentId: UUID) -> (StoryComponentSwiftData?, ErrorHandler?)
     func removeComponentById(componentId: UUID) -> ErrorHandler?
     func addNewComponent(component: StoryComponentSwiftData) -> (UUID?, ErrorHandler?)
+    func saveComponent() -> ErrorHandler?
 }
 
 internal final class SwiftDataComponentRepository: ComponentRepository {
@@ -64,5 +65,13 @@ internal final class SwiftDataComponentRepository: ComponentRepository {
         return (component.componentId, nil)
     }
     
-    
+    func saveComponent() -> ErrorHandler? {
+        do {
+            try swiftDataManager.context.save()
+        } catch {
+            return ErrorHandler.dataCorrupted
+        }
+        
+        return nil
+    }
 }

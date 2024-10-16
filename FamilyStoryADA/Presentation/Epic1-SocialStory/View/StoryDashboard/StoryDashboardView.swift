@@ -93,7 +93,12 @@ struct StoryDashboardView: View {
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
                     if let story = Binding($viewModel.currentlyEditedStory) {
-                        EditCoverModalView(story: story, imageOptionPath: ["DummyImage", "DummyImage2", "DummyImage3"])
+                        ZStack {
+                            Color("FSBlue1")
+                                .ignoresSafeArea()
+                            EditCoverModalView(story: story, imageOptionPath: ["DummyImage", "DummyImage2", "DummyImage3"])
+                        }
+                        .presentationDetents([.height(700)])
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {
@@ -101,8 +106,6 @@ struct StoryDashboardView: View {
                         viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId})?.storyName = name
                         
                         viewModel.updateStoryDisplay()
-//                        viewModel.printStories()
-                        viewModel.printDisplayed()
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyCoverImagePath) {
@@ -110,8 +113,6 @@ struct StoryDashboardView: View {
                         viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId})?.storyCoverImagePath = imagePath
                         
                         viewModel.updateStoryDisplay()
-//                        viewModel.printStories()
-//                        viewModel.printDisplayed()
                     }
                 }
             }

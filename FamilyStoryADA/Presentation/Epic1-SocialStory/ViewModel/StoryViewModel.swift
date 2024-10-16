@@ -26,9 +26,14 @@ class StoryViewModel: ObservableObject {
     @MainActor
     init() {
         self.storyUsecase = ImplementedStoryUsecase()
-        self.stories = storyUsecase.fetchStories()
+        self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         
+        fetchStories()
+    }
+    
+    func fetchStories() {
+        self.stories = storyUsecase.fetchStories()
         updateStoryDisplay()
     }
     
@@ -48,10 +53,25 @@ class StoryViewModel: ObservableObject {
     }
     
     func addNewStory(templateId: UUID) {
-        let newStoryId = storyUsecase.addNewStory(templateId: templateId)
-        stories = storyUsecase.fetchStories()
+        let _ = storyUsecase.addNewStory(templateId: templateId)
         
-        updateStoryDisplay()
+        fetchStories()
+    }
+    
+    func deleteStory(storyId: UUID) {
+        // delete from swiftdata
+        let result = storyUsecase.removeStory(storyId: storyId)
+        
+        guard result == true else {
+            return
+        }
+        
+        //re-fetch story
+        fetchStories()
+    }
+    
+    func updateStory(story: StoryEntity) {
+        
     }
     
     //debug func
