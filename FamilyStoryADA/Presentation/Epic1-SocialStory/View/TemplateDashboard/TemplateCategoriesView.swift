@@ -19,22 +19,22 @@ struct TemplateCategoriesView: View {
                 Spacer()
             }
             HStack(spacing: 20 * widthRatio) {
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "All") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "All") {
                     onCategorySelected(nil)
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Ambulating") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Ambulating") {
                     onCategorySelected("Ambulating")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Hygiene") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Hygiene") {
                     onCategorySelected("Hygiene")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Feeding") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Feeding") {
                     onCategorySelected("Feeding")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Dressing") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Dressing") {
                     onCategorySelected("Dressing")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, imageName: "photo.fill", text: "Toileting") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Toileting") {
                     onCategorySelected("Toileting")
                 }
             }

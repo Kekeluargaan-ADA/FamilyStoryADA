@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryCircleView: View {
     let heightRatio: CGFloat
     let widthRatio: CGFloat
-    let imageName: String
+    let buttonImage: String
     let text: String
     let onTap: () -> Void
 
@@ -18,7 +18,13 @@ struct CategoryCircleView: View {
         Button(action: {
             onTap()
         }) {
-            ButtonCircle(heightRatio: heightRatio, buttonImage: imageName)
+            Circle()
+                .foregroundStyle(.gray)
+                .frame(height: 64 * heightRatio)
+                .overlay(
+                    Image(systemName: buttonImage)
+                        .font(.system(size: 26 * heightRatio))
+                )
                 .overlay(
                     ZStack {
                         Text(text)
@@ -32,5 +38,5 @@ struct CategoryCircleView: View {
 
 
 #Preview {
-    CategoryCircleView(heightRatio: 1, widthRatio: 1, imageName: "photo.fill", text: "Text ", onTap: {})
+    CategoryCircleView(heightRatio: 1, widthRatio: 1, buttonImage: "photo.fill", text: "Text ", onTap: {})
 }
