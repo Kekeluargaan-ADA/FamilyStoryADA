@@ -29,11 +29,13 @@ struct DropdownFilterView: View {
                 HStack {
                     Text(selectedOption.rawValue)
                         .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(Color("FSBlack"))
                     Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .medium))
                 }
                 .padding()
-                .background(.white)
+                .background(Color("FSBlue1"))
+                .frame(width: 117, height: 28)
                 .cornerRadius(20)
             }
         }

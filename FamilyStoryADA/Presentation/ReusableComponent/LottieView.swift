@@ -46,6 +46,6 @@ struct LottieView: UIViewRepresentable {
 }
 
 #Preview{
-    LottieView(animationName: "MenggosokGigiScene1")
+    LottieView(animationName: "MenggosokGigiScene2")
 }
 

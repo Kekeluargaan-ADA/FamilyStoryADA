@@ -7,7 +7,7 @@
 
 import Foundation
 
-class StoryEntity: IEntityAble {
+class StoryEntity: IEntityAble, Identifiable {
     var storyId: UUID
     var storyName: String
     var storyCoverImagePath: String

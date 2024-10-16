@@ -87,6 +87,11 @@
             }
         ],
         "templateCoverImagePath": "DummyImage",
+        "templateOptionCoverImagePath": [
+            "DummyImage",
+            "DummyImage2",
+            "DummyImage3"
+        ],
         "templatePreviewImagePath": [
             "DummyImage2",
             "DummyImage3"
@@ -180,6 +185,11 @@
             }
         ],
         "templateCoverImagePath": "DummyImage",
+        "templateOptionCoverImagePath": [
+            "DummyImage",
+            "DummyImage2",
+            "DummyImage3"
+        ],
         "templatePreviewImagePath": [
             "DummyImage2",
             "DummyImage3"

@@ -18,6 +18,8 @@ class StoryViewModel: ObservableObject {
     @Published var displayedStory: [StoryEntity]
     
     @Published var selectedOption: SortOption = .newest
+    @Published var isEditCoverSheetOpened: Bool = false
+    @Published var currentlyEditedStory: StoryEntity?
     
     private let storyUsecase: StoryUsecase
     
@@ -42,6 +44,7 @@ class StoryViewModel: ObservableObject {
                                          )
         )
         displayedStory.append(contentsOf: stories)
+        objectWillChange.send()
     }
     
     func addNewStory(templateId: UUID) {
@@ -49,5 +52,24 @@ class StoryViewModel: ObservableObject {
         stories = storyUsecase.fetchStories()
         
         updateStoryDisplay()
+    }
+    
+    //debug func
+    func printStories() {
+        for story in stories {
+            print(story.storyId)
+            print(story.storyName)
+            print(story.storyCoverImagePath)
+        }
+    }
+    
+    func printDisplayed() {
+        print("-------------------------")
+        print("DISPLAYED")
+        for story in displayedStory {
+            print(story.storyId)
+            print(story.storyName)
+            print(story.storyCoverImagePath)
+        }
     }
 }

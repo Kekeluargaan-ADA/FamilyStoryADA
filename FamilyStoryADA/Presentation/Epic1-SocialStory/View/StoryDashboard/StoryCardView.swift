@@ -9,6 +9,12 @@ import SwiftUI
 
 struct StoryCardView: View {
     
+    var viewModel: StoryViewModel
+    var storyName: String
+    var imagePath: String
+    var category: String
+    var storyLength: Double
+    var lastRead: Date
     var story: StoryEntity
     
     var body: some View {
@@ -16,24 +22,25 @@ struct StoryCardView: View {
             RoundedRectangle(cornerRadius: 16)
                 .frame(width: 354, height: 320)
                 .foregroundStyle(.white)
+                .shadow(radius: 4, x: 0, y: 4)
             VStack(alignment: .leading, spacing: 6) {
-                Image(story.storyCoverImagePath)
+                Image(imagePath)
                     .resizable()
                     .frame(width: 354, height: 220)
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text(story.templateCategory)
+                        Text(category)
                             .font(.callout)
                         Spacer()
-                        Text("\(story.storyLength) min")
+                        Text("\(storyLength) min")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
-                    Text(story.storyName)
+                    Text(storyName)
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    Text("Terakhir dilihat \(story.storyLastRead.formatted(date: .abbreviated, time: .omitted))")
+                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .italic()
@@ -45,21 +52,16 @@ struct StoryCardView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             Menu {
                 Button(action: {
-                    // Action for Rename
+                    viewModel.currentlyEditedStory = story
+                    viewModel.isEditCoverSheetOpened.toggle()
                 }) {
-                    Label("Rename", systemImage: "character.cursor.ibeam")
+                    Label("Edit Cover", systemImage: "photo")
                 }
                 
                 Button(action: {
-                    // Action for Ganti Cover
+                    // TODO: Action for Hapus
                 }) {
-                    Label("Ganti Cover", systemImage: "photo")
-                }
-                
-                Button(action: {
-                    // Action for Hapus
-                }) {
-                    Label("Hapus", systemImage: "trash.fill")
+                    Label("Hapus Story", systemImage: "trash.fill")
                         .foregroundStyle(.red)
                 }
             } label: {
