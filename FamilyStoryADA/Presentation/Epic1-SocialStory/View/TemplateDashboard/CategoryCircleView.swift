@@ -16,7 +16,20 @@ struct CategoryCircleView: View {
     
     var body: some View {
         VStack {
-            ButtonCircle(heightRatio: heightRatio, buttonImage: buttonImage, onTap: onTap)
+            Button(action: {
+                onTap()
+            }) {
+                Circle()
+                    .foregroundStyle(Color("FSSecondaryBlue4"))
+                    .frame(height: 64 * heightRatio)
+                    .overlay(
+                        Image(systemName: buttonImage)
+                            .foregroundStyle(Color("FSBlue9"))
+                            .font(.system(size: 26 * heightRatio))
+                            .bold()
+                    )
+            }
+            .buttonStyle(.plain)
             Spacer().frame(height: 8 * heightRatio)
             Text(text)
         }
