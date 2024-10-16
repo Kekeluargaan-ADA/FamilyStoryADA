@@ -16,6 +16,17 @@ class StoryEntity: IEntityAble {
     var templateCategory: String
     var pages: [PageEntity]
     
+    var storyLength: Double {
+        guard !pages.isEmpty else  {
+            return 0
+        }
+        var wordCount = 0
+        for page in pages {
+            wordCount += page.componentTextWordCount
+        }
+        return Double(wordCount) / 100 //TODO: Research about WPM
+    }
+    
     init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [PageEntity]) {
         self.storyId = storyId
         self.storyName = storyName

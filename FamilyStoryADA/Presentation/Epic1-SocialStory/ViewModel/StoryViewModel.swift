@@ -43,4 +43,11 @@ class StoryViewModel: ObservableObject {
         )
         displayedStory.append(contentsOf: stories)
     }
+    
+    func addNewStory(templateId: UUID) {
+        let newStoryId = storyUsecase.addNewStory(templateId: templateId)
+        stories = storyUsecase.fetchStories()
+        
+        updateStoryDisplay()
+    }
 }

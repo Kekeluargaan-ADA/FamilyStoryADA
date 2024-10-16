@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct StoryCardView: View {
-    var imagePath: String
+//    var imagePath: String
+//    
+//    // TODO: Change this into story object
+//    var categoryName: String
+//    var storyName: String
+//    // These attributes has not been implemented in the story object
+//    var lastRead: Date
+//    var storyLength: Int
     
-    // TODO: Change this into story object
-    var categoryName: String
-    var storyName: String
-    // These attributes has not been implemented in the story object
-    var lastRead: Date
-    var storyLength: Int
+    var story: StoryEntity
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -23,23 +25,23 @@ struct StoryCardView: View {
                 .frame(width: 354, height: 320)
                 .foregroundStyle(.white)
             VStack(alignment: .leading, spacing: 6) {
-                Image(imagePath)
+                Image(story.storyCoverImagePath)
                     .resizable()
                     .frame(width: 354, height: 220)
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text(categoryName)
+                        Text(story.templateCategory)
                             .font(.callout)
                         Spacer()
-                        Text("\(storyLength) min")
+                        Text("\(story.storyLength) min")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     }
-                    Text(storyName)
+                    Text(story.storyName)
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
+                    Text("Terakhir dilihat \(story.storyLastRead.formatted(date: .abbreviated, time: .omitted))")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .italic()
@@ -78,12 +80,12 @@ struct StoryCardView: View {
     }
 }
 
-#Preview {
-    StoryCardView(
-        imagePath: "DummyImage",
-        categoryName: "Hygiene",
-        storyName: "Cara gosok gigi",
-        lastRead: Date(),
-        storyLength: 3
-    )
-}
+//#Preview {
+//    StoryCardView(
+//        imagePath: "DummyImage",
+//        categoryName: "Hygiene",
+//        storyName: "Cara gosok gigi",
+//        lastRead: Date(),
+//        storyLength: 3
+//    )
+//}

@@ -12,9 +12,9 @@ struct StoryDashboardView: View {
     
     @ObservedObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
-        GridItem(.flexible(minimum: 100, maximum: 200)),
-        GridItem(.flexible(minimum: 100, maximum: 200)),
-        GridItem(.flexible(minimum: 100, maximum: 200))
+        GridItem(.fixed(354)),
+        GridItem(.fixed(354)),
+        GridItem(.fixed(354))
     ]
     
     var body: some View {
@@ -42,28 +42,30 @@ struct StoryDashboardView: View {
                             DropdownFilterView(selectedOption: $viewModel.selectedOption)
                         }
                         ScrollView {
-                            LazyVGrid(columns: flexibleColumn, spacing: 20) {
+                            LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                 ForEach (Array(viewModel.displayedStory.enumerated()), id: \.offset) { index, item in
                                     if index == 0 {
                                         NewStoryCardView()
+                                            .padding(.horizontal, 10)
                                     } else {
-                                        // TODO: Fix data passing
                                         StoryCardView(
-                                            imagePath: "DummyImage",
-                                            categoryName: item.templateCategory,
-                                            storyName: "Gosok gigi",
-                                            lastRead: Date(),
-                                            storyLength: 3
+                                            story: item
                                         )
+                                        .padding(.horizontal, 10)
                                     }
                                 }
                             }
                         }
                     }
                     .padding(.top, 12)
-                    .padding(.horizontal, 46)
+                    .padding(.horizontal, 22)
                 }
                 .ignoresSafeArea()
+            }
+            .onAppear() {
+                viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
             }
         }
     }
