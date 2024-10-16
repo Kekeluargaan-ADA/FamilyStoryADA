@@ -23,7 +23,7 @@ struct TemplateCollectionView: View {
                 ZStack(alignment: .bottom) {
                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: 40 * heightRatio, topTrailing: 40 * heightRatio))
                         .frame(height: 756 * heightRatio)
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(Color("FSWhite"))
                         .overlay(
                             VStack {
                                 TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) { category in
@@ -43,6 +43,7 @@ struct TemplateCollectionView: View {
                 }
             }
         }
+        .background(Color("FSBlue6"))
         .ignoresSafeArea()
         .onAppear {
             viewModel.fetchTemplates()

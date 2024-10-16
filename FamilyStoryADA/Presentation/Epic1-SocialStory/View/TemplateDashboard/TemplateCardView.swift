@@ -15,6 +15,7 @@ struct TemplateCardView: View {
             .foregroundStyle(.gray)
             .frame(width: 354, height: 280)
             .cornerRadius(12)
+            .shadow(radius: 2)
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {

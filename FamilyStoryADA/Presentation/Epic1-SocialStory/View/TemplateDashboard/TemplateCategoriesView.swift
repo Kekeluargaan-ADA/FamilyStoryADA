@@ -19,29 +19,29 @@ struct TemplateCategoriesView: View {
                 Spacer()
             }
             HStack() {
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "All") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "square.grid.2x2", text: "All") {
                     onCategorySelected(nil)
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Ambulating") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "figure.walk", text: "Ambulating") {
                     onCategorySelected("Ambulating")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Hygiene") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "shower", text: "Hygiene") {
                     onCategorySelected("Hygiene")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Feeding") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "fork.knife", text: "Feeding") {
                     onCategorySelected("Feeding")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Dressing") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "tshirt", text: "Dressing") {
                     onCategorySelected("Dressing")
                 }
-                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "photo.fill", text: "Toileting") {
+                CategoryCircleView(heightRatio: heightRatio, widthRatio: widthRatio, buttonImage: "toilet", text: "Toileting") {
                     onCategorySelected("Toileting")
                 }
             }
             .offset(y: 14 * heightRatio)
         }
         .padding(.horizontal, 46 * widthRatio)
-        .padding(.top, -32 * heightRatio)
+        .padding(.top, -64 * heightRatio)
     }
 }
 
