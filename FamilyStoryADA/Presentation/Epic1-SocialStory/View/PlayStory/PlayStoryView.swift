@@ -16,7 +16,7 @@ struct PlayStoryView: View {
             
             VStack {
                 Spacer()
-                PlayStoryNavigationView(heightRatio: heightRatio)
+                PlayStoryNavigationView(heightRatio: heightRatio, onTap: {})
                 Spacer().frame(height: 21 * heightRatio)
                 ZStack {
                     Rectangle()

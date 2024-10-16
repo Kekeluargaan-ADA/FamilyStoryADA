@@ -15,7 +15,7 @@ struct TemplateCategoriesView: View {
     var body: some View {
         ZStack {
             HStack {
-                ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left")
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", onTap: {})
                 Spacer()
             }
             HStack(spacing: 20 * widthRatio) {

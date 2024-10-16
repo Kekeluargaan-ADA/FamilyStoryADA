@@ -10,10 +10,11 @@ import SwiftUI
 struct ButtonCircle: View {
     let heightRatio: CGFloat
     let buttonImage: String
+    let onTap: () -> Void
     
     var body: some View {
         Button(action: {
-            // TODO: add navigation
+            onTap()
         }) {
             Circle()
                 .foregroundStyle(.gray)
@@ -28,5 +29,5 @@ struct ButtonCircle: View {
 }
 
 #Preview {
-    ButtonCircle(heightRatio: 1.0, buttonImage: "house")
+    ButtonCircle(heightRatio: 1.0, buttonImage: "house", onTap: {})
 }

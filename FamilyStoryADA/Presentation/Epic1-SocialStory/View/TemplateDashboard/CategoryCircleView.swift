@@ -13,26 +13,15 @@ struct CategoryCircleView: View {
     let buttonImage: String
     let text: String
     let onTap: () -> Void
-
+    
     var body: some View {
-        Button(action: {
-            onTap()
-        }) {
-            Circle()
-                .foregroundStyle(.gray)
-                .frame(height: 64 * heightRatio)
-                .overlay(
-                    Image(systemName: buttonImage)
-                        .font(.system(size: 26 * heightRatio))
-                )
-                .overlay(
-                    ZStack {
-                        Text(text)
-                            .offset(y: heightRatio * 48)
-                    }
-                )
-        }
-        .buttonStyle(.plain)
+        ButtonCircle(heightRatio: heightRatio, buttonImage: buttonImage, onTap: onTap)
+            .overlay(
+                ZStack {
+                    Text(text)
+                        .offset(y: heightRatio * 48)
+                }
+            )
     }
 }
 
