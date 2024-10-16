@@ -15,9 +15,7 @@ struct TemplateCategoriesView: View {
     var body: some View {
         ZStack {
             HStack {
-                Circle()
-                    .foregroundStyle(.gray)
-                    .frame(width: 64, height: 64)
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left")
                 Spacer()
             }
             HStack(spacing: 20 * widthRatio) {
