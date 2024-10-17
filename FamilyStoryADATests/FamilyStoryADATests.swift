@@ -46,7 +46,7 @@ struct FamilyStoryADATests {
         let repo = SwiftDataComponentRepository()
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
-        let component = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyContent", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let component = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyContent", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
         _ = repo.addNewComponent(component: component)
         
         let (components, _) = repo.fetchAllComponents()
@@ -62,9 +62,9 @@ struct FamilyStoryADATests {
         let repo = SwiftDataPageRepository()
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
-        let imageComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyImage", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
-        let textComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText1", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
-        let textComponent2 = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText2", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let imageComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyImage", componentCategory: "AssetImage", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let textComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText1", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
+        let textComponent2 = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText2", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
         let page = PageSwiftData(pageId: UUID(),
                                  pageText: [
                                     textComponent.componentId,

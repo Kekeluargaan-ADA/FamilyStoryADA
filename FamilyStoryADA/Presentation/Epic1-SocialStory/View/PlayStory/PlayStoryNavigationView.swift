@@ -13,13 +13,21 @@ struct PlayStoryNavigationView: View {
     
     var body: some View {
         HStack {
-            ButtonCircle(heightRatio: heightRatio, buttonImage: "house", onTap: {})
+            Button(action: {
+                
+            }, label: {
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "house")
+            })
             Spacer()
             Text("Title")
                 .font(.system(size: 26 * heightRatio))
                 .fontWeight(.medium)
             Spacer()
-            ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", onTap: {})
+            Button(action: {
+                
+            }, label: {
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2")
+            })
         }
     }
 }
