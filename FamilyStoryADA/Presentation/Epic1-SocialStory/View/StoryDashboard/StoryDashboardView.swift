@@ -77,6 +77,7 @@ struct StoryDashboardView: View {
                                                     )
                                                     .padding(.horizontal, 10)
                                                 })
+//                                                .navigationViewStyle(.plain)
                                             }
                                         }
                                     }

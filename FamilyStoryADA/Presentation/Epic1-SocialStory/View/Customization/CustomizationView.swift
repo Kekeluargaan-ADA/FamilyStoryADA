@@ -16,7 +16,7 @@ struct CustomizationView: View {
     
     var body: some View {
         //TODO: change to real data
-        DraggablePageCustomizationSelectionView(draggedPages: DraggablePage.loadDummyData())
+        DraggablePageCustomizationSelectionView(draggedPages: viewModel.draggedPage)
     }
 }
 

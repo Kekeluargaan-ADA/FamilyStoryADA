@@ -23,7 +23,7 @@
                 "pagePicture":
                 [
                     {
-                        "componentContent": "DummyPic.jpg",
+                        "componentContent": "DummyImage",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -121,7 +121,7 @@
                 "pagePicture":
                 [
                     {
-                        "componentContent": "DummyPic.jpg",
+                        "componentContent": "DummyPage2",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
