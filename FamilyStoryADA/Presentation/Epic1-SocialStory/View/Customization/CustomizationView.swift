@@ -16,7 +16,6 @@ struct CustomizationView: View {
     }
     
     var body: some View {
-        //TODO: change to real data
         HStack {
             VStack(spacing: 32) {
                 Button(action: {
@@ -28,7 +27,16 @@ struct CustomizationView: View {
             }
             
             ZStack {
-                Image("CustomizationBackground")
+                ZStack(alignment: .top) {
+                    Image("CustomizationBackground")
+                    ZStack (alignment: .center) {
+                        RoundedRectangle(cornerRadius: 28)
+                            .fill(Color("FSYellow"))
+                        Text(viewModel.story.storyName)
+                            .font(.system(size: 24, weight: .medium))
+                    }
+                    .frame(width: 268, height: 45)
+                }
             }
         }
         .padding(.top, 26)
