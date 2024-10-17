@@ -11,7 +11,7 @@ class PageCustomizationViewModel: ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPage: [DraggablePage] = []
     
-    init (story: StoryEntity) {
+    init(story: StoryEntity) {
         self.story = story
         
         fetchDraggedPage()

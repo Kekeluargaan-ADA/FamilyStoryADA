@@ -18,7 +18,7 @@ struct DraggablePage: Codable {
     // debug function
     static func loadDummyData() -> [DraggablePage] {
         return [
-            DraggablePage(id: UUID(), picturePath: "DummyImage"),
+            DraggablePage(id: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID(), picturePath: "DummyImage"),
             DraggablePage(id: UUID(), picturePath: "DummyImage2"),
             DraggablePage(id: UUID(), picturePath: "DummyImage3"),
         ]
