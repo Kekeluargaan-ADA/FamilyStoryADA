@@ -23,7 +23,7 @@ struct DroppedPageTargetCustomizationView: View {
                 }
             } else {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color("FSBlue9"))
+                    .fill(Color("FSBlue6"))
                     .frame(width: 152, height: 12)
             }
         }

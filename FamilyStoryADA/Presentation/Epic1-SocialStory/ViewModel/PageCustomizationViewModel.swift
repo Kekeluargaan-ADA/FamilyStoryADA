@@ -9,21 +9,88 @@ import Foundation
 
 class PageCustomizationViewModel: ObservableObject {
     @Published var story: StoryEntity
-    @Published var draggedPage: [DraggablePage] = []
+    @Published var draggedPages: [DraggablePage] = []
+    @Published var selectedPage: PageEntity?
+    
+    var pageUsecase: PageUsecase
+    var storyUsecase: StoryUsecase
     
     init(story: StoryEntity) {
         self.story = story
+        self.pageUsecase = ImplementedPageUsecase()
+        self.storyUsecase = ImplementedStoryUsecase()
+        
+        if let firstPage = story.pages.first {
+            self.selectedPage = firstPage
+        }
         
         fetchDraggedPage()
     }
     
     //refresh dragged page
     private func fetchDraggedPage() {
-        self.draggedPage = [DraggablePage]()
+        self.draggedPages = [DraggablePage]()
         for page in story.pages {
-            draggedPage.append(DraggablePage(id: page.pageId,
+            draggedPages.append(DraggablePage(id: page.pageId,
                                              picturePath: page.pagePicture.first?.componentContent ?? ""
                                             ))
+        }
+    }
+    
+    //make new blank page
+    public func addNewBlankPage() {
+        let newPage = PageEntity(pageId: UUID(),
+                                 pageText: [],
+                                 pagePicture: [],
+                                 pageVideo: [],
+                                 pageSoundPath: ""
+        )
+        
+        if pageUsecase.addPage(page: newPage) == newPage.pageId {
+            if storyUsecase.updateStory(story: story) {
+                story.pages.append(newPage)
+                fetchDraggedPage()
+            }
+        }
+    }
+    
+    // move page
+    public func movePage(_ page: DraggablePage, toIndex newIndex: Int) {
+        var nextIndex = newIndex
+        if let currentIndex = draggedPages.firstIndex(where: { $0.id == page.id }) {
+            if currentIndex == newIndex {return}
+            if currentIndex > newIndex {nextIndex += 1}
+            self.draggedPages.remove(at: currentIndex)
+            let validIndex = min(max(nextIndex, 0), draggedPages.count)
+            draggedPages.insert(page, at: validIndex)
+            
+            reorderStoryPages()
+        }
+    }
+    
+    private func reorderStoryPages() {
+        var reorderedPages = [PageEntity]()
+        
+        // Loop through the draggedPages and find the matching PageEntity by pageId in story.pages
+        for draggedPage in draggedPages {
+            if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
+                reorderedPages.append(matchingPage)
+            }
+        }
+        
+        // Update the story.pages to reflect the new order
+        story.pages = reorderedPages
+        
+        // Optionally, persist the updated story to ensure the new order is saved
+        if storyUsecase.updateStory(story: story) {
+            fetchDraggedPage()  // Refresh draggedPages to ensure consistency
+        }
+    }
+    
+    // when user select page
+    public func selectPage(page: DraggablePage) {
+        if let page = story.pages.first(where: {$0.pageId == page.id}) {
+            self.selectedPage = page
         }
     }
 }

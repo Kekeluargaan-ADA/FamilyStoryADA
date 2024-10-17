@@ -13,7 +13,7 @@ struct MiniQuizView: View {
     var body: some View {
         VStack {
             Text("Urutkan kartu di bawah sesuai dengan urutan yang benar.")
-                .font(.headline)
+                .font(.system(size: 32))
                 .foregroundStyle(.black)
             
             ScrollView(.horizontal) {

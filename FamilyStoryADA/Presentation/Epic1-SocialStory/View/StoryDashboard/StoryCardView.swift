@@ -30,20 +30,20 @@ struct StoryCardView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
                         Text(category)
-                            .font(.callout)
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color("FSBlack"))
                         Spacer()
-                        //                        Text("\(storyLength, specifier: "%.1f") min")
-                        Text("\(storyLength) min")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                        Text("\(storyLength, specifier: "%.1f") min")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color("FSGrey"))
                     }
                     Text(storyName)
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.system(size: 24, weight: .bold))
                     
-                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+//                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
+                    Text("Terakhir dilihat \(lastRead.formatted(.dateTime.day().month()))")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color("FSBlue9"))
                         .italic()
                 }
                 .padding(.horizontal, 12)
@@ -51,26 +51,6 @@ struct StoryCardView: View {
             }
             .frame(width: 354, height: 320)
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            Menu {
-                Button(action: {
-                    viewModel.currentlyEditedStory = story
-                    viewModel.isEditCoverSheetOpened.toggle()
-                }) {
-                    Label("Edit Cover", systemImage: "photo")
-                }
-                
-                Button(action: {
-                    viewModel.deleteStory(storyId: story.storyId)
-                }) {
-                    Label("Hapus Story", systemImage: "trash.fill")
-                        .foregroundStyle(.red)
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.title2)
-                    .foregroundStyle(.black)
-                    .padding()
-            }
         }
     }
 }
