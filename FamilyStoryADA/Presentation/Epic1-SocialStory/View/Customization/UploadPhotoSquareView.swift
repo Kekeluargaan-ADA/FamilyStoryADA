@@ -49,6 +49,8 @@ struct UploadPhotoSquareView: View {
                 .buttonStyle(.plain)
                 if isModalPresented {
                     Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                    UploadPhotoModalView()
                 }
             }
         }
