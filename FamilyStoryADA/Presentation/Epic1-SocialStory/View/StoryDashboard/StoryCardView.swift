@@ -32,6 +32,7 @@ struct StoryCardView: View {
                         Text(category)
                             .font(.callout)
                         Spacer()
+                        //                        Text("\(storyLength, specifier: "%.1f") min")
                         Text("\(storyLength) min")
                             .font(.callout)
                             .foregroundStyle(.secondary)
