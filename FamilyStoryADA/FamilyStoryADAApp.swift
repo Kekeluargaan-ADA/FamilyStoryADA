@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FamilyStoryADAApp: App {
+    
     var body: some Scene {
         WindowGroup {
 //            ExampleCropView()
-            CameraView()
+//            CameraView()
+//            MiniQuizView()
+//            StoryDashboardView()
+            ImageCrawlView()
 //                .onAppear() {
 //                    let fileManager = FileManager.default
 //                    let url = "4ECBB088-FD5C-42CF-8C5C-5AE0D6EC5962.jpg"
@@ -25,6 +30,9 @@ struct FamilyStoryADAApp: App {
 //                        }
 //                    }
 //                }
+                .modelContainer(for: [
+                    StorySwiftData.self, PageSwiftData.self, UserSwiftData.self, StoryComponentSwiftData.self, RatioSwiftData.self
+                ])
         }
     }
 }
