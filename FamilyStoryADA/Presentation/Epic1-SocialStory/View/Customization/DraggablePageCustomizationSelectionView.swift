@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DraggablePageCustomizationSelectionView: View {
-    //    var viewModel: PageCustomizationViewModel
+    var viewModel: PageCustomizationViewModel
     @State var draggedPages: [DraggablePage]
     var selectedStoryId: UUID?
     
@@ -71,6 +71,6 @@ struct DraggablePageCustomizationSelectionView: View {
         }
 }
 
-#Preview {
-    DraggablePageCustomizationSelectionView(draggedPages: DraggablePage.loadDummyData(), selectedStoryId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac"))
-}
+//#Preview {
+//    DraggablePageCustomizationSelectionView(draggedPages: DraggablePage.loadDummyData(), selectedStoryId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac"))
+//}

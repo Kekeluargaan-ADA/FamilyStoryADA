@@ -16,7 +16,20 @@ struct CustomizationView: View {
     
     var body: some View {
         //TODO: change to real data
-        DraggablePageCustomizationSelectionView(draggedPages: viewModel.draggedPage)
+        HStack {
+            VStack(spacing: 32) {
+                CustomizedBackButton()
+                DraggablePageCustomizationSelectionView(viewModel: viewModel, draggedPages: viewModel.draggedPage)
+            }
+            
+            ZStack {
+                Image("CustomizationBackground")
+            }
+        }
+        .padding(.top, 26)
+        .ignoresSafeArea()
+        .background(Color("FSBlue6"))
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -38,11 +51,11 @@ struct CustomizationView: View {
                                                                            )
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
-                                                                            componentContent: "DummyImage",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
+                                                                               componentContent: "DummyImage",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
                                                        ], pageVideo: [],
                                                        pageSoundPath: "Sound"
                                                       ),
@@ -56,11 +69,11 @@ struct CustomizationView: View {
                                                                            )
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
-                                                                            componentContent: "DummyImage",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
+                                                                               componentContent: "DummyImage",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
                                                        ], pageVideo: [],
                                                        pageSoundPath: "Sound"
                                                       ),
@@ -74,11 +87,11 @@ struct CustomizationView: View {
                                                                            )
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
-                                                                            componentContent: "DummyImage",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
+                                                                               componentContent: "DummyImage",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
                                                        ], pageVideo: [],
                                                        pageSoundPath: "Sound"
                                                       )
