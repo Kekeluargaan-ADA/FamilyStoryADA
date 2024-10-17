@@ -47,9 +47,15 @@ class PageCustomizationViewModel: ObservableObject {
         )
         
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
+            story.pages.append(newPage)
             if storyUsecase.updateStory(story: story) {
-                story.pages.append(newPage)
                 fetchDraggedPage()
+                
+                if selectedPage == nil {
+                    if let firstPage = story.pages.first {
+                        self.selectedPage = firstPage
+                    }
+                }
             }
         }
     }
@@ -71,19 +77,16 @@ class PageCustomizationViewModel: ObservableObject {
     private func reorderStoryPages() {
         var reorderedPages = [PageEntity]()
         
-        // Loop through the draggedPages and find the matching PageEntity by pageId in story.pages
         for draggedPage in draggedPages {
             if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
                 reorderedPages.append(matchingPage)
             }
         }
         
-        // Update the story.pages to reflect the new order
         story.pages = reorderedPages
         
-        // Optionally, persist the updated story to ensure the new order is saved
         if storyUsecase.updateStory(story: story) {
-            fetchDraggedPage()  // Refresh draggedPages to ensure consistency
+            fetchDraggedPage()
         }
     }
     
@@ -91,6 +94,35 @@ class PageCustomizationViewModel: ObservableObject {
     public func selectPage(page: DraggablePage) {
         if let page = story.pages.first(where: {$0.pageId == page.id}) {
             self.selectedPage = page
+        }
+    }
+    
+    // when user want to delete page
+    public func deletePage() {
+        if let page = selectedPage {
+            if let storyIndex = story.pages.firstIndex(where: {page.pageId == $0.pageId}) {
+                //remove page swiftdata
+                guard pageUsecase.removePage(pageId: page.pageId) else { return }
+                
+                //remove page in story entity
+                story.pages.removeAll(where: {$0.pageId == page.pageId})
+                //update pageid in story swiftdata, by updating
+                if storyUsecase.updateStory(story: story) {
+                    //update draggedPage
+                    fetchDraggedPage()
+                    guard !story.pages.isEmpty else {
+                        selectedPage = nil
+                        return
+                    }
+                    if storyIndex > 0 {
+                        selectedPage = story.pages[storyIndex - 1]
+                    } else {
+                        selectedPage = story.pages[storyIndex]
+                    }
+                }
+            }
+            
+            
         }
     }
 }

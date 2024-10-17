@@ -120,6 +120,7 @@ struct StoryDashboardView: View {
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID())
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
                     if let story = Binding($viewModel.currentlyEditedStory) {
