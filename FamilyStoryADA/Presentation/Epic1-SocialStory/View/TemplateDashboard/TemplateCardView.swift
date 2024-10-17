@@ -8,12 +8,14 @@ import SwiftUI
 
 struct TemplateCardView: View {
     var template: TemplateEntity
+    @State private var isModalPresented = false
 
     var body: some View {
         Rectangle()
-            .foregroundStyle(.gray)
+            .foregroundStyle(Color("FSWhite"))
             .frame(width: 354, height: 280)
             .cornerRadius(12)
+            .shadow(radius: 4, y: 4)
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {
@@ -36,5 +38,11 @@ struct TemplateCardView: View {
                     Spacer().frame(height: 19)
                 }
             )
+            .onTapGesture {
+                isModalPresented = true
+            }
+            .sheet(isPresented: $isModalPresented) {
+                PagePreviewModalView(isPresented: $isModalPresented)
+            }
     }
 }
