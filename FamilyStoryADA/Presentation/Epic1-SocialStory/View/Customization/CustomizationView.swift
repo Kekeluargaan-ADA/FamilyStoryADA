@@ -11,6 +11,8 @@ struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: PageCustomizationViewModel
     
+    @State var currentText: String = ""
+    
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story))
     }
@@ -36,6 +38,52 @@ struct CustomizationView: View {
                             .font(.system(size: 24, weight: .medium))
                     }
                     .frame(width: 268, height: 45)
+                    VStack(spacing: 48) {
+                        HStack {
+                            ButtonCircle(heightRatio: 1.0, buttonImage: "trash", onTap: {
+                                //TODO: Delete page
+                            })
+                            Spacer()
+                            HStack (spacing: 12) {
+                                ButtonCircle(heightRatio: 1.0, buttonImage: "play", onTap: {
+                                    // TODO: Navigate to play story view
+                                })
+                                ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", onTap: {
+                                    // TODO: Navigate to quiz view
+                                })
+                            }
+                        }
+                        .padding(.top, 20)
+                        .padding(.horizontal, 46)
+                        
+                        VStack(alignment: .center, spacing: 19) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color("FSWhite"))
+                                    .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                    .shadow(radius: 4, x: 0, y: 4)
+                                VStack(spacing: 8) {
+                                    Image(systemName: "photo")
+                                        .font(.system(size: 36))
+                                        .foregroundStyle(Color("FSBlue9"))
+                                    Text("Upload Photo")
+                                        .font(.system(size: 24, weight: .medium))
+                                        .foregroundStyle(Color("FSBlue9"))
+                                }
+                            }
+                            .frame(width: 760, height: 468)
+                            
+                            TextField("Masukkan teks di sini", text: $currentText)
+                                .padding(.horizontal, 19)
+                                .padding(.vertical, 15)
+                                .frame(width: 760, height: 117)
+                                .font(.system(size: 32, weight: .semibold))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color("FSBorderBlue7"), lineWidth: 2)
+                                )
+                        }
+                    }
                 }
             }
         }
