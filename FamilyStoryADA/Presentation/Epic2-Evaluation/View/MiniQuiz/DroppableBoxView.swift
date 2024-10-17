@@ -16,7 +16,7 @@ struct DroppableBoxView: View {
                 Circle()
                     .foregroundStyle(.tertiary)
                 Text("\(order)")
-                    .font(.headline)
+                    .font(.system(size: 24))
                     .fontWeight(.bold)
             }
             .frame(width: 40, height: 40)

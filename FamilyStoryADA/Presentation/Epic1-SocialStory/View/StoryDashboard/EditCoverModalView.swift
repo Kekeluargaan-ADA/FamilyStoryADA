@@ -19,32 +19,21 @@ struct EditCoverModalView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack() {
-                Button(action: {
+                ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", onTap: {
                     presentationMode.wrappedValue.dismiss()
-                }) {
-                    //TODO: Change into component
-                    Image(systemName: "xmark")
-                        .foregroundColor(.gray)
-                        .padding()
-                }
+                })
                 Spacer()
                 
                 Text("Edit Cover")
-                    .font(.title)
+                    .font(.system(size: 32))
                     .fontWeight(.bold)
                 Spacer()
                 
-                Button(action: {
+                ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", onTap: {
                     story.storyName = storyName
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
-                }) {
-                    //TODO: Change into component
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.blue)
-                }
-                .padding()
+                })
             }
             
             ZStack() {

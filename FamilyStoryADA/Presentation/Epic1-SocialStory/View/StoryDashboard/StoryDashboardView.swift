@@ -33,6 +33,7 @@ struct StoryDashboardView: View {
                             .padding(.horizontal, 24)
                             .ignoresSafeArea()
                     }
+                    .frame(height: 804)
                     VStack {
                         HStack {
                             Text("My Story")
@@ -64,20 +65,45 @@ struct StoryDashboardView: View {
                                                         .padding(.horizontal, 10)
                                                 }
                                             } else {
-                                                NavigationLink(destination: CustomizationView(story: item),
-                                                               label: {
-                                                    StoryCardView(
-                                                        viewModel: viewModel,
-                                                        storyName: item.storyName,
-                                                        imagePath: item.storyCoverImagePath,
-                                                        category: item.templateCategory,
-                                                        storyLength: item.storyLength,
-                                                        lastRead: item.storyLastRead,
-                                                        story: item
-                                                    )
-                                                    .padding(.horizontal, 10)
-                                                })
-//                                                .navigationViewStyle(.plain)
+                                                ZStack(alignment: .topTrailing) {
+                                                    NavigationLink(destination: CustomizationView(story: item),
+                                                                   label: {
+                                                        StoryCardView(
+                                                            viewModel: viewModel,
+                                                            storyName: item.storyName,
+                                                            imagePath: item.storyCoverImagePath,
+                                                            category: item.templateCategory,
+                                                            storyLength: item.storyLength,
+                                                            lastRead: item.storyLastRead,
+                                                            story: item
+                                                        )
+                                                        .foregroundStyle(Color("FSBlack"))
+                                                        .padding(.horizontal, 10)
+                                                    })
+                                                    Menu {
+                                                        Button(action: {
+                                                            viewModel.currentlyEditedStory = item
+                                                            viewModel.isEditCoverSheetOpened.toggle()
+                                                        }) {
+                                                            Label("Edit Cover", systemImage: "photo")
+                                                        }
+                                                        
+                                                        Button(action: {
+                                                            viewModel.deleteStory(storyId: item.storyId)
+                                                        }) {
+                                                            Label("Hapus Story", systemImage: "trash.fill")
+                                                                .foregroundStyle(.red)
+                                                        }
+                                                    } label: {
+                                                        Image(systemName: "ellipsis")
+                                                            .font(.system(size: 24))
+                                                            .foregroundStyle(Color("FSBlack"))
+                                                            .padding()
+                                                    }
+
+                                                }
+                                                
+                                                //                                                .navigationViewStyle(.plain)
                                             }
                                         }
                                     }
