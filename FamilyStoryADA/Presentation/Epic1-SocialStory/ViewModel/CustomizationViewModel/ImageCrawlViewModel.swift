@@ -2,20 +2,22 @@
 //  SampleImageCrawlViewModel.swift
 //  FamilyStoryADA
 //
-//  Created by Daniel Ian Kurniawan on 02/10/24.
+//  Created by Daniel Ian Kurniawan on 17/10/24.
 //
 
 import SwiftUI
 import Vision
 import CoreImage.CIFilterBuiltins
 
-class SampleImageCrawlViewModel: ObservableObject {
+class ImageCrawlViewModel: ObservableObject {
     @Published var keyword: String = ""
     @Published var maxNum: String = "3"
     @Published var statusMessage: String = ""
     @Published var isLoading: Bool = false
     @Published var imageUrls: [String] = []
     @Published var processedImages: [UIImage] = []
+    @Published var shouldRemoveBackground: Bool = true // Option to remove background
+    @Published var selectedImage: UIImage? = nil // New property to hold the selected image
 
     private let imageProcessor = CrawlImageHelper()
 
@@ -63,9 +65,10 @@ class SampleImageCrawlViewModel: ObservableObject {
     private func downloadAndProcessImage(from url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data, let uiImage = UIImage(data: data) {
-                if let processedImage = self.imageProcessor.removeBackground(from: uiImage) {
-                    DispatchQueue.main.async {
-                        self.processedImages.append(processedImage)
+                let processedImage = self.shouldRemoveBackground ? self.imageProcessor.removeBackground(from: uiImage) : uiImage
+                DispatchQueue.main.async {
+                    if let image = processedImage {
+                        self.processedImages.append(image)
                     }
                 }
             }
@@ -92,7 +95,7 @@ class SampleImageCrawlViewModel: ObservableObject {
 
                 if let decodedResponse = try? JSONDecoder().decode(DeleteResponseObject.self, from: data!) {
                     self.statusMessage = decodedResponse.message
-                    self.processedImages.removeAll() 
+                    self.processedImages.removeAll()
                     self.clearImageCache()
                 } else {
                     self.statusMessage = "Failed to parse response"
@@ -105,5 +108,9 @@ class SampleImageCrawlViewModel: ObservableObject {
         let cache = URLCache.shared
         cache.removeAllCachedResponses()
         print("Image cache cleared")
+    }
+
+    func clearSelection() {
+        selectedImage = nil
     }
 }
