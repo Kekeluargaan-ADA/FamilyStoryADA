@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DraggablePageCustomizationSelectionView: View {
     var viewModel: PageCustomizationViewModel
-    @State var draggedPages: [DraggablePage]
+    @Binding var draggedPages: [DraggablePage]
     var selectedStoryId: UUID?
     
     @State private var targetedIndex: Int? = nil
@@ -19,11 +19,11 @@ struct DraggablePageCustomizationSelectionView: View {
                 DroppedPageTargetCustomizationView(isSelected: targetedIndex == -1)
                     .dropDestination(for: DraggablePage.self) { droppedPage, location in
                         if let page = droppedPage.first {
-                            movePage(page, toIndex: -1)
+                            viewModel.movePage(page, toIndex: -1)
                             return true
                         }
                         return false
-            
+                        
                     } isTargeted: { isTargeted in
                         if isTargeted {
                             targetedIndex = -1
@@ -41,8 +41,7 @@ struct DraggablePageCustomizationSelectionView: View {
                         .dropDestination(for: DraggablePage.self) { droppedPage, location in
                             
                             if let page = droppedPage.first {
-                                print("Moved")
-                                movePage(page, toIndex: index)
+                                viewModel.movePage(page, toIndex: index)
                                 return true
                             }
                             return false
@@ -54,21 +53,14 @@ struct DraggablePageCustomizationSelectionView: View {
                             }
                         }
                 }
+                Button(action: {
+                    viewModel.addNewBlankPage()
+                }, label: {
+                    AddNewPageButtonView()
+                })
             }
         }
     }
-    
-    // move page
-    func movePage(_ page: DraggablePage, toIndex newIndex: Int) {
-        var nextIndex = newIndex
-            if let currentIndex = draggedPages.firstIndex(where: { $0.id == page.id }) {
-                if currentIndex == newIndex {return}
-                if currentIndex > newIndex {nextIndex += 1}
-                draggedPages.remove(at: currentIndex)
-                let validIndex = min(max(nextIndex, 0), draggedPages.count)
-                draggedPages.insert(page, at: validIndex)
-            }
-        }
 }
 
 //#Preview {

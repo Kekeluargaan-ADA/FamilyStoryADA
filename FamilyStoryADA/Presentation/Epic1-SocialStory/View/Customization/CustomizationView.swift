@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CustomizationView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: PageCustomizationViewModel
     
     init(story: StoryEntity) {
@@ -18,8 +19,12 @@ struct CustomizationView: View {
         //TODO: change to real data
         HStack {
             VStack(spacing: 32) {
-                CustomizedBackButton()
-                DraggablePageCustomizationSelectionView(viewModel: viewModel, draggedPages: viewModel.draggedPage)
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    CustomizedBackButton()
+                })
+                DraggablePageCustomizationSelectionView(viewModel: viewModel, draggedPages: $viewModel.draggedPages)
             }
             
             ZStack {
