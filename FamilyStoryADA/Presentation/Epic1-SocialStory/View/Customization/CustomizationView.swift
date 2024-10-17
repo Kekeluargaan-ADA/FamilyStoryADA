@@ -25,7 +25,7 @@ struct CustomizationView: View {
                 }, label: {
                     CustomizedBackButton()
                 })
-                DraggablePageCustomizationSelectionView(viewModel: viewModel, draggedPages: $viewModel.draggedPages)
+                DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
             }
             
             ZStack {
@@ -91,6 +91,7 @@ struct CustomizationView: View {
         .ignoresSafeArea()
         .background(Color("FSBlue6"))
         .navigationBarBackButtonHidden()
+        .environmentObject(viewModel)
     }
 }
 

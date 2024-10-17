@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct DraggablePageCustomizationSelectionView: View {
-    var viewModel: PageCustomizationViewModel
+    @EnvironmentObject var viewModel: PageCustomizationViewModel
     @Binding var draggedPages: [DraggablePage]
-    var selectedStoryId: UUID?
     
     @State private var targetedIndex: Int? = nil
     var body: some View {
@@ -34,9 +33,13 @@ struct DraggablePageCustomizationSelectionView: View {
                 ForEach(Array(draggedPages.enumerated()), id: \.offset) { index, page in
                     DraggedPageView(imagePath: page.picturePath,
                                     order: index+1,
-                                    isSelected: selectedStoryId == page.id
+                                    isSelected: viewModel.selectedPage?.pageId == page.id
                     )
                     .draggable(page)
+                    .onTapGesture {
+                        print("Clicked")
+                        viewModel.selectPage(page: page)
+                    }
                     DroppedPageTargetCustomizationView(isSelected: targetedIndex == index)
                         .dropDestination(for: DraggablePage.self) { droppedPage, location in
                             

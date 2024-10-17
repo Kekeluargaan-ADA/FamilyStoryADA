@@ -10,6 +10,7 @@ import Foundation
 class PageCustomizationViewModel: ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
+    @Published var selectedPage: PageEntity?
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -18,6 +19,10 @@ class PageCustomizationViewModel: ObservableObject {
         self.story = story
         self.pageUsecase = ImplementedPageUsecase()
         self.storyUsecase = ImplementedStoryUsecase()
+        
+        if let firstPage = story.pages.first {
+            self.selectedPage = firstPage
+        }
         
         fetchDraggedPage()
     }
@@ -79,6 +84,13 @@ class PageCustomizationViewModel: ObservableObject {
         // Optionally, persist the updated story to ensure the new order is saved
         if storyUsecase.updateStory(story: story) {
             fetchDraggedPage()  // Refresh draggedPages to ensure consistency
+        }
+    }
+    
+    // when user select page
+    public func selectPage(page: DraggablePage) {
+        if let page = story.pages.first(where: {$0.pageId == page.id}) {
+            self.selectedPage = page
         }
     }
 }
