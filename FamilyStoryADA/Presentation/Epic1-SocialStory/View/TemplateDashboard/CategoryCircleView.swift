@@ -66,7 +66,13 @@ struct CategoryCircleView: View {
             }
             .buttonStyle(.plain)
             Spacer().frame(height: 8 * heightRatio)
-            Text(text)
+            if isSelected {
+                Text(text)
+                    .offset(y: -16 * heightRatio)
+            }
+            else {
+                Text(text)
+            }
         }
         .padding(20 * heightRatio)
     }
