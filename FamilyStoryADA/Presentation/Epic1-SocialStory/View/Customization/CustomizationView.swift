@@ -15,6 +15,7 @@ struct CustomizationView: View {
     
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story))
+        currentText = viewModel.selectedPage?.pageText.first?.componentContent ?? ""
     }
     
     var body: some View {
@@ -49,44 +50,41 @@ struct CustomizationView: View {
                             Spacer()
                             //TODO: Disable when page is null
                             HStack (spacing: 12) {
-                                Button(action: {
-                                    // TODO: Navigate to play story view
+                                NavigationLink(destination: {
+                                    PlayStoryView()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "play")
                                 })
+                                //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                                 
-                                Button(action: {
-                                    // TODO: Navigate to quiz view
+                                NavigationLink(destination: {
+                                    MiniQuizView()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller")
                                 })
-                                
+                                //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                             }
                         }
                         .padding(.top, 20)
                         .padding(.horizontal, 46)
                         
-                        if (viewModel.selectedPage != nil) {
+                        if let page = viewModel.selectedPage {
                             VStack(alignment: .center, spacing: 19) {
-                                Button(action: {
-                                    
-                                }, label: {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(Color("FSWhite"))
-                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                            .shadow(radius: 4, x: 0, y: 4)
-                                        VStack(spacing: 8) {
-                                            Image(systemName: "photo")
-                                                .font(.system(size: 36))
-                                                .foregroundStyle(Color("FSBlue9"))
-                                            Text("Upload Photo")
-                                                .font(.system(size: 24, weight: .medium))
-                                                .foregroundStyle(Color("FSBlue9"))
-                                        }
+                                if page.pagePicture.isEmpty {
+                                    Button(action: {
+                                        
+                                    }, label: {
+                                        EmptyImageCustomizationView()
+                                    })
+                                } else {
+                                    if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .frame(width: 760, height: 468)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
                                     }
-                                    .frame(width: 760, height: 468)
-                                })
+                                    // TODO: Add methods for SequencePicture
+                                }
                                 
                                 TextField("Masukkan teks di sini", text: $currentText)
                                     .padding(.horizontal, 19)
@@ -123,6 +121,7 @@ struct CustomizationView: View {
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
                                                                             componentRatio: nil,
                                                                             componentScale: nil,
                                                                             componentRotation: nil
@@ -130,6 +129,7 @@ struct CustomizationView: View {
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
                                                                                componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
                                                                                componentRatio: nil,
                                                                                componentScale: nil,
                                                                                componentRotation: nil
@@ -141,6 +141,7 @@ struct CustomizationView: View {
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
                                                                             componentRatio: nil,
                                                                             componentScale: nil,
                                                                             componentRotation: nil
@@ -148,6 +149,7 @@ struct CustomizationView: View {
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
                                                                                componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
                                                                                componentRatio: nil,
                                                                                componentScale: nil,
                                                                                componentRotation: nil
@@ -159,6 +161,7 @@ struct CustomizationView: View {
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
                                                                             componentRatio: nil,
                                                                             componentScale: nil,
                                                                             componentRotation: nil
@@ -166,6 +169,7 @@ struct CustomizationView: View {
                                                        ], pagePicture: [
                                                         PictureComponentEntity(componentId: UUID(),
                                                                                componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
                                                                                componentRatio: nil,
                                                                                componentScale: nil,
                                                                                componentRotation: nil

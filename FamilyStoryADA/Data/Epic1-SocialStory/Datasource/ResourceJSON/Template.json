@@ -10,6 +10,7 @@
                 [
                     {
                         "componentContent": "Dummy Text",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -24,6 +25,19 @@
                 [
                     {
                         "componentContent": "DummyImage",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.5,
+                            "yRatio": 0.5,
+                            "zRatio": 0
+                        },
+                        "componentScale": 2.0,
+                        "componentRotation": 180.0
+                    },
+                    {
+                        "componentContent": "Sequence1",
+                        "componentCategory": "SequencePicture",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -38,6 +52,7 @@
                 [
                     {
                         "componentContent": "DummyVideo.mp4",
+                        "componentCategory": "Video",
                         "componentRatio":
                         {
                             "xRatio": 0.1,
@@ -55,6 +70,7 @@
                 [
                     {
                         "componentContent": "Dummy Text 2",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.0,
@@ -69,6 +85,7 @@
                 [
                     {
                         "componentContent": "DumDum2.jpg",
+                        "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
                             "xRatio": 0.2,
@@ -108,6 +125,7 @@
                 [
                     {
                         "componentContent": "Dummy Text",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -121,7 +139,8 @@
                 "pagePicture":
                 [
                     {
-                        "componentContent": "DummyPage2",
+                        "componentContent": "DummyImage2",
+                        "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -136,6 +155,7 @@
                 [
                     {
                         "componentContent": "DummyVideo.mp4",
+                        "componentCategory": "Video",
                         "componentRatio":
                         {
                             "xRatio": 0.1,
@@ -153,6 +173,7 @@
                 [
                     {
                         "componentContent": "Dummy Text 2",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.0,
@@ -167,6 +188,7 @@
                 [
                     {
                         "componentContent": "DumDum2.jpg",
+                        "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
                             "xRatio": 0.2,

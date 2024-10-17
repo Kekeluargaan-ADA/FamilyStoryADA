@@ -60,7 +60,7 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) { // NavigationLink to TemplateCollectionView
+                                                NavigationLink(destination: TemplateCollectionView()) { 
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
                                                 }
