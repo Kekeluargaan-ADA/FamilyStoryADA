@@ -64,16 +64,19 @@ struct StoryDashboardView: View {
                                                         .padding(.horizontal, 10)
                                                 }
                                             } else {
-                                                StoryCardView(
-                                                    viewModel: viewModel,
-                                                    storyName: item.storyName,
-                                                    imagePath: item.storyCoverImagePath,
-                                                    category: item.templateCategory,
-                                                    storyLength: item.storyLength,
-                                                    lastRead: item.storyLastRead,
-                                                    story: item
-                                                )
-                                                .padding(.horizontal, 10)
+                                                NavigationLink(destination: CustomizationView(story: item),
+                                                               label: {
+                                                    StoryCardView(
+                                                        viewModel: viewModel,
+                                                        storyName: item.storyName,
+                                                        imagePath: item.storyCoverImagePath,
+                                                        category: item.templateCategory,
+                                                        storyLength: item.storyLength,
+                                                        lastRead: item.storyLastRead,
+                                                        story: item
+                                                    )
+                                                    .padding(.horizontal, 10)
+                                                })
                                             }
                                         }
                                     }
@@ -104,7 +107,7 @@ struct StoryDashboardView: View {
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {
                     if let name = viewModel.currentlyEditedStory?.storyName {
                         guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
-
+                        
                         story.storyName = name
                         
                         viewModel.updateStory(story: story)
@@ -114,7 +117,7 @@ struct StoryDashboardView: View {
                 .onChange(of: viewModel.currentlyEditedStory?.storyCoverImagePath) {
                     if let imagePath = viewModel.currentlyEditedStory?.storyCoverImagePath {
                         guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
-
+                        
                         story.storyCoverImagePath = imagePath
                         
                         viewModel.updateStory(story: story)
