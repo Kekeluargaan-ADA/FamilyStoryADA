@@ -61,16 +61,31 @@ struct ScrappingInitialView: View {
                                 spacing: 10
                             ) {
                                 ForEach(viewModel.processedImages.prefix(6), id: \.self) { image in
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                        .clipped()
-                                        .cornerRadius(12)
-                                        .shadow(radius: 2, y: 4)
+                                    ZStack {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                            .clipped()
+                                            .cornerRadius(12)
+                                            .shadow(radius: 2, y: 4)
+                                            .onTapGesture {
+                                                viewModel.selectedImage = image
+                                            }
+
+                                        // Overlay the SF symbol if the image is selected
+                                        if viewModel.selectedImage == image {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .resizable()
+                                                .foregroundColor(.green)
+                                                .frame(width: 40 * widthRatio, height: 40 * heightRatio)
+                                                .offset(x: 80 * widthRatio, y: -40 * heightRatio) // Adjust the position as needed
+                                        }
+                                    }
                                 }
                             }
                             .frame(width: 666 * widthRatio, height: 284 * heightRatio)
+
                             Spacer()
                         }
                         .padding(24 * heightRatio)

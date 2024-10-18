@@ -23,7 +23,7 @@ class ImageCrawlViewModel: ObservableObject {
 
     func crawlImages() {
         clearImageCache()
-        
+
         guard let url = URL(string: "https://working-epic-dodo.ngrok-free.app/crawl_images/?keyword=\(keyword)&max_num=\(maxNum)") else {
             statusMessage = "Invalid URL"
             return
@@ -49,7 +49,7 @@ class ImageCrawlViewModel: ObservableObject {
                 if let decodedResponse = try? JSONDecoder().decode(CrawlResponseObject.self, from: data) {
                     self.statusMessage = "\(decodedResponse.message) (Time taken: \(decodedResponse.timeTaken))"
                     self.imageUrls = decodedResponse.imageUrls
-                    
+
                     for imageUrl in self.imageUrls {
                         if let url = URL(string: imageUrl) {
                             self.downloadAndProcessImage(from: url)
@@ -73,6 +73,11 @@ class ImageCrawlViewModel: ObservableObject {
                 }
             }
         }.resume()
+    }
+
+    // New method to delete all images except the selected one
+    func deleteOtherImages(keeping selectedImage: UIImage) {
+        processedImages = [selectedImage]
     }
 
     func deleteImages() {
