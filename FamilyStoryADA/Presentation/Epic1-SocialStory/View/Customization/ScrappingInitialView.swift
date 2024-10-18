@@ -37,7 +37,6 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-                                // Pass the crawlImages call as the onCommit closure
                                 SearchBarView(searchText: $viewModel.keyword) {
                                     viewModel.crawlImages()
                                 }
