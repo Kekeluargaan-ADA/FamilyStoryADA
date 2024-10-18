@@ -1,4 +1,3 @@
-//
 //  CameraViewModel.swift
 //  CustomCameraApp
 //
@@ -14,7 +13,7 @@ import PhotosUI
 class CameraViewModel: ObservableObject {
     
     @ObservedObject var cameraManager = CameraManager()
-    
+    @Published var savedImageFilename: String?
     @Published var isFlashOn = false
     @Published var showAlertError = false
     @Published var showSettingAlert = false
