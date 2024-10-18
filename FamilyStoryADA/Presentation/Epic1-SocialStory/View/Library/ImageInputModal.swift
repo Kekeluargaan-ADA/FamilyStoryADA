@@ -1,11 +1,3 @@
-//
-//  Page.swift
-//  FamilyStoryADA
-//
-//  Created by Vincent Junior Halim on 14/10/24.
-//
-
-
 import SwiftUI
 
 struct ImageInputModal: View {
