@@ -39,6 +39,7 @@ struct StoryDashboardView: View {
                             Text("My Story")
                                 .font(.system(size: 40))
                                 .fontWeight(.bold)
+                                .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
                                 SearchBarView()

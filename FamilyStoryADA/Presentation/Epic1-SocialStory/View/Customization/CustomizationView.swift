@@ -22,6 +22,7 @@ struct CustomizationView: View {
         HStack {
             VStack(spacing: 32) {
                 Button(action: {
+                    viewModel.updatePage()
                     dismiss()
                 }, label: {
                     CustomizedBackButton()
@@ -37,6 +38,7 @@ struct CustomizationView: View {
                             .fill(Color("FSYellow"))
                         Text(viewModel.story.storyName)
                             .font(.system(size: 24, weight: .medium))
+                            .foregroundStyle(Color("FSBlack"))
                     }
                     .frame(width: 268, height: 45)
                     VStack(spacing: 48) {
@@ -99,6 +101,7 @@ struct CustomizationView: View {
                                 .padding(.vertical, 15)
                                 .frame(width: 760, height: 117)
                                 .font(.system(size: 32, weight: .semibold))
+                                .foregroundStyle(Color("FSBlack"))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(Color("FSBorderBlue7"), lineWidth: 2)
