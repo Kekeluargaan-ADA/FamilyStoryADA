@@ -47,7 +47,7 @@ struct CustomizationView: View {
                                 Button(action: {
                                     viewModel.deletePage()
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "trash")
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
                                 })
                             }
                             
@@ -57,14 +57,14 @@ struct CustomizationView: View {
                                 NavigationLink(destination: {
                                     PlayStoryView()
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "play")
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                                 })
                                 //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                                 
                                 NavigationLink(destination: {
                                     MiniQuizView(story: viewModel.story)
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller")
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
                                 })
                                 //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                             }

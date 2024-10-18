@@ -15,7 +15,7 @@ struct PlayStoryIntroView: View {
             let widthRatio = ratios.widthRatio
             
             VStack {
-                PlayStoryNavigationView(heightRatio: heightRatio, onTapHomeButton: {}, onTapAudioButton: {})
+                PlayStoryNavigationView(heightRatio: heightRatio, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
                 HStack {
                     Button(action: {
                     }) {

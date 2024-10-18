@@ -29,7 +29,7 @@ struct UploadPhotoModalView: View {
                                         Button(action: {
                                             
                                         }, label: {
-                                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark")
+                                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
                                         })
                                         Spacer()
                                     }

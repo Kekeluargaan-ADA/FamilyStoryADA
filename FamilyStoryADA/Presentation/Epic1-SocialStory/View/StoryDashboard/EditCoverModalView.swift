@@ -22,7 +22,7 @@ struct EditCoverModalView: View {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark")
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue)
                 })
                 
                 Spacer()
@@ -37,7 +37,7 @@ struct EditCoverModalView: View {
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark")
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", buttonColor: .blue)
                 })
                 
             }

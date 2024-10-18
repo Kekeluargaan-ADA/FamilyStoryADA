@@ -11,7 +11,7 @@ import CoreTransferable
 
 struct DraggablePage: Codable {
     
-    let id: UUID
+    let id: UUID?
     let picturePath: String
     
     
@@ -27,7 +27,7 @@ struct DraggablePage: Codable {
     static func loadEmptyArray(storyPageCount: Int) -> [DraggablePage] {
         var emptryArray: [DraggablePage] = []
         for _ in 0..<storyPageCount {
-            emptryArray.append(DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""))
+            emptryArray.append(DraggablePage(id: nil, picturePath: ""))
         }
         return emptryArray
     }
