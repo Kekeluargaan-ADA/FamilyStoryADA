@@ -18,6 +18,7 @@ struct FamilyStoryADAApp: App {
 //            MiniQuizView()
 //            StoryDashboardView()
             ImageCrawlView()
+//            PNGSequenceView()
 //                .onAppear() {
 //                    let fileManager = FileManager.default
 //                    let url = "4ECBB088-FD5C-42CF-8C5C-5AE0D6EC5962.jpg"
