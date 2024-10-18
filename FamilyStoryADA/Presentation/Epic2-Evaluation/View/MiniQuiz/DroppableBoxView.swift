@@ -24,7 +24,7 @@ struct DroppableBoxView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .frame(width: 166, height: 166)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(imagePath == "" ? .secondary : Color.blue)
                 Image(imagePath)
                     .resizable()
                     .scaledToFit()

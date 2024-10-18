@@ -26,17 +26,7 @@ class PageCustomizationViewModel: ObservableObject {
             self.selectedPage = firstPage
         }
         
-        fetchDraggedPage()
-    }
-    
-    //refresh dragged page
-    private func fetchDraggedPage() {
-        self.draggedPages = [DraggablePage]()
-        for page in story.pages {
-            draggedPages.append(DraggablePage(id: page.pageId,
-                                              picturePath: page.pagePicture.first?.componentContent ?? ""
-                                             ))
-        }
+        self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
     }
     
     //make new blank page
@@ -51,7 +41,7 @@ class PageCustomizationViewModel: ObservableObject {
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
             story.pages.append(newPage)
             if storyUsecase.updateStory(story: story) {
-                fetchDraggedPage()
+                self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
                 if selectedPage == nil {
                     if let firstPage = story.pages.first {
@@ -88,7 +78,7 @@ class PageCustomizationViewModel: ObservableObject {
         story.pages = reorderedPages
         
         if storyUsecase.updateStory(story: story) {
-            fetchDraggedPage()
+            self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
         }
     }
     
@@ -114,7 +104,7 @@ class PageCustomizationViewModel: ObservableObject {
                 //update pageid in story swiftdata, by updating
                 if storyUsecase.updateStory(story: story) {
                     //update draggedPage
-                    fetchDraggedPage()
+                    self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                     guard !story.pages.isEmpty else {
                         selectedPage = nil
                         return

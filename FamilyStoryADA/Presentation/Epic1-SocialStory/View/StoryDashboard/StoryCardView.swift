@@ -21,8 +21,7 @@ struct StoryCardView: View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 16)
                 .frame(width: 354, height: 320)
-                .foregroundStyle(.white)
-                .shadow(radius: 4, x: 0, y: 4)
+                .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
             VStack(alignment: .leading, spacing: 6) {
                 Image(imagePath)
                     .resizable()
