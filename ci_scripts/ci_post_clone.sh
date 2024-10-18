@@ -23,8 +23,26 @@ mkdir -p FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 echo "Creating Package.resolved..."
 cat <<EOL > FamilyStoryADA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 {
-  "originHash" : "13653293ccb2b03fb3a569cd04e20814001c852aa41dbb682ce436209ddd9ee2",
+  "originHash" : "fd1d50b35c782e276a6609615f79dc050f9f1b4b7074aea1936b78dce392e805",
   "pins" : [
+    {
+      "identity" : "generative-ai-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google-gemini/generative-ai-swift.git",
+      "state" : {
+        "revision" : "44b8ce120425f9cf53ca756f3434ca2c2696f8bd",
+        "version" : "0.5.6"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "fe4c6fe3a0aa66cdeb51d549623c82ca9704b9a5",
+        "version" : "4.5.0"
+      }
+    },
     {
       "identity" : "tocropviewcontroller",
       "kind" : "remoteSourceControl",
