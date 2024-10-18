@@ -11,13 +11,13 @@ struct ScrappingInitialView: View {
     @State private var isModalPresented = false
     @StateObject private var viewModel = ImageCrawlViewModel()
     @State private var isImageSelected: Bool = false
-    
+
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
             let heightRatio = ratios.heightRatio
             let widthRatio = ratios.widthRatio
-            
+
             ZStack {
                 Rectangle()
                     .foregroundColor(Color(red: 0.96, green: 0.99, blue: 0.99))
@@ -37,21 +37,15 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-                                SearchBarView()
-                                ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", onTap: {})
+                                // Pass the crawlImages call as the onCommit closure
+                                SearchBarView(searchText: $viewModel.keyword) {
+                                    viewModel.crawlImages()
+                                }
+                                ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", onTap: {
+                                    viewModel.clearSelection()
+                                })
                             }
-                            TextField("Enter keyword", text: $viewModel.keyword)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding()
-                            Button(action: {
-                                viewModel.crawlImages()
-                            }) {
-                                Text("Crawl Images")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .cornerRadius(8)
-                            }
+                            
                             Button(action: {
                                 viewModel.deleteImages()
                             }) {
@@ -62,7 +56,7 @@ struct ScrappingInitialView: View {
                                     .cornerRadius(8)
                             }
                             .disabled(viewModel.isLoading)
-                            
+
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
@@ -87,8 +81,3 @@ struct ScrappingInitialView: View {
         }
     }
 }
-
-#Preview {
-    ScrappingInitialView()
-}
-

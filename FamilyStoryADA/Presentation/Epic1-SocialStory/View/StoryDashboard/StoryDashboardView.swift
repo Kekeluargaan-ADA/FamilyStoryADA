@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct StoryDashboardView: View {
+    @State private var keywords: String = ""
     
     @StateObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
@@ -40,7 +41,7 @@ struct StoryDashboardView: View {
                                 .fontWeight(.bold)
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
-                                SearchBarView()
+                                SearchBarView(searchText: $keywords, onCommit: {})
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -104,7 +105,7 @@ struct StoryDashboardView: View {
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {
                     if let name = viewModel.currentlyEditedStory?.storyName {
                         guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
-
+                        
                         story.storyName = name
                         
                         viewModel.updateStory(story: story)
@@ -114,7 +115,7 @@ struct StoryDashboardView: View {
                 .onChange(of: viewModel.currentlyEditedStory?.storyCoverImagePath) {
                     if let imagePath = viewModel.currentlyEditedStory?.storyCoverImagePath {
                         guard let story = viewModel.stories.first(where: {$0.storyId == viewModel.currentlyEditedStory?.storyId}) else { return }
-
+                        
                         story.storyCoverImagePath = imagePath
                         
                         viewModel.updateStory(story: story)
