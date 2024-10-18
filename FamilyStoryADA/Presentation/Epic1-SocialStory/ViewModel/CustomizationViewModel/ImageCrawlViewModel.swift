@@ -11,13 +11,13 @@ import CoreImage.CIFilterBuiltins
 
 class ImageCrawlViewModel: ObservableObject {
     @Published var keyword: String = ""
-    @Published var maxNum: String = "3"
+    @Published var maxNum: String = "6"
     @Published var statusMessage: String = ""
     @Published var isLoading: Bool = false
     @Published var imageUrls: [String] = []
     @Published var processedImages: [UIImage] = []
-    @Published var shouldRemoveBackground: Bool = true // Option to remove background
-    @Published var selectedImage: UIImage? = nil // New property to hold the selected image
+    @Published var shouldRemoveBackground: Bool = false
+    @Published var selectedImage: UIImage? = nil
 
     private let imageProcessor = CrawlImageHelper()
 
