@@ -137,15 +137,20 @@ class PageCustomizationViewModel: ObservableObject {
     }
     
     private func updateTextComponent(page: PageEntity) {
-        guard !page.pageText.isEmpty else {
-            return
-        }
-        
+
         if let text = page.pageText.first {
             
             if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
                 changedPage.pageText = []
                 changedPage.pageText.append(text)
+            } else {
+                if componentUsecase.addNewComponent(component: text) != nil {
+                    page.pageText = []
+                    page.pageText.append(text)
+                    //TODO: Update id in page
+                    
+                    _ = pageUsecase.editPage(page: page)
+                }
             }
         }
     }
@@ -160,6 +165,8 @@ class PageCustomizationViewModel: ObservableObject {
                 if componentUsecase.addNewComponent(component: picture) != nil {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
+                    //TODO: Update id in page
+                    _ = pageUsecase.editPage(page: page)
                 }
             }
         }

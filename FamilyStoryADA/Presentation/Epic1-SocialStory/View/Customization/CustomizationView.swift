@@ -143,6 +143,12 @@ struct CustomizationView: View {
         // TODO: Notify to update SwiftData model
         if let selectedPage = viewModel.selectedPage, !selectedPage.pageText.isEmpty {
             selectedPage.pageText.first?.componentContent = currentText
+        } else {
+            viewModel.selectedPage?.pageText = []
+            viewModel.selectedPage?.pageText.append(TextComponentEntity(componentId: UUID(),
+                                                                        componentContent: currentText,
+                                                                        componentCategory: "Text"
+                                                                       ))
         }
     }
 }
