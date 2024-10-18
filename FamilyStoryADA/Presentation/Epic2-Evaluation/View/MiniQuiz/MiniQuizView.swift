@@ -24,39 +24,8 @@ struct MiniQuizView: View {
                 .font(.system(size: 32, weight: .semibold))
                 .foregroundStyle(.black)
             Spacer(minLength: 50)
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(Array(viewModel.droppableBox.enumerated()), id: \.offset) { index, page in
-                        DroppableBoxView(order: index+1, imagePath: page.picturePath)
-                            .dropDestination(for: DraggablePage.self) { droppedPage, location in
-                                
-                                guard page.id == nil else { return false }
-                                
-                                for page in droppedPage {
-                                    guard !viewModel.droppableBox.contains(where: {$0.id == page.id}) && viewModel.droppableBox[index].picturePath == "" else { return false }
-                                    
-                                    viewModel.draggedPages.removeAll(where: { $0.id == page.id })
-                                    
-                                    viewModel.droppableBox[index] = page
-                                }
-                                
-                                if viewModel.isReadyForChecking() {
-                                    viewModel.checkAnswer()
-                                    
-                                }
-                                return true
-                            } isTargeted: { isTargeted in
-                                
-                            }
-                            .onTapGesture {
-                                if page.id != nil {
-                                    viewModel.draggedPages.append(page)
-                                    viewModel.droppableBox[index] = DraggablePage(id: nil, picturePath: "")
-                                }
-                            }
-                    }
-                }
-            }
+            
+            DroppableArrayView()
             .padding(.horizontal, 49)
             Spacer(minLength: 53)
             ZStack {
@@ -88,6 +57,7 @@ struct MiniQuizView: View {
         }
         .ignoresSafeArea()
         .background(Color("FSYellow1"))
+        .environmentObject(viewModel)
     }
 }
 

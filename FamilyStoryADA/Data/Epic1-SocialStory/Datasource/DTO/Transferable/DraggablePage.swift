@@ -24,10 +24,10 @@ struct DraggablePage: Codable {
         ]
     }
     
-    static func loadEmptyArray(storyPageCount: Int) -> [DraggablePage] {
-        var emptryArray: [DraggablePage] = []
+    static func loadEmptyArray(storyPageCount: Int) -> [(DraggablePage, Bool)] {
+        var emptryArray: [(DraggablePage, Bool)] = []
         for _ in 0..<storyPageCount {
-            emptryArray.append(DraggablePage(id: nil, picturePath: ""))
+            emptryArray.append((DraggablePage(id: nil, picturePath: ""), false))
         }
         return emptryArray
     }
