@@ -99,10 +99,9 @@ struct EditCoverModalView: View {
                     }
                     .padding(28)
                 }
-                .background(Color("FSWhite"))
+                .background(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
                 .frame(width: 580, height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(radius: 4, x:0, y: 4)
                 .padding(.horizontal)
             }
         }

@@ -62,7 +62,7 @@ struct CustomizationView: View {
                                 //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                                 
                                 NavigationLink(destination: {
-                                    MiniQuizView()
+                                    MiniQuizView(story: viewModel.story)
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller")
                                 })

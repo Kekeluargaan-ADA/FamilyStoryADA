@@ -24,19 +24,22 @@ struct DraggablePage: Codable {
         ]
     }
     
-    static func loadEmptyArray() -> [DraggablePage] {
-        return [
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-        ]
+    static func loadEmptyArray(storyPageCount: Int) -> [DraggablePage] {
+        var emptryArray: [DraggablePage] = []
+        for _ in 0..<storyPageCount {
+            emptryArray.append(DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""))
+        }
+        return emptryArray
+    }
+    
+    public static func fetchDraggedPage(story: StoryEntity) -> [DraggablePage] {
+        var draggedPages = [DraggablePage]()
+        for page in story.pages {
+            draggedPages.append(DraggablePage(id: page.pageId,
+                                              picturePath: page.pagePicture.first?.componentContent ?? ""
+                                             ))
+        }
+        return draggedPages
     }
 }
 
