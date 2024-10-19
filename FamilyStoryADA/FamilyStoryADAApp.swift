@@ -17,10 +17,10 @@ struct FamilyStoryADAApp: App {
 //            ExampleCropView()
 //            CameraView()
 //            MiniQuizView()
-//            StoryDashboardView()
+            StoryDashboardView()
 //            ImageCrawlView()
 //            PNGSequenceView()
-            ScrappingInitialView()
+//            ScrappingInitialView()
 
 //                .onAppear() {
 //                    let fileManager = FileManager.default
