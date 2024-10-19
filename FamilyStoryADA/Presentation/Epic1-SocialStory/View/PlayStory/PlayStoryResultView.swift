@@ -15,7 +15,7 @@ struct PlayStoryResultView: View {
             let widthRatio = ratios.widthRatio
             
             VStack {
-                PlayStoryNavigationView(heightRatio: heightRatio, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+                PlayStoryNavigationView(heightRatio: heightRatio, title: "title", buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
                 Spacer().frame(width: 85 * heightRatio)
                 ZStack {
                     Rectangle()
