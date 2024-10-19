@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlayStoryNavigationView: View {
     let heightRatio: CGFloat
+    let title: String
     let buttonColor: ButtonPreset
     let onTapHomeButton: () -> Void
     let onTapAudioButton: () -> Void
@@ -21,9 +22,10 @@ struct PlayStoryNavigationView: View {
                 ButtonCircle(heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
             })
             Spacer()
-            Text("Title")
-                .font(.system(size: 26 * heightRatio))
-                .fontWeight(.medium)
+            Text(title)
+                .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
+                .fontWeight(.bold)
+                .foregroundStyle(Color("FSBlack"))
             Spacer()
             Button(action: {
                 onTapAudioButton()
@@ -35,5 +37,5 @@ struct PlayStoryNavigationView: View {
 }
 
 #Preview {
-    PlayStoryNavigationView(heightRatio: 1, buttonColor: .blue, onTapHomeButton: {}, onTapAudioButton: {})
+    PlayStoryNavigationView(heightRatio: 1, title: "Title", buttonColor: .blue, onTapHomeButton: {}, onTapAudioButton: {})
 }

@@ -27,7 +27,9 @@ struct DroppableArrayView: View {
                             }
                             
                             if viewModel.isReadyForChecking() {
-                                viewModel.checkAnswer()
+                                if viewModel.checkAnswer() {
+                                    viewModel.isAllCorrect = true
+                                }
                                 
                             }
                             return true

@@ -22,9 +22,7 @@ class PageCustomizationViewModel: ObservableObject {
         self.storyUsecase = ImplementedStoryUsecase()
         self.componentUsecase = ImplementedComponentUsecase()
         
-        if let firstPage = story.pages.first {
-            self.selectedPage = firstPage
-        }
+        self.selectedPage = story.pages[1]
         
         self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
     }
