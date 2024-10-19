@@ -31,7 +31,7 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         LSRequiresIPhoneOS: YES
-        UILaunchScreen: ""
+        UILaunchStoryboardName: "LaunchScreen"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
