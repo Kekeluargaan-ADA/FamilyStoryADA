@@ -1,12 +1,6 @@
-//
-//  Page.swift
-//  FamilyStoryADA
-//
-//  Created by Vincent Junior Halim on 14/10/24.
-//
-
 import PhotosUI
 import SwiftUI
+
 
 struct ImageInputModal: View {
     @Environment(\.dismiss) var dismiss
@@ -24,9 +18,8 @@ struct ImageInputModal: View {
 
                 Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
 
-                // Display saved image if path exists, otherwise show placeholder
+                // Display saved image if exists, otherwise show placeholder
                 if let uiImage = viewModel.savedImage {
-                    // Display the image
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
@@ -64,7 +57,7 @@ struct ImageInputModal: View {
                 .padding()
 
                 Button(action: {
-                    // Your action for the next button
+                    // Action for the "Next" button
                 }) {
                     Text("Lanjut")
                         .foregroundColor(.white)
@@ -82,18 +75,10 @@ struct ImageInputModal: View {
     }
 }
 
-
-
-#Preview {
-    @Previewable @State var isPresented = true  // State for preview purposes
-    ImageInputModal(isPresented: $isPresented)
-}
-
-
 struct ChangePictureButton: View {
     @Binding var showCropView: Bool
     @Binding var selectedImage: UIImage?
-    @ObservedObject var viewModel: CameraViewModel  // Use ObservedObject to bind the shared viewModel
+    @ObservedObject var viewModel: CameraViewModel  // Shared ViewModel
 
     @State private var navigateToCamera = false  // For taking a photo
     @State private var showingImagePicker = false  // To show image picker sheet
@@ -101,14 +86,12 @@ struct ChangePictureButton: View {
     var body: some View {
         VStack {
             Menu {
-                // Button to show the image picker sheet
                 Button(action: {
                     showingImagePicker = true
                 }) {
                     Label("Choose Photo", systemImage: "photo")
                 }
 
-                // Button to trigger navigation to CameraView
                 Button(action: {
                     navigateToCamera = true
                 }) {
@@ -129,55 +112,29 @@ struct ChangePictureButton: View {
             }
         }
         .sheet(isPresented: $showingImagePicker, onDismiss: {
-            if selectedImage != nil {
+            if let selectedImage = selectedImage {
                 // Show crop view once an image is selected
                 showCropView = true
             }
         }) {
             ImagePicker(selectedImage: $selectedImage)
         }
+        
+        // Show the cropping view when image is selected
         NavigationLink(
-            destination: cropView(),
+            destination: CropImageView(selectedImage: $selectedImage, showCropView: $showCropView, viewModel: viewModel),
             isActive: $showCropView,
             label: {
                 EmptyView()
             }
         )
     }
-
-    // Function to load and present CropView after image selection
-    @ViewBuilder
-    private func cropView() -> some View {
-        if let selectedImage = selectedImage {
-            CropView(image: selectedImage, croppingStyle: .default, croppingOptions: .init()) { image in
-                // Handle cropped image here
-                viewModel.capturedImage = nil
-                viewModel.photosPickerItem = nil
-
-                // Save image and get the filename
-                let filename = CameraDelegate.saveImageToAppStorage(image.image)
-                viewModel.savedImageFilename = filename
-                viewModel.savedImage = CameraDelegate.loadImageFromAppStorage(named: filename)
-                // Save the image to gallery
-                print("INI FILE NAME :\(filename)")
-                CameraDelegate.saveImageToGallery(image.image)
-
-                // Dismiss crop view after saving
-                showCropView = false
-            } didCropImageToRect: { _ in
-                // Handle additional crop rect logic if needed
-            } didFinishCancelled: { _ in
-                // Handle cancel action
-                viewModel.capturedImage = nil
-                viewModel.photosPickerItem = nil
-                showCropView = false
-            }
-            .ignoresSafeArea()
-        } else {
-            EmptyView()
-        }
-    }
 }
 
 
 
+
+#Preview {
+    @Previewable @State var isPresented = true  // State for preview purposes
+    ImageInputModal(isPresented: $isPresented)
+}
