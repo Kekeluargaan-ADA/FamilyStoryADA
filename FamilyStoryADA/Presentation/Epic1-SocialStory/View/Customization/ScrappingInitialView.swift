@@ -11,13 +11,13 @@ struct ScrappingInitialView: View {
     @State private var isModalPresented = false
     @StateObject private var viewModel = ImageCrawlViewModel()
     @State private var isImageSelected: Bool = false
-
+    
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
             let heightRatio = ratios.heightRatio
             let widthRatio = ratios.widthRatio
-
+            
             ZStack {
                 Rectangle()
                     .foregroundColor(Color(red: 0.96, green: 0.99, blue: 0.99))
@@ -55,7 +55,7 @@ struct ScrappingInitialView: View {
                                     .cornerRadius(8)
                             }
                             .disabled(viewModel.isLoading)
-
+                            
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
@@ -72,23 +72,37 @@ struct ScrappingInitialView: View {
                                             .onTapGesture {
                                                 viewModel.selectedImage = image
                                             }
-
-                                        // Overlay the SF symbol if the image is selected
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    .stroke(viewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                            )
+                                        
                                         if viewModel.selectedImage == image {
                                             Image(systemName: "checkmark.circle.fill")
-                                                .resizable()
-                                                .foregroundColor(.green)
-                                                .frame(width: 40 * widthRatio, height: 40 * heightRatio)
-                                                .offset(x: 80 * widthRatio, y: -40 * heightRatio) // Adjust the position as needed
+                                                .foregroundColor(Color("FSWhite"))
+                                                .font(.system(size: 20 * heightRatio))
+                                                .bold()
+                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
                                         }
                                     }
                                 }
                             }
                             .frame(width: 666 * widthRatio, height: 284 * heightRatio)
-
+                            
                             Spacer()
+                            
+                            ZStack {
+                                Rectangle()
+                                    .frame(width: 160, height: 60)
+                                    .foregroundStyle(Color("FSBlue9"))
+                                    .cornerRadius(40)
+                                    .overlay(
+                                        Text("Pilih")
+                                            .foregroundColor(.white)
+                                    )
+                            }
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
