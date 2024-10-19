@@ -13,6 +13,7 @@ struct FamilyStoryADAApp: App {
     
     var body: some Scene {
         WindowGroup {
+//            ExampleView()
 //            ExampleCropView()
 //            CameraView()
 //            MiniQuizView()

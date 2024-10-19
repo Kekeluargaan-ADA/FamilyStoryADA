@@ -74,20 +74,19 @@ struct CustomizationView: View {
                         
                         if let page = viewModel.selectedPage {
                             VStack(alignment: .center, spacing: 19) {
-                                if page.pagePicture.isEmpty {
+                                if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                                    Image(imagePath)
+                                        .resizable()
+                                        .frame(width: 760, height: 468)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first {
+                                    
+                                } else {
                                     Button(action: {
                                         // TODO: Pop up menu
                                     }, label: {
                                         EmptyImageCustomizationView()
                                     })
-                                } else {
-                                    if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                        Image(imagePath)
-                                            .resizable()
-                                            .frame(width: 760, height: 468)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    }
-                                    // TODO: Add methods for SequencePicture
                                 }
                                 
                                 TextField("Masukkan teks di sini", text: Binding(
