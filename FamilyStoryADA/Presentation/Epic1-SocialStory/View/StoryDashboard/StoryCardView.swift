@@ -21,8 +21,7 @@ struct StoryCardView: View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 16)
                 .frame(width: 354, height: 320)
-                .foregroundStyle(.white)
-                .shadow(radius: 4, x: 0, y: 4)
+                .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
             VStack(alignment: .leading, spacing: 6) {
                 Image(imagePath)
                     .resizable()
@@ -30,19 +29,20 @@ struct StoryCardView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
                         Text(category)
-                            .font(.system(size: 16))
+                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
                             .foregroundStyle(Color("FSBlack"))
                         Spacer()
                         Text("\(storyLength, specifier: "%.1f") min")
-                            .font(.system(size: 14))
+                            .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
                             .foregroundStyle(Color("FSGrey"))
                     }
                     Text(storyName)
-                        .font(.system(size: 24, weight: .bold))
+                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                        .fontWeight(.semibold)
                     
 //                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
                     Text("Terakhir dilihat \(lastRead.formatted(.dateTime.day().month()))")
-                        .font(.system(size: 14))
+                        .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
                         .foregroundStyle(Color("FSBlue9"))
                         .italic()
                 }

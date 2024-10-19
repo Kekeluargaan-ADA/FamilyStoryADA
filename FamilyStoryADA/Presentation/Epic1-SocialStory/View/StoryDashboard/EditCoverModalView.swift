@@ -22,7 +22,7 @@ struct EditCoverModalView: View {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark")
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue)
                 })
                 
                 Spacer()
@@ -37,7 +37,7 @@ struct EditCoverModalView: View {
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark")
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", buttonColor: .blue)
                 })
                 
             }
@@ -99,10 +99,9 @@ struct EditCoverModalView: View {
                     }
                     .padding(28)
                 }
-                .background(Color("FSWhite"))
+                .background(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
                 .frame(width: 580, height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(radius: 4, x:0, y: 4)
                 .padding(.horizontal)
             }
         }

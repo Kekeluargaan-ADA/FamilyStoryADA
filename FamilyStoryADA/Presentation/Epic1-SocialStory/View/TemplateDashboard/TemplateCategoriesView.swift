@@ -19,7 +19,7 @@ struct TemplateCategoriesView: View {
                 Button(action: {
                     
                 }, label: {
-                    ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left")
+                    ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                 })
                 Spacer()
             }

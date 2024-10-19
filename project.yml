@@ -50,6 +50,8 @@ targets:
                 ]
               UTTypeDescription: "DraggablePage"
               UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
+        UIAppFonts:
+          - Fredoka-VariableFont_wdth,wght.ttf
     dependencies:
       - package: TOCropViewController
         products:

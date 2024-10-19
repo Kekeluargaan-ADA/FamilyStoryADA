@@ -11,9 +11,9 @@ struct EmptyImageCustomizationView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color("FSWhite"))
+                .fill(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
                 .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                .shadow(radius: 4, x: 0, y: 4)
+                
             VStack(spacing: 8) {
                 Image(systemName: "photo")
                     .font(.system(size: 36))

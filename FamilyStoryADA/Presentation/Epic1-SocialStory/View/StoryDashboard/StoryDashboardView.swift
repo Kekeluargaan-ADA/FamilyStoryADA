@@ -37,8 +37,8 @@ struct StoryDashboardView: View {
                     VStack {
                         HStack {
                             Text("My Story")
-                                .font(.system(size: 40))
-                                .fontWeight(.bold)
+                                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                                .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
@@ -98,6 +98,7 @@ struct StoryDashboardView: View {
                                                     } label: {
                                                         Image(systemName: "ellipsis")
                                                             .font(.system(size: 24))
+                                                            .fontWeight(.bold)
                                                             .foregroundStyle(Color("FSBlack"))
                                                             .padding()
                                                     }

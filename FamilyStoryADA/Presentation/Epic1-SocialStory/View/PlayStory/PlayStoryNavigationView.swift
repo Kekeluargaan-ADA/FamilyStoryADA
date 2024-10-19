@@ -9,14 +9,16 @@ import SwiftUI
 
 struct PlayStoryNavigationView: View {
     let heightRatio: CGFloat
-    let onTap: () -> Void
+    let buttonColor: ButtonPreset
+    let onTapHomeButton: () -> Void
+    let onTapAudioButton: () -> Void
     
     var body: some View {
         HStack {
             Button(action: {
-                
+                onTapHomeButton()
             }, label: {
-                ButtonCircle(heightRatio: heightRatio, buttonImage: "house")
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
             })
             Spacer()
             Text("Title")
@@ -24,14 +26,14 @@ struct PlayStoryNavigationView: View {
                 .fontWeight(.medium)
             Spacer()
             Button(action: {
-                
+                onTapAudioButton()
             }, label: {
-                ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2")
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
             })
         }
     }
 }
 
 #Preview {
-    PlayStoryNavigationView(heightRatio: 1, onTap: {})
+    PlayStoryNavigationView(heightRatio: 1, buttonColor: .blue, onTapHomeButton: {}, onTapAudioButton: {})
 }
