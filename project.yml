@@ -38,18 +38,21 @@ targets:
         UISupportedInterfaceOrientations~iphone:
           [
             UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
         UISupportedInterfaceOrientations~ipad:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UTExportedTypeDeclarations:
-            - UTTypeConformsTo:
-                [
-                  "com.public.data"
-                ]
-              UTTypeDescription: "DraggablePage"
-              UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
+          - UTTypeConformsTo: ["com.public.data"]
+            UTTypeDescription: "DraggablePage"
+            UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
         UIAppFonts:
           - Fredoka-VariableFont_wdth,wght.ttf
     dependencies:
