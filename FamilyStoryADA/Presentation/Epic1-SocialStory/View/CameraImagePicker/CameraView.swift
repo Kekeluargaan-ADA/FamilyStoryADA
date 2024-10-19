@@ -141,9 +141,7 @@ struct CameraView: View {
             )
         } else {
             // Return the ImageInputModal view here with the updated image path
-            return AnyView(
-//                ImageInputModal(isPresented: $isPresented)
-                Text("Cibai lan: \(viewModel.savedImageFilename ?? "kontol")")
+            return AnyView(EmptyView()
                     .onAppear(){
                         dismiss()
                 }

@@ -1,56 +1,62 @@
+//
+//  Page.swift
+//  FamilyStoryADA
+//
+//  Created by Vincent Junior Halim on 14/10/24.
+//
+
+
 import SwiftUI
 
 struct ImageInputModal: View {
-    @StateObject var viewModel = CameraViewModel()  // You are initializing a new instance, but we can remove this for better consistency
+    @StateObject var viewModel = CameraViewModel()
     @Binding var isPresented: Bool
-    @State private var isEditing: Bool = false  // To track if the text is being edited
-    @State private var name: String = "Hendra"  // The editable text
-
+    @State private var isEditing: Bool = false
+    @State private var name: String = "Hendra"
+    
     var body: some View {
         NavigationView {
             VStack {
                 PreviewModalHeader(isPresented: isPresented)
                 
-                Text("Intinya kasih tau ni foto buat dipake di dalem story")
+                Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                 
-                // Rectangle becomes a NavigationLink to CameraView
-                NavigationLink(destination: CameraView()) {
-//                    Text(viewModel.savedImageFilename)
-                    if let path = viewModel.savedImageFilename {
-                        // Display the image path (filename)
-                        Text("Image saved at: \(path)")
-                            .font(.headline)
-                            .foregroundColor(.green)
-                            .padding()
-                    } else {
-                        Rectangle()
-                            .frame(width: 360, height: 450)
-                            .foregroundColor(.gray)
-                            .overlay(
-                                Text("Tap to open Camera")
-                                    .foregroundColor(.white)
-                                    .font(.headline)
-                            )
-                    }
+                // Display saved image if path exists, otherwise show placeholder
+                if let imagePath = viewModel.savedImageFilename,
+                   let uiImage = loadImageFromAppStorage(named: imagePath) {
+                    // Display the image
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300, height: 400)
+                        .overlay(alignment: .bottom) {
+                            ChangePictureButton()
+                        }
+                } else {
+                    // Placeholder if no image is found
+                    Rectangle()
+                        .frame(width: 300, height: 400)
+                        .foregroundColor(.gray)
+                        .overlay(alignment: .bottom) {
+                            ChangePictureButton()
+                        }
                 }
                 
                 HStack {
                     if isEditing {
-                        // Show a TextField when editing
+                        // Show TextField for editing name
                         TextField("Enter name", text: $name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200)  // Set width to fit inside HStack
+                            .frame(width: 200)
                     } else {
-                        // Show the regular Text when not editing
                         Text(name)
                     }
                     
-                    // Button to toggle between editing and non-editing
                     Button(action: {
-                        isEditing.toggle()  // Toggle the editing state
+                        isEditing.toggle()  // Toggle editing state
                     }) {
                         Image(systemName: "pencil")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.gray)
                     }
                 }
                 .padding()
@@ -61,21 +67,102 @@ struct ImageInputModal: View {
                     Text("Lanjut")
                         .foregroundColor(.white)
                         .padding(20)
-                        .background(Color.green)
+                        .background(Color(.fsBlue9))
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .frame(width: 360, alignment: .trailing)
             }
+            .background(Color(.fsBlue1))
             .padding()
         }
         .navigationViewStyle(.stack)
-        // Ensure that the `viewModel` is received from outside if injected
         .environmentObject(viewModel)
     }
+    
+    // Function to load the image from app storage
+    func loadImageFromAppStorage(named imageName: String) -> UIImage? {
+        let fileManager = FileManager.default
+        
+        // Get the path to the app's Documents directory
+        guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        
+        // Append the image name to the directory path
+        let imagePath = documentDirectory.appendingPathComponent(imageName)
+        
+        // Check if the image file exists at the path
+        if fileManager.fileExists(atPath: imagePath.path) {
+            return UIImage(contentsOfFile: imagePath.path)
+        } else {
+            print("Image not found at path: \(imagePath.path)")
+            return nil
+        }
+    }
 }
+
 
 #Preview {
     @Previewable @State var isPresented = true  // State for preview purposes
     ImageInputModal(isPresented: $isPresented)
 }
 
+
+struct ChangePictureButton: View {
+    @State private var navigateToCamera = false  // For taking a photo
+    @State private var navigateToPhotoPicker = false  // For choosing a photo
+    @State private var isTapped = false
+    var body: some View {
+        Menu {
+                    Button(action: {
+                        // Trigger navigation to PhotoPickerView when "Choose Photo" is tapped
+                        navigateToPhotoPicker = true
+                    }) {
+                        Label("Choose Photo", systemImage: "photo")
+                    }
+                    Button(action: {
+                        // Trigger navigation to CameraView when "Take Photo" is tapped
+                        navigateToCamera = true
+                    }) {
+                        Label("Take Photo", systemImage: "camera")
+                    }
+                } label: {
+                    Text("Ubah foto")
+                        .foregroundColor(.black)
+                        .padding()
+                        .background(isTapped ? Color(.fsYellow) : Color(.fsSecondaryBlue4))  // Change background color when tapped
+                        .cornerRadius(10)
+                        .onTapGesture {
+                            isTapped = true  // Change color to indicate tap
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                isTapped = false  // Reset color after a short delay
+                            }
+                        }
+                }
+                .padding(.bottom, 20)
+                
+                // NavigationLink for CameraView
+                NavigationLink(destination: CameraView()
+                    .onDisappear {
+                        // Reset the state when navigating back
+                        navigateToCamera = false
+                    }, isActive: $navigateToCamera) {
+                        EmptyView()
+                    }
+
+                // NavigationLink for PhotoPickerView
+                NavigationLink(destination: PhotoPickerViews()
+                    .onDisappear {
+                        // Reset the state when navigating back
+                        navigateToPhotoPicker = false
+                    }, isActive: $navigateToPhotoPicker) {
+                        EmptyView()
+                    }
+            }
+}
+
+struct PhotoPickerViews: View {
+    var body: some View {
+        Text("Photo Picker View")
+    }
+}
