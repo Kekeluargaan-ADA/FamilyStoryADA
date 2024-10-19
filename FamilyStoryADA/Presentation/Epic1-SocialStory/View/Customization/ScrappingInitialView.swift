@@ -12,6 +12,8 @@ struct ScrappingInitialView: View {
     @StateObject private var viewModel = ImageCrawlViewModel()
     @State private var isImageSelected: Bool = false
     
+    @AppStorage("selectedImageUUID") var selectedImageUUID: String?
+    
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
@@ -91,18 +93,29 @@ struct ScrappingInitialView: View {
                             
                             Spacer()
                             
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 160, height: 60)
-                                    .foregroundStyle(Color("FSBlue9"))
-                                    .cornerRadius(40)
-                                    .overlay(
-                                        Text("Pilih")
-                                            .foregroundColor(.white)
-                                    )
+                            Button(action: {
+                                if let selectedImage = viewModel.selectedImage {
+                                    let uuid = viewModel.saveSelectedImageToAppStorage() // Use the ViewModel's method
+                                    selectedImageUUID = uuid // Save the UUID in AppStorage
+                                    isModalPresented = true
+                                }
+                            }) {
+                                ZStack {
+                                    Rectangle()
+                                        .frame(width: 160, height: 60)
+                                        .foregroundStyle(Color("FSBlue9"))
+                                        .cornerRadius(40)
+                                        .overlay(
+                                            Text("Pilih")
+                                                .foregroundColor(.white)
+                                        )
+                                }
+                            }
+                            .sheet(isPresented: $isModalPresented) {
+                                AnotherView() // Present AnotherView modally
                             }
                         }
-                            .padding(24 * heightRatio)
+                        .padding(24 * heightRatio)
                     )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

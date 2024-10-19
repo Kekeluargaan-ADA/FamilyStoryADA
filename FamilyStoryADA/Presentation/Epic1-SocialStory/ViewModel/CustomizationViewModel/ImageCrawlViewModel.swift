@@ -21,6 +21,7 @@ class ImageCrawlViewModel: ObservableObject {
 
     private let imageProcessor = CrawlImageHelper()
 
+    // Fetch images based on the entered keyword
     func crawlImages() {
         clearImageCache()
 
@@ -62,6 +63,7 @@ class ImageCrawlViewModel: ObservableObject {
         }.resume()
     }
 
+    // Download and process images from URL
     private func downloadAndProcessImage(from url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data, let uiImage = UIImage(data: data) {
@@ -75,11 +77,12 @@ class ImageCrawlViewModel: ObservableObject {
         }.resume()
     }
 
-    // New method to delete all images except the selected one
+    // Delete all images except the selected one
     func deleteOtherImages(keeping selectedImage: UIImage) {
         processedImages = [selectedImage]
     }
 
+    // Function to delete all images
     func deleteImages() {
         guard let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/") else {
             statusMessage = "Invalid URL"
@@ -109,13 +112,40 @@ class ImageCrawlViewModel: ObservableObject {
         }.resume()
     }
 
+    // Clear cache
     private func clearImageCache() {
         let cache = URLCache.shared
         cache.removeAllCachedResponses()
         print("Image cache cleared")
     }
 
+    // Clear the selected image
     func clearSelection() {
         selectedImage = nil
+    }
+
+    // Function to save the selected image to app storage
+    func saveSelectedImageToAppStorage() -> String? {
+        guard let image = selectedImage, let data = image.jpegData(compressionQuality: 1.0) else {
+            print("Error: No image selected or could not create JPEG data.")
+            return nil
+        }
+
+        let filename = UUID().uuidString + ".jpg"
+        let fileManager = FileManager.default
+
+        if let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let fileURL = documentsDirectory.appendingPathComponent(filename)
+
+            do {
+                try data.write(to: fileURL)
+                print("Selected image saved to app storage: \(fileURL.path)")
+                return filename
+            } catch {
+                print("Error saving image to app storage: \(error)")
+                return nil
+            }
+        }
+        return nil
     }
 }
