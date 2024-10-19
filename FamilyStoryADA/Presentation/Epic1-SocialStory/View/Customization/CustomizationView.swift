@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
@@ -79,7 +80,21 @@ struct CustomizationView: View {
                                         .resizable()
                                         .frame(width: 760, height: 468)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                                } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first {
+                                } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
+                                    
+                                        let videoPlayer = AVPlayer(url: url)
+                                    
+                                    VideoPlayer(player: videoPlayer)
+                                        .frame(width: 760, height: 468)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        .onAppear() {
+                                            
+                                            videoPlayer.play()
+                                            
+                                        }
+                                        .onDisappear() {
+                                            videoPlayer.pause()
+                                        }
                                     
                                 } else {
                                     Button(action: {
