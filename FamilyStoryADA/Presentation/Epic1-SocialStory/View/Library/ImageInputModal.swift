@@ -12,67 +12,85 @@ struct ImageInputModal: View {
     @State private var selectedImage: UIImage?  // Manage selected image
 
     var body: some View {
-        NavigationView {
-            VStack {
-                PreviewModalHeader(isPresented: isPresented)
+        GeometryReader{ geometry in
+            NavigationView {
+                VStack {
+                    PreviewModalHeader(isPresented: isPresented)
 
-                Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
-
-                // Display saved image if exists, otherwise show placeholder
-                if let uiImage = viewModel.savedImage {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 400)
-                        .overlay(alignment: .bottom) {
-                            ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
-                        }
-                } else {
-                    // Placeholder if no image is found
-                    Rectangle()
-                        .frame(width: 300, height: 400)
-                        .foregroundColor(.gray)
-                        .overlay(alignment: .bottom) {
-                            ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
-                        }
-                }
-
-                HStack {
-                    if isEditing {
-                        // Show TextField for editing name
-                        TextField("Enter name", text: $name)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200)
+                    Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
+                        .multilineTextAlignment(.center)
+                        .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color(.fsBlack))
+                        .frame(width: geometry.size.width * 0.33, alignment: .center)
+                    // Display saved image if exists, otherwise show placeholder
+                    if let uiImage = viewModel.savedImage {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 400)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(alignment: .bottom) {
+                                ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
+                            }
                     } else {
-                        Text(name)
+                        // Placeholder if no image is found
+                        Rectangle()
+                            .frame(width: 300, height: 400)
+                            .foregroundColor(.gray)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(alignment: .bottom) {
+                                ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
+                            }
                     }
+
+                    HStack {
+                        if isEditing {
+                            // Show TextField for editing name
+                            TextField("Enter name", text: $name)
+                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color(.fsBlack))
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 200)
+                                
+                        } else {
+                            Text(name)
+                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color(.fsBlack))
+                        }
+
+                        Button(action: {
+                            isEditing.toggle()  // Toggle editing state
+                        }) {
+                            Image(systemName: "pencil")
+                                .frame(width: 22,height: 22)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding()
 
                     Button(action: {
-                        isEditing.toggle()  // Toggle editing state
+                        // Action for the "Next" button
                     }) {
-                        Image(systemName: "pencil")
-                            .foregroundColor(.gray)
+                        Text("Lanjut")
+                            .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color(.fsWhite))
+                            .frame(width: 160,height: 60)
+                            .background(Color(.fsBlue9))
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
+                    .frame(width: geometry.size.width, alignment: .trailing)
                 }
+                .background(Color(.fsBlue1))
                 .padding()
-
-                Button(action: {
-                    // Action for the "Next" button
-                }) {
-                    Text("Lanjut")
-                        .foregroundColor(.white)
-                        .padding(20)
-                        .background(Color(.fsBlue9))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                }
-                .frame(width: 360, alignment: .trailing)
             }
-            .background(Color(.fsBlue1))
-            .padding()
+            .navigationViewStyle(.stack)
+            .environmentObject(viewModel)
         }
-        .navigationViewStyle(.stack)
-        .environmentObject(viewModel)
-    }
+        }
 }
 
 struct ChangePictureButton: View {
@@ -99,10 +117,13 @@ struct ChangePictureButton: View {
                 }
             } label: {
                 Text("Ubah foto")
-                    .foregroundColor(.black)
+                    .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                    .fontWeight(.regular)
+                    .foregroundStyle(Color(.fsBlack))
+                    .frame(width: 140,height: 40)
                     .padding()
                     .background(Color(.fsSecondaryBlue4))  // Custom background color
-                    .cornerRadius(10)
+                    .cornerRadius(40)
             }
             .padding(.bottom, 20)
             
