@@ -41,46 +41,48 @@ struct PagePreviewModalView: View {
     ]
     
     var body: some View {
-        VStack {
-            PreviewModalHeader(isPresented: isPresented) // Updated to pass a binding
-
-            HStack {
-                Rectangle()
-                    .frame(width: 280, height: 172)
-                    .foregroundStyle(.gray)
-                VStack {
-                    Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief")
-                    Button(action: {
-                        // Action for using the template
-                    }) {
-                        Text("Gunakan Template")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.green)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                    }
-                }
-                .frame(width: 280, height: 172)
-            }
-            .padding(25)
-            .background(.red)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(items, id: \.self) { item in
-                        VStack {
-                            Text("Preview Page \(item)")
-                                .font(.headline)
+        NavigationView {
+            VStack {
+                PreviewModalHeader(isPresented: isPresented) // Updated to pass a binding
+                
+                HStack {
+                    Rectangle()
+                        .frame(width: 280, height: 172)
+                        .foregroundStyle(.gray)
+                    VStack {
+                        Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief")
+                        NavigationLink(destination: {
+                            ImageInputModal(isPresented: .constant(true))
+                        }) {
+                            Text("Gunakan Template")
                                 .foregroundColor(.white)
-                                .frame(width: 280, height: 200)
-                                .background(Color.blue)
-                                .cornerRadius(10)
+                                .padding()
+                                .background(Color.green)
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                        }
+                    }
+                    .frame(width: 280, height: 172)
+                }
+                .padding(25)
+                .background(.red)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        ForEach(items, id: \.self) { item in
+                            VStack {
+                                Text("Preview Page \(item)")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(width: 280, height: 200)
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                            }
                         }
                     }
                 }
+                .frame(width: 650)
             }
-            .frame(width: 650)
         }
     }
 }
@@ -88,6 +90,6 @@ struct PagePreviewModalView: View {
 
 #Preview{
     @Previewable @State var isPresented = true // State for preview purposes
-//    LibraryPreviewModality(isPresented: $isPresented)
+    //    LibraryPreviewModality(isPresented: $isPresented)
     PagePreviewModalView(isPresented: $isPresented)
 }
