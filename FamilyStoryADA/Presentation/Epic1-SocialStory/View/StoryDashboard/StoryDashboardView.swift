@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct StoryDashboardView: View {
+    @State private var keywords: String = ""
     
     @StateObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
@@ -42,7 +43,7 @@ struct StoryDashboardView: View {
                                 .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
-                                SearchBarView()
+                                SearchBarView(searchText: $keywords, onCommit: {})
                                 ProfileButtonView(imageName: "")
                             }
                         }
