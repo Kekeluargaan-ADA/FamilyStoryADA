@@ -19,28 +19,31 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
     
     var componentContent: String
     
+    var componentCategory: String
+    
     var componentRatioId: UUID?
     
     var componentScale: Double?
     
     var componentRotation: Double?
     
-    init(componentId: UUID, componentContent: String, componentRatioId: UUID?, componentScale: Double?, componentRotation: Double?) {
+    init(componentId: UUID, componentContent: String, componentCategory: String, componentRatioId: UUID? = nil, componentScale: Double? = nil, componentRotation: Double? = nil) {
         self.componentId = componentId
         self.componentContent = componentContent
+        self.componentCategory = componentCategory
         self.componentRatioId = componentRatioId
         self.componentScale = componentScale
         self.componentRotation = componentRotation
     }
     
-//    init(template: ComponentJSONObject) {
-//        let ratio = RatioSwiftData(template: template.componentRatio)
-//        self.componentId = UUID()
-//        self.componentContent = template.componentContent
-//        self.componentRatioId = ratio.ratioId
-//        self.componentScale = template.componentScale
-//        self.componentRotation = template.componentRotation
-//    }
+    //    init(template: ComponentJSONObject) {
+    //        let ratio = RatioSwiftData(template: template.componentRatio)
+    //        self.componentId = UUID()
+    //        self.componentContent = template.componentContent
+    //        self.componentRatioId = ratio.ratioId
+    //        self.componentScale = template.componentScale
+    //        self.componentRotation = template.componentRotation
+    //    }
     
     static func convertToSwiftData(jsonTemplate: ComponentJSONObject) -> StoryComponentSwiftData {
         let repo = SwiftDataRatioRepository()
@@ -49,6 +52,7 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
         _ = repo.addNewRatio(ratio: ratio)
         return StoryComponentSwiftData(componentId: UUID(),
                                        componentContent: jsonTemplate.componentContent,
+                                       componentCategory: jsonTemplate.componentCategory,
                                        componentRatioId: ratio.ratioId,
                                        componentScale: jsonTemplate.componentScale,
                                        componentRotation: jsonTemplate.componentRotation
@@ -58,6 +62,7 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
     static func convertToSwiftData(entity: StoryComponentEntity) -> StoryComponentSwiftData {
         return StoryComponentSwiftData(componentId: entity.componentId,
                                        componentContent: entity.componentContent,
+                                       componentCategory: entity.componentCategory,
                                        componentRatioId: entity.componentRatio?.ratioId,
                                        componentScale: entity.componentScale,
                                        componentRotation: entity.componentRotation
@@ -71,23 +76,26 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
         case .picture:
             return PictureComponentEntity(componentId: self.componentId,
                                           componentContent: self.componentContent,
+                                          componentCategory: self.componentCategory,
                                           componentRatio: ratio?.convertToEntity(),
                                           componentScale: self.componentScale,
                                           componentRotation: self.componentRotation
             )
         case .text:
             return TextComponentEntity(componentId: self.componentId,
-                                          componentContent: self.componentContent,
-                                          componentRatio: ratio?.convertToEntity(),
-                                          componentScale: self.componentScale,
-                                          componentRotation: self.componentRotation
+                                       componentContent: self.componentContent,
+                                       componentCategory: self.componentCategory,
+                                       componentRatio: ratio?.convertToEntity(),
+                                       componentScale: self.componentScale,
+                                       componentRotation: self.componentRotation
             )
         case .video:
             return VideoComponentEntity(componentId: self.componentId,
-                                          componentContent: self.componentContent,
-                                          componentRatio: ratio?.convertToEntity(),
-                                          componentScale: self.componentScale,
-                                          componentRotation: self.componentRotation
+                                        componentContent: self.componentContent,
+                                        componentCategory: self.componentCategory,
+                                        componentRatio: ratio?.convertToEntity(),
+                                        componentScale: self.componentScale,
+                                        componentRotation: self.componentRotation
             )
         }
     }

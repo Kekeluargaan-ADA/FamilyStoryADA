@@ -11,6 +11,7 @@ struct DraggedPageView: View {
     var imagePath: String
     var order: Int
     var isSelected: Bool
+    
     var body: some View {
         VStack {
             ZStack {

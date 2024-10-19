@@ -12,10 +12,9 @@ struct TemplateCardView: View {
 
     var body: some View {
         Rectangle()
-            .foregroundStyle(Color("FSWhite"))
+            .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
             .frame(width: 354, height: 280)
             .cornerRadius(12)
-            .shadow(radius: 4, y: 4)
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {

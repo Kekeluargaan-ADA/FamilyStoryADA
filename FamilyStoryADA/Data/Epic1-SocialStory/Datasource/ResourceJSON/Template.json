@@ -2,59 +2,15 @@
     {
         "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
         "templateName": "Cara Menyikat Gigi",
-        "templateDescription": "Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang",
+        "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
         "templateCategory": "Hygiene",
         "templatePage": [
             {
                 "pageText":
                 [
                     {
-                        "componentContent": "Dummy Text",
-                        "componentRatio":
-                        {
-                            "xRatio": 0.5,
-                            "yRatio": 0.5,
-                            "zRatio": 1
-                        },
-                        "componentScale": 1.0,
-                        "componentRotation": 0.0
-                    }
-                ],
-                "pagePicture":
-                [
-                    {
-                        "componentContent": "DummyImage",
-                        "componentRatio":
-                        {
-                            "xRatio": 0.5,
-                            "yRatio": 0.5,
-                            "zRatio": 0
-                        },
-                        "componentScale": 2.0,
-                        "componentRotation": 180.0
-                    }
-                ],
-                "pageVideo":
-                [
-                    {
-                        "componentContent": "DummyVideo.mp4",
-                        "componentRatio":
-                        {
-                            "xRatio": 0.1,
-                            "yRatio": 0.2,
-                            "zRatio": 1
-                        },
-                        "componentScale": 1.5,
-                        "componentRotation": 90.0
-                    }
-                ],
-                "pageSoundPath": "Sound1.m4a"
-            },
-            {
-                "pageText":
-                [
-                    {
-                        "componentContent": "Dummy Text 2",
+                        "componentContent": "Halo! Namaku <CHILD_NAME> Saat ini, aku mau mempelajari tentang Cara Menggosok Gigi!",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.0,
@@ -67,24 +23,262 @@
                 ],
                 "pagePicture":
                 [
-                    {
-                        "componentContent": "DumDum2.jpg",
-                        "componentRatio":
-                        {
-                            "xRatio": 0.2,
-                            "yRatio": 0.1,
-                            "zRatio": 0
-                        },
-                        "componentScale": 1.5,
-                        "componentRotation": 180.0
-                    }
+                    
                 ],
                 "pageVideo":
                 [
                     
                 ],
-                "pageSoundPath": "sound2.m4a"
-            }
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ambil sikat gigi",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene1",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Taruh sedikit pasta gigi pada sikat gigi",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene2",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Gosok gigi ke atas dan bawah",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene3",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Menuangkan air dari keran ke gelas",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene4",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Kumur-kumur setelah menyikat gigi",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene5",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Keluarkan air kumur dari mulut ke wastafel",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene6",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0,
+                    },
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini, aku sudah mempelajari tentang Cara Menggosok Gigi!",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
         ],
         "templateCoverImagePath": "DummyImage",
         "templateOptionCoverImagePath": [
@@ -108,6 +302,7 @@
                 [
                     {
                         "componentContent": "Dummy Text",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -121,7 +316,8 @@
                 "pagePicture":
                 [
                     {
-                        "componentContent": "DummyPage2",
+                        "componentContent": "DummyImage2",
+                        "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
                             "xRatio": 0.5,
@@ -136,6 +332,7 @@
                 [
                     {
                         "componentContent": "DummyVideo.mp4",
+                        "componentCategory": "Video",
                         "componentRatio":
                         {
                             "xRatio": 0.1,
@@ -153,6 +350,7 @@
                 [
                     {
                         "componentContent": "Dummy Text 2",
+                        "componentCategory": "Text",
                         "componentRatio":
                         {
                             "xRatio": 0.0,
@@ -167,6 +365,7 @@
                 [
                     {
                         "componentContent": "DumDum2.jpg",
+                        "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
                             "xRatio": 0.2,

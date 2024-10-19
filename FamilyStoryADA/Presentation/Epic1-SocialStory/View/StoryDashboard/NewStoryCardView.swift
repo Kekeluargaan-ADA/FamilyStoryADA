@@ -29,7 +29,8 @@ struct NewStoryCardView: View {
                         )
                     
                     Text("Create story")
-                        .font(.headline)
+                        .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                        .fontWeight(.medium)
                         .foregroundColor(.gray)
                 }
             }

@@ -9,21 +9,31 @@ import SwiftUI
 
 struct PlayStoryNavigationView: View {
     let heightRatio: CGFloat
-    let onTap: () -> Void
+    let buttonColor: ButtonPreset
+    let onTapHomeButton: () -> Void
+    let onTapAudioButton: () -> Void
     
     var body: some View {
         HStack {
-            ButtonCircle(heightRatio: heightRatio, buttonImage: "house", onTap: {})
+            Button(action: {
+                onTapHomeButton()
+            }, label: {
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
+            })
             Spacer()
             Text("Title")
                 .font(.system(size: 26 * heightRatio))
                 .fontWeight(.medium)
             Spacer()
-            ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", onTap: {})
+            Button(action: {
+                onTapAudioButton()
+            }, label: {
+                ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
+            })
         }
     }
 }
 
 #Preview {
-    PlayStoryNavigationView(heightRatio: 1, onTap: {})
+    PlayStoryNavigationView(heightRatio: 1, buttonColor: .blue, onTapHomeButton: {}, onTapAudioButton: {})
 }

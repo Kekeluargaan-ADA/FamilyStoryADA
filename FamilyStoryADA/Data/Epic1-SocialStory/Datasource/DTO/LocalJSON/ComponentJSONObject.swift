@@ -9,6 +9,7 @@ import Foundation
 
 struct ComponentJSONObject: Codable, IJSONAble {
     let componentContent: String
+    let componentCategory: String
     let componentRatio: RatioJSONObject
     let componentScale: Double
     let componentRotation: Double

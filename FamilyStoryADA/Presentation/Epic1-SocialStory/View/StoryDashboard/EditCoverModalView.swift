@@ -19,9 +19,12 @@ struct EditCoverModalView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack() {
-                ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", onTap: {
+                Button(action: {
                     presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue)
                 })
+                
                 Spacer()
                 
                 Text("Edit Cover")
@@ -29,11 +32,14 @@ struct EditCoverModalView: View {
                     .fontWeight(.bold)
                 Spacer()
                 
-                ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", onTap: {
+                Button(action: {
                     story.storyName = storyName
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", buttonColor: .blue)
                 })
+                
             }
             
             ZStack() {
@@ -93,10 +99,9 @@ struct EditCoverModalView: View {
                     }
                     .padding(28)
                 }
-                .background(Color("FSWhite"))
+                .background(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
                 .frame(width: 580, height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(radius: 4, x:0, y: 4)
                 .padding(.horizontal)
             }
         }

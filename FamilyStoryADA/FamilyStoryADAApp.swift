@@ -13,11 +13,15 @@ struct FamilyStoryADAApp: App {
     
     var body: some Scene {
         WindowGroup {
+//            ExampleView()
 //            ExampleCropView()
 //            CameraView()
 //            MiniQuizView()
-//            StoryDashboardView()
-            ImageCrawlView()
+            StoryDashboardView()
+//            ImageCrawlView()
+//            PNGSequenceView()
+//            ScrappingInitialView()
+
 //                .onAppear() {
 //                    let fileManager = FileManager.default
 //                    let url = "4ECBB088-FD5C-42CF-8C5C-5AE0D6EC5962.jpg"

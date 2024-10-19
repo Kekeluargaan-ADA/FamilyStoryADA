@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct StoryDashboardView: View {
+    @State private var keywords: String = ""
     
     @StateObject private var viewModel: StoryViewModel = StoryViewModel()
     private let flexibleColumn = [
@@ -37,11 +38,12 @@ struct StoryDashboardView: View {
                     VStack {
                         HStack {
                             Text("My Story")
-                                .font(.system(size: 40))
-                                .fontWeight(.bold)
+                                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
-                                SearchBarView()
+                                SearchBarView(searchText: $keywords, onCommit: {})
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -60,7 +62,7 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) { // NavigationLink to TemplateCollectionView
+                                                NavigationLink(destination: TemplateCollectionView()) { 
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
                                                 }
@@ -97,6 +99,7 @@ struct StoryDashboardView: View {
                                                     } label: {
                                                         Image(systemName: "ellipsis")
                                                             .font(.system(size: 24))
+                                                            .fontWeight(.bold)
                                                             .foregroundStyle(Color("FSBlack"))
                                                             .padding()
                                                     }
@@ -117,9 +120,12 @@ struct StoryDashboardView: View {
                 }
                 .background(Color("FSBlue6"))
                 .onAppear() {
-                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
-                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID())
-                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    if let id = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
+                        viewModel.addNewStory(templateId: id)
+                        viewModel.addNewStory(templateId: id)
+                        viewModel.addNewStory(templateId: id)
+                    }
+                    viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
                     if let story = Binding($viewModel.currentlyEditedStory) {
