@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class PageEntity: IEntityAble {
+public class PageEntity: IEntityAble, Equatable {
     var pageId: UUID
     var pageText: [TextComponentEntity]
     var pagePicture: [PictureComponentEntity]
@@ -29,4 +29,8 @@ public class PageEntity: IEntityAble {
         self.pageVideo = pageVideo
         self.pageSoundPath = pageSoundPath
     }
+    
+    public static func == (lhs: PageEntity, rhs: PageEntity) -> Bool {
+            return lhs.pageId == rhs.pageId
+        }
 }

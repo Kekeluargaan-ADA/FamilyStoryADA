@@ -32,12 +32,14 @@ class StoryViewModel: ObservableObject {
         fetchStories()
     }
     
-    func fetchStories() {
+    // fetch story
+    public func fetchStories() {
         self.stories = storyUsecase.fetchStories()
         updateStoryDisplay()
     }
     
-    func updateStoryDisplay() {
+    // update displayedStory
+    public func updateStoryDisplay() {
         displayedStory = [StoryEntity]()
         displayedStory.append(StoryEntity(storyId: UUID(),
                                           storyName: "",
@@ -74,22 +76,22 @@ class StoryViewModel: ObservableObject {
         _ = storyUsecase.updateStory(story: story)
     }
     
-    //debug func
-    func printStories() {
-        for story in stories {
-            print(story.storyId)
-            print(story.storyName)
-            print(story.storyCoverImagePath)
-        }
-    }
-    
-    func printDisplayed() {
-        print("-------------------------")
-        print("DISPLAYED")
-        for story in displayedStory {
-            print(story.storyId)
-            print(story.storyName)
-            print(story.storyCoverImagePath)
-        }
-    }
+//    //debug func
+//    func printStories() {
+//        for story in stories {
+//            print(story.storyId)
+//            print(story.storyName)
+//            print(story.storyCoverImagePath)
+//        }
+//    }
+//    
+//    func printDisplayed() {
+//        print("-------------------------")
+//        print("DISPLAYED")
+//        for story in displayedStory {
+//            print(story.storyId)
+//            print(story.storyName)
+//            print(story.storyCoverImagePath)
+//        }
+//    }
 }

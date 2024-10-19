@@ -21,16 +21,14 @@ struct EditCoverModalView: View {
             HStack() {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
-                }) {
-                    //TODO: Change into component
-                    Image(systemName: "xmark")
-                        .foregroundColor(.gray)
-                        .padding()
-                }
+                }, label: {
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue)
+                })
+                
                 Spacer()
                 
                 Text("Edit Cover")
-                    .font(.title)
+                    .font(.system(size: 32))
                     .fontWeight(.bold)
                 Spacer()
                 
@@ -38,13 +36,10 @@ struct EditCoverModalView: View {
                     story.storyName = storyName
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
-                }) {
-                    //TODO: Change into component
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(.blue)
-                }
-                .padding()
+                }, label: {
+                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", buttonColor: .blue)
+                })
+                
             }
             
             ZStack() {
@@ -104,10 +99,9 @@ struct EditCoverModalView: View {
                     }
                     .padding(28)
                 }
-                .background(Color("FSWhite"))
+                .background(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
                 .frame(width: 580, height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(radius: 4, x:0, y: 4)
                 .padding(.horizontal)
             }
         }

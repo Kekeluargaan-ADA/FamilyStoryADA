@@ -8,50 +8,59 @@
 import SwiftUI
 
 struct MiniQuizView: View {
-    @State var draggablePage = DraggablePage.loadDummyData()
-    @State var droppableBox = DraggablePage.loadEmptyArray()
+    @StateObject var viewModel: MiniQuizViewModel
+    
+    init(story: StoryEntity) {
+        _viewModel = StateObject(wrappedValue: MiniQuizViewModel(story: story))
+    }
+    
     var body: some View {
         VStack {
+            Spacer(minLength: 47)
+            PlayStoryNavigationView(heightRatio: 1, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+                .padding(.horizontal, 46)
+            Spacer(minLength: 60)
             Text("Urutkan kartu di bawah sesuai dengan urutan yang benar.")
-                .font(.headline)
+                .font(.system(size: 32, weight: .semibold))
                 .foregroundStyle(.black)
+            Spacer(minLength: 50)
             
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(Array(droppableBox.enumerated()), id: \.offset) { index, page in
-                        DroppableBoxView(order: index+1, imagePath: page.picturePath)
-                            .dropDestination(for: DraggablePage.self) { droppedPage, location in
-                                
-                                for page in droppedPage {
-                                    guard !droppableBox.contains(where: {$0.id == page.id}) && droppableBox[index].picturePath == "" else { return false }
-                                    
-                                    draggablePage.removeAll(where: { $0.id == page.id })
-                                    
-                                    droppableBox[index] = page
-                                }
-                                return true
-                            } isTargeted: { isTargeted in
-                                
+            DroppableArrayView()
+            .padding(.horizontal, 49)
+            Spacer(minLength: 53)
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .foregroundStyle(Color("FSWhite"))
+                    .shadow(radius: 4, x: 0, y: 4)
+                ScrollView(.horizontal) {
+                    HStack (spacing: 15) {
+                        ForEach(viewModel.draggedPages, id: \.id) { page in
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .foregroundStyle(Color("FSYellow2"))
+                                    .shadow(radius: 4, x: 0, y: 4)
+                                Image(page.picturePath)
+                                    .resizable()
+                                    .scaledToFit()
                             }
+                            .frame(width: 123, height: 123)
+                            .draggable(page)
+                        }
                     }
+                    .padding(.horizontal, 49)
+                    .padding(.vertical, 42)
                 }
             }
-            
-            HStack {
-                ForEach(draggablePage, id: \.id) { page in
-                    Image(page.picturePath)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 123, height: 123)
-                        .draggable(page)
-                }
-            }
+            .frame(width: 913, height: 207)
             Spacer()
-            
         }
+        .ignoresSafeArea()
+        .background(Color("FSYellow1"))
+        .environmentObject(viewModel)
     }
 }
 
-#Preview {
-    MiniQuizView()
-}
+//#Preview {
+//    MiniQuizView()
+//}

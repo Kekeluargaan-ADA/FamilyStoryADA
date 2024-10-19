@@ -24,7 +24,9 @@ class StoryEntity: IEntityAble, Identifiable {
         for page in pages {
             wordCount += page.componentTextWordCount
         }
-        return Double(wordCount) / 100 //TODO: Research about WPM
+        
+        let length = Double(wordCount) / 100 // TODO: Research about WPM
+        return length < 1.0 ? 1 : length
     }
     
     init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [PageEntity]) {

@@ -26,7 +26,11 @@ struct UploadPhotoModalView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", onTap: {})
+                                        Button(action: {
+                                            
+                                        }, label: {
+                                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                        })
                                         Spacer()
                                     }
                                     Text("Upload Foto")

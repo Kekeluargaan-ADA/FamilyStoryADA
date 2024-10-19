@@ -34,11 +34,13 @@ struct StoryDashboardView: View {
                             .padding(.horizontal, 24)
                             .ignoresSafeArea()
                     }
+                    .frame(height: 804)
                     VStack {
                         HStack {
                             Text("My Story")
-                                .font(.system(size: 40))
-                                .fontWeight(.bold)
+                                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {})
@@ -60,21 +62,51 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) { // NavigationLink to TemplateCollectionView
+                                                NavigationLink(destination: TemplateCollectionView()) { 
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
                                                 }
                                             } else {
-                                                StoryCardView(
-                                                    viewModel: viewModel,
-                                                    storyName: item.storyName,
-                                                    imagePath: item.storyCoverImagePath,
-                                                    category: item.templateCategory,
-                                                    storyLength: item.storyLength,
-                                                    lastRead: item.storyLastRead,
-                                                    story: item
-                                                )
-                                                .padding(.horizontal, 10)
+                                                ZStack(alignment: .topTrailing) {
+                                                    NavigationLink(destination: CustomizationView(story: item),
+                                                                   label: {
+                                                        StoryCardView(
+                                                            viewModel: viewModel,
+                                                            storyName: item.storyName,
+                                                            imagePath: item.storyCoverImagePath,
+                                                            category: item.templateCategory,
+                                                            storyLength: item.storyLength,
+                                                            lastRead: item.storyLastRead,
+                                                            story: item
+                                                        )
+                                                        .foregroundStyle(Color("FSBlack"))
+                                                        .padding(.horizontal, 10)
+                                                    })
+                                                    Menu {
+                                                        Button(action: {
+                                                            viewModel.currentlyEditedStory = item
+                                                            viewModel.isEditCoverSheetOpened.toggle()
+                                                        }) {
+                                                            Label("Edit Cover", systemImage: "photo")
+                                                        }
+                                                        
+                                                        Button(action: {
+                                                            viewModel.deleteStory(storyId: item.storyId)
+                                                        }) {
+                                                            Label("Hapus Story", systemImage: "trash.fill")
+                                                                .foregroundStyle(.red)
+                                                        }
+                                                    } label: {
+                                                        Image(systemName: "ellipsis")
+                                                            .font(.system(size: 24))
+                                                            .fontWeight(.bold)
+                                                            .foregroundStyle(Color("FSBlack"))
+                                                            .padding()
+                                                    }
+
+                                                }
+                                                
+                                                //                                                .navigationViewStyle(.plain)
                                             }
                                         }
                                     }
@@ -91,6 +123,7 @@ struct StoryDashboardView: View {
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID())
                     viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
                     if let story = Binding($viewModel.currentlyEditedStory) {

@@ -11,30 +11,35 @@ import CoreTransferable
 
 struct DraggablePage: Codable {
     
-    let id: UUID
+    let id: UUID?
     let picturePath: String
     
+    
+    // debug function
     static func loadDummyData() -> [DraggablePage] {
         return [
-            DraggablePage(id: UUID(), picturePath: "DummyImage"),
+            DraggablePage(id: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID(), picturePath: "DummyImage"),
             DraggablePage(id: UUID(), picturePath: "DummyImage2"),
             DraggablePage(id: UUID(), picturePath: "DummyImage3"),
         ]
     }
     
-    static func loadEmptyArray() -> [DraggablePage] {
-        return [
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-            DraggablePage(id: UUID(uuidString: "") ?? UUID(), picturePath: ""),
-        ]
+    static func loadEmptyArray(storyPageCount: Int) -> [(DraggablePage, Bool)] {
+        var emptryArray: [(DraggablePage, Bool)] = []
+        for _ in 0..<storyPageCount {
+            emptryArray.append((DraggablePage(id: nil, picturePath: ""), false))
+        }
+        return emptryArray
+    }
+    
+    public static func fetchDraggedPage(story: StoryEntity) -> [DraggablePage] {
+        var draggedPages = [DraggablePage]()
+        for page in story.pages {
+            draggedPages.append(DraggablePage(id: page.pageId,
+                                              picturePath: page.pagePicture.first?.componentContent ?? ""
+                                             ))
+        }
+        return draggedPages
     }
 }
 

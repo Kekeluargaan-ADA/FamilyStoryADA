@@ -24,6 +24,10 @@
 	<string>Nyalakan kamera untuk mengambil gambar</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Izinkan untuk menyimpan gambar</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fredoka-VariableFont_wdth,wght.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -16,7 +16,7 @@ struct DroppableBoxView: View {
                 Circle()
                     .foregroundStyle(.tertiary)
                 Text("\(order)")
-                    .font(.headline)
+                    .font(.system(size: 24))
                     .fontWeight(.bold)
             }
             .frame(width: 40, height: 40)
@@ -24,7 +24,7 @@ struct DroppableBoxView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .frame(width: 166, height: 166)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(imagePath == "" ? .secondary : Color.blue)
                 Image(imagePath)
                     .resizable()
                     .scaledToFit()

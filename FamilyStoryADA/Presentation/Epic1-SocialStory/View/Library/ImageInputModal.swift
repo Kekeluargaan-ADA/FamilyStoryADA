@@ -1,12 +1,13 @@
 import SwiftUI
 
 struct ImageInputModal: View {
+    @StateObject var viewModel = CameraViewModel()  // You are initializing a new instance, but we can remove this for better consistency
     @Binding var isPresented: Bool
-    @State private var isEditing: Bool = false // To track if the text is being edited
-    @State private var name: String = "Hendra" // The editable text
+    @State private var isEditing: Bool = false  // To track if the text is being edited
+    @State private var name: String = "Hendra"  // The editable text
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack {
                 PreviewModalHeader(isPresented: isPresented)
                 
@@ -14,22 +15,31 @@ struct ImageInputModal: View {
                 
                 // Rectangle becomes a NavigationLink to CameraView
                 NavigationLink(destination: CameraView()) {
-                    Rectangle()
-                        .frame(width: 360, height: 450)
-                        .foregroundColor(.gray)
-                        .overlay(
-                            Text("Tap to open Camera")
-                                .foregroundColor(.white)
-                                .font(.headline)
-                        )
+//                    Text(viewModel.savedImageFilename)
+                    if let path = viewModel.savedImageFilename {
+                        // Display the image path (filename)
+                        Text("Image saved at: \(path)")
+                            .font(.headline)
+                            .foregroundColor(.green)
+                            .padding()
+                    } else {
+                        Rectangle()
+                            .frame(width: 360, height: 450)
+                            .foregroundColor(.gray)
+                            .overlay(
+                                Text("Tap to open Camera")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                            )
+                    }
                 }
-
+                
                 HStack {
                     if isEditing {
                         // Show a TextField when editing
                         TextField("Enter name", text: $name)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200) // Set width to fit inside HStack
+                            .frame(width: 200)  // Set width to fit inside HStack
                     } else {
                         // Show the regular Text when not editing
                         Text(name)
@@ -37,7 +47,7 @@ struct ImageInputModal: View {
                     
                     // Button to toggle between editing and non-editing
                     Button(action: {
-                        isEditing.toggle() // Toggle the editing state
+                        isEditing.toggle()  // Toggle the editing state
                     }) {
                         Image(systemName: "pencil")
                             .foregroundColor(.blue)
@@ -58,10 +68,14 @@ struct ImageInputModal: View {
             }
             .padding()
         }
+        .navigationViewStyle(.stack)
+        // Ensure that the `viewModel` is received from outside if injected
+        .environmentObject(viewModel)
     }
 }
 
 #Preview {
-    @Previewable @State var isPresented = true // State for preview purposes
+    @Previewable @State var isPresented = true  // State for preview purposes
     ImageInputModal(isPresented: $isPresented)
 }
+

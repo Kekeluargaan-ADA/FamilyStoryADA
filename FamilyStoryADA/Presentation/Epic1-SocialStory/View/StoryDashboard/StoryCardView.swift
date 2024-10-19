@@ -21,8 +21,7 @@ struct StoryCardView: View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 16)
                 .frame(width: 354, height: 320)
-                .foregroundStyle(.white)
-                .shadow(radius: 4, x: 0, y: 4)
+                .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
             VStack(alignment: .leading, spacing: 6) {
                 Image(imagePath)
                     .resizable()
@@ -30,19 +29,21 @@ struct StoryCardView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
                         Text(category)
-                            .font(.callout)
+                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                            .foregroundStyle(Color("FSBlack"))
                         Spacer()
-                        Text("\(storyLength) min")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                        Text("\(storyLength, specifier: "%.1f") min")
+                            .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
+                            .foregroundStyle(Color("FSGrey"))
                     }
                     Text(storyName)
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                        .fontWeight(.semibold)
                     
-                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+//                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
+                    Text("Terakhir dilihat \(lastRead.formatted(.dateTime.day().month()))")
+                        .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
+                        .foregroundStyle(Color("FSBlue9"))
                         .italic()
                 }
                 .padding(.horizontal, 12)
@@ -50,26 +51,6 @@ struct StoryCardView: View {
             }
             .frame(width: 354, height: 320)
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            Menu {
-                Button(action: {
-                    viewModel.currentlyEditedStory = story
-                    viewModel.isEditCoverSheetOpened.toggle()
-                }) {
-                    Label("Edit Cover", systemImage: "photo")
-                }
-                
-                Button(action: {
-                    viewModel.deleteStory(storyId: story.storyId)
-                }) {
-                    Label("Hapus Story", systemImage: "trash.fill")
-                        .foregroundStyle(.red)
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.title2)
-                    .foregroundStyle(.black)
-                    .padding()
-            }
         }
     }
 }
