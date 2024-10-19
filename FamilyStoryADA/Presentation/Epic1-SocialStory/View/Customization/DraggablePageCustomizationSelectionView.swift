@@ -31,13 +31,13 @@ struct DraggablePageCustomizationSelectionView: View {
                         }
                     }
                 ForEach(Array(draggedPages.enumerated()), id: \.offset) { index, page in
+                    
                     DraggedPageView(imagePath: page.picturePath,
                                     order: index+1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id
                     )
                     .draggable(page)
                     .onTapGesture {
-                        print("Clicked")
                         viewModel.selectPage(page: page)
                     }
                     DroppedPageTargetCustomizationView(isSelected: targetedIndex == index)

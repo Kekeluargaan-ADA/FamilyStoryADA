@@ -39,7 +39,7 @@ class PageCustomizationViewModel: ObservableObject {
         )
         
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.append(newPage)
+            story.pages.insert(newPage, at: story.pages.count - 1) // Add blank page before end of story
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
