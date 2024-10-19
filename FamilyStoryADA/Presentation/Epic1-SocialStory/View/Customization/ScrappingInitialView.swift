@@ -30,7 +30,7 @@ struct ScrappingInitialView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", onTap: {})
+                                        ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                                         Spacer()
                                     }
                                     Text("Cari Foto")
@@ -42,8 +42,10 @@ struct ScrappingInitialView: View {
                                 SearchBarView(searchText: $viewModel.keyword) {
                                     viewModel.crawlImages()
                                 }
-                                ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", onTap: {
+                                Button(action: {
                                     viewModel.clearSelection()
+                                }, label: {
+                                    ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
                             
