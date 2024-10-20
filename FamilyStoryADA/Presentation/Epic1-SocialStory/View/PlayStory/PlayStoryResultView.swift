@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct PlayStoryResultView: View {
+    @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
+    
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
@@ -15,27 +18,46 @@ struct PlayStoryResultView: View {
             let widthRatio = ratios.widthRatio
             
             VStack {
-                PlayStoryNavigationView(heightRatio: heightRatio, title: "title", buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
-                Spacer().frame(width: 85 * heightRatio)
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: 727 * widthRatio, height: 442 * heightRatio)
-                        .cornerRadius(20 * heightRatio)
-                    VStack {
-                        Rectangle()
-                            .foregroundColor(.black)
-                          .frame(width: 289 * widthRatio, height: 189 * heightRatio)
-                          .cornerRadius(12 * heightRatio)
-                        Text("Good job!")
-                            .bold()
-                            .font(.system(size: 32 * heightRatio))
-                    }
+                PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+                    .padding(.horizontal, 46 * widthRatio)
+                    .padding(.top, 46 * heightRatio)
+                    .padding(.bottom, 24 * heightRatio)
+                
+                Text("Selesai!")
+                    .font(Font.custom("Fredoka", size: 64 * heightRatio, relativeTo: .largeTitle))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color("FSBlack"))
+                    .padding(.bottom, 20 * heightRatio)
+                
+                Image("FinishStoryMenggosokGigi")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
+                    .padding(.bottom, 25 * heightRatio)
+                
+                Text("Apakah kamu ingin bermain susun kartu sekarang?")
+                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color("FSBlack"))
+                
+                HStack (spacing: 20) {
+                    Button(action: {
+                        playStoryViewModel.isStoryCompleted = true
+                        dismiss()
+                    }, label: {
+                        ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
+                    })
+                    Button(action: {
+                        playStoryViewModel.isStoryCompleted = true
+                        
+                    }, label: {
+                        ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
+                    })
                 }
-                Spacer().frame(width: 192 * heightRatio)
             }
-            .padding(47 * heightRatio)
         }
+        .background(Color("FSYellow1"))
+        .navigationBarBackButtonHidden()
     }
 }
 

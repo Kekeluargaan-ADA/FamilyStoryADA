@@ -131,6 +131,9 @@ struct CustomizationView: View {
                     }
                 }
             }
+            NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+                MiniQuizView(story: viewModel.story)
+            }, label: {})
         }
         .padding(.top, 26)
         .ignoresSafeArea()
