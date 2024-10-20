@@ -34,9 +34,6 @@ struct PlayStoryView: View {
                     ZStack {
                         //Content
                         ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .foregroundStyle(Color("FSWhite"))
-                                .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                             
                             if let image = viewModel.selectedPage?.pagePicture.first {
                                 if image.componentCategory == "AssetPicture" {
@@ -62,6 +59,10 @@ struct PlayStoryView: View {
                                     .onDisappear() {
                                         videoPlayer.pause()
                                     }
+                            } else {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .foregroundStyle(Color("FSWhite"))
+                                    .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                             }
                         }
                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
@@ -97,19 +98,23 @@ struct PlayStoryView: View {
                         }
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
-                    Spacer().frame(height: 55 * heightRatio)
+                    Spacer().frame(height: 24 * heightRatio)
                     
                     
                     Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                        .font(Font.custom("Fredoka", size: 32 * heightRatio))
+                        .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
+                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                         .fontWeight(.semibold)
+                        .foregroundStyle(Color("FSBlack"))
+                        
                     Spacer().frame(height: 55 * heightRatio)
                 }
                 .padding(47 * heightRatio)
             }
-            
+            .background(Color("FSYellow1"))
         }
-        .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
         .navigationViewStyle(.stack)
     }
