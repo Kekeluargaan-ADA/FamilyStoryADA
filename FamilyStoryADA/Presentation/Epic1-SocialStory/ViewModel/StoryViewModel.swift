@@ -69,6 +69,15 @@ class StoryViewModel: ObservableObject {
                     story.templateCategory.lowercased().contains(searchText.lowercased())
                 }
             }
+        
+        displayedStory.insert(StoryEntity(storyId: UUID(),
+                                          storyName: "",
+                                          storyCoverImagePath: "",
+                                          storyLastRead: Date(),
+                                          templateId: UUID(),
+                                          templateCategory: "",
+                                          pages: []
+                                         ), at: 0)
             objectWillChange.send() // Notify observers
         }
     
