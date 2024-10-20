@@ -10,10 +10,10 @@ import AVKit
 
 struct PlayStoryView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel: PlayStoryViewModel
+    @StateObject var playStoryViewModel: PlayStoryViewModel
     
     init(story: StoryEntity) {
-        _viewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
+        _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
     }
     
     var body: some View {
@@ -25,17 +25,19 @@ struct PlayStoryView: View {
                 
                 VStack {
                     Spacer()
-                    PlayStoryNavigationView(heightRatio: heightRatio, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                    PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                         dismiss()
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
                     })
+                    .padding(.top, 47 * heightRatio)
+                    .padding(.horizontal, 46 * widthRatio)
                     Spacer().frame(height: 21 * heightRatio)
                     ZStack {
                         //Content
                         ZStack {
                             
-                            if let image = viewModel.selectedPage?.pagePicture.first {
+                            if let image = playStoryViewModel.selectedPage?.pagePicture.first {
                                 if image.componentCategory == "AssetPicture" {
                                     Image(image.componentContent)
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
@@ -43,7 +45,7 @@ struct PlayStoryView: View {
                                 } else {
                                     //TODO: Add app storage image
                                 }
-                            } else if let video = viewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
+                            } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 
                                 //Video
                                 let videoPlayer = AVPlayer(url: url)
@@ -69,9 +71,9 @@ struct PlayStoryView: View {
                         
                         //Button
                         HStack {
-                            if viewModel.currentPageNumber > 0 {
+                            if playStoryViewModel.currentPageNumber > 0 {
                                 Button(action: {
-                                    viewModel.continueToPreviousPage()
+                                    playStoryViewModel.continueToPreviousPage()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
                                 })
@@ -79,9 +81,9 @@ struct PlayStoryView: View {
                             }
                             
                             Spacer()
-                            if viewModel.currentPageNumber < viewModel.story.pages.count - 1 {
+                            if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
                                 Button(action: {
-                                    viewModel.continueToNextPage()
+                                    playStoryViewModel.continueToNextPage()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
@@ -90,7 +92,7 @@ struct PlayStoryView: View {
                             } else {
                                 NavigationLink(destination: {
                                     // TODO: Goto PageClosing
-                                    PlayStoryClosingView()
+                                    PlayStoryResultView()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
@@ -99,7 +101,7 @@ struct PlayStoryView: View {
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
                     
-                    if viewModel.currentPageNumber <= 0 || viewModel.currentPageNumber >= viewModel.story.pages.count - 1 {
+                    if playStoryViewModel.currentPageNumber <= 0 || playStoryViewModel.currentPageNumber >= playStoryViewModel.story.pages.count - 1 {
                         Spacer().frame(height: 19 * heightRatio)
                         
                         ZStack {
@@ -107,7 +109,7 @@ struct PlayStoryView: View {
                                 .foregroundStyle(Color("FSWhite"))
                                 .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
                                 .shadow(radius: 4, y: 4)
-                            Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
                                 .frame(width: 700 * widthRatio, height: 160 * heightRatio)
                                 .lineLimit(nil)
                                 .multilineTextAlignment(.center)
@@ -125,7 +127,7 @@ struct PlayStoryView: View {
                                 .foregroundStyle(Color("FSWhite"))
                                 .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
                                 .shadow(radius: 10, y: -4)
-                            Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
                                 .frame(width: 700 * widthRatio, height: 160 * heightRatio)
                                 .lineLimit(nil)
                                 .multilineTextAlignment(.center)
@@ -137,11 +139,23 @@ struct PlayStoryView: View {
                         
                     
                 }
+                // TODO: Not working
+                NavigationLink(isActive: $playStoryViewModel.isStoryGoToMiniQuiz, destination: {
+                    MiniQuizView(story: playStoryViewModel.story)
+                }, label: {
+                    
+                })
             }
             .background(Color("FSYellow1"))
         }
         .navigationBarBackButtonHidden()
         .navigationViewStyle(.stack)
+        .environmentObject(playStoryViewModel)
+        .onChange(of: playStoryViewModel.isStoryCompleted) {
+            if playStoryViewModel.isStoryCompleted {
+                dismiss()
+            }
+        }
     }
 }
 

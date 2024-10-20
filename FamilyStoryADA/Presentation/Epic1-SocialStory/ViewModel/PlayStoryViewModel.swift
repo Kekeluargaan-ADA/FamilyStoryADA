@@ -11,6 +11,8 @@ class PlayStoryViewModel: ObservableObject {
     @Published var story: StoryEntity
     @Published var selectedPage: PageEntity?
     @Published var currentPageNumber: Int
+    @Published var isStoryCompleted: Bool = false
+    @Published var isStoryGoToMiniQuiz: Bool = false
     
     init(story: StoryEntity) {
         self.story = story

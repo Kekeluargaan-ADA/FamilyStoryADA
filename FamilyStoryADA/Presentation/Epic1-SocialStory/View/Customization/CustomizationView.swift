@@ -115,7 +115,8 @@ struct CustomizationView: View {
                                 .padding(.horizontal, 19)
                                 .padding(.vertical, 15)
                                 .frame(width: 760, height: 117)
-                                .font(.system(size: 32, weight: .semibold))
+                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -130,6 +131,9 @@ struct CustomizationView: View {
                     }
                 }
             }
+            NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+                MiniQuizView(story: viewModel.story)
+            }, label: {})
         }
         .padding(.top, 26)
         .ignoresSafeArea()
