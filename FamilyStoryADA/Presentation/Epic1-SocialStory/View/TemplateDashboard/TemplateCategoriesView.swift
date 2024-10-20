@@ -89,6 +89,7 @@ struct TemplateCategoriesView: View {
         }
         .padding(.horizontal, 46 * widthRatio)
         .padding(.top, -64 * heightRatio)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

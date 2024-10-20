@@ -12,9 +12,10 @@ struct TemplateCardView: View {
 
     var body: some View {
         Rectangle()
-            .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
+            .foregroundStyle(Color("FSWhite"))
             .frame(width: 354, height: 280)
             .cornerRadius(12)
+            .shadow(radius: 2, y: 4)
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {
@@ -27,11 +28,15 @@ struct TemplateCardView: View {
                     Spacer()
                     HStack {
                         Text(template.templateName)
-                            .bold()
-                            .font(.system(size: 24))
+                          .font(
+                            Font.custom("Fredoka", size: 24)
+                              .weight(.semibold)
+                          )
+                          .foregroundColor(Color("FSBlack"))
                         Spacer()
                         Text("3 mins")
-                            .font(.system(size: 16))
+                          .font(Font.custom("Fredoka", size: 14))
+                          .foregroundColor(Color("FSGrey"))
                     }
                     .padding(12)
                     Spacer().frame(height: 19)
