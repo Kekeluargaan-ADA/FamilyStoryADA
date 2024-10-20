@@ -16,6 +16,7 @@ class PageCustomizationViewModel: ObservableObject {
     @Published var isMediaOverlayOpened: Bool = false
     @Published var isGotoCameraView: Bool = false
     @Published var isGotoImagePicker: Bool = false
+    @Published var isGotoScrapImage: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase

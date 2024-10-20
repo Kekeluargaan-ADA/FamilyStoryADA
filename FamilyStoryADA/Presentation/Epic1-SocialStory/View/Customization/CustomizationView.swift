@@ -70,7 +70,6 @@ struct CustomizationView: View {
                                     }, label: {
                                         ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
                                     })
-                                    //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                                 }
                             }
                             .padding(.top, 20)
@@ -154,9 +153,7 @@ struct CustomizationView: View {
                                                 .frame(width: 760, height: 468)
                                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                                 .onAppear() {
-                                                    
                                                     videoPlayer.play()
-                                                    
                                                 }
                                                 .onDisappear() {
                                                     videoPlayer.pause()
@@ -239,7 +236,7 @@ struct CustomizationView: View {
                     currentText = ""
                 }
             }
-            .overlay() {
+            .overlay {
                 if viewModel.isMediaOverlayOpened {
                     ZStack {
                         Color("FSBlack").opacity(0.4)
@@ -258,8 +255,6 @@ struct CustomizationView: View {
                 .environmentObject(cameraViewModel)
         }, label: {})
         .onChange(of: cameraViewModel.savedImageFilename) { value in
-            print(value) // MARK: this is the result
-            
             if let page = viewModel.selectedPage, page.pagePicture.isEmpty, let fileName = value {
                 viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
                                                                                   componentContent: fileName,
@@ -269,7 +264,6 @@ struct CustomizationView: View {
                 viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
                 viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
             }
-            
             viewModel.updatePage()
             viewModel.isGotoCameraView = false
         }
@@ -278,7 +272,6 @@ struct CustomizationView: View {
             ImagePicker(selectedImage: $cameraViewModel.savedImage)
         }, label: {})
         .onChange(of: cameraViewModel.savedImage ?? UIImage()) { value in
-            
             if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
                 let fileName = CameraDelegate.saveImageToAppStorage(value)
                 viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
@@ -294,10 +287,13 @@ struct CustomizationView: View {
             viewModel.updatePage()
             viewModel.isGotoImagePicker = false
         }
+        
+        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
+            ScrappingInitialView()
+        }, label: {})
     }
     
-    // Reset and start the timer for delayed update
-    func resetTypingTimer() {
+    private func resetTypingTimer() {
         typingTimer?.invalidate()
         typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             updatePageText()
