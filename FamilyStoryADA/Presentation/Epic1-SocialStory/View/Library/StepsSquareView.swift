@@ -15,7 +15,7 @@ struct StepsSquareView: View {
         ZStack(alignment: .topLeading) {
             Rectangle()
                 .foregroundColor(Color("FSWhite"))
-                .frame(width: 280 * widthRatio, height: 172 * heightRatio)
+                .frame(width: 280, height: 172)
                 .cornerRadius(8)
                 .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
                 .overlay(

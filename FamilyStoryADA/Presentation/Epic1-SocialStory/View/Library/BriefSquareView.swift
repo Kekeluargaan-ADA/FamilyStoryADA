@@ -14,7 +14,7 @@ struct BriefSquareView: View {
     var body: some View {
         Rectangle()
           .foregroundColor(Color("FSWhite"))
-          .frame(width: 580 * widthRatio, height: 228 * heightRatio)
+          .frame(width: 580, height: 228)
           .cornerRadius(12)
           .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
           .overlay(
@@ -22,9 +22,9 @@ struct BriefSquareView: View {
                 Image("DummyImage")
                   .resizable()
                   .aspectRatio(contentMode: .fill)
-                  .frame(width: 280 * widthRatio, height: 172 * heightRatio)
+                  .frame(width: 280, height: 172 * heightRatio)
                   .cornerRadius(12 * heightRatio)
-                Spacer().frame(width: 20 * widthRatio)
+                Spacer().frame(width: 20)
                 VStack {
                     Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang")
                       .font(

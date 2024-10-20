@@ -16,7 +16,7 @@ struct PagePreviewModalView: View {
             
             Rectangle()
                 .foregroundStyle(Color("FSBlue1"))
-                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+            //                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                 .cornerRadius(20 * heightRatio)
                 .overlay(
                     VStack {
@@ -27,8 +27,11 @@ struct PagePreviewModalView: View {
                                     Spacer()
                                 }
                                 Text("Cara Menyikat Gigi")
-                                    .font(.system(size: 32 * heightRatio))
-                                    .fontWeight(.bold)
+                                    .font(
+                                        Font.custom("Fredoka", size: 32)
+                                            .weight(.semibold)
+                                    )
+                                    .foregroundColor(Color("FSBlack"))
                             }
                         }
                         Spacer().frame(height: 24 * heightRatio)
@@ -45,9 +48,9 @@ struct PagePreviewModalView: View {
                         }
                         .padding(.horizontal, 45 * widthRatio)
                     }
-                    .padding(24 * heightRatio)
+                        .padding(24 * heightRatio)
                 )
-
+            
         }
     }
 }
