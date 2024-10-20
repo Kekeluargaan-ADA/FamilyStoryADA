@@ -9,8 +9,9 @@ import SwiftUI
 
 struct PlayStoryResultView: View {
     @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
-    
     @Environment(\.dismiss) var dismiss
+    @State var isMiniQuizPresented: Bool = false
+    
     var body: some View {
         GeometryReader { geometry in
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
@@ -18,7 +19,9 @@ struct PlayStoryResultView: View {
             let widthRatio = ratios.widthRatio
             
             VStack {
-                PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+                PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                    playStoryViewModel.isStoryCompleted = true
+                }, onTapAudioButton: {})
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.top, 46 * heightRatio)
                     .padding(.bottom, 24 * heightRatio)
@@ -43,18 +46,20 @@ struct PlayStoryResultView: View {
                 HStack (spacing: 20) {
                     Button(action: {
                         playStoryViewModel.isStoryCompleted = true
-                        dismiss()
                     }, label: {
                         ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
                     })
                     Button(action: {
-                        playStoryViewModel.isStoryCompleted = true
-                        
+//                        playStoryViewModel.isStoryCompleted = true
+                        isMiniQuizPresented = true
                     }, label: {
                         ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
                     })
                 }
             }
+            NavigationLink(isActive: $isMiniQuizPresented, destination: {
+                MiniQuizView(story: playStoryViewModel.story)
+            }, label: {})
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
