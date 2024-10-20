@@ -62,7 +62,7 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) { 
+                                                NavigationLink(destination: TemplateCollectionView()) {
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
                                                 }
@@ -103,7 +103,7 @@ struct StoryDashboardView: View {
                                                             .foregroundStyle(Color("FSBlack"))
                                                             .padding()
                                                     }
-
+                                                    
                                                 }
                                                 
                                                 //                                                .navigationViewStyle(.plain)
@@ -160,6 +160,7 @@ struct StoryDashboardView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
