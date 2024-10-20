@@ -98,20 +98,45 @@ struct PlayStoryView: View {
                         }
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
-                    Spacer().frame(height: 24 * heightRatio)
                     
-                    
-                    Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                        .frame(width: 700 * widthRatio, height: 160 * heightRatio)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.center)
-                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color("FSBlack"))
+                    if viewModel.currentPageNumber <= 0 || viewModel.currentPageNumber >= viewModel.story.pages.count - 1 {
+                        Spacer().frame(height: 19 * heightRatio)
                         
-                    Spacer().frame(height: 55 * heightRatio)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 80)
+                                .foregroundStyle(Color("FSWhite"))
+                                .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
+                                .shadow(radius: 4, y: 4)
+                            Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                .lineLimit(nil)
+                                .multilineTextAlignment(.center)
+                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color("FSBlack"))
+                        }
+                        Spacer().frame(height: 55 * heightRatio)
+                        
+                    } else {
+                        Spacer().frame(height: 24 * heightRatio)
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 40)
+                                .foregroundStyle(Color("FSWhite"))
+                                .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
+                                .shadow(radius: 10, y: -4)
+                            Text(viewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                .lineLimit(nil)
+                                .multilineTextAlignment(.center)
+                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color("FSBlack"))
+                        }
+                    }
+                        
+                    
                 }
-                .padding(47 * heightRatio)
             }
             .background(Color("FSYellow1"))
         }
