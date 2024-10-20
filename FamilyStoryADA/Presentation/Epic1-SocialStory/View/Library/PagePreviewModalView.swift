@@ -14,33 +14,40 @@ struct PagePreviewModalView: View {
             let heightRatio = ratios.heightRatio
             let widthRatio = ratios.widthRatio
             
-            VStack {
-                HStack {
-                    ZStack {
+            Rectangle()
+                .foregroundStyle(Color("FSBlue2"))
+                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                .cornerRadius(20 * heightRatio)
+                .overlay(
+                    VStack {
                         HStack {
-                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
-                            Spacer()
-                        }
-                        Text("Cara Menyikat Gigi")
-                            .font(.system(size: 32 * heightRatio))
-                            .fontWeight(.bold)
-                    }
-                }
-                Spacer().frame(height: 24 * heightRatio)
-                BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
-                Spacer().frame(height: 24 * heightRatio)
-                ScrollView {
-                    LazyVGrid(
-                        columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)],
-                        spacing: 16 * heightRatio                    ) {
-                            ForEach(1...6, id: \.self) { step in
-                                StepsSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                            ZStack {
+                                HStack {
+                                    ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                    Spacer()
+                                }
+                                Text("Cara Menyikat Gigi")
+                                    .font(.system(size: 32 * heightRatio))
+                                    .fontWeight(.bold)
                             }
                         }
-                        .padding(.horizontal, 75 * widthRatio)
-                }
-            }
-            .padding(24 * heightRatio)
+                        Spacer().frame(height: 24 * heightRatio)
+                        BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                        Spacer().frame(height: 24 * heightRatio)
+                        ScrollView {
+                            LazyVGrid(
+                                columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)],
+                                spacing: 16 * heightRatio                    ) {
+                                    ForEach(1...6, id: \.self) { step in
+                                        StepsSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, 45 * widthRatio)
+                    }
+                    .padding(24 * heightRatio)
+                )
+
         }
     }
 }
