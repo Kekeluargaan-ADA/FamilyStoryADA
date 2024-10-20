@@ -31,25 +31,28 @@ targets:
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
         LSRequiresIPhoneOS: YES
-        UILaunchScreen: ""
+        UILaunchStoryboardName: "LaunchScreen"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
         UISupportedInterfaceOrientations~iphone:
           [
             UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
             UIInterfaceOrientationLandscapeLeft,
             UIInterfaceOrientationLandscapeRight,
           ]
         UISupportedInterfaceOrientations~ipad:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UTExportedTypeDeclarations:
-            - UTTypeConformsTo:
-                [
-                  "com.public.data"
-                ]
-              UTTypeDescription: "DraggablePage"
-              UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
+          - UTTypeConformsTo: ["com.public.data"]
+            UTTypeDescription: "DraggablePage"
+            UTTypeIdentifier: "kekeluargaan.FamilyStoryADA.draggablePage"
         UIAppFonts:
           - Fredoka-VariableFont_wdth,wght.ttf
     dependencies:
