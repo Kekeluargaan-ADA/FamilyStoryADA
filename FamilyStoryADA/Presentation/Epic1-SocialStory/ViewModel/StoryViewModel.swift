@@ -22,10 +22,12 @@ class StoryViewModel: ObservableObject {
     @Published var currentlyEditedStory: StoryEntity?
     
     private let storyUsecase: StoryUsecase
+    private let templateUsecase: TemplateUsecase
     
     @MainActor
     init() {
         self.storyUsecase = ImplementedStoryUsecase()
+        self.templateUsecase = JSONTemplateUsecase()
         self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         
@@ -112,6 +114,14 @@ class StoryViewModel: ObservableObject {
     
     func updateStory(story: StoryEntity) {
         _ = storyUsecase.updateStory(story: story)
+    }
+    
+    public func getImagePreviewSelection(templateId: UUID) -> [String] {
+        if let template = templateUsecase.fetchTemplateById(templateId: templateId) {
+            return template.templateOptionCoverImagePath
+        }
+        
+        return []
     }
     
 //    //debug func
