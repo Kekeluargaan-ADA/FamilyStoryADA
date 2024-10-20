@@ -30,6 +30,8 @@ struct PlayStoryView: View {
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
                     })
+                    .padding(.top, 47 * heightRatio)
+                    .padding(.horizontal, 46 * widthRatio)
                     Spacer().frame(height: 21 * heightRatio)
                     ZStack {
                         //Content
