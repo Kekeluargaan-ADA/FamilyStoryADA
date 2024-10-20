@@ -12,6 +12,7 @@ class PageCustomizationViewModel: ObservableObject {
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
+    @Published var isMediaOverlayOpened: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
