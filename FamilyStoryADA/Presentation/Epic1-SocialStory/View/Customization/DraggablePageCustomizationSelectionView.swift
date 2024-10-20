@@ -31,15 +31,26 @@ struct DraggablePageCustomizationSelectionView: View {
                         }
                     }
                 ForEach(Array(draggedPages.enumerated()), id: \.offset) { index, page in
-                    
-                    DraggedPageView(imagePath: page.picturePath,
-                                    order: index+1,
-                                    isSelected: viewModel.selectedPage?.pageId == page.id
-                    )
-                    .draggable(page)
-                    .onTapGesture {
-                        viewModel.selectPage(page: page)
+                    if let image = viewModel.loadImageFromDiskWith(fileName: page.picturePath) {
+                        DraggedPageView(imagePath: image,
+                                        order: index+1,
+                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                        )
+                        .draggable(page)
+                        .onTapGesture {
+                            viewModel.selectPage(page: page)
+                        }
+                    } else {
+                        DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
+                                        order: index+1,
+                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                        )
+                        .draggable(page)
+                        .onTapGesture {
+                            viewModel.selectPage(page: page)
+                        }
                     }
+                    
                     DroppedPageTargetCustomizationView(isSelected: targetedIndex == index)
                         .dropDestination(for: DraggablePage.self) { droppedPage, location in
                             

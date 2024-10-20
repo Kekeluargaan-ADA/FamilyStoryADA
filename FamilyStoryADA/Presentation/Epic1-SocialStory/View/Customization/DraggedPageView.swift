@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct DraggedPageView: View {
-    var imagePath: String
+    var imagePath: UIImage
     var order: Int
     var isSelected: Bool
     
     var body: some View {
         VStack {
             ZStack {
-                Image(imagePath)
+                Image(uiImage: imagePath)
                     .resizable()
                     .frame(width: 152, height: 93.37)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -38,5 +38,5 @@ struct DraggedPageView: View {
 }
 
 #Preview {
-    DraggedPageView(imagePath: "DummyImage", order: 1, isSelected: true)
+    DraggedPageView(imagePath: UIImage(imageLiteralResourceName: "DummyImage"), order: 1, isSelected: true)
 }

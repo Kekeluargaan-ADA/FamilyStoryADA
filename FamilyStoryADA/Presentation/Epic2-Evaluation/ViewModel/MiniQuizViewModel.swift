@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
-class MiniQuizViewModel: ObservableObject {
+class MiniQuizViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
     @Published var droppableBox: [(DraggablePage, Bool)]
@@ -43,5 +44,17 @@ class MiniQuizViewModel: ObservableObject {
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
         self.droppableBox = DraggablePage.loadEmptyArray(storyPageCount: story.pages.count - 2)
         self.isAllCorrect = false
+    }
+    
+    public func displayImage(fileName: String) -> UIImage {
+        var image = UIImage()
+        guard fileName != "" else { return image }
+        if let imageAppStorage = loadImageFromDiskWith(fileName: fileName) {
+            image = imageAppStorage
+        } else {
+            image = UIImage(imageLiteralResourceName: fileName)
+        }
+        
+        return image
     }
 }

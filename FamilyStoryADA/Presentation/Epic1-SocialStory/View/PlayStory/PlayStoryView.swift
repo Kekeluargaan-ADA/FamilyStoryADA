@@ -42,8 +42,14 @@ struct PlayStoryView: View {
                                     Image(image.componentContent)
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                                } else {
-                                    //TODO: Add app storage image
+                                } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
+                                    Image(uiImage: imageAppStorage)
+                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                }else {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .foregroundStyle(Color("FSWhite"))
+                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                 }
                             } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 

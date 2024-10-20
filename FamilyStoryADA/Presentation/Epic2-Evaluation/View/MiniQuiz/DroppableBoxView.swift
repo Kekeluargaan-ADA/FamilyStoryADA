@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DroppableBoxView: View {
     var order: Int
-    var imagePath: String
+    var imagePath: UIImage
     var body: some View {
         VStack {
             ZStack {
@@ -27,7 +27,7 @@ struct DroppableBoxView: View {
                     .frame(width: 166, height: 166)
                     .foregroundStyle(Color("FSYellow2").gradient.shadow(.inner(color: Color("FSBlack").opacity(0.1), radius: 15)))
                 
-                Image(imagePath)
+                Image(uiImage: imagePath)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 166, height: 166)
@@ -44,5 +44,5 @@ struct DroppableBoxView: View {
 }
 
 #Preview {
-    DroppableBoxView(order: 1, imagePath: "DummyImage")
+    DroppableBoxView(order: 1, imagePath: UIImage(imageLiteralResourceName: "DummyImage"))
 }
