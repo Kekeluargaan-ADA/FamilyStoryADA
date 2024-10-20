@@ -13,7 +13,8 @@ struct DroppableArrayView: View {
         ScrollView(.horizontal) {
             HStack {
                 ForEach(Array(viewModel.droppableBox.enumerated()), id: \.offset) { index, page in
-                    DroppableBoxView(order: index+1, imagePath: page.0.picturePath)
+                    
+                    DroppableBoxView(order: index+1, imagePath: viewModel.displayImage(fileName: page.0.picturePath))
                         .dropDestination(for: DraggablePage.self) { droppedPages, location in
                             
                             guard page.0.id == nil else { return false }
@@ -27,7 +28,9 @@ struct DroppableArrayView: View {
                             }
                             
                             if viewModel.isReadyForChecking() {
-                                viewModel.checkAnswer()
+                                if viewModel.checkAnswer() {
+                                    viewModel.isAllCorrect = true
+                                }
                                 
                             }
                             return true

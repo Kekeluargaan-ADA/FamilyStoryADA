@@ -9,37 +9,40 @@ import SwiftUI
 
 struct DroppableBoxView: View {
     var order: Int
-    var imagePath: String
+    var imagePath: UIImage
     var body: some View {
         VStack {
             ZStack {
                 Circle()
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(Color("FSYellow4"))
                 Text("\(order)")
-                    .font(.system(size: 24))
+                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
                     .fontWeight(.bold)
+                    .foregroundStyle(Color("FSBlack"))
             }
             .frame(width: 40, height: 40)
             
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .frame(width: 166, height: 166)
-                    .foregroundStyle(imagePath == "" ? .secondary : Color.blue)
-                Image(imagePath)
+                    .foregroundStyle(Color("FSYellow2").gradient.shadow(.inner(color: Color("FSBlack").opacity(0.1), radius: 15)))
+                
+                Image(uiImage: imagePath)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
+                    .frame(width: 166, height: 166)
                     .clipShape(
-                        Rectangle()
+                        RoundedRectangle(cornerRadius: 12)
                     )
-                    .frame(width: 166, height: 166)
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.black, lineWidth: 2)
-                    .frame(width: 166, height: 166)
+                    
+//                RoundedRectangle(cornerRadius: 12)
+//                    .stroke(Color.black, lineWidth: 2)
+//                    .frame(width: 166, height: 166)
             }
         }
     }
 }
 
 #Preview {
-    DroppableBoxView(order: 1, imagePath: "DummyImage")
+    DroppableBoxView(order: 1, imagePath: UIImage(imageLiteralResourceName: "DummyImage"))
 }

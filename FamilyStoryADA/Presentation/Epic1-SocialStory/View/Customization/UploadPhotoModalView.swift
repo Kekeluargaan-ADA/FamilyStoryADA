@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UploadPhotoModalView: View {
+    @EnvironmentObject var viewModel: PageCustomizationViewModel
     @State private var isModalPresented = false
     
     var body: some View {
@@ -27,22 +28,29 @@ struct UploadPhotoModalView: View {
                                 ZStack {
                                     HStack {
                                         Button(action: {
-                                            
+                                            viewModel.isMediaOverlayOpened = false
                                         }, label: {
                                             ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
                                         })
                                         Spacer()
                                     }
                                     Text("Upload Foto")
-                                        .font(.system(size: 32 * heightRatio))
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                         .fontWeight(.bold)
+                                        .foregroundStyle(Color("FSBlack"))
                                 }
                             }
                             Spacer().frame(height: 36 * heightRatio)
                             HStack(spacing: 24 * widthRatio) {
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {})
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {})
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {})
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {
+                                    viewModel.isGotoCameraView = true
+                                })
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {
+                                    viewModel.isGotoImagePicker = true
+                                })
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
+                                    // TODO: Enable scrapping image
+                                })
                             }
                             Spacer()
                         }

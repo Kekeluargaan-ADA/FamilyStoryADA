@@ -16,8 +16,8 @@ struct TemplateCategoriesView: View {
     var body: some View {
         ZStack {
             HStack {
-                Button(action: {
-                    
+                NavigationLink(destination: {
+                    StoryDashboardView()
                 }, label: {
                     ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                 })
@@ -39,7 +39,7 @@ struct TemplateCategoriesView: View {
                     widthRatio: widthRatio,
                     buttonImage: "figure.walk",
                     text: "Ambulating",
-                    isSelected: selectedCategory == "Ambulating" // 
+                    isSelected: selectedCategory == "Ambulating" //
                 ) {
                     selectedCategory = "Ambulating"
                     onCategorySelected("Ambulating")
@@ -89,6 +89,7 @@ struct TemplateCategoriesView: View {
         }
         .padding(.horizontal, 46 * widthRatio)
         .padding(.top, -64 * heightRatio)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -43,7 +43,10 @@ struct StoryDashboardView: View {
                                 .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
-                                SearchBarView(searchText: $keywords, onCommit: {})
+                                SearchBarView(searchText: $keywords, onCommit: {
+                                                                    viewModel.searchText = keywords
+                                                                    viewModel.searchStories() // Trigger search when user commits
+                                                                })
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -55,14 +58,14 @@ struct StoryDashboardView: View {
                                     Spacer()
                                     Text("Urutkan")
                                         .foregroundStyle(.black)
-                                    DropdownFilterView(selectedOption: $viewModel.selectedOption)
+                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption)
                                 }
                                 .padding(.horizontal, 20)
                                 ScrollView {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) { 
+                                                NavigationLink(destination: TemplateCollectionView()) {
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
                                                 }
@@ -103,7 +106,7 @@ struct StoryDashboardView: View {
                                                             .foregroundStyle(Color("FSBlack"))
                                                             .padding()
                                                     }
-
+                                                    
                                                 }
                                                 
                                                 //                                                .navigationViewStyle(.plain)
@@ -132,7 +135,7 @@ struct StoryDashboardView: View {
                         ZStack {
                             Color("FSBlue1")
                                 .ignoresSafeArea()
-                            EditCoverModalView(story: story, imageOptionPath: ["DummyImage", "DummyImage2", "DummyImage3"])
+                            EditCoverModalView(story: story, imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId))
                         }
                         .presentationDetents([.height(700)])
                     }
@@ -160,6 +163,7 @@ struct StoryDashboardView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

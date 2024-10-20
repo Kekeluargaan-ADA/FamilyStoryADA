@@ -285,4 +285,24 @@ class CameraDelegate: NSObject, AVCapturePhotoCaptureDelegate {
         }
         return ""
     }
+    
+    static func loadImageFromAppStorage(named imageName: String) -> UIImage? {
+        let fileManager = FileManager.default
+        
+        // Get the path to the app's Documents directory
+        guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        
+        // Append the image name to the directory path
+        let imagePath = documentDirectory.appendingPathComponent(imageName)
+        
+        // Check if the image file exists at the path
+        if fileManager.fileExists(atPath: imagePath.path) {
+            return UIImage(contentsOfFile: imagePath.path)
+        } else {
+            print("Image not found at path: \(imagePath.path)")
+            return nil
+        }
+    }
 }

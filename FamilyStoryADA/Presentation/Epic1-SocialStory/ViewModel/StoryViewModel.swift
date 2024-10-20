@@ -16,16 +16,18 @@ enum SortOption: String {
 class StoryViewModel: ObservableObject {
     @Published var stories: [StoryEntity] = []
     @Published var displayedStory: [StoryEntity]
-    
+    @Published var searchText: String = ""
     @Published var selectedOption: SortOption = .newest
     @Published var isEditCoverSheetOpened: Bool = false
     @Published var currentlyEditedStory: StoryEntity?
     
     private let storyUsecase: StoryUsecase
+    private let templateUsecase: TemplateUsecase
     
     @MainActor
     init() {
         self.storyUsecase = ImplementedStoryUsecase()
+        self.templateUsecase = JSONTemplateUsecase()
         self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         
@@ -60,6 +62,44 @@ class StoryViewModel: ObservableObject {
         fetchStories()
     }
     
+    public func searchStories() {
+            if searchText.isEmpty {
+                displayedStory = stories // If search text is empty, show all stories
+            } else {
+                displayedStory = stories.filter { story in
+                    story.storyName.lowercased().contains(searchText.lowercased()) ||
+                    story.templateCategory.lowercased().contains(searchText.lowercased())
+                }
+            }
+        
+        displayedStory.insert(StoryEntity(storyId: UUID(),
+                                          storyName: "",
+                                          storyCoverImagePath: "",
+                                          storyLastRead: Date(),
+                                          templateId: UUID(),
+                                          templateCategory: "",
+                                          pages: []
+                                         ), at: 0)
+            objectWillChange.send() // Notify observers
+        }
+    
+    func sortDisplayedStories() {
+            guard displayedStory.count > 1 else {
+                return // No need to sort if there's only one or no stories
+            }
+            
+            let storiesToSort = displayedStory[1...] // Skip the first element
+            
+            switch selectedOption {
+            case .newest:
+                displayedStory = [displayedStory[0]] + storiesToSort.sorted(by: { $0.storyLastRead > $1.storyLastRead })
+            case .oldest:
+                displayedStory = [displayedStory[0]] + storiesToSort.sorted(by: { $0.storyLastRead < $1.storyLastRead })
+            }
+
+            objectWillChange.send()
+        }
+    
     func deleteStory(storyId: UUID) {
         // delete from swiftdata
         let result = storyUsecase.removeStory(storyId: storyId)
@@ -74,6 +114,14 @@ class StoryViewModel: ObservableObject {
     
     func updateStory(story: StoryEntity) {
         _ = storyUsecase.updateStory(story: story)
+    }
+    
+    public func getImagePreviewSelection(templateId: UUID) -> [String] {
+        if let template = templateUsecase.fetchTemplateById(templateId: templateId) {
+            return template.templateOptionCoverImagePath
+        }
+        
+        return []
     }
     
 //    //debug func

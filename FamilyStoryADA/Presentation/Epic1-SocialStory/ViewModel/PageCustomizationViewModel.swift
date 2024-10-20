@@ -6,11 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
-class PageCustomizationViewModel: ObservableObject {
+class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
+    @Published var isMiniQuizOpened: Bool = false
+    @Published var isMediaOverlayOpened: Bool = false
+    @Published var isGotoCameraView: Bool = false
+    @Published var isGotoImagePicker: Bool = false
+    @Published var isGotoScrapImage: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -22,11 +28,9 @@ class PageCustomizationViewModel: ObservableObject {
         self.storyUsecase = ImplementedStoryUsecase()
         self.componentUsecase = ImplementedComponentUsecase()
         
-        if let firstPage = story.pages.first {
-            self.selectedPage = firstPage
-        }
+        self.selectedPage = story.pages[1]
         
-        self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
+        self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
     }
     
     //make new blank page
@@ -151,14 +155,17 @@ class PageCustomizationViewModel: ObservableObject {
             if componentUsecase.updateComponent(component: picture) {
                 page.pagePicture = []
                 page.pagePicture.append(picture)
+                self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
             } else {
                 if componentUsecase.addNewComponent(component: picture) != nil {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
+                    self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
                     //TODO: Update id in page
                     _ = pageUsecase.editPage(page: page)
                 }
             }
         }
     }
+    
 }
