@@ -100,6 +100,7 @@ struct CustomizationView: View {
                                 } else {
                                     Button(action: {
                                         // TODO: Pop up menu
+                                        viewModel.isMediaOverlayOpened = true
                                     }, label: {
                                         EmptyImageCustomizationView()
                                     })
@@ -145,6 +146,16 @@ struct CustomizationView: View {
                 currentText = newPage.pageText.first?.componentContent ?? ""
             } else {
                 currentText = ""
+            }
+        }
+        .overlay() {
+            if viewModel.isMediaOverlayOpened {
+                ZStack {
+                    Color("FSBlack").opacity(0.4)
+                    UploadPhotoModalView()
+                }
+                .ignoresSafeArea()
+                .environmentObject(viewModel)
             }
         }
     }
