@@ -97,6 +97,32 @@ struct CustomizationView: View {
                                             videoPlayer.pause()
                                         }
                                     
+                                    Menu {
+                                        Button(action: {
+                                            // TODO: Take photo view
+                                        }) {
+                                            Label("Take Photo", systemImage: "camera")
+                                        }
+                                        
+                                        Button(action: {
+                                            // TODO: Choose photo view
+                                        }) {
+                                            Label("Choose Photo", systemImage: "photo")
+                                        }
+                                        
+                                        Button(action: {
+                                            // TODO: Generate photo view
+                                        }) {
+                                            Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .font(.system(size: 26))
+                                            .fontWeight(.bold)
+                                            .foregroundStyle(Color("FSWhite"))
+                                            .padding()
+                                    }
+                                    
                                 } else {
                                     Button(action: {
                                         // TODO: Pop up menu
