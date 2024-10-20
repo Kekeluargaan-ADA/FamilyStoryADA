@@ -30,9 +30,8 @@ struct ButtonSquare: View {
                             .font(.system(size: 40 * heightRatio))
                         Spacer().frame(height: 16 * heightRatio)
                         Text(text)
-                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("FSBlack"))
+                            .font(Font.custom("Fredoka", size: 24 * heightRatio))
+                          .foregroundColor(Color("FSBlack"))
                     }
                 )
         }

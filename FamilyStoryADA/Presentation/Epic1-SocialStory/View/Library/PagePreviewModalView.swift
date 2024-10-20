@@ -7,89 +7,54 @@
 
 import SwiftUI
 
-//struct LibraryPreviewModality: View {
-//    @State private var isPresentingModal = false
-//
-//    var body: some View {
-//        VStack {
-//            Text("Main View")
-//                .font(.largeTitle)
-//
-//            Button(action: {
-//                isPresentingModal = true
-//            }) {
-//                Text("Show Modal")
-//                    .padding()
-//                    .background(Color.blue)
-//                    .foregroundColor(.white)
-//                    .cornerRadius(10)
-//            }
-//            .sheet(isPresented: $isPresentingModal) {
-//                PagePreviewModalView(isPresented: $isPresentingModal)
-//            }
-//        }
-//    }
-//}
-
 struct PagePreviewModalView: View {
-    @Binding var isPresented: Bool
-    let items = Array(1...10) // Example data
-    
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
     var body: some View {
-        NavigationView {
-            VStack {
-                PreviewModalHeader(isPresented: isPresented) // Updated to pass a binding
-                
-                HStack {
-                    Rectangle()
-                        .frame(width: 280, height: 172)
-                        .foregroundStyle(.gray)
+        GeometryReader { geometry in
+            let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+            let heightRatio = ratios.heightRatio
+            let widthRatio = ratios.widthRatio
+            
+            Rectangle()
+                .foregroundStyle(Color("FSBlue1"))
+            //                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                .cornerRadius(20 * heightRatio)
+                .overlay(
                     VStack {
-                        Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief")
-                        NavigationLink(destination: {
-                            ImageInputModal(isPresented: .constant(true))
-                        }) {
-                            Text("Gunakan Template")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.green)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                        }
-                    }
-                    .frame(width: 280, height: 172)
-                }
-                .padding(25)
-                .background(.red)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(items, id: \.self) { item in
-                            VStack {
-                                Text("Preview Page \(item)")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .frame(width: 280, height: 200)
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
+                        HStack {
+                            ZStack {
+                                HStack {
+                                    ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                    Spacer()
+                                }
+                                Text("Cara Menyikat Gigi")
+                                    .font(
+                                        Font.custom("Fredoka", size: 32)
+                                            .weight(.semibold)
+                                    )
+                                    .foregroundColor(Color("FSBlack"))
                             }
                         }
+                        Spacer().frame(height: 24 * heightRatio)
+                        BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                        Spacer().frame(height: 24 * heightRatio)
+                        ScrollView {
+                            LazyVGrid(
+                                columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)],
+                                spacing: 16 * heightRatio                    ) {
+                                    ForEach(1...6, id: \.self) { step in
+                                        StepsSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, 45 * widthRatio)
                     }
-                }
-                .frame(width: 650)
-            }
+                        .padding(24 * heightRatio)
+                )
+            
         }
     }
 }
 
-
-#Preview{
-    @Previewable @State var isPresented = true // State for preview purposes
-    //    LibraryPreviewModality(isPresented: $isPresented)
-    PagePreviewModalView(isPresented: $isPresented)
+#Preview {
+    PagePreviewModalView()
 }
