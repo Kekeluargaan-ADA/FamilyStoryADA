@@ -15,7 +15,7 @@ struct PagePreviewModalView: View {
             let widthRatio = ratios.widthRatio
             
             Rectangle()
-                .foregroundStyle(Color("FSBlue2"))
+                .foregroundStyle(Color("FSBlue1"))
                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                 .cornerRadius(20 * heightRatio)
                 .overlay(
