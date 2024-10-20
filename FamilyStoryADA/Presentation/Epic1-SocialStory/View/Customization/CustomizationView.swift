@@ -56,7 +56,7 @@ struct CustomizationView: View {
                             //TODO: Disable when page is null
                             HStack (spacing: 12) {
                                 NavigationLink(destination: {
-                                    PlayStoryView()
+                                    PlayStoryView(story: viewModel.story)
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                                 })
