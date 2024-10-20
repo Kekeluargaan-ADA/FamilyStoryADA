@@ -43,7 +43,10 @@ struct StoryDashboardView: View {
                                 .foregroundStyle(Color("FSBlack"))
                             Spacer(minLength: geometry.size.width / 2)
                             HStack {
-                                SearchBarView(searchText: $keywords, onCommit: {})
+                                SearchBarView(searchText: $keywords, onCommit: {
+                                                                    viewModel.searchText = keywords
+                                                                    viewModel.searchStories() // Trigger search when user commits
+                                                                })
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -55,7 +58,7 @@ struct StoryDashboardView: View {
                                     Spacer()
                                     Text("Urutkan")
                                         .foregroundStyle(.black)
-                                    DropdownFilterView(selectedOption: $viewModel.selectedOption)
+                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption)
                                 }
                                 .padding(.horizontal, 20)
                                 ScrollView {
