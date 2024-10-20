@@ -100,6 +100,7 @@ struct CustomizationView: View {
                                                 
                                                 Button(action: {
                                                     // TODO: Generate photo view
+                                                    viewModel.isGotoScrapImage = true
                                                 }) {
                                                     Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
                                                 }
@@ -133,6 +134,7 @@ struct CustomizationView: View {
                                                 
                                                 Button(action: {
                                                     // TODO: Generate photo view
+                                                    viewModel.isGotoScrapImage = true
                                                 }) {
                                                     Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
                                                 }
@@ -174,6 +176,7 @@ struct CustomizationView: View {
                                                 
                                                 Button(action: {
                                                     // TODO: Generate photo view
+                                                    viewModel.isGotoScrapImage = true
                                                 }) {
                                                     Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
                                                 }
