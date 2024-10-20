@@ -13,20 +13,22 @@ struct PagePreviewModalView: View {
             let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
             let heightRatio = ratios.heightRatio
             let widthRatio = ratios.widthRatio
-            
-            VStack {
-                HStack {
-                    ZStack {
-                        HStack {
-                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
-                            Spacer()
+
+                VStack {
+                    HStack {
+                        ZStack {
+                            HStack {
+                                ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                Spacer()
+                            }
+                            Text("Cara Menyikat Gigi")
+                                .font(.system(size: 32 * heightRatio))
+                                .fontWeight(.bold)
                         }
-                        Text("Cara Menyikat Gigi")
-                            .font(.system(size: 32 * heightRatio))
-                            .fontWeight(.bold)
                     }
+                    Spacer().frame(height: 24 * heightRatio)
+                    BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
                 }
-            }
         }
     }
 }

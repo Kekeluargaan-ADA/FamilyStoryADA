@@ -42,6 +42,7 @@ struct TemplateCardView: View {
             }
             .sheet(isPresented: $isModalPresented) {
 //                PagePreviewModalView(isPresented: $isModalPresented)
+                PagePreviewModalView()
             }
     }
 }
