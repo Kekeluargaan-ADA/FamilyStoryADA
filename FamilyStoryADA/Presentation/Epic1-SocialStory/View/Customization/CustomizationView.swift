@@ -38,7 +38,8 @@ struct CustomizationView: View {
                         RoundedRectangle(cornerRadius: 28)
                             .fill(Color("FSYellow"))
                         Text(viewModel.story.storyName)
-                            .font(.system(size: 24, weight: .medium))
+                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                            .fontWeight(.medium)
                             .foregroundStyle(Color("FSBlack"))
                     }
                     .frame(width: 268, height: 45)
@@ -56,7 +57,7 @@ struct CustomizationView: View {
                             //TODO: Disable when page is null
                             HStack (spacing: 12) {
                                 NavigationLink(destination: {
-                                    PlayStoryView()
+                                    PlayStoryView(story: viewModel.story)
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                                 })

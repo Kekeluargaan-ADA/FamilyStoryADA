@@ -20,7 +20,7 @@ struct CustomizedBackButton: View {
                     .frame(width: 45, height: 43)
                     .foregroundStyle(Color("FSBlack"))
                 Text("My Story")
-                    .font(.system(size: 24, weight: .semibold))
+                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
                     .foregroundStyle(Color("FSBlack"))
                     .multilineTextAlignment(.leading)
             }
