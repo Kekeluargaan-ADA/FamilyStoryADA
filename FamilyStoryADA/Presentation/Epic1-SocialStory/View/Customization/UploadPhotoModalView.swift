@@ -35,17 +35,18 @@ struct UploadPhotoModalView: View {
                                         Spacer()
                                     }
                                     Text("Upload Foto")
-                                        .font(.system(size: 32 * heightRatio))
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                         .fontWeight(.bold)
+                                        .foregroundStyle(Color("FSBlack"))
                                 }
                             }
                             Spacer().frame(height: 36 * heightRatio)
                             HStack(spacing: 24 * widthRatio) {
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {
-                                    // TODO: Enable camera view
+                                    viewModel.isGotoCameraView = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {
-                                    // TODO: Enable Gallery Image Picker
+                                    viewModel.isGotoImagePicker = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
                                     // TODO: Enable scrapping image

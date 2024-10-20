@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class PageCustomizationViewModel: ObservableObject {
     @Published var story: StoryEntity
@@ -13,6 +14,8 @@ class PageCustomizationViewModel: ObservableObject {
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
     @Published var isMediaOverlayOpened: Bool = false
+    @Published var isGotoCameraView: Bool = false
+    @Published var isGotoImagePicker: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -160,5 +163,23 @@ class PageCustomizationViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+        // load image from app storage
+    public func loadImageFromDiskWith(fileName: String) -> UIImage? {
+
+      let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
+
+        let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
+
+        if let dirPath = paths.first {
+            let imageUrl = URL(fileURLWithPath: dirPath).appendingPathComponent(fileName)
+            let image = UIImage(contentsOfFile: imageUrl.path)
+            return image
+
+        }
+
+        return nil
     }
 }
