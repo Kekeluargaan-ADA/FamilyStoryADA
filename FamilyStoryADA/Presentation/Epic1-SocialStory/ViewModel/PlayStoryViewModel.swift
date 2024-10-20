@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PlayStoryViewModel: ObservableObject {
+class PlayStoryViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var selectedPage: PageEntity?
     @Published var currentPageNumber: Int
@@ -39,4 +39,5 @@ class PlayStoryViewModel: ObservableObject {
         currentPageNumber += 1
         selectedPage = self.story.pages[currentPageNumber]
     }
+    
 }

@@ -44,13 +44,24 @@ struct MiniQuizView: View {
                                 RoundedRectangle(cornerRadius: 12)
                                     .foregroundStyle(Color("FSYellow2"))
                                     .shadow(radius: 4, x: 0, y: 4)
-                                Image(page.picturePath)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 123, height: 123)
-                                    .clipShape(
-                                        RoundedRectangle(cornerRadius: 12)
-                                    )
+                                if let imageAppStorage = viewModel.loadImageFromDiskWith(fileName: page.picturePath) {
+                                    Image(uiImage: imageAppStorage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 123, height: 123)
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 12)
+                                        )
+                                } else {
+                                    Image(page.picturePath)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 123, height: 123)
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 12)
+                                        )
+                                }
+                                
                             }
                             .frame(width: 123, height: 123)
                             .draggable(page)

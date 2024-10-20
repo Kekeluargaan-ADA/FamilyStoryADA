@@ -135,7 +135,7 @@ struct StoryDashboardView: View {
                         ZStack {
                             Color("FSBlue1")
                                 .ignoresSafeArea()
-                            EditCoverModalView(story: story, imageOptionPath: ["DummyImage", "DummyImage2", "DummyImage3"])
+                            EditCoverModalView(story: story, imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId))
                         }
                         .presentationDetents([.height(700)])
                     }

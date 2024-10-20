@@ -22,10 +22,12 @@ class StoryViewModel: ObservableObject {
     @Published var currentlyEditedStory: StoryEntity?
     
     private let storyUsecase: StoryUsecase
+    private let templateUsecase: TemplateUsecase
     
     @MainActor
     init() {
         self.storyUsecase = ImplementedStoryUsecase()
+        self.templateUsecase = JSONTemplateUsecase()
         self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         
@@ -69,6 +71,15 @@ class StoryViewModel: ObservableObject {
                     story.templateCategory.lowercased().contains(searchText.lowercased())
                 }
             }
+        
+        displayedStory.insert(StoryEntity(storyId: UUID(),
+                                          storyName: "",
+                                          storyCoverImagePath: "",
+                                          storyLastRead: Date(),
+                                          templateId: UUID(),
+                                          templateCategory: "",
+                                          pages: []
+                                         ), at: 0)
             objectWillChange.send() // Notify observers
         }
     
@@ -103,6 +114,14 @@ class StoryViewModel: ObservableObject {
     
     func updateStory(story: StoryEntity) {
         _ = storyUsecase.updateStory(story: story)
+    }
+    
+    public func getImagePreviewSelection(templateId: UUID) -> [String] {
+        if let template = templateUsecase.fetchTemplateById(templateId: templateId) {
+            return template.templateOptionCoverImagePath
+        }
+        
+        return []
     }
     
 //    //debug func
