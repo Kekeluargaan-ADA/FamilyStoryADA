@@ -77,25 +77,81 @@ struct CustomizationView: View {
                         if let page = viewModel.selectedPage {
                             VStack(alignment: .center, spacing: 19) {
                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                    Image(imagePath)
-                                        .resizable()
-                                        .frame(width: 760, height: 468)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
+                                    ZStack(alignment: .topTrailing) {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .frame(width: 760, height: 468)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        
+                                        Menu {
+                                            Button(action: {
+                                                // TODO: Take photo view
+                                            }) {
+                                                Label("Take Photo", systemImage: "camera")
+                                            }
+                                            
+                                            Button(action: {
+                                                // TODO: Choose photo view
+                                            }) {
+                                                Label("Choose Photo", systemImage: "photo")
+                                            }
+                                            
+                                            Button(action: {
+                                                // TODO: Generate photo view
+                                            }) {
+                                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .font(.system(size: 26))
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(Color("FSWhite"))
+                                                .padding()
+                                        }
+                                    }
                                 } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                                     
                                         let videoPlayer = AVPlayer(url: url)
-                                    
-                                    VideoPlayer(player: videoPlayer)
-                                        .frame(width: 760, height: 468)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .onAppear() {
+                                    ZStack(alignment: .topTrailing){
+                                        VideoPlayer(player: videoPlayer)
+                                            .frame(width: 760, height: 468)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .onAppear() {
+                                                
+                                                videoPlayer.play()
+                                                
+                                            }
+                                            .onDisappear() {
+                                                videoPlayer.pause()
+                                            }
+                                        
+                                        Menu {
+                                            Button(action: {
+                                                // TODO: Take photo view
+                                            }) {
+                                                Label("Take Photo", systemImage: "camera")
+                                            }
                                             
-                                            videoPlayer.play()
+                                            Button(action: {
+                                                // TODO: Choose photo view
+                                            }) {
+                                                Label("Choose Photo", systemImage: "photo")
+                                            }
                                             
+                                            Button(action: {
+                                                // TODO: Generate photo view
+                                            }) {
+                                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .font(.system(size: 26))
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(Color("FSWhite"))
+                                                .padding()
                                         }
-                                        .onDisappear() {
-                                            videoPlayer.pause()
-                                        }
+                                    }
                                     
                                 } else {
                                     Button(action: {
