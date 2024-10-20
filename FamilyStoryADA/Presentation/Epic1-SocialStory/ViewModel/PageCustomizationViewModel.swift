@@ -11,6 +11,8 @@ class PageCustomizationViewModel: ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
+    @Published var isMiniQuizOpened: Bool = false
+    @Published var isMediaOverlayOpened: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -22,9 +24,7 @@ class PageCustomizationViewModel: ObservableObject {
         self.storyUsecase = ImplementedStoryUsecase()
         self.componentUsecase = ImplementedComponentUsecase()
         
-        if let firstPage = story.pages.first {
-            self.selectedPage = firstPage
-        }
+        self.selectedPage = story.pages[1]
         
         self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
     }

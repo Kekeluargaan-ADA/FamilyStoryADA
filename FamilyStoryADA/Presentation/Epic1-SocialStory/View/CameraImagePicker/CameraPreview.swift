@@ -4,7 +4,7 @@
 //
 //  Created by Amisha Italiya on 03/10/23.
 //
-
+import PhotosUI
 import SwiftUI
 import Photos
 import AVFoundation // To access the camera related swift classes and methods
@@ -58,51 +58,50 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
     }
 }
 
-struct ImagePickerView: UIViewControllerRepresentable {
-    @Binding var image: Image?
-    @Environment(\.presentationMode) private var presentationMode
-    var saveToGallery: Bool = false // Add a flag to control whether to save to gallery
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
-        let imagePicker = UIImagePickerController()
-        imagePicker.sourceType = .camera
-        imagePicker.delegate = context.coordinator
-        return imagePicker
-    }
-    
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePickerView>) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        var parent: ImagePickerView
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var selectedImage: UIImage?  // This will hold the selected image
+    @Environment(\.dismiss) var dismiss
+
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.filter = .images  // Only allow images
+        config.selectionLimit = 1  // Allow only one image to be selected
         
-        init(_ parent: ImagePickerView) {
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
+        // No need to update anything here
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(self)
+    }
+
+    class Coordinator: NSObject, PHPickerViewControllerDelegate {
+        let parent: ImagePicker
+
+        init(_ parent: ImagePicker) {
             self.parent = parent
         }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = Image(uiImage: uiImage)
-                if parent.saveToGallery {
-                    saveImageToGallery(uiImage)
-                }
-            }
-            parent.presentationMode.wrappedValue.dismiss()
-        }
-        
-        func saveImageToGallery(_ image: UIImage) {
-            PHPhotoLibrary.shared().performChanges {
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
-            } completionHandler: { success, error in
-                if success {
-                    print("Image saved to gallery.")
-                } else if let error = error {
-                    print("Error saving image to gallery: \(error)")
+
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            picker.dismiss(animated: true)
+            
+            guard let provider = results.first?.itemProvider else { return }
+            if provider.canLoadObject(ofClass: UIImage.self) {
+                provider.loadObject(ofClass: UIImage.self) { (image, error) in
+                    if let uiImage = image as? UIImage {
+                        DispatchQueue.main.async {
+                            self.parent.selectedImage = uiImage
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+

@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum ButtonPreset {
-    case blue, yellow
+    case blue, yellow, grey
 }
 
 struct ButtonCircle: View {
@@ -18,11 +18,11 @@ struct ButtonCircle: View {
     
     var body: some View {
         Circle()
-            .foregroundStyle(buttonColor == .blue ? Color("FSSecondaryBlue4") : Color("FSWhite"))
+            .foregroundStyle(buttonColor == .blue ? Color("FSSecondaryBlue4") : Color("FSPrimaryOrange5"))
             .frame(height: 64 * heightRatio)
             .overlay(
                 Image(systemName: buttonImage)
-                    .foregroundStyle(buttonColor == .blue ? Color("FSBlue9") : Color("FSPrimaryYellow5"))
+                    .foregroundStyle(buttonColor == .blue ? Color("FSBlue9") : Color("FSWhite"))
                     .font(.system(size: 26 * heightRatio))
                     .bold()
             )

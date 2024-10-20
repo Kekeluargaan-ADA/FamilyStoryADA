@@ -11,27 +11,29 @@ struct PreviewModalHeader: View {
     
     var body: some View {
         GeometryReader { geometry in
-            HStack {
-                // Button aligned to the left
+            
+            ZStack{
                 Button(action: {
                     isPresented = false
                 }) {
-                    Image(systemName: "x.circle.fill")
-                        .resizable()
-                        .frame(width: 64, height: 64)
-                        .foregroundStyle(.gray)
+                    ZStack{
+                        Circle()
+                            .frame(width: 64, height: 64)
+                            .foregroundStyle(Color(.fsSecondaryBlue4))
+                        Image(systemName: "chevron.left")
+                            .resizable()
+                            .frame(width: 22, height: 22)
+                            .foregroundStyle(Color(.fsBlue9))
+                    }
                 }
-                .frame(width: geometry.size.width * 0.375, alignment: .leading) // 15% width for the button
-                
-                // Text centered
+                .frame(width: geometry.size.width, alignment: .leading)
+                .padding()
                 Text("Cara Menyikat Gigi")
-                    .multilineTextAlignment(.center)
-                    .font(.system(size: 32))
-                    .bold()
-                    .frame(width: geometry.size.width * 0.625, alignment: .leading) // 70% width for the text
+                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color(.fsBlack))
+                    .frame(width: geometry.size.width * 0.5, alignment: .center)
             }
-            .padding()
-//            .background(.red) // Background color for better visibility
         }
         .frame(height: 100) // You can adjust the height as needed
     }

@@ -38,7 +38,8 @@ struct CustomizationView: View {
                         RoundedRectangle(cornerRadius: 28)
                             .fill(Color("FSYellow"))
                         Text(viewModel.story.storyName)
-                            .font(.system(size: 24, weight: .medium))
+                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                            .fontWeight(.medium)
                             .foregroundStyle(Color("FSBlack"))
                     }
                     .frame(width: 268, height: 45)
@@ -56,7 +57,7 @@ struct CustomizationView: View {
                             //TODO: Disable when page is null
                             HStack (spacing: 12) {
                                 NavigationLink(destination: {
-                                    PlayStoryView()
+                                    PlayStoryView(story: viewModel.story)
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                                 })
@@ -76,29 +77,86 @@ struct CustomizationView: View {
                         if let page = viewModel.selectedPage {
                             VStack(alignment: .center, spacing: 19) {
                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                    Image(imagePath)
-                                        .resizable()
-                                        .frame(width: 760, height: 468)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    
+                                    ZStack(alignment: .topTrailing) {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .frame(width: 760, height: 468)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        
+                                        Menu {
+                                            Button(action: {
+                                                // TODO: Take photo view
+                                            }) {
+                                                Label("Take Photo", systemImage: "camera")
+                                            }
+                                            
+                                            Button(action: {
+                                                // TODO: Choose photo view
+                                            }) {
+                                                Label("Choose Photo", systemImage: "photo")
+                                            }
+                                            
+                                            Button(action: {
+                                                // TODO: Generate photo view
+                                            }) {
+                                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .font(.system(size: 26))
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(Color("FSWhite"))
+                                                .padding()
+                                        }
+                                    }
                                 } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                                     
                                         let videoPlayer = AVPlayer(url: url)
-                                    
-                                    VideoPlayer(player: videoPlayer)
-                                        .frame(width: 760, height: 468)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .onAppear() {
+                                    ZStack(alignment: .topTrailing){
+                                        VideoPlayer(player: videoPlayer)
+                                            .frame(width: 760, height: 468)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .onAppear() {
+                                                
+                                                videoPlayer.play()
+                                                
+                                            }
+                                            .onDisappear() {
+                                                videoPlayer.pause()
+                                            }
+                                        
+                                        Menu {
+                                            Button(action: {
+                                                // TODO: Take photo view
+                                            }) {
+                                                Label("Take Photo", systemImage: "camera")
+                                            }
                                             
-                                            videoPlayer.play()
+                                            Button(action: {
+                                                // TODO: Choose photo view
+                                            }) {
+                                                Label("Choose Photo", systemImage: "photo")
+                                            }
                                             
+                                            Button(action: {
+                                                // TODO: Generate photo view
+                                            }) {
+                                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .font(.system(size: 26))
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(Color("FSWhite"))
+                                                .padding()
                                         }
-                                        .onDisappear() {
-                                            videoPlayer.pause()
-                                        }
+                                    }
                                     
                                 } else {
                                     Button(action: {
                                         // TODO: Pop up menu
+                                        viewModel.isMediaOverlayOpened = true
                                     }, label: {
                                         EmptyImageCustomizationView()
                                     })
@@ -114,7 +172,8 @@ struct CustomizationView: View {
                                 .padding(.horizontal, 19)
                                 .padding(.vertical, 15)
                                 .frame(width: 760, height: 117)
-                                .font(.system(size: 32, weight: .semibold))
+                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -129,6 +188,9 @@ struct CustomizationView: View {
                     }
                 }
             }
+            NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+                MiniQuizView(story: viewModel.story)
+            }, label: {})
         }
         .padding(.top, 26)
         .ignoresSafeArea()
@@ -140,6 +202,16 @@ struct CustomizationView: View {
                 currentText = newPage.pageText.first?.componentContent ?? ""
             } else {
                 currentText = ""
+            }
+        }
+        .overlay() {
+            if viewModel.isMediaOverlayOpened {
+                ZStack {
+                    Color("FSBlack").opacity(0.4)
+                    UploadPhotoModalView()
+                }
+                .ignoresSafeArea()
+                .environmentObject(viewModel)
             }
         }
     }

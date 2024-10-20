@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MiniQuizView: View {
     @StateObject var viewModel: MiniQuizViewModel
+    @Environment(\.dismiss) var dismiss
     
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: MiniQuizViewModel(story: story))
@@ -17,12 +18,15 @@ struct MiniQuizView: View {
     var body: some View {
         VStack {
             Spacer(minLength: 47)
-            PlayStoryNavigationView(heightRatio: 1, buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+            PlayStoryNavigationView(heightRatio: 1, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                dismiss()
+            }, onTapAudioButton: {})
                 .padding(.horizontal, 46)
             Spacer(minLength: 60)
             Text("Urutkan kartu di bawah sesuai dengan urutan yang benar.")
-                .font(.system(size: 32, weight: .semibold))
-                .foregroundStyle(.black)
+                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                .fontWeight(.semibold)
+                .foregroundStyle(Color("FSBlack"))
             Spacer(minLength: 50)
             
             DroppableArrayView()
@@ -42,7 +46,11 @@ struct MiniQuizView: View {
                                     .shadow(radius: 4, x: 0, y: 4)
                                 Image(page.picturePath)
                                     .resizable()
-                                    .scaledToFit()
+                                    .scaledToFill()
+                                    .frame(width: 123, height: 123)
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 12)
+                                    )
                             }
                             .frame(width: 123, height: 123)
                             .draggable(page)
@@ -56,8 +64,21 @@ struct MiniQuizView: View {
             Spacer()
         }
         .ignoresSafeArea()
+        .sheet(isPresented: $viewModel.isAllCorrect, content: {
+            ZStack {
+                Color("FSYellow1")
+                MiniQuizModalView()
+            }
+                .presentationDetents([.height(700)])
+        })
+        .onChange(of: viewModel.isDismissed) { value in
+            if value {
+                dismiss()
+            }
+        }
         .background(Color("FSYellow1"))
         .environmentObject(viewModel)
+        .navigationBarBackButtonHidden()
     }
 }
 
