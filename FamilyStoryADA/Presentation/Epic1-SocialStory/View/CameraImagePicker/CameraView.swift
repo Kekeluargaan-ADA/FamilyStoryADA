@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  CustomCameraApp
-//
-//  Created by Amisha Italiya on 03/10/23.
-//
-
 //  ContentView.swift
 //  CustomCameraApp
 //
@@ -125,6 +118,7 @@ struct CameraView: View {
                     // Save image and get the filename
                     let filename = CameraDelegate.saveImageToAppStorage(image.image)
                     viewModel.savedImageFilename = filename
+                    viewModel.savedImage = CameraDelegate.loadImageFromAppStorage(named: filename)
                     // Trigger didCrop closure (if you want to pass it elsewhere)
                     self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
                     
@@ -140,8 +134,8 @@ struct CameraView: View {
                 .ignoresSafeArea()
             )
         } else {
-            // Return the ImageInputModal view here with the updated image path
-            return AnyView(EmptyView()
+            return AnyView(
+                EmptyView()
                     .onAppear(){
                         dismiss()
                 }
@@ -150,6 +144,7 @@ struct CameraView: View {
         }
     }
 
+    
     
     func openSettings() {
         let settingsUrl = URL(string: UIApplication.openSettingsURLString)

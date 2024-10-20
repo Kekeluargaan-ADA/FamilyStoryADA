@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct UploadPhotoModalView: View {
+    @EnvironmentObject var viewModel: PageCustomizationViewModel
     @State private var isModalPresented = false
     
     var body: some View {
@@ -27,7 +28,7 @@ struct UploadPhotoModalView: View {
                                 ZStack {
                                     HStack {
                                         Button(action: {
-                                            
+                                            viewModel.isMediaOverlayOpened = false
                                         }, label: {
                                             ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
                                         })
@@ -40,9 +41,15 @@ struct UploadPhotoModalView: View {
                             }
                             Spacer().frame(height: 36 * heightRatio)
                             HStack(spacing: 24 * widthRatio) {
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {})
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {})
-                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {})
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {
+                                    // TODO: Enable camera view
+                                })
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {
+                                    // TODO: Enable Gallery Image Picker
+                                })
+                                ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
+                                    // TODO: Enable scrapping image
+                                })
                             }
                             Spacer()
                         }
