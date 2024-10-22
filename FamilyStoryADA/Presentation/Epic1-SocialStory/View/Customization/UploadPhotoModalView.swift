@@ -57,7 +57,6 @@ struct UploadPhotoModalView: View {
                             .padding(24 * heightRatio)
                     )
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }

@@ -51,10 +51,8 @@ struct TemplateCollectionView: View {
                         }
                     }
                     if isModalPresented, let selectedTemplate = selectedTemplate {
-                        Rectangle()
-                            .foregroundStyle(Color.black.opacity(0.4))
-
                         PagePreviewModalView(template: selectedTemplate)
+                        
                     }
                 }
             }

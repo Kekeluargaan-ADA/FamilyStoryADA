@@ -13,15 +13,11 @@ struct PagePreviewModalView: View {
     
     var body: some View {
         NavigationView {
-            GeometryReader { geometry in
-                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
-                let heightRatio = ratios.heightRatio
-                let widthRatio = ratios.widthRatio
-                
+            ZStack {
                 Rectangle()
-                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                    .frame(width: 728, height: 743) // Fixed dimensions
                     .foregroundStyle(Color("FSBlue1"))
-                    .cornerRadius(20 * heightRatio)
+                    .cornerRadius(20)
                     .overlay(
                         VStack {
                             HStack {
@@ -30,7 +26,7 @@ struct PagePreviewModalView: View {
                                         Button(action: {
                                             presentationMode.wrappedValue.dismiss()
                                         }) {
-                                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue) // Use fixed height for button
                                         }
                                         Spacer()
                                     }
@@ -42,26 +38,28 @@ struct PagePreviewModalView: View {
                                         .foregroundColor(Color("FSBlack"))
                                 }
                             }
-                            Spacer().frame(height: 24 * heightRatio)
+                            Spacer().frame(height: 24)
                             
-                            BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                            BriefSquareView(heightRatio: 1.0, widthRatio: 1.0) // Use fixed values
                             
-                            Spacer().frame(height: 24 * heightRatio)
+                            Spacer().frame(height: 24)
                             ScrollView {
                                 LazyVGrid(
                                     columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)],
-                                    spacing: 16 * heightRatio
+                                    spacing: 16
                                 ) {
                                     ForEach(1...6, id: \.self) { step in
-                                        StepsSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
+                                        StepsSquareView(heightRatio: 1.0, widthRatio: 1.0) // Use fixed values
                                     }
                                 }
                             }
-                            .padding(.horizontal, 45 * widthRatio)
+                            .padding(.horizontal, 45)
                         }
-                            .padding(24 * heightRatio)
+                        .padding(24)
                     )
             }
+            .frame(width: 2000,height: 2000)
+            .background(.clear.opacity(0.4))
         }
     }
 }
