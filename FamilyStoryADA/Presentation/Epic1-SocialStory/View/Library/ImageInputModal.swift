@@ -16,13 +16,12 @@ struct ImageInputModal: View {
             NavigationView {
                 VStack {
                     PreviewModalHeader(isPresented: isPresented)
-
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                         .fontWeight(.medium)
                         .foregroundStyle(Color(.fsBlack))
-                        .frame(width: geometry.size.width * 0.33, alignment: .center)
+                        .frame(width: 381,height: 50, alignment: .center)
                     // Display saved image if exists, otherwise show placeholder
                     if let uiImage = viewModel.savedImage {
                         Image(uiImage: uiImage)
@@ -82,8 +81,10 @@ struct ImageInputModal: View {
                             .background(Color(.fsBlue9))
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
-                    .frame(width: geometry.size.width, alignment: .trailing)
+                    .frame(width: 728, alignment: .trailing)
+                    .padding()
                 }
+                .frame(width: 728,height: 743)
                 .background(Color(.fsBlue1))
                 .padding()
             }
