@@ -101,6 +101,8 @@ struct CameraView: View {
             .onAppear {
                 viewModel.setupBindings()
                 viewModel.requestCameraPermission()
+                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                UIViewController.attemptRotationToDeviceOrientation()
             }
             .navigationBarHidden(true)
         }
@@ -124,6 +126,10 @@ struct CameraView: View {
                     
                     // Save the image to gallery
                     CameraDelegate.saveImageToGallery(image.image)
+                    
+                    //dismiss
+                    viewModel.isPhotoCaptured = false
+                    dismiss()
                 } didCropImageToRect: { _ in
                     
                 } didFinishCancelled: { _ in

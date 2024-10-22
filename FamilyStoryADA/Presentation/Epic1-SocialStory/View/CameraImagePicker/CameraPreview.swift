@@ -15,15 +15,21 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
     var onTap: (CGPoint) -> Void
     
     func makeUIView(context: Context) -> VideoPreviewView {
+        
         let view = VideoPreviewView()
         view.backgroundColor = .black
         view.videoPreviewLayer.session = session
         view.videoPreviewLayer.videoGravity = .resizeAspect
-        view.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
+        view.videoPreviewLayer.connection?.videoRotationAngle = 0
         
         // Add a tap gesture recognizer to the view
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTapGesture(_:)))
         view.addGestureRecognizer(tapGesture)
+        
+        DispatchQueue.main.async {
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+            UIViewController.attemptRotationToDeviceOrientation()
+        }
         return view
     }
     
@@ -104,4 +110,10 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-
+extension UIViewController {
+    func setLandscapeRightOrientation() {
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        UIViewController.attemptRotationToDeviceOrientation()
+    }
+}
