@@ -51,7 +51,7 @@ struct TemplateCollectionView: View {
                         }
                     }
                     if isModalPresented, let selectedTemplate = selectedTemplate {
-                        PagePreviewModalView(template: selectedTemplate)
+                        PagePreviewModalView(isPagePreviewModalPresented: $isModalPresented, template: selectedTemplate)
                         
                     }
                 }

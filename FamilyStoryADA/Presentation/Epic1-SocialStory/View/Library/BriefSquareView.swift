@@ -10,58 +10,66 @@ import SwiftUI
 struct BriefSquareView: View {
     let heightRatio: CGFloat
     let widthRatio: CGFloat
+    @Binding var isImageInputModalPresented: Bool
+    @Binding var isPagePreviewModalPresented: Bool
     @StateObject private var viewModel = StoryViewModel() // Add the viewModel to handle story logic
-
+    
     var body: some View {
-        Rectangle()
-            .foregroundColor(Color("FSWhite"))
-            .frame(width: 580, height: 228)
-            .cornerRadius(12)
-            .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
-            .overlay(
-                HStack {
-                    Image("DummyImage")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 280, height: 172 * heightRatio)
-                        .cornerRadius(12 * heightRatio)
-                    Spacer().frame(width: 20)
-                    VStack {
-                        Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang")
+        ZStack{
+            HStack {
+                Image("DummyImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 280, height: 172)
+                    .cornerRadius(12)
+//                Spacer()
+                VStack {
+                    Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang")
+                        .font(
+                            Font.custom("Fredoka", size: 16)
+                                .weight(.medium)
+                        )
+                        .foregroundColor(.black)
+                        .frame(width: 228, height: 160 ,alignment: .trailing)
+                        .multilineTextAlignment(.leading)
+                    
+                    Button(action: {
+                        isImageInputModalPresented.toggle()
+                        print(isImageInputModalPresented)
+                    }) {
+                        Text("Gunakan template")
                             .font(
-                                Font.custom("Fredoka", size: 16)
+                                Font.custom("Fredoka", size: 20)
                                     .weight(.medium)
                             )
-                            .foregroundColor(.black)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                        Spacer().frame(height: 24 * heightRatio)
-                        
-                        NavigationLink(destination: StoryDashboardView()) { // TODO: change to upload pic
-                            Rectangle()
-                                .frame(height: 40 * heightRatio)
-                                .foregroundStyle(Color("FSBlue9"))
-                                .cornerRadius(40 * heightRatio)
-                                .overlay(
-                                    Text("Gunakan template")
-                                        .font(
-                                            Font.custom("Fredoka", size: 20)
-                                                .weight(.medium)
-                                        )
-                                        .foregroundStyle(Color("FSWhite"))
-                                )
-                        }
-                        .simultaneousGesture(TapGesture().onEnded {
-                            if let id = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
-                                viewModel.addNewStory(templateId: id)
-                            }
-                        })
+                            .foregroundStyle(.white)
+                            .frame(width: 224,height: 40)
+                            .background((Color("FSBlue9")))
+                            .cornerRadius(20)
                     }
+                    
+                    .simultaneousGesture(TapGesture().onEnded {
+                        if let id = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
+                            viewModel.addNewStory(templateId: id)
+                        }
+                    })
                 }
-                .padding(28 * heightRatio)
-            )
+                .frame(width: 224,height: 160,alignment: .bottom)
+            }
+            .frame(width: 580,height: 228)
+            .background(.white)
+            .cornerRadius(20)
+            
+            if isImageInputModalPresented{
+                ImageInputModal(isPresented: $isImageInputModalPresented)
+                    .frame(height: 743,alignment: .center)
+            }
+            
+        }
+        
     }
 }
 
-#Preview {
-    BriefSquareView(heightRatio: 1, widthRatio: 1)
-}
+//#Preview {
+//    BriefSquareView(heightRatio: 1, widthRatio: 1)
+//}
