@@ -43,22 +43,11 @@ struct ScrappingInitialView: View {
                                     viewModel.crawlImages()
                                 }
                                 Button(action: {
-                                    viewModel.clearSelection()
+                                    viewModel.deleteImages()
                                 }, label: {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
-                            
-                            Button(action: {
-                                viewModel.deleteImages()
-                            }) {
-                                Text("Delete All Images")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.red)
-                                    .cornerRadius(8)
-                            }
-                            .disabled(viewModel.isLoading)
                             
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
