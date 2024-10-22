@@ -12,13 +12,15 @@ import SwiftData
 class PageSwiftData: Identifiable, ISwiftDataAble {
     
     var pageId: UUID
+    var pageType: String
     var pageText: [UUID]
     var pagePicture: [UUID]
     var pageVideo: [UUID]
     var pageSoundPath: String
     
-    init (pageId: UUID, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String) {
+    init(pageId: UUID, pageType: String, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String) {
         self.pageId = pageId
+        self.pageType = pageType
         self.pageText = pageText
         self.pagePicture = pagePicture
         self.pageVideo = pageVideo
@@ -54,6 +56,7 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     static func convertToSwiftData(jsonTemplate: PageJSONObject) -> PageSwiftData {
         return PageSwiftData(pageId: UUID(),
+                             pageType: jsonTemplate.pageType,
                              pageText: convertToUUIDArray(jsonTemplate: jsonTemplate.pageText),
                              pagePicture: convertToUUIDArray(jsonTemplate: jsonTemplate.pagePicture),
                              pageVideo: convertToUUIDArray(jsonTemplate: jsonTemplate.pageVideo),
@@ -75,6 +78,7 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     static func convertToSwiftData(entity: PageEntity) -> PageSwiftData {
         return PageSwiftData(pageId: entity.pageId,
+                             pageType: entity.pageType,
                              pageText: convertToUUIDArray(entities: entity.pageText),
                              pagePicture: convertToUUIDArray(entities: entity.pagePicture),
                              pageVideo: convertToUUIDArray(entities: entity.pageVideo),
@@ -92,6 +96,7 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     func convertToEntity() -> PageEntity {
         return PageEntity(pageId: self.pageId,
+                          pageType: self.pageType,
                           pageText: convertToEntitiesArray(componentIds: self.pageText, type: .text) as! [TextComponentEntity],
                           pagePicture: convertToEntitiesArray(componentIds: self.pagePicture, type: .picture) as! [PictureComponentEntity],
                           pageVideo: convertToEntitiesArray(componentIds: self.pageVideo, type: .video) as! [VideoComponentEntity],

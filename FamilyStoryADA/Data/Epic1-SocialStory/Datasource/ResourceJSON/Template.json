@@ -6,6 +6,7 @@
         "templateCategory": "Hygiene",
         "templatePage": [
             {
+                "pageType": "Opening",
                 "pageText":
                 [
                     {
@@ -32,6 +33,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -69,6 +71,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -106,6 +109,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -143,6 +147,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -180,6 +185,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -217,6 +223,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
@@ -254,6 +261,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Closing",
                 "pageText":
                 [
                     {
