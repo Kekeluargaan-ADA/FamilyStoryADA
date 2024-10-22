@@ -258,7 +258,9 @@ struct CustomizationView: View {
                 .environmentObject(cameraViewModel)
         }, label: {})
         .onChange(of: cameraViewModel.savedImageFilename) { value in
+            guard value != nil else { return }
             if let page = viewModel.selectedPage, page.pagePicture.isEmpty, let fileName = value {
+                viewModel.isGotoCameraView = false
                 viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
                                                                                   componentContent: fileName,
                                                                                   componentCategory: "AppStoragePicture")
@@ -269,6 +271,8 @@ struct CustomizationView: View {
             }
             viewModel.updatePage()
             viewModel.isGotoCameraView = false
+            cameraViewModel.savedImageFilename = nil
+            cameraViewModel.capturedImage = nil
         }
         
         NavigationLink(isActive: $viewModel.isGotoImagePicker, destination: {
@@ -276,6 +280,7 @@ struct CustomizationView: View {
         }, label: {})
         .onChange(of: cameraViewModel.savedImage ?? UIImage()) { value in
             if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
+                viewModel.isGotoImagePicker = false
                 let fileName = CameraDelegate.saveImageToAppStorage(value)
                 viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
                                                                                   componentContent: fileName,
@@ -286,7 +291,6 @@ struct CustomizationView: View {
                 viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
                 viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
             }
-//            print(fileName) // MARK: This is also the result
             viewModel.updatePage()
             viewModel.isGotoImagePicker = false
         }
