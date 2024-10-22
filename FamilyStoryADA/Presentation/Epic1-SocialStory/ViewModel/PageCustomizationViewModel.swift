@@ -43,8 +43,10 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                                  pageSoundPath: ""
         )
         
+        let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
+        
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.insert(newPage, at: story.pages.count - 1) // Add blank page before end of story
+            story.pages.insert(newPage, at: closingFirstIndex ?? story.pages.count - 1) // Add blank page before end of story
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
