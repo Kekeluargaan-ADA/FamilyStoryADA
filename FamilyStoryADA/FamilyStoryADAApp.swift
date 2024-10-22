@@ -18,6 +18,7 @@ struct FamilyStoryADAApp: App {
 //            CameraView()
 //            MiniQuizView()
             StoryDashboardView()
+//            TemplateCollectionView()
 //            ImageCrawlView()
 //            PNGSequenceView()
 //            ScrappingInitialView()
