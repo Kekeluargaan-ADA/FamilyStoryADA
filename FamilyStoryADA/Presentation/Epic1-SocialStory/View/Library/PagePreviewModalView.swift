@@ -9,15 +9,17 @@ import SwiftUI
 
 struct PagePreviewModalView: View {
     @Environment(\.presentationMode) var presentationMode
-
+    var template: TemplateEntity
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
-
+                
                 Rectangle()
+                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                     .foregroundStyle(Color("FSBlue1"))
                     .cornerRadius(20 * heightRatio)
                     .overlay(
@@ -41,9 +43,9 @@ struct PagePreviewModalView: View {
                                 }
                             }
                             Spacer().frame(height: 24 * heightRatio)
-
+                            
                             BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
-
+                            
                             Spacer().frame(height: 24 * heightRatio)
                             ScrollView {
                                 LazyVGrid(
@@ -57,7 +59,7 @@ struct PagePreviewModalView: View {
                             }
                             .padding(.horizontal, 45 * widthRatio)
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
             }
         }

@@ -36,8 +36,7 @@ struct BriefSquareView: View {
                             .frame(maxWidth: .infinity, alignment: .topLeading)
                         Spacer().frame(height: 24 * heightRatio)
                         
-                        // Use the button to add new story and then navigate
-                        NavigationLink(destination: StoryDashboardView()) {
+                        NavigationLink(destination: StoryDashboardView()) { // TODO: change to upload pic
                             Rectangle()
                                 .frame(height: 40 * heightRatio)
                                 .foregroundStyle(Color("FSBlue9"))

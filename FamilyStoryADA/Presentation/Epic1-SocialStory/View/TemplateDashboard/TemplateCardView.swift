@@ -8,7 +8,7 @@ import SwiftUI
 
 struct TemplateCardView: View {
     var template: TemplateEntity
-    @State private var isModalPresented = false
+    var onTap: () -> Void
 
     var body: some View {
         Rectangle()
@@ -23,7 +23,7 @@ struct TemplateCardView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 220)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                     Spacer()
                     HStack {
@@ -43,11 +43,7 @@ struct TemplateCardView: View {
                 }
             )
             .onTapGesture {
-                isModalPresented = true
-            }
-            .fullScreenCover(isPresented: $isModalPresented) {
-                PagePreviewModalView() // This will now open as a full-screen modal
+                onTap()
             }
     }
 }
-
