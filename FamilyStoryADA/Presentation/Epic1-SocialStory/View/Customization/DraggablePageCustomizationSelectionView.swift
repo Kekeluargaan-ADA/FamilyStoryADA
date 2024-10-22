@@ -40,7 +40,7 @@ struct DraggablePageCustomizationSelectionView: View {
                         .onTapGesture {
                             viewModel.selectPage(page: page)
                         }
-                    } else {
+                    } else if page.picturePath != "" {
                         DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                         order: index+1,
                                         isSelected: viewModel.selectedPage?.pageId == page.id
@@ -49,8 +49,16 @@ struct DraggablePageCustomizationSelectionView: View {
                         .onTapGesture {
                             viewModel.selectPage(page: page)
                         }
+                    } else {
+                        DraggedPageView(order: index+1,
+                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                        )
+                        .draggable(page)
+                        .onTapGesture {
+                            viewModel.selectPage(page: page)
+                        }
                     }
-                    
+                        
                     DroppedPageTargetCustomizationView(isSelected: targetedIndex == index)
                         .dropDestination(for: DraggablePage.self) { droppedPage, location in
                             
