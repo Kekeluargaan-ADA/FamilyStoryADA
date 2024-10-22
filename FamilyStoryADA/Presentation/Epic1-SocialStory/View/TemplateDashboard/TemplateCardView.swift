@@ -21,7 +21,6 @@ struct TemplateCardView: View {
                     ZStack(alignment: .top) {
                         Image(template.templateCoverImagePath)
                             .resizable()
-                            .scaledToFit()
                             .frame(height: 220)
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
