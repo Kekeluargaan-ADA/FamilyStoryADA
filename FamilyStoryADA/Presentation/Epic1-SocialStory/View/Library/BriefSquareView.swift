@@ -13,7 +13,7 @@ struct BriefSquareView: View {
     @Binding var isImageInputModalPresented: Bool
     @Binding var isPagePreviewModalPresented: Bool
     @StateObject private var viewModel = StoryViewModel() // Add the viewModel to handle story logic
-    
+    @Binding var template : TemplateEntity?
     var body: some View {
         ZStack{
             HStack {
@@ -61,7 +61,7 @@ struct BriefSquareView: View {
             .cornerRadius(20)
             
             if isImageInputModalPresented{
-                ImageInputModal(isPresented: $isImageInputModalPresented)
+                ImageInputModal(isPresented: $isImageInputModalPresented, template: $template)
                     .frame(height: 743,alignment: .center)
             }
             

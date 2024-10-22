@@ -11,7 +11,7 @@ struct ImageInputModal: View {
     @State private var name: String = "Hendra"
     @State private var showCropView = false  // Manage crop view state
     @State private var selectedImage: UIImage?  // Manage selected image
-    
+    @Binding var template : TemplateEntity?
     var body: some View {
         GeometryReader{ geometry in
             NavigationView {
@@ -27,7 +27,7 @@ struct ImageInputModal: View {
                                 }
                                 Spacer()
                             }
-                            Text("Cara Menyikat Gigi")
+                            Text(template!.templateName)
                                 .font(
                                     Font.custom("Fredoka", size: 32)
                                         .weight(.semibold)
@@ -177,8 +177,8 @@ struct ChangePictureButton: View {
 
 
 
-
-#Preview {
-    @Previewable @State var isPresented = true  // State for preview purposes
-    ImageInputModal(isPresented: $isPresented)
-}
+//
+//#Preview {
+//    @Previewable @State var isPresented = true  // State for preview purposes
+//    ImageInputModal(isPresented: $isPresented)
+//}
