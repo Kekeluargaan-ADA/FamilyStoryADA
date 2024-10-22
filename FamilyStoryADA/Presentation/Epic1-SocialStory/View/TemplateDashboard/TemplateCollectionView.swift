@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TemplateCollectionView: View {
     @StateObject private var viewModel = TemplateViewModel(templateUsecase: JSONTemplateUsecase())
+    @Environment(\.presentationMode) var presentationMode
 
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
 
@@ -33,7 +34,7 @@ struct TemplateCollectionView: View {
                                     ScrollView {
                                         LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                             ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
-                                                NavigationLink(destination: PagePreviewModalView()) {
+                                                NavigationLink(destination: StoryDashboardView()) {
                                                     TemplateCardView(template: template)
                                                         .scaleEffect(1 * heightRatio)
                                                 }
@@ -56,8 +57,4 @@ struct TemplateCollectionView: View {
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden(true)
     }
-}
-
-#Preview {
-    TemplateCollectionView()
 }

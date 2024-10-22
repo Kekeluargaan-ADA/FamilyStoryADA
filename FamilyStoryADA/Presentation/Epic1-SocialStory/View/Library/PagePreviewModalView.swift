@@ -42,7 +42,6 @@ struct PagePreviewModalView: View {
                             }
                             Spacer().frame(height: 24 * heightRatio)
 
-                            // Place the NavigationLink in BriefSquareView
                             BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
 
                             Spacer().frame(height: 24 * heightRatio)
