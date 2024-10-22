@@ -21,22 +21,22 @@ struct TemplateCardView: View {
                     ZStack(alignment: .top) {
                         Image(template.templateCoverImagePath)
                             .resizable()
-                            .scaledToFill()
+                            .scaledToFit()
                             .frame(height: 220)
-                            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     Spacer()
                     HStack {
                         Text(template.templateName)
-                          .font(
-                            Font.custom("Fredoka", size: 24)
-                              .weight(.semibold)
-                          )
-                          .foregroundColor(Color("FSBlack"))
+                            .font(
+                                Font.custom("Fredoka", size: 24)
+                                    .weight(.semibold)
+                            )
+                            .foregroundColor(Color("FSBlack"))
                         Spacer()
                         Text("3 mins")
-                          .font(Font.custom("Fredoka", size: 14))
-                          .foregroundColor(Color("FSGrey"))
+                            .font(Font.custom("Fredoka", size: 14))
+                            .foregroundColor(Color("FSGrey"))
                     }
                     .padding(12)
                     Spacer().frame(height: 19)
@@ -45,8 +45,9 @@ struct TemplateCardView: View {
             .onTapGesture {
                 isModalPresented = true
             }
-            .sheet(isPresented: $isModalPresented) {
-                PagePreviewModalView()
+            .fullScreenCover(isPresented: $isModalPresented) {
+                PagePreviewModalView() // This will now open as a full-screen modal
             }
     }
 }
+
