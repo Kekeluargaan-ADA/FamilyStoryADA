@@ -15,15 +15,21 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
     var onTap: (CGPoint) -> Void
     
     func makeUIView(context: Context) -> VideoPreviewView {
+        
         let view = VideoPreviewView()
         view.backgroundColor = .black
         view.videoPreviewLayer.session = session
         view.videoPreviewLayer.videoGravity = .resizeAspect
-        view.videoPreviewLayer.connection?.videoOrientation = .landscapeLeft
+        view.videoPreviewLayer.connection?.videoRotationAngle = 0
         
         // Add a tap gesture recognizer to the view
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTapGesture(_:)))
         view.addGestureRecognizer(tapGesture)
+        
+        DispatchQueue.main.async {
+            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+            UIViewController.attemptRotationToDeviceOrientation()
+        }
         return view
     }
     
@@ -60,7 +66,7 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?  // This will hold the selected image
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss  // Used to dismiss the picker
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var config = PHPickerConfiguration()
@@ -77,18 +83,21 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        return Coordinator(self, dismiss: dismiss)  // Pass the dismiss environment to the coordinator
     }
 
     class Coordinator: NSObject, PHPickerViewControllerDelegate {
         let parent: ImagePicker
+        let dismiss: DismissAction  // Capture the dismiss action
 
-        init(_ parent: ImagePicker) {
+        init(_ parent: ImagePicker, dismiss: DismissAction) {
             self.parent = parent
+            self.dismiss = dismiss  // Initialize dismiss action
         }
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-            picker.dismiss(animated: true)
+            // Dismiss the picker view controller immediately
+            dismiss()  // Call dismiss to close the picker
             
             guard let provider = results.first?.itemProvider else { return }
             if provider.canLoadObject(ofClass: UIImage.self) {
@@ -104,4 +113,10 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 }
 
-
+extension UIViewController {
+    func setLandscapeRightOrientation() {
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        UIViewController.attemptRotationToDeviceOrientation()
+    }
+}

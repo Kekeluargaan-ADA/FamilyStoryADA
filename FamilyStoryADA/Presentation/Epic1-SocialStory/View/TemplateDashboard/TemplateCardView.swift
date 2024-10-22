@@ -8,7 +8,7 @@ import SwiftUI
 
 struct TemplateCardView: View {
     var template: TemplateEntity
-    @State private var isModalPresented = false
+    var onTap: () -> Void
 
     var body: some View {
         Rectangle()
@@ -21,32 +21,28 @@ struct TemplateCardView: View {
                     ZStack(alignment: .top) {
                         Image(template.templateCoverImagePath)
                             .resizable()
-                            .scaledToFill()
                             .frame(height: 220)
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                     Spacer()
                     HStack {
                         Text(template.templateName)
-                          .font(
-                            Font.custom("Fredoka", size: 24)
-                              .weight(.semibold)
-                          )
-                          .foregroundColor(Color("FSBlack"))
+                            .font(
+                                Font.custom("Fredoka", size: 24)
+                                    .weight(.semibold)
+                            )
+                            .foregroundColor(Color("FSBlack"))
                         Spacer()
                         Text("3 mins")
-                          .font(Font.custom("Fredoka", size: 14))
-                          .foregroundColor(Color("FSGrey"))
+                            .font(Font.custom("Fredoka", size: 14))
+                            .foregroundColor(Color("FSGrey"))
                     }
                     .padding(12)
                     Spacer().frame(height: 19)
                 }
             )
             .onTapGesture {
-                isModalPresented = true
-            }
-            .sheet(isPresented: $isModalPresented) {
-                PagePreviewModalView()
+                onTap()
             }
     }
 }
