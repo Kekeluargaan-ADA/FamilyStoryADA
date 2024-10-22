@@ -8,6 +8,7 @@
 import Foundation
 
 struct PageJSONObject: Codable, IJSONAble {
+    let pageType: String
     let pageText: [ComponentJSONObject]
     let pagePicture: [ComponentJSONObject]
     let pageVideo: [ComponentJSONObject]

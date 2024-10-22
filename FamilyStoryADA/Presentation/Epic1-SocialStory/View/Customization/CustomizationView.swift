@@ -331,6 +331,7 @@ struct CustomizationView: View {
                                          templateCategory: "Hygiene",
                                          pages: [
                                             PageEntity(pageId: UUID(),
+                                                       pageType: "Opening",
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",
@@ -351,6 +352,7 @@ struct CustomizationView: View {
                                                        pageSoundPath: "Sound"
                                                       ),
                                             PageEntity(pageId: UUID(),
+                                                       pageType: "Instruction",
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",
@@ -371,6 +373,7 @@ struct CustomizationView: View {
                                                        pageSoundPath: "Sound"
                                                       ),
                                             PageEntity(pageId: UUID(),
+                                                       pageType: "Instruction",
                                                        pageText: [
                                                         TextComponentEntity(componentId: UUID(),
                                                                             componentContent: "Dummy Text",

@@ -36,6 +36,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     //make new blank page
     public func addNewBlankPage() {
         let newPage = PageEntity(pageId: UUID(),
+                                 pageType: "Instruction",
                                  pageText: [],
                                  pagePicture: [],
                                  pageVideo: [],
