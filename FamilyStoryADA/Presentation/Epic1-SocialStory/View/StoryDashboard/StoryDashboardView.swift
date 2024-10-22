@@ -125,8 +125,6 @@ struct StoryDashboardView: View {
                 .onAppear() {
                     if let id = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
                         viewModel.addNewStory(templateId: id)
-                        viewModel.addNewStory(templateId: id)
-                        viewModel.addNewStory(templateId: id)
                     }
                     viewModel.fetchStories()
                 }

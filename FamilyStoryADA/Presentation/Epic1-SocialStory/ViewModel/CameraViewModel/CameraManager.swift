@@ -202,7 +202,7 @@ class CameraManager: ObservableObject {
             photoSettings.photoQualityPrioritization = .quality
             
             if let videoConnection = photoOutput.connection(with: .video), videoConnection.isVideoOrientationSupported {
-                videoConnection.videoOrientation = .portrait
+                videoConnection.videoOrientation = .landscapeRight
             }
             
             cameraDelegate = CameraDelegate { [weak self] image in
