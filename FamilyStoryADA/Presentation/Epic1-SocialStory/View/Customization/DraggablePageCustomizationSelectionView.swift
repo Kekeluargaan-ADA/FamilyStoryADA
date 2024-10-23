@@ -75,11 +75,15 @@ struct DraggablePageCustomizationSelectionView: View {
                             }
                         }
                 }
-                Button(action: {
-                    viewModel.addNewBlankPage()
-                }, label: {
-                    AddNewPageButtonView()
-                })
+                
+                // add button only appear if visible page is below 10
+                if  viewModel.isAddButtonAppeared() {
+                    Button(action: {
+                        viewModel.addNewBlankPage()
+                    }, label: {
+                        AddNewPageButtonView()
+                    })
+                }
             }
         }
     }

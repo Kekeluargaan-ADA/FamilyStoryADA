@@ -97,7 +97,6 @@ struct PlayStoryView: View {
                                 .padding(.trailing, -32 * heightRatio)
                             } else {
                                 NavigationLink(destination: {
-                                    // TODO: Goto PageClosing
                                     PlayStoryResultView()
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
@@ -107,7 +106,7 @@ struct PlayStoryView: View {
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
                     
-                    if playStoryViewModel.currentPageNumber <= 0 || playStoryViewModel.currentPageNumber >= playStoryViewModel.story.pages.count - 1 {
+                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
                         Spacer().frame(height: 19 * heightRatio)
                         
                         ZStack {
