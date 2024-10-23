@@ -107,6 +107,7 @@ struct ScrappingInitialView: View {
                                         viewModel.updatePage()
                                         viewModel.isGotoScrapImage = false
                                         viewModel.isMediaOverlayOpened = false
+                                        crawlViewModel.deleteImages()
                                     }
                                 }
                             }) {
