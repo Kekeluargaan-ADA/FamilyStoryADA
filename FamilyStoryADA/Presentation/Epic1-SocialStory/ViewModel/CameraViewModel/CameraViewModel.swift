@@ -13,7 +13,6 @@ import PhotosUI
 class CameraViewModel: ObservableObject {
     
     @ObservedObject var cameraManager = CameraManager()
-    @Published var savedImageFilename: String?
     @Published var isFlashOn = false
     @Published var showAlertError = false
     @Published var showSettingAlert = false
@@ -21,9 +20,11 @@ class CameraViewModel: ObservableObject {
     @Published var isImagePickerOpened: Bool = false
     @Published var isPhotoCaptured: Bool = false
     @Published var savedImage: UIImage?
-    //    @Published var capturedImage: PhotoRequest?
-    @Published var capturedImage: SelectedImage?
     @Published var photosPickerItem: PhotosPickerItem?
+    
+    @Published var navigateToCamera = false  // For taking a photo
+    @Published var showingImagePicker = false  // To show image picker sheet
+    @Published var showCropView = false  // Manage crop view state
     
     var alertError: AlertRequest!
     var session: AVCaptureSession = .init()
@@ -46,7 +47,7 @@ class CameraViewModel: ObservableObject {
         
         cameraManager.$capturedImage.sink { [weak self] image in
             if let existImage = image {
-                self?.capturedImage = .init(image: existImage)
+                self?.savedImage = existImage
             }
         }.store(in: &cancelables)
     }
@@ -102,6 +103,7 @@ class CameraViewModel: ObservableObject {
     }
     
     func captureImage() {
+        self.savedImage = nil
         requestGalleryPermission()
         let permission = checkGalleryPermissionStatus()
         if permission.rawValue != 2 {
@@ -126,5 +128,16 @@ class CameraViewModel: ObservableObject {
     
     func checkGalleryPermissionStatus() -> PHAuthorizationStatus {
         return PHPhotoLibrary.authorizationStatus()
+    }
+    
+    public func saveImage() -> String? {
+        if let image = self.savedImage {
+            let filename = CameraDelegate.saveImageToAppStorage(image)
+            // Save the image to the gallery
+            CameraDelegate.saveImageToGallery(image)
+            return filename
+        } else {
+            return nil
+        }
     }
 }

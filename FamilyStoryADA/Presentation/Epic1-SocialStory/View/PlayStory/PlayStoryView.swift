@@ -98,6 +98,7 @@ struct PlayStoryView: View {
                             } else {
                                 NavigationLink(destination: {
                                     PlayStoryResultView()
+                                        .environmentObject(playStoryViewModel)
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
