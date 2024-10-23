@@ -3,6 +3,7 @@ import SwiftUI
 
 
 struct ImageInputModal: View {
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @Binding var isPresented: Bool
@@ -10,19 +11,37 @@ struct ImageInputModal: View {
     @State private var name: String = "Hendra"
     @State private var showCropView = false  // Manage crop view state
     @State private var selectedImage: UIImage?  // Manage selected image
-
+    @Binding var template : TemplateEntity?
     var body: some View {
         GeometryReader{ geometry in
             NavigationView {
                 VStack {
-                    PreviewModalHeader(isPresented: isPresented)
-
+                    HStack {
+                        ZStack {
+                            HStack {
+                                Button(action: {
+                                    isPresented.toggle()
+                                    //                                    presentationMode.wrappedValue.dismiss()
+                                }) {
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                }
+                                Spacer()
+                            }
+                            Text(template!.templateName)
+                                .font(
+                                    Font.custom("Fredoka", size: 32)
+                                        .weight(.semibold)
+                                )
+                                .foregroundColor(Color("FSBlack"))
+                        }
+                        .padding()
+                    }
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                         .fontWeight(.medium)
                         .foregroundStyle(Color(.fsBlack))
-                        .frame(width: geometry.size.width * 0.33, alignment: .center)
+                        .frame(width: 381,height: 50, alignment: .center)
                     // Display saved image if exists, otherwise show placeholder
                     if let uiImage = viewModel.savedImage {
                         Image(uiImage: uiImage)
@@ -43,7 +62,7 @@ struct ImageInputModal: View {
                                 ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
                             }
                     }
-
+                    
                     HStack {
                         if isEditing {
                             // Show TextField for editing name
@@ -53,14 +72,14 @@ struct ImageInputModal: View {
                                 .foregroundStyle(Color(.fsBlack))
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
-                                
+                            
                         } else {
                             Text(name)
                                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))
                         }
-
+                        
                         Button(action: {
                             isEditing.toggle()  // Toggle editing state
                         }) {
@@ -70,7 +89,7 @@ struct ImageInputModal: View {
                         }
                     }
                     .padding()
-
+                    
                     Button(action: {
                         // Action for the "Next" button
                     }) {
@@ -82,25 +101,29 @@ struct ImageInputModal: View {
                             .background(Color(.fsBlue9))
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
-                    .frame(width: geometry.size.width, alignment: .trailing)
+                    .padding()
+                    .frame(width: 728, alignment: .trailing)
+                    
                 }
+                .frame(width: 728,height: 743)
                 .background(Color(.fsBlue1))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 .padding()
             }
             .navigationViewStyle(.stack)
             .environmentObject(viewModel)
         }
-        }
+    }
 }
 
 struct ChangePictureButton: View {
     @Binding var showCropView: Bool
     @Binding var selectedImage: UIImage?
     @ObservedObject var viewModel: CameraViewModel  // Shared ViewModel
-
+    
     @State private var navigateToCamera = false  // For taking a photo
     @State private var showingImagePicker = false  // To show image picker sheet
-
+    
     var body: some View {
         VStack {
             Menu {
@@ -109,7 +132,7 @@ struct ChangePictureButton: View {
                 }) {
                     Label("Choose Photo", systemImage: "photo")
                 }
-
+                
                 Button(action: {
                     navigateToCamera = true
                 }) {
@@ -154,8 +177,8 @@ struct ChangePictureButton: View {
 
 
 
-
-#Preview {
-    @Previewable @State var isPresented = true  // State for preview purposes
-    ImageInputModal(isPresented: $isPresented)
-}
+//
+//#Preview {
+//    @Previewable @State var isPresented = true  // State for preview purposes
+//    ImageInputModal(isPresented: $isPresented)
+//}
