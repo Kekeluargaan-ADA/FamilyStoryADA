@@ -87,13 +87,15 @@ struct CustomizationView: View {
                                             
                                             Menu {
                                                 Button(action: {
-                                                    viewModel.isGotoCameraView = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.navigateToCamera = true
                                                 }) {
                                                     Label("Take Photo", systemImage: "camera")
                                                 }
                                                 
                                                 Button(action: {
-                                                    viewModel.isGotoImagePicker = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.isImagePickerOpened = true
                                                 }) {
                                                     Label("Choose Photo", systemImage: "photo")
                                                 }
@@ -121,13 +123,15 @@ struct CustomizationView: View {
                                             
                                             Menu {
                                                 Button(action: {
-                                                    viewModel.isGotoCameraView = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.navigateToCamera = true
                                                 }) {
                                                     Label("Take Photo", systemImage: "camera")
                                                 }
                                                 
                                                 Button(action: {
-                                                    viewModel.isGotoImagePicker = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.isImagePickerOpened = true
                                                 }) {
                                                     Label("Choose Photo", systemImage: "photo")
                                                 }
@@ -163,13 +167,15 @@ struct CustomizationView: View {
                                             
                                             Menu {
                                                 Button(action: {
-                                                    viewModel.isGotoCameraView = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.navigateToCamera = true
                                                 }) {
                                                     Label("Take Photo", systemImage: "camera")
                                                 }
                                                 
                                                 Button(action: {
-                                                    viewModel.isGotoImagePicker = true
+                                                    cameraViewModel.isPhotoCaptured = false
+                                                    cameraViewModel.isImagePickerOpened = true
                                                 }) {
                                                     Label("Choose Photo", systemImage: "photo")
                                                 }
@@ -247,57 +253,57 @@ struct CustomizationView: View {
                     }
                     .ignoresSafeArea()
                     .environmentObject(viewModel)
+                    .environmentObject(cameraViewModel)
                 }
             }
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
         
-        NavigationLink(isActive: $viewModel.isGotoCameraView, destination: {
+        NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
             CameraView()
                 .environmentObject(cameraViewModel)
         }, label: {})
-//        .onChange(of: cameraViewModel.savedImageFilename) { value in
-//            guard value != nil else { return }
-//            if let page = viewModel.selectedPage, page.pagePicture.isEmpty, let fileName = value {
-//                viewModel.isGotoCameraView = false
-//                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
-//                                                                                  componentContent: fileName,
-//                                                                                  componentCategory: "AppStoragePicture")
-//                )
-//            } else if let fileName = value {
-//                viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
-//                viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-//            }
-//            viewModel.updatePage()
-//            viewModel.isGotoCameraView = false
-//            cameraViewModel.savedImageFilename = nil
-//            cameraViewModel.savedImage = nil
-//        }
+        .onDisappear {
+            if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                // Show crop view once an image is selected
+                cameraViewModel.showCropView = true
+            }
+        }
         
-        NavigationLink(isActive: $viewModel.isGotoImagePicker, destination: {
+        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
             ImagePicker(selectedImage: $cameraViewModel.savedImage, isPhotoCaptured: $cameraViewModel.isPhotoCaptured)
         }, label: {})
-        .onChange(of: cameraViewModel.savedImage ?? UIImage()) { value in
-            if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
-                viewModel.isGotoImagePicker = false
-                let fileName = CameraDelegate.saveImageToAppStorage(value)
-                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
-                                                                                  componentContent: fileName,
-                                                                                  componentCategory: "AppStoragePicture")
-                )
-            } else {
-                let fileName = CameraDelegate.saveImageToAppStorage(value)
-                viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
-                viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+        .onDisappear {
+            if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                // Show crop view once an image is selected
+                cameraViewModel.showCropView = true
             }
-            viewModel.updatePage()
-            viewModel.isGotoImagePicker = false
         }
         
         NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
             ScrappingInitialView()
         }, label: {})
+        
+        // Show the cropping view when image is selected
+        NavigationLink(
+            destination: CropImageView(selectedImage: $cameraViewModel.savedImage, showCropView: $cameraViewModel.showCropView)
+                .environmentObject(viewModel),
+            isActive: $cameraViewModel.showCropView,
+            label: {
+                EmptyView()
+            }
+        )
+        .onChange(of: cameraViewModel.savedImage) { value in
+            
+            
+            if let imageFileName = cameraViewModel.saveImage() {
+                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
+                
+                viewModel.updatePage()
+            }
+        }
+        
     }
     
     private func resetTypingTimer() {
