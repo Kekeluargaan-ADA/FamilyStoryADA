@@ -49,7 +49,7 @@ struct UploadPhotoModalView: View {
                                     viewModel.isGotoImagePicker = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
-                                    // TODO: Enable scrapping image
+                                    viewModel.isGotoScrapImage = true
                                 })
                             }
                             Spacer()

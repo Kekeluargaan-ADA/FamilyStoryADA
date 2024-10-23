@@ -103,7 +103,7 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             .sheet(isPresented: $isModalPresented) {
-                                AnotherView() // Present AnotherView modally
+                                AnotherView()
                             }
                         }
                         .padding(24 * heightRatio)

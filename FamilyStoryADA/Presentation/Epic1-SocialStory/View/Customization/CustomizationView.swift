@@ -99,7 +99,6 @@ struct CustomizationView: View {
                                                 }
                                                 
                                                 Button(action: {
-                                                    // TODO: Generate photo view
                                                     viewModel.isGotoScrapImage = true
                                                 }) {
                                                     Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
@@ -244,6 +243,9 @@ struct CustomizationView: View {
                     ZStack {
                         Color("FSBlack").opacity(0.4)
                         UploadPhotoModalView()
+                        if viewModel.isGotoScrapImage {
+                            ScrappingInitialView()
+                        }
                     }
                     .ignoresSafeArea()
                     .environmentObject(viewModel)
@@ -294,10 +296,6 @@ struct CustomizationView: View {
             viewModel.updatePage()
             viewModel.isGotoImagePicker = false
         }
-        
-        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
-            ScrappingInitialView()
-        }, label: {})
     }
     
     private func resetTypingTimer() {
