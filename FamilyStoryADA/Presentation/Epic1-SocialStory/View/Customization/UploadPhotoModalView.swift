@@ -35,6 +35,7 @@ struct UploadPhotoModalView: View {
                                         Spacer()
                                     }
                                     Text("Upload Foto")
+                                        .foregroundStyle(Color("FSBlack"))
                                         .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                         .fontWeight(.bold)
                                         .foregroundStyle(Color("FSBlack"))
