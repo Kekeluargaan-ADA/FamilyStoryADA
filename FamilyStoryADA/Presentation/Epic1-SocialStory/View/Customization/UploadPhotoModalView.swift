@@ -36,6 +36,7 @@ struct UploadPhotoModalView: View {
                                         Spacer()
                                     }
                                     Text("Upload Foto")
+                                        .foregroundStyle(Color("FSBlack"))
                                         .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                         .fontWeight(.bold)
                                         .foregroundStyle(Color("FSBlack"))
@@ -52,7 +53,7 @@ struct UploadPhotoModalView: View {
                                     cameraViewModel.isImagePickerOpened = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
-                                    // TODO: Enable scrapping image
+                                    viewModel.isGotoScrapImage = true
                                 })
                             }
                             Spacer()
