@@ -151,7 +151,7 @@ struct ChangePictureButton: View {
             .padding(.bottom, 20)
             
             // NavigationLink for CameraView
-            NavigationLink(destination: CameraView(), isActive: $navigateToCamera) {
+            NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $navigateToCamera) {
                 EmptyView()
             }
         }
