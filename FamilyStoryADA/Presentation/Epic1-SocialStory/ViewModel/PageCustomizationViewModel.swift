@@ -77,11 +77,15 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     private func reorderStoryPages() {
         var reorderedPages = [PageEntity]()
         
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening"}))
+        
         for draggedPage in draggedPages {
             if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
                 reorderedPages.append(matchingPage)
             }
         }
+        
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Closing"}))
         
         story.pages = reorderedPages
         
