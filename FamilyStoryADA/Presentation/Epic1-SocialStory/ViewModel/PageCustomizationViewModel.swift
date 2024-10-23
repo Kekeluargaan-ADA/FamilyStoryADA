@@ -132,9 +132,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     }
     
     private func updateTextComponent(page: PageEntity) {
-
         if let text = page.pageText.first {
-            
             if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
                 changedPage.pageText = []
                 changedPage.pageText.append(text)
@@ -168,5 +166,28 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             }
         }
     }
-    
+}
+
+extension PageCustomizationViewModel {
+    func handleScrapImageSelection(_ filename: String) {
+        if let page = selectedPage, page.pagePicture.isEmpty {
+            // Create new picture component if none exists
+            selectedPage?.pagePicture.append(
+                PictureComponentEntity(
+                    componentId: UUID(),
+                    componentContent: filename,
+                    componentCategory: "AppStoragePicture"
+                )
+            )
+        } else {
+            // Update existing picture component
+            selectedPage?.pagePicture.first?.componentContent = filename
+            selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+        }
+        
+        // Update the page and close related views
+        updatePage()
+        isGotoScrapImage = false
+        isMediaOverlayOpened = false
+    }
 }
