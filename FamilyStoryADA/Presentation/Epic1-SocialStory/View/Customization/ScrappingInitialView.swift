@@ -34,7 +34,8 @@ struct ScrappingInitialView: View {
                                         Spacer()
                                     }
                                     Text("Cari Foto")
-                                        .font(.system(size: 32 * heightRatio))
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio))
+                                        .foregroundStyle(Color("FSBlack"))
                                         .fontWeight(.bold)
                                 }
                             }
@@ -106,7 +107,7 @@ struct ScrappingInitialView: View {
                                 AnotherView()
                             }
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
