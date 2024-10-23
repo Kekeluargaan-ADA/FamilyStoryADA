@@ -8,6 +8,7 @@ import SwiftUI
 
 
 struct CropImageView: View {
+    @Environment(\.dismiss) var dismiss
     @Binding var selectedImage: UIImage?
     @Binding var showCropView: Bool
     @ObservedObject var viewModel: CameraViewModel
@@ -17,6 +18,7 @@ struct CropImageView: View {
             CropView(image: selectedImage, croppingStyle: .default, croppingOptions: .init()) { image in
                 // Handle cropped image here
                 handleCroppedImage(image)
+                dismiss()
             } didCropImageToRect: { _ in
                 // Handle additional crop rect logic if needed
             } didFinishCancelled: { _ in

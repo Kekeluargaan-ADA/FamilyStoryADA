@@ -152,7 +152,11 @@ struct ChangePictureButton: View {
             
             // NavigationLink for CameraView
             NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $navigateToCamera) {
-                EmptyView()
+            }
+            .onChange(of: viewModel.savedImageFilename) { value in
+                guard value != nil else { return }
+                navigateToCamera = false
+                // TODO: save to story
             }
         }
         .sheet(isPresented: $showingImagePicker, onDismiss: {
