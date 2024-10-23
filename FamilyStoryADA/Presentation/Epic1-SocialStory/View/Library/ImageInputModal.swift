@@ -5,13 +5,19 @@ import SwiftUI
 struct ImageInputModal: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
+    @StateObject var pageViewModel: PageCustomizationViewModel
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @Binding var isPresented: Bool
     @State private var isEditing: Bool = false
-    @State private var name: String = "Hendra"
-    @State private var showCropView = false  // Manage crop view state
-    @State private var selectedImage: UIImage?  // Manage selected image
-    @Binding var template : TemplateEntity?
+    @State private var name: String = ""
+    @Binding var story: StoryEntity?
+    
+    init(isPresented: Binding<Bool>, story: Binding<StoryEntity?>) {
+        _isPresented = isPresented
+        _story = story
+        _pageViewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story.wrappedValue!))
+    }
+    
     var body: some View {
         GeometryReader{ geometry in
             NavigationView {
@@ -27,7 +33,7 @@ struct ImageInputModal: View {
                                 }
                                 Spacer()
                             }
-                            Text(template!.templateName)
+                            Text(story?.storyName ?? "")
                                 .font(
                                     Font.custom("Fredoka", size: 32)
                                         .weight(.semibold)
@@ -50,7 +56,7 @@ struct ImageInputModal: View {
                             .frame(width: 300, height: 400)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(alignment: .bottom) {
-                                ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
+                                ChangePictureButton()
                             }
                     } else {
                         // Placeholder if no image is found
@@ -59,7 +65,7 @@ struct ImageInputModal: View {
                             .foregroundColor(.gray)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(alignment: .bottom) {
-                                ChangePictureButton(showCropView: $showCropView, selectedImage: $selectedImage, viewModel: viewModel)
+                                ChangePictureButton()
                             }
                     }
                     
@@ -91,7 +97,26 @@ struct ImageInputModal: View {
                     .padding()
                     
                     Button(action: {
-                        // Action for the "Next" button
+                        if let editedStory = story {
+                            let imageFileName = viewModel.saveImage()
+                            let childName = name
+                            
+                            for page in editedStory.pages {
+                                if page.pageType == "Opening" || page.pageType == "Closing" {
+                                    pageViewModel.selectedPage = page
+                                    if let fileName = imageFileName {
+                                        pageViewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
+                                                                                                              componentContent: fileName,
+                                                                                                              componentCategory: "AppStoragePicture"))
+                                    }
+                                    if let originalText = pageViewModel.selectedPage?.pageText[0] {
+                                        pageViewModel.selectedPage?.pageText[0].componentContent = originalText.componentContent.replacingOccurrences(of: "<CHILD_NAME>", with: childName)
+                                    }
+                                    pageViewModel.updatePage()
+                                }
+                            }
+                        }
+                        dismiss()
                     }) {
                         Text("Lanjut")
                             .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
@@ -117,24 +142,21 @@ struct ImageInputModal: View {
 }
 
 struct ChangePictureButton: View {
-    @Binding var showCropView: Bool
-    @Binding var selectedImage: UIImage?
-    @ObservedObject var viewModel: CameraViewModel  // Shared ViewModel
-    
-    @State private var navigateToCamera = false  // For taking a photo
-    @State private var showingImagePicker = false  // To show image picker sheet
+    @EnvironmentObject var viewModel: CameraViewModel  // Shared ViewModel
     
     var body: some View {
         VStack {
             Menu {
                 Button(action: {
-                    showingImagePicker = true
+                    viewModel.isPhotoCaptured = false
+                    viewModel.showingImagePicker = true
                 }) {
                     Label("Choose Photo", systemImage: "photo")
                 }
                 
                 Button(action: {
-                    navigateToCamera = true
+                    viewModel.isPhotoCaptured = false
+                    viewModel.navigateToCamera = true
                 }) {
                     Label("Take Photo", systemImage: "camera")
                 }
@@ -151,27 +173,29 @@ struct ChangePictureButton: View {
             .padding(.bottom, 20)
             
             // NavigationLink for CameraView
-            NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $navigateToCamera) {
+            NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
             }
-            .onChange(of: viewModel.savedImageFilename) { value in
-                guard value != nil else { return }
-                navigateToCamera = false
-                // TODO: save to story
+            .onDisappear {
+                if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
+                    // Show crop view once an image is selected
+                    viewModel.showCropView = true
+                }
             }
         }
-        .sheet(isPresented: $showingImagePicker, onDismiss: {
-            if let selectedImage = selectedImage {
+        .sheet(isPresented: $viewModel.showingImagePicker, onDismiss: {
+            if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
                 // Show crop view once an image is selected
-                showCropView = true
+                viewModel.showCropView = true
             }
         }) {
-            ImagePicker(selectedImage: $selectedImage)
+            ImagePicker(selectedImage: $viewModel.savedImage, isPhotoCaptured: $viewModel.isPhotoCaptured)
         }
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView(selectedImage: $selectedImage, showCropView: $showCropView, viewModel: viewModel),
-            isActive: $showCropView,
+            destination: CropImageView(selectedImage: $viewModel.savedImage, showCropView: $viewModel.showCropView)
+                .environmentObject(viewModel),
+            isActive: $viewModel.showCropView,
             label: {
                 EmptyView()
             }

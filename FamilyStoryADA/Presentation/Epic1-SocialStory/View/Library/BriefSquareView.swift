@@ -13,18 +13,18 @@ struct BriefSquareView: View {
     @Binding var isImageInputModalPresented: Bool
     @Binding var isPagePreviewModalPresented: Bool
     @StateObject private var viewModel = StoryViewModel() // Add the viewModel to handle story logic
-    @Binding var template : TemplateEntity?
+    @Binding var template : TemplateEntity
+    @State var story: StoryEntity?
     var body: some View {
         ZStack{
             HStack {
-                Image("DummyImage")
+                Image(template.templateCoverImagePath)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 280, height: 172)
                     .cornerRadius(12)
-//                Spacer()
                 VStack {
-                    Text("Brief singkat terkait ini tentang apa brief singkat terkait ini tentang apa brief singkat terkait ini tentang")
+                    Text(template.templateDescription)
                         .font(
                             Font.custom("Fredoka", size: 16)
                                 .weight(.medium)
@@ -49,9 +49,10 @@ struct BriefSquareView: View {
                     }
                     
                     .simultaneousGesture(TapGesture().onEnded {
-                        if let id = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
-                            viewModel.addNewStory(templateId: id)
+                        if let id = viewModel.addNewStory(templateId: template.templateId) {
+                            story = viewModel.fetchStoryById(storyId: id)
                         }
+                        
                     })
                 }
                 .frame(width: 224,height: 160,alignment: .bottom)
@@ -61,7 +62,7 @@ struct BriefSquareView: View {
             .cornerRadius(20)
             
             if isImageInputModalPresented{
-                ImageInputModal(isPresented: $isImageInputModalPresented, template: $template)
+                ImageInputModal(isPresented: $isImageInputModalPresented, story: $story)
                     .frame(height: 743,alignment: .center)
             }
             

@@ -66,6 +66,7 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?  // This will hold the selected image
+    @Binding var isPhotoCaptured: Bool
     @Environment(\.dismiss) var dismiss  // Used to dismiss the picker
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
@@ -105,6 +106,7 @@ struct ImagePicker: UIViewControllerRepresentable {
                     if let uiImage = image as? UIImage {
                         DispatchQueue.main.async {
                             self.parent.selectedImage = uiImage
+                            self.parent.isPhotoCaptured = true
                         }
                     }
                 }

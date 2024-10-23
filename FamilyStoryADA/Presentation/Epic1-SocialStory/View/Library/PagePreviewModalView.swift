@@ -11,7 +11,7 @@ struct PagePreviewModalView: View {
     @Environment(\.presentationMode) var presentationMode
     @State var isImageInputModalPresented = false
     @Binding var isPagePreviewModalPresented: Bool
-    @Binding var template: TemplateEntity?
+    @Binding var template: TemplateEntity
     
     var body: some View {
         GeometryReader { geometry in
@@ -30,7 +30,7 @@ struct PagePreviewModalView: View {
                                     }
                                     Spacer()
                                 }
-                                Text(template!.templateName)
+                                Text(template.templateName)
                                     .font(
                                         Font.custom("Fredoka", size: 32)
                                             .weight(.semibold)
@@ -42,7 +42,7 @@ struct PagePreviewModalView: View {
                     }
                     //                            Spacer().frame(height: 24)
                     
-                    BriefSquareView(heightRatio: 1.0, widthRatio: 1.0, isImageInputModalPresented: $isImageInputModalPresented, isPagePreviewModalPresented: $isPagePreviewModalPresented, template: $template ) // Use fixed values
+                    BriefSquareView(heightRatio: 1.0, widthRatio: 1.0, isImageInputModalPresented: $isImageInputModalPresented, isPagePreviewModalPresented: $isPagePreviewModalPresented, template: $template) // Use fixed values
                     
                     //                            Spacer().frame(height: 24)
                     ScrollView {

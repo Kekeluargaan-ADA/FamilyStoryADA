@@ -257,26 +257,26 @@ struct CustomizationView: View {
             CameraView()
                 .environmentObject(cameraViewModel)
         }, label: {})
-        .onChange(of: cameraViewModel.savedImageFilename) { value in
-            guard value != nil else { return }
-            if let page = viewModel.selectedPage, page.pagePicture.isEmpty, let fileName = value {
-                viewModel.isGotoCameraView = false
-                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
-                                                                                  componentContent: fileName,
-                                                                                  componentCategory: "AppStoragePicture")
-                )
-            } else if let fileName = value {
-                viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
-                viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-            }
-            viewModel.updatePage()
-            viewModel.isGotoCameraView = false
-            cameraViewModel.savedImageFilename = nil
-            cameraViewModel.capturedImage = nil
-        }
+//        .onChange(of: cameraViewModel.savedImageFilename) { value in
+//            guard value != nil else { return }
+//            if let page = viewModel.selectedPage, page.pagePicture.isEmpty, let fileName = value {
+//                viewModel.isGotoCameraView = false
+//                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
+//                                                                                  componentContent: fileName,
+//                                                                                  componentCategory: "AppStoragePicture")
+//                )
+//            } else if let fileName = value {
+//                viewModel.selectedPage?.pagePicture.first?.componentContent = fileName
+//                viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+//            }
+//            viewModel.updatePage()
+//            viewModel.isGotoCameraView = false
+//            cameraViewModel.savedImageFilename = nil
+//            cameraViewModel.savedImage = nil
+//        }
         
         NavigationLink(isActive: $viewModel.isGotoImagePicker, destination: {
-            ImagePicker(selectedImage: $cameraViewModel.savedImage)
+            ImagePicker(selectedImage: $cameraViewModel.savedImage, isPhotoCaptured: $cameraViewModel.isPhotoCaptured)
         }, label: {})
         .onChange(of: cameraViewModel.savedImage ?? UIImage()) { value in
             if let page = viewModel.selectedPage, page.pagePicture.isEmpty {

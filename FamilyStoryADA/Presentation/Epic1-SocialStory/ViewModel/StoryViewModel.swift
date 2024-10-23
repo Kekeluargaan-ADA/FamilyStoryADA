@@ -56,10 +56,15 @@ class StoryViewModel: ObservableObject {
         objectWillChange.send()
     }
     
-    func addNewStory(templateId: UUID) {
-        let _ = storyUsecase.addNewStory(templateId: templateId)
+    func addNewStory(templateId: UUID) -> UUID? {
+        let storyId = storyUsecase.addNewStory(templateId: templateId)
         
         fetchStories()
+        return storyId
+    }
+    
+    func fetchStoryById(storyId: UUID) -> StoryEntity? {
+        return storyUsecase.fetchStoryById(storyId: storyId)
     }
     
     public func searchStories() {
