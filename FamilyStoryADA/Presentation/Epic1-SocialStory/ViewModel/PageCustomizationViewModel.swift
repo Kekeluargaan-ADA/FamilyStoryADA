@@ -28,7 +28,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         self.storyUsecase = ImplementedStoryUsecase()
         self.componentUsecase = ImplementedComponentUsecase()
         
-        self.selectedPage = story.pages[1]
+        self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
         
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
     }
@@ -46,12 +46,13 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
         
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.insert(newPage, at: closingFirstIndex ?? story.pages.count - 1) // Add blank page before end of story
+            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1)) // Add blank page before end of story
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
+                self.selectedPage = newPage // redirect display to the newly made page
                 if selectedPage == nil {
-                    if let firstPage = story.pages.first {
+                    if let firstPage = story.pages.first(where: {$0.pageType == "Instruction" || $0.pageType == "Introduction"}) {
                         self.selectedPage = firstPage
                     }
                 }
@@ -116,12 +117,25 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                         selectedPage = nil
                         return
                     }
-                    if storyIndex > 0 {
+                    // old next page algorithm
+                    //                    if storyIndex > 0 {
+                    //                        selectedPage = story.pages[storyIndex - 1]
+                    //                    } else {
+                    //                        selectedPage = story.pages[storyIndex]
+                    //                    }
+                    
+                    // new next page algorithm
+                    if storyIndex < story.pages.count, story.pages[storyIndex].pageType != "Closing" {
+                        // next index is selectedPage
+                        selectedPage = story.pages[storyIndex]
+                    } else if storyIndex - 1 >= 0, story.pages[storyIndex - 1].pageType != "Opening" {
+                        // previous index is selectedPage
                         selectedPage = story.pages[storyIndex - 1]
                     } else {
-                        selectedPage = story.pages[storyIndex]
+                        self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
                     }
                 }
+                
             }
         }
     }
@@ -134,7 +148,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     }
     
     private func updateTextComponent(page: PageEntity) {
-
+        
         if let text = page.pageText.first {
             
             if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
@@ -169,6 +183,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                 }
             }
         }
+    }
+    
+    //filter requirement for add new page to be added
+    func isAddButtonAppeared() -> Bool {
+        return self.story.pages.count(where: { $0.pageType == "Introduction" || $0.pageType == "Instruction" }) < 10
     }
     
 }
