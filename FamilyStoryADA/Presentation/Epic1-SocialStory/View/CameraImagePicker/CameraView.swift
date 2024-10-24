@@ -18,6 +18,8 @@ struct CameraView: View {
     private var didCrop: ((CropView.CroppedRect) -> ())?
     private var didCancel: (() -> ())?
     
+    public static var shared = CameraView()
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in

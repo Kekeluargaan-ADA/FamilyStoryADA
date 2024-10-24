@@ -6,14 +6,27 @@
 //
 import SwiftUI
 
+enum CroppingStyleType {
+    case portrait, landscape
+}
 
 struct CropImageView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var viewModel: CameraViewModel
+    var croppingStyle: CroppingStyleType
+    
+    var style: CroppedPhotosPickerOptions {
+        switch croppingStyle {
+        case .portrait:
+            return .init(customAspectRatio: CGSize(width: 3, height: 4))
+        case .landscape:
+            return .init(customAspectRatio: CGSize(width: 16, height: 9))
+        }
+    }
     
     var body: some View {
         if let image = viewModel.savedImage {
-            CropView(image: image, croppingStyle: .default, croppingOptions: .init()) { image in
+            CropView(image: image, croppingStyle: .default, croppingOptions: style) { image in
                 // Handle cropped image here
                 handleCroppedImage(image)
                 dismiss()

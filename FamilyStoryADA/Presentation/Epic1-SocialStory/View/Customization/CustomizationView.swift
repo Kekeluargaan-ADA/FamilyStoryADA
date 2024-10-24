@@ -204,7 +204,7 @@ struct CustomizationView: View {
         .navigationBarBackButtonHidden()
         
         NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
-            CameraView()
+            CameraView.shared
                 .environmentObject(cameraViewModel)
         }, label: {})
         .onChange(of: cameraViewModel.navigateToCamera) { value in
@@ -229,7 +229,7 @@ struct CustomizationView: View {
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView()
+            destination: CropImageView(croppingStyle: .landscape)
                 .environmentObject(cameraViewModel),
             isActive: $cameraViewModel.showCropView,
             label: {

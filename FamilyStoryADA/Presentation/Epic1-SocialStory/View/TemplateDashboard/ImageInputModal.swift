@@ -148,7 +148,7 @@ struct ChangePictureButton: View {
             .padding(.bottom, 20)
             
             // NavigationLink for CameraView
-            NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
+            NavigationLink(destination: CameraView.shared.environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
             }
             .onDisappear {
                 if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
@@ -168,7 +168,7 @@ struct ChangePictureButton: View {
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView()
+            destination: CropImageView(croppingStyle: .portrait)
                 .environmentObject(viewModel),
             isActive: $viewModel.showCropView,
             label: {
