@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct TemplateCollectionView: View {
-    @StateObject private var viewModel = TemplateViewModel(templateUsecase: JSONTemplateUsecase())
+    @StateObject private var viewModel = TemplateViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
-    @State private var isModalPresented = false
-    @State private var selectedTemplate: TemplateEntity?
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
@@ -39,8 +36,8 @@ struct TemplateCollectionView: View {
                                             LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                                 ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
                                                     TemplateCardView(template: template) {
-                                                        selectedTemplate = template
-                                                        isModalPresented = true
+                                                        viewModel.selectedTemplate = template
+                                                        viewModel.isPagePreviewModalPresented = true
                                                     }
                                                 }
                                             }
@@ -50,8 +47,9 @@ struct TemplateCollectionView: View {
                                 )
                         }
                     }
-                    if isModalPresented, let template = Binding($selectedTemplate) {
-                        PagePreviewModalView(isPagePreviewModalPresented: $isModalPresented, template: template)
+                    if viewModel.isPagePreviewModalPresented, let template = Binding($viewModel.selectedTemplate) {
+                        PagePreviewModalView()
+                            .environmentObject(viewModel)
                         
                     }
                 }
