@@ -5,18 +5,8 @@ import SwiftUI
 struct ImageInputModal: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
-    @StateObject var pageViewModel: PageCustomizationViewModel
+    @EnvironmentObject var templateViewModel: TemplateViewModel
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
-    @Binding var isPresented: Bool
-    @State private var isEditing: Bool = false
-    @State private var name: String = ""
-    @Binding var story: StoryEntity?
-    
-    init(isPresented: Binding<Bool>, story: Binding<StoryEntity?>) {
-        _isPresented = isPresented
-        _story = story
-        _pageViewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story.wrappedValue!))
-    }
     
     var body: some View {
         GeometryReader{ geometry in
@@ -26,14 +16,14 @@ struct ImageInputModal: View {
                         ZStack {
                             HStack {
                                 Button(action: {
-                                    isPresented.toggle()
+                                    templateViewModel.isImageInputModalPresented.toggle()
                                     //                                    presentationMode.wrappedValue.dismiss()
                                 }) {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
                                 }
                                 Spacer()
                             }
-                            Text(story?.storyName ?? "")
+                            Text(templateViewModel.selectedTemplate?.templateName ?? "")
                                 .font(
                                     Font.custom("Fredoka", size: 32)
                                         .weight(.semibold)
@@ -48,6 +38,7 @@ struct ImageInputModal: View {
                         .fontWeight(.medium)
                         .foregroundStyle(Color(.fsBlack))
                         .frame(width: 381,height: 50, alignment: .center)
+                    
                     // Display saved image if exists, otherwise show placeholder
                     if let uiImage = viewModel.savedImage {
                         Image(uiImage: uiImage)
@@ -70,9 +61,9 @@ struct ImageInputModal: View {
                     }
                     
                     HStack {
-                        if isEditing {
+                        if templateViewModel.isEditingTextField {
                             // Show TextField for editing name
-                            TextField("Enter name", text: $name)
+                            TextField("Enter name", text: $templateViewModel.childName)
                                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))
@@ -80,14 +71,14 @@ struct ImageInputModal: View {
                                 .frame(width: 200)
                             
                         } else {
-                            Text(name)
+                            Text(templateViewModel.childName)
                                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))
                         }
                         
                         Button(action: {
-                            isEditing.toggle()  // Toggle editing state
+                            templateViewModel.isEditingTextField.toggle()  // Toggle editing state
                         }) {
                             Image(systemName: "pencil")
                                 .frame(width: 22,height: 22)
@@ -97,25 +88,7 @@ struct ImageInputModal: View {
                     .padding()
                     
                     Button(action: {
-                        if let editedStory = story {
-                            let imageFileName = viewModel.saveImage()
-                            let childName = name
-                            
-                            for page in editedStory.pages {
-                                if page.pageType == "Opening" || page.pageType == "Closing" {
-                                    pageViewModel.selectedPage = page
-                                    if let fileName = imageFileName {
-                                        pageViewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(),
-                                                                                                              componentContent: fileName,
-                                                                                                              componentCategory: "AppStoragePicture"))
-                                    }
-                                    if let originalText = pageViewModel.selectedPage?.pageText[0] {
-                                        pageViewModel.selectedPage?.pageText[0].componentContent = originalText.componentContent.replacingOccurrences(of: "<CHILD_NAME>", with: childName)
-                                    }
-                                    pageViewModel.updatePage()
-                                }
-                            }
-                        }
+                        templateViewModel.editNewStory(imageName: viewModel.saveImage())
                         dismiss()
                     }) {
                         Text("Lanjut")

@@ -8,64 +8,63 @@
 import SwiftUI
 
 struct BriefSquareView: View {
+    @EnvironmentObject var viewModel: TemplateViewModel
     let heightRatio: CGFloat
     let widthRatio: CGFloat
-    @Binding var isImageInputModalPresented: Bool
-    @Binding var isPagePreviewModalPresented: Bool
-    @StateObject private var viewModel = StoryViewModel() // Add the viewModel to handle story logic
-    @Binding var template : TemplateEntity
-    @State var story: StoryEntity?
+    
     var body: some View {
-        ZStack{
-            HStack {
-                Image(template.templateCoverImagePath)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 280, height: 172)
-                    .cornerRadius(12)
-                VStack {
-                    Text(template.templateDescription)
-                        .font(
-                            Font.custom("Fredoka", size: 16)
-                                .weight(.medium)
-                        )
-                        .foregroundColor(.black)
-                        .frame(width: 228, height: 160 ,alignment: .trailing)
-                        .multilineTextAlignment(.leading)
-                    
-                    Button(action: {
-                        isImageInputModalPresented.toggle()
-                        print(isImageInputModalPresented)
-                    }) {
-                        Text("Gunakan template")
+        if let template = viewModel.selectedTemplate {
+            ZStack{
+                HStack {
+                    Image(template.templateCoverImagePath)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 280, height: 172)
+                        .cornerRadius(12)
+                    VStack {
+                        Text(template.templateDescription)
                             .font(
-                                Font.custom("Fredoka", size: 20)
+                                Font.custom("Fredoka", size: 16)
                                     .weight(.medium)
                             )
-                            .foregroundStyle(.white)
-                            .frame(width: 224,height: 40)
-                            .background((Color("FSBlue9")))
-                            .cornerRadius(20)
-                    }
-                    
-                    .simultaneousGesture(TapGesture().onEnded {
-                        if let id = viewModel.addNewStory(templateId: template.templateId) {
-                            story = viewModel.fetchStoryById(storyId: id)
+                            .foregroundColor(.black)
+                            .frame(width: 228, height: 160 ,alignment: .trailing)
+                            .multilineTextAlignment(.leading)
+                        
+                        Button(action: {
+                            viewModel.isImageInputModalPresented.toggle()
+                        }) {
+                            Text("Gunakan template")
+                                .font(
+                                    Font.custom("Fredoka", size: 20)
+                                        .weight(.medium)
+                                )
+                                .foregroundStyle(.white)
+                                .frame(width: 224,height: 40)
+                                .background((Color("FSBlue9")))
+                                .cornerRadius(20)
                         }
                         
-                    })
+                        // Change logic, requested by designer
+//                        .simultaneousGesture(TapGesture().onEnded {
+//                            if let id = viewModel.addNewStory(templateId: template.templateId) {
+//                                viewModel.createdStory = viewModel.fetchStoryById(storyId: id)
+//                            }
+//                            
+//                        })
+                    }
+                    .frame(width: 224,height: 160,alignment: .bottom)
                 }
-                .frame(width: 224,height: 160,alignment: .bottom)
+                .frame(width: 580,height: 228)
+                .background(.white)
+                .cornerRadius(20)
+                
+                if viewModel.isImageInputModalPresented{
+                    ImageInputModal()
+                        .frame(height: 743,alignment: .center)
+                }
+                
             }
-            .frame(width: 580,height: 228)
-            .background(.white)
-            .cornerRadius(20)
-            
-            if isImageInputModalPresented{
-                ImageInputModal(isPresented: $isImageInputModalPresented, story: $story)
-                    .frame(height: 743,alignment: .center)
-            }
-            
         }
         
     }

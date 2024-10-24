@@ -189,7 +189,7 @@ class CameraManager: ObservableObject {
             }
             
             // Sets the flash option for the capture
-            if self.videoDeviceInput!.device.isFlashAvailable {
+            if ((self.videoDeviceInput?.device.isFlashAvailable) != nil) {
                 photoSettings.flashMode = self.flashMode
             }
             
