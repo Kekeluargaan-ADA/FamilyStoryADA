@@ -26,8 +26,8 @@ class StoryViewModel: ObservableObject {
     
     @MainActor
     init() {
-        self.storyUsecase = ImplementedStoryUsecase()
-        self.templateUsecase = JSONTemplateUsecase()
+        self.storyUsecase = ImplementedStoryUsecase.shared
+        self.templateUsecase = JSONTemplateUsecase.shared
         self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         

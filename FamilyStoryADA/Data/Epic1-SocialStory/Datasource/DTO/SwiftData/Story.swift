@@ -47,7 +47,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     //    }
     
     static private func convertToUUIDArray(templatePages: [PageJSONObject]) -> [UUID] {
-        let repo = SwiftDataPageRepository()
+        let repo = SwiftDataPageRepository.shared
         var array: [UUID] = []
         for templatePage in templatePages {
             let page = PageSwiftData.convertToSwiftData(jsonTemplate: templatePage)
@@ -90,7 +90,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     }
     
     private func convertToEntitiesArray(pageIds: [UUID]) -> [PageEntity] {
-        let repo = SwiftDataPageRepository()
+        let repo = SwiftDataPageRepository.shared
         
         var array: [PageEntity] = []
         for id in pageIds {

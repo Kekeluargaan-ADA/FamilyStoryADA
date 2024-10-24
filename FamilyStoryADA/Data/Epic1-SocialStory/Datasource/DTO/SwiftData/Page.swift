@@ -65,7 +65,7 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     }
     
     static private func convertToUUIDArray(jsonTemplate: [ComponentJSONObject]) -> [UUID] {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         var array: [(UUID)] = []
         for object in jsonTemplate {
             let component = StoryComponentSwiftData.convertToSwiftData(jsonTemplate: object)
@@ -105,7 +105,7 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     }
     
     private func convertToEntitiesArray(componentIds: [(UUID)], type: StoryComponentType) -> [StoryComponentEntity] {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         
         var array: [StoryComponentEntity] = []
         for id in componentIds {

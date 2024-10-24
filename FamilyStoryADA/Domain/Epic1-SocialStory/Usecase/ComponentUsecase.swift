@@ -17,9 +17,10 @@ protocol ComponentUsecase {
 public class ImplementedComponentUsecase: ComponentUsecase {
     
     private var repository: ComponentRepository
+    public static let shared = ImplementedComponentUsecase()
     
-    init() {
-        repository = SwiftDataComponentRepository()
+    private init() {
+        repository = SwiftDataComponentRepository.shared
     }
     
     func fetchComponentById(componentId: UUID, type: StoryComponentType) -> StoryComponentEntity? {
