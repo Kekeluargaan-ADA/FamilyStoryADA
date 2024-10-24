@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: PINDAHIN KE MANAGER KALO LOGIC BUSINESS
+
 class TemplateViewModel: ObservableObject {
     @Published var templates: [TemplateEntity] = []
     @Published var filteredTemplates: [TemplateEntity] = []
