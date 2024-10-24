@@ -89,6 +89,8 @@ struct ImageInputModal: View {
                     
                     Button(action: {
                         templateViewModel.editNewStory(imageName: viewModel.saveImage())
+                        templateViewModel.isImageInputModalPresented = false
+                        templateViewModel.isPagePreviewModalPresented = false
                         dismiss()
                     }) {
                         Text("Lanjut")
