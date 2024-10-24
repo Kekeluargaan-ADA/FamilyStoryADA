@@ -14,7 +14,11 @@ protocol TemplateUsecase {
 
 public final class JSONTemplateUsecase: TemplateUsecase {
     
-    private let templateRepository = JSONTemplateRepository()
+    private let templateRepository = JSONTemplateRepository.shared
+    public static let shared = JSONTemplateUsecase()
+    private init() {
+        
+    }
     
     func fetchTemplates() -> [TemplateEntity] {
         let (templates, error) = templateRepository.fetchTemplates()

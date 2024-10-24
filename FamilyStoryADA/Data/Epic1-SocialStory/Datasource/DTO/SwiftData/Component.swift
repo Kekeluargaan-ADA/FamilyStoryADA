@@ -46,7 +46,7 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
     //    }
     
     static func convertToSwiftData(jsonTemplate: ComponentJSONObject) -> StoryComponentSwiftData {
-        let repo = SwiftDataRatioRepository()
+        let repo = SwiftDataRatioRepository.shared
         let ratio = RatioSwiftData.convertToSwiftData(jsonTemplate: jsonTemplate.componentRatio)
         //MARK: Saving sub-types
         _ = repo.addNewRatio(ratio: ratio)
@@ -70,7 +70,7 @@ class StoryComponentSwiftData: Identifiable, ISwiftDataAble {
     }
     
     func convertToEntity(type: StoryComponentType) -> StoryComponentEntity {
-        let repo = SwiftDataRatioRepository()
+        let repo = SwiftDataRatioRepository.shared
         let ratio = repo.fetchRatioById(ratioId: self.componentRatioId ?? UUID()).0
         switch type {
         case .picture:

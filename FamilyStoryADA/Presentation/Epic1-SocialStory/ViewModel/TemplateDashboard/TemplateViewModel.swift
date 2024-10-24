@@ -26,10 +26,10 @@ class TemplateViewModel: ObservableObject {
     private let componentUsecase: ComponentUsecase
     
     init() {
-        self.templateUsecase = JSONTemplateUsecase()
-        self.storyUsecase = ImplementedStoryUsecase()
-        self.pageUsecase = ImplementedPageUsecase()
-        self.componentUsecase = ImplementedComponentUsecase()
+        self.templateUsecase = JSONTemplateUsecase.shared
+        self.storyUsecase = ImplementedStoryUsecase.shared
+        self.pageUsecase = ImplementedPageUsecase.shared
+        self.componentUsecase = ImplementedComponentUsecase.shared
         fetchTemplates()
     }
     

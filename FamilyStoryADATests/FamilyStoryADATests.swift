@@ -14,7 +14,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testFetchTemplates() {
-        let templateRepository = JSONTemplateRepository()
+        let templateRepository = JSONTemplateRepository.shared
         let fileManager = FileManager.default
         if let filePath = Bundle.main.path(forResource: "Template", ofType: "json") {
             #expect(fileManager.fileExists(atPath: filePath), "Template.json does not exist")
@@ -30,7 +30,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingRatio() {
-        let repo = SwiftDataRatioRepository()
+        let repo = SwiftDataRatioRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         _ = repo.addNewRatio(ratio: ratio)
@@ -43,7 +43,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingComponent() {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         let component = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyContent", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
@@ -59,7 +59,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingPage() {
-        let repo = SwiftDataPageRepository()
+        let repo = SwiftDataPageRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         let imageComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyImage", componentCategory: "AssetImage", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)

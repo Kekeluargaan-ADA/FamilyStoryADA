@@ -21,9 +21,11 @@ public final class ImplementedStoryUsecase: StoryUsecase {
     private let repository: StoryRepository
     private let templateRepository: TemplateRepository
     
-    init() {
-        self.repository = SwiftDataStoryRepository()
-        self.templateRepository = JSONTemplateRepository()
+    public static let shared = ImplementedStoryUsecase()
+    
+    private init() {
+        self.repository = SwiftDataStoryRepository.shared
+        self.templateRepository = JSONTemplateRepository.shared
     }
     
     func fetchStories() -> [StoryEntity] {

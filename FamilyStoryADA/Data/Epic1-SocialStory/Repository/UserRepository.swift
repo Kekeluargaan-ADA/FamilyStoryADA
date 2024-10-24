@@ -18,6 +18,10 @@ internal protocol UserRepository {
 
 internal final class SwiftDataUserRepository: UserRepository {
     private let swiftDataManager = SwiftDataManager.shared
+    public static let shared = SwiftDataUserRepository()
+    private init() {
+        
+    }
     
     func fetchUsers() -> ([UserSwiftData], ErrorHandler?) {
         do {

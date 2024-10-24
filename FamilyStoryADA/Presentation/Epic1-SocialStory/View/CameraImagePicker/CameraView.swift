@@ -26,7 +26,7 @@ struct CameraView: View {
                 ZStack {
                     Color.black.edgesIgnoringSafeArea(.all)
                     
-                    VStack(spacing: 0) {
+                    HStack(spacing: 0) {
                         Button(action: {
                             viewModel.switchFlash()
                         }, label: {
@@ -64,7 +64,7 @@ struct CameraView: View {
                             }
                         }
                         
-                        HStack {
+                        VStack {
 //                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
 //                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
 //                            }

@@ -19,9 +19,11 @@ public class ImplementedPageUsecase: PageUsecase {
     private let storyUsecase: StoryUsecase
     private let pageRepository: PageRepository
     
-    init() {
-        storyUsecase = ImplementedStoryUsecase()
-        pageRepository = SwiftDataPageRepository()
+    public static let shared = ImplementedPageUsecase()
+    
+    private init() {
+        storyUsecase = ImplementedStoryUsecase.shared
+        pageRepository = SwiftDataPageRepository.shared
     }
     
     func fetchPagesByStoryId(storyId: UUID) -> [PageEntity] {

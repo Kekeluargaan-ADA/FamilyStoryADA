@@ -19,6 +19,10 @@ internal protocol RatioRepository {
 internal final class SwiftDataRatioRepository: RatioRepository {
     
     private let swiftDataManager = SwiftDataManager.shared
+    public static let shared = SwiftDataRatioRepository()
+    private init() {
+        
+    }
     
     func fetchAllRatio() -> ([RatioSwiftData], ErrorHandler?) {
         do {

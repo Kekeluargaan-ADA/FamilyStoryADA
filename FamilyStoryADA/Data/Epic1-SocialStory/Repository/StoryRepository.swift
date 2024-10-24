@@ -20,6 +20,10 @@ internal protocol StoryRepository {
 internal final class SwiftDataStoryRepository: StoryRepository {
     
     private let swiftDataManager = SwiftDataManager.shared
+    public static let shared = SwiftDataStoryRepository()
+    private init() {
+        
+    }
     
     func fetchStories() -> ([StorySwiftData], ErrorHandler?) {
         do {

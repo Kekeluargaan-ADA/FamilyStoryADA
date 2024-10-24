@@ -19,6 +19,10 @@ internal protocol PageRepository {
 internal final class SwiftDataPageRepository: PageRepository {
     
     private let swiftDataManager = SwiftDataManager.shared
+    public static let shared = SwiftDataPageRepository()
+    private init() {
+        
+    }
     
     func fetchAllPages() -> ([PageSwiftData], ErrorHandler?) {
         do {
