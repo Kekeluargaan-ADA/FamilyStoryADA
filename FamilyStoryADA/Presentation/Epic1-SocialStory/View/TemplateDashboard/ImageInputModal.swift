@@ -89,6 +89,8 @@ struct ImageInputModal: View {
                     
                     Button(action: {
                         templateViewModel.editNewStory(imageName: viewModel.saveImage())
+                        templateViewModel.isImageInputModalPresented = false
+                        templateViewModel.isPagePreviewModalPresented = false
                         dismiss()
                     }) {
                         Text("Lanjut")
@@ -146,7 +148,7 @@ struct ChangePictureButton: View {
             .padding(.bottom, 20)
             
             // NavigationLink for CameraView
-            NavigationLink(destination: CameraView().environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
+            NavigationLink(destination: CameraView.shared.environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
             }
             .onDisappear {
                 if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
@@ -166,7 +168,7 @@ struct ChangePictureButton: View {
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView(selectedImage: $viewModel.savedImage, showCropView: $viewModel.showCropView)
+            destination: CropImageView(croppingStyle: .portrait)
                 .environmentObject(viewModel),
             isActive: $viewModel.showCropView,
             label: {
