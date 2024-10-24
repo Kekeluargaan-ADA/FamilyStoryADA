@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct TemplateCollectionView: View {
-    @StateObject private var viewModel = TemplateViewModel(templateUsecase: JSONTemplateUsecase())
+    @StateObject private var viewModel = TemplateViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
-    @State private var isModalPresented = false
-    @State private var selectedTemplate: TemplateEntity?
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     

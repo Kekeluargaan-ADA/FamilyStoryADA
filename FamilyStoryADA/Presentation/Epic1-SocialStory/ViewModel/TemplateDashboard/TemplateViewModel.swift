@@ -11,10 +11,13 @@ class TemplateViewModel: ObservableObject {
     @Published var templates: [TemplateEntity] = []
     @Published var filteredTemplates: [TemplateEntity] = []
     
+    @Published private var isModalPresented = false
+    @Published private var selectedTemplate: TemplateEntity?
+    
     private let templateUsecase: TemplateUsecase
     
-    init(templateUsecase: TemplateUsecase) {
-        self.templateUsecase = templateUsecase
+    init() {
+        self.templateUsecase = JSONTemplateUsecase()
         fetchTemplates()
     }
     
