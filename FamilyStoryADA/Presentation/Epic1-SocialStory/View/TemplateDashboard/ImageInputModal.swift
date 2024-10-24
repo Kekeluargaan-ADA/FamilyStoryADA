@@ -166,7 +166,7 @@ struct ChangePictureButton: View {
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView(selectedImage: $viewModel.savedImage, showCropView: $viewModel.showCropView)
+            destination: CropImageView()
                 .environmentObject(viewModel),
             isActive: $viewModel.showCropView,
             label: {

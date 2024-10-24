@@ -78,13 +78,42 @@ struct CustomizationView: View {
                             // TODO: INI PISAH
                             if let page = viewModel.selectedPage {
                                 VStack(alignment: .center, spacing: 19) {
-                                    if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                                    
                                         
                                         ZStack(alignment: .topTrailing) {
-                                            Image(imagePath)
-                                                .resizable()
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                                                
+                                                Image(imagePath)
+                                                    .resizable()
+                                                    .frame(width: 760, height: 468)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                
+                                            } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
+                                                
+                                                Image(uiImage: image)
+                                                    .resizable()
+                                                    .frame(width: 760, height: 468)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
+                                                
+                                                let videoPlayer = AVPlayer(url: url)
+                                                VideoPlayer(player: videoPlayer)
+                                                    .frame(width: 760, height: 468)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    .onAppear() {
+                                                        videoPlayer.play()
+                                                    }
+                                                    .onDisappear() {
+                                                        videoPlayer.pause()
+                                                    }
+                                            } else {
+                                                Button(action: {
+                                                    // TODO: Pop up menu
+                                                    viewModel.isMediaOverlayOpened = true
+                                                }, label: {
+                                                    EmptyImageCustomizationView()
+                                                })
+                                            }
                                             
                                             Menu {
                                                 Button(action: {
@@ -113,95 +142,6 @@ struct CustomizationView: View {
                                                     .foregroundStyle(Color("FSWhite"))
                                                     .padding()
                                             }
-                                        }
-                                    } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
-                                        ZStack(alignment: .topTrailing) {
-                                            Image(uiImage: image)
-                                                .resizable()
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                            
-                                            Menu {
-                                                Button(action: {
-                                                    cameraViewModel.isPhotoCaptured = false
-                                                    cameraViewModel.navigateToCamera = true
-                                                }) {
-                                                    Label("Take Photo", systemImage: "camera")
-                                                }
-                                                
-                                                Button(action: {
-                                                    cameraViewModel.isPhotoCaptured = false
-                                                    cameraViewModel.isImagePickerOpened = true
-                                                }) {
-                                                    Label("Choose Photo", systemImage: "photo")
-                                                }
-                                                
-                                                Button(action: {
-                                                    // TODO: Generate photo view
-                                                    viewModel.isGotoScrapImage = true
-                                                }) {
-                                                    Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
-                                                }
-                                            } label: {
-                                                Image(systemName: "ellipsis")
-                                                    .font(.system(size: 26))
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(Color("FSWhite"))
-                                                    .padding()
-                                            }
-                                        }
-                                        
-                                    } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
-                                        
-                                        let videoPlayer = AVPlayer(url: url)
-                                        ZStack(alignment: .topTrailing){
-                                            VideoPlayer(player: videoPlayer)
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                .onAppear() {
-                                                    videoPlayer.play()
-                                                }
-                                                .onDisappear() {
-                                                    videoPlayer.pause()
-                                                }
-                                            
-                                            Menu {
-                                                Button(action: {
-                                                    cameraViewModel.isPhotoCaptured = false
-                                                    cameraViewModel.navigateToCamera = true
-                                                }) {
-                                                    Label("Take Photo", systemImage: "camera")
-                                                }
-                                                
-                                                Button(action: {
-                                                    cameraViewModel.isPhotoCaptured = false
-                                                    cameraViewModel.isImagePickerOpened = true
-                                                }) {
-                                                    Label("Choose Photo", systemImage: "photo")
-                                                }
-                                                
-                                                Button(action: {
-                                                    // TODO: Generate photo view
-                                                    viewModel.isGotoScrapImage = true
-                                                }) {
-                                                    Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
-                                                }
-                                            } label: {
-                                                Image(systemName: "ellipsis")
-                                                    .font(.system(size: 26))
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(Color("FSWhite"))
-                                                    .padding()
-                                            }
-                                        }
-                                        
-                                    } else {
-                                        Button(action: {
-                                            // TODO: Pop up menu
-                                            viewModel.isMediaOverlayOpened = true
-                                        }, label: {
-                                            EmptyImageCustomizationView()
-                                        })
                                     }
                                     
                                     TextField("Masukkan teks di sini", text: Binding(
@@ -267,8 +207,8 @@ struct CustomizationView: View {
             CameraView()
                 .environmentObject(cameraViewModel)
         }, label: {})
-        .onDisappear {
-            if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+        .onChange(of: cameraViewModel.navigateToCamera) { value in
+            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                 // Show crop view once an image is selected
                 cameraViewModel.showCropView = true
             }
@@ -277,8 +217,8 @@ struct CustomizationView: View {
         NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
             ImagePicker(selectedImage: $cameraViewModel.savedImage, isPhotoCaptured: $cameraViewModel.isPhotoCaptured)
         }, label: {})
-        .onDisappear {
-            if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
+            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                 // Show crop view once an image is selected
                 cameraViewModel.showCropView = true
             }
@@ -289,8 +229,8 @@ struct CustomizationView: View {
         
         // Show the cropping view when image is selected
         NavigationLink(
-            destination: CropImageView(selectedImage: $cameraViewModel.savedImage, showCropView: $cameraViewModel.showCropView)
-                .environmentObject(viewModel),
+            destination: CropImageView()
+                .environmentObject(cameraViewModel),
             isActive: $cameraViewModel.showCropView,
             label: {
                 EmptyView()
@@ -298,11 +238,15 @@ struct CustomizationView: View {
         )
         .onChange(of: cameraViewModel.savedImage) { value in
             
-            
-            if let imageFileName = cameraViewModel.saveImage() {
-                viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
-                
+            if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
+                if currentPage.pagePicture.isEmpty {
+                    viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
+                } else {
+                    viewModel.selectedPage?.pagePicture.first?.componentContent = imageFileName
+                    viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+                }
                 viewModel.updatePage()
+                cameraViewModel.savedImage = nil
             }
         }
     }

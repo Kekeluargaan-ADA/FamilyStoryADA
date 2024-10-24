@@ -9,12 +9,10 @@ import SwiftUI
 
 struct CropImageView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var selectedImage: UIImage?
-    @Binding var showCropView: Bool
     @EnvironmentObject var viewModel: CameraViewModel
     
     var body: some View {
-        if let image = selectedImage {
+        if let image = viewModel.savedImage {
             CropView(image: image, croppingStyle: .default, croppingOptions: .init()) { image in
                 // Handle cropped image here
                 handleCroppedImage(image)
@@ -24,6 +22,7 @@ struct CropImageView: View {
             } didFinishCancelled: { _ in
                 // Handle cancel action
                 handleCancelAction()
+                dismiss()
             }
             .ignoresSafeArea()
         }
@@ -32,19 +31,19 @@ struct CropImageView: View {
     private func handleCroppedImage(_ image: CropView.CroppedImage) {
         // Update the viewModel's saved image after cropping
 //        viewModel.capturedImage = nil
-        viewModel.savedImage = nil
         viewModel.photosPickerItem = nil
         
         viewModel.savedImage = image.image
-        viewModel.isPhotoCaptured = true
+        viewModel.isPhotoCaptured = false
         
         // Dismiss crop view after saving
-        showCropView = false
+        viewModel.showCropView = false
     }
     
     private func handleCancelAction() {
-//        viewModel.capturedImage = nil
+        viewModel.savedImage = nil
         viewModel.photosPickerItem = nil
-        showCropView = false
+        viewModel.isPhotoCaptured = false
+        viewModel.showCropView = false
     }
 }
