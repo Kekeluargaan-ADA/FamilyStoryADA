@@ -75,6 +75,7 @@ struct CustomizationView: View {
                             .padding(.top, 20)
                             .padding(.horizontal, 46)
                             
+                            // TODO: INI PISAH
                             if let page = viewModel.selectedPage {
                                 VStack(alignment: .center, spacing: 19) {
                                     if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {

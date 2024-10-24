@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// TODO: PINDAHIN KE MANAGER KALO LOGIC BUSINESS
+
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
