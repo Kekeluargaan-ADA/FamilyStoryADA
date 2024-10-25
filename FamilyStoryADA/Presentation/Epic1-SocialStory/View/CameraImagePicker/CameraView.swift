@@ -18,13 +18,15 @@ struct CameraView: View {
     private var didCrop: ((CropView.CroppedRect) -> ())?
     private var didCancel: (() -> ())?
     
+    public static var shared = CameraView()
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
                     Color.black.edgesIgnoringSafeArea(.all)
                     
-                    VStack(spacing: 0) {
+                    HStack(spacing: 0) {
                         Button(action: {
                             viewModel.switchFlash()
                         }, label: {
@@ -62,7 +64,7 @@ struct CameraView: View {
                             }
                         }
                         
-                        HStack {
+                        VStack {
 //                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
 //                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
 //                            }

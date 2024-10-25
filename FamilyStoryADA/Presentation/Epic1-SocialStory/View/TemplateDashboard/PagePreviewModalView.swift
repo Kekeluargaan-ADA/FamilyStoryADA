@@ -9,21 +9,19 @@ import SwiftUI
 
 struct PagePreviewModalView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var isImageInputModalPresented = false
-    @Binding var isPagePreviewModalPresented: Bool
-    @Binding var template: TemplateEntity
+    @EnvironmentObject var viewModel: TemplateViewModel
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 VStack {
-                    if isImageInputModalPresented == false {
+                    if viewModel.isImageInputModalPresented == false, let template = viewModel.selectedTemplate {
                         HStack {
                             ZStack {
                                 HStack {
                                     Button(action: {
-                                        isPagePreviewModalPresented.toggle()
-                                        isImageInputModalPresented = false
+                                        viewModel.isPagePreviewModalPresented.toggle()
+                                        viewModel.isImageInputModalPresented = false
                                         //presentationMode.wrappedValue.dismiss()
                                     }) {
                                         ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue) // Use fixed height for button
@@ -42,8 +40,8 @@ struct PagePreviewModalView: View {
                     }
                     //                            Spacer().frame(height: 24)
                     
-                    BriefSquareView(heightRatio: 1.0, widthRatio: 1.0, isImageInputModalPresented: $isImageInputModalPresented, isPagePreviewModalPresented: $isPagePreviewModalPresented, template: $template) // Use fixed values
-                    
+                    BriefSquareView(heightRatio: 1.0, widthRatio: 1.0)
+                        .environmentObject(viewModel)
                     //                            Spacer().frame(height: 24)
                     ScrollView {
                         LazyVGrid(
@@ -51,7 +49,7 @@ struct PagePreviewModalView: View {
                             spacing: 8
                         ) {
                             ForEach(1...6, id: \.self) { step in
-                                StepsSquareView(heightRatio: 1.0, widthRatio: 1.0) // Use fixed values
+                                StepsSquareView(heightRatio: 1.0, widthRatio: 1.0)
                             }
                         }
                     }

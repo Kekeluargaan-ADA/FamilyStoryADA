@@ -6,16 +6,27 @@
 //
 import SwiftUI
 
+enum CroppingStyleType {
+    case portrait, landscape
+}
 
 struct CropImageView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var selectedImage: UIImage?
-    @Binding var showCropView: Bool
     @EnvironmentObject var viewModel: CameraViewModel
+    var croppingStyle: CroppingStyleType
+    
+    var style: CroppedPhotosPickerOptions {
+        switch croppingStyle {
+        case .portrait:
+            return .init(customAspectRatio: CGSize(width: 3, height: 4))
+        case .landscape:
+            return .init(customAspectRatio: CGSize(width: 16, height: 9))
+        }
+    }
     
     var body: some View {
-        if let image = selectedImage {
-            CropView(image: image, croppingStyle: .default, croppingOptions: .init()) { image in
+        if let image = viewModel.savedImage {
+            CropView(image: image, croppingStyle: .default, croppingOptions: style) { image in
                 // Handle cropped image here
                 handleCroppedImage(image)
                 dismiss()
@@ -24,6 +35,7 @@ struct CropImageView: View {
             } didFinishCancelled: { _ in
                 // Handle cancel action
                 handleCancelAction()
+                dismiss()
             }
             .ignoresSafeArea()
         }
@@ -32,19 +44,19 @@ struct CropImageView: View {
     private func handleCroppedImage(_ image: CropView.CroppedImage) {
         // Update the viewModel's saved image after cropping
 //        viewModel.capturedImage = nil
-        viewModel.savedImage = nil
         viewModel.photosPickerItem = nil
         
         viewModel.savedImage = image.image
-        viewModel.isPhotoCaptured = true
+        viewModel.isPhotoCaptured = false
         
         // Dismiss crop view after saving
-        showCropView = false
+        viewModel.showCropView = false
     }
     
     private func handleCancelAction() {
-//        viewModel.capturedImage = nil
+        viewModel.savedImage = nil
         viewModel.photosPickerItem = nil
-        showCropView = false
+        viewModel.isPhotoCaptured = false
+        viewModel.showCropView = false
     }
 }

@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// TODO: PINDAHIN KE MANAGER KALO LOGIC BUSINESS
+
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
@@ -24,9 +26,9 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     
     init(story: StoryEntity) {
         self.story = story
-        self.pageUsecase = ImplementedPageUsecase()
-        self.storyUsecase = ImplementedStoryUsecase()
-        self.componentUsecase = ImplementedComponentUsecase()
+        self.pageUsecase = ImplementedPageUsecase.shared
+        self.storyUsecase = ImplementedStoryUsecase.shared
+        self.componentUsecase = ImplementedComponentUsecase.shared
         
         self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
         

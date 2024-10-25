@@ -19,6 +19,11 @@ internal protocol ComponentRepository {
 internal final class SwiftDataComponentRepository: ComponentRepository {
     private let swiftDataManager = SwiftDataManager.shared
     
+    public static let shared = SwiftDataComponentRepository()
+    private init() {
+        
+    }
+    
     func fetchAllComponents() -> ([StoryComponentSwiftData], ErrorHandler?) {
         do {
             let components = try swiftDataManager.context.fetch(FetchDescriptor<StoryComponentSwiftData>())
