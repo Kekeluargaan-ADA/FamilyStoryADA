@@ -22,181 +22,188 @@ struct CustomizationView: View {
     
     var body: some View {
         NavigationView {
-            HStack {
-                VStack(spacing: 32) {
-                    Button(action: {
-                        viewModel.updatePage()
-                        dismiss()
-                    }, label: {
-                        CustomizedBackButton()
-                    })
-                    DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
-                }
-                
-                ZStack {
-                    ZStack(alignment: .top) {
-                        Image("CustomizationBackground")
-                        ZStack (alignment: .center) {
-                            RoundedRectangle(cornerRadius: 28)
-                                .fill(Color("FSYellow"))
-                            Text(viewModel.story.storyName)
-                                .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                                .fontWeight(.medium)
-                                .foregroundStyle(Color("FSBlack"))
+            GeometryReader{ geometry in
+                ZStack{
+                    HStack {
+                        VStack(spacing: 32) {
+                            Button(action: {
+                                viewModel.updatePage()
+                                dismiss()
+                            }, label: {
+                                CustomizedBackButton()
+                            })
+                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                         }
-                        .frame(width: 268, height: 45)
-                        VStack(spacing: 48) {
-                            HStack {
-                                if viewModel.selectedPage != nil {
-                                    Button(action: {
-                                        viewModel.deletePage()
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
-                                    })
+                        
+                        ZStack {
+                            ZStack(alignment: .top) {
+                                Image("CustomizationBackground")
+                                ZStack (alignment: .center) {
+                                    RoundedRectangle(cornerRadius: 28)
+                                        .fill(Color("FSYellow"))
+                                    Text(viewModel.story.storyName)
+                                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(Color("FSBlack"))
                                 }
-                                
-                                Spacer()
-                                //TODO: Disable when page is null
-                                HStack (spacing: 12) {
-                                    NavigationLink(destination: {
-                                        PlayStoryView(story: viewModel.story)
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
-                                    })
-                                    //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
-                                    
-                                    NavigationLink(destination: {
-                                        MiniQuizView(story: viewModel.story)
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
-                                    })
-                                }
-                            }
-                            .padding(.top, 20)
-                            .padding(.horizontal, 46)
-                            
-                            // TODO: INI PISAH
-                            if let page = viewModel.selectedPage {
-                                VStack(alignment: .center, spacing: 19) {
-                                    
-                                    
-                                    ZStack(alignment: .topTrailing) {
-                                        if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                            
-                                            Image(imagePath)
-                                                .resizable()
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                            
-                                        } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
-                                            
-                                            Image(uiImage: image)
-                                                .resizable()
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
-                                            
-                                            let videoPlayer = AVPlayer(url: url)
-                                            VideoPlayer(player: videoPlayer)
-                                                .frame(width: 760, height: 468)
-                                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                .onAppear() {
-                                                    videoPlayer.play()
-                                                }
-                                                .onDisappear() {
-                                                    videoPlayer.pause()
-                                                }
-                                        } else {
+                                .frame(width: 268, height: 45)
+                                VStack(spacing: 48) {
+                                    HStack {
+                                        if viewModel.selectedPage != nil {
                                             Button(action: {
-                                                // TODO: Pop up menu
-                                                viewModel.isMediaOverlayOpened = true
+                                                viewModel.deletePage()
                                             }, label: {
-                                                EmptyImageCustomizationView()
+                                                ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
                                             })
                                         }
                                         
-                                        Menu {
-                                            Button(action: {
-                                                cameraViewModel.isPhotoCaptured = false
-                                                cameraViewModel.navigateToCamera = true
-                                            }) {
-                                                Label("Take Photo", systemImage: "camera")
-                                            }
+                                        Spacer()
+                                        //TODO: Disable when page is null
+                                        HStack (spacing: 12) {
+                                            NavigationLink(destination: {
+                                                PlayStoryView(story: viewModel.story)
+                                            }, label: {
+                                                ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
+                                            })
+                                            //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
                                             
-                                            Button(action: {
-                                                cameraViewModel.isPhotoCaptured = false
-                                                cameraViewModel.isImagePickerOpened = true
-                                            }) {
-                                                Label("Choose Photo", systemImage: "photo")
-                                            }
-                                            
-                                            Button(action: {
-                                                viewModel.isGotoScrapImage = true
-                                            }) {
-                                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
-                                            }
-                                        } label: {
-                                            Image(systemName: "ellipsis")
-                                                .font(.system(size: 26))
-                                                .fontWeight(.bold)
-                                                .foregroundStyle(Color("FSWhite"))
-                                                .padding()
+                                            NavigationLink(destination: {
+                                                MiniQuizView(story: viewModel.story)
+                                            }, label: {
+                                                ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
+                                            })
                                         }
                                     }
+                                    .padding(.top, 20)
+                                    .padding(.horizontal, 46)
                                     
-                                    TextField("Masukkan teks di sini", text: Binding(
-                                        get: { currentText },
-                                        set: { newValue in
-                                            currentText = newValue
-                                            resetTypingTimer()
+                                    // TODO: INI PISAH
+                                    if let page = viewModel.selectedPage {
+                                        VStack(alignment: .center, spacing: 19) {
+                                            
+                                            
+                                            ZStack(alignment: .topTrailing) {
+                                                if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                                                    
+                                                    Image(imagePath)
+                                                        .resizable()
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    
+                                                } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
+                                                    
+                                                    Image(uiImage: image)
+                                                        .resizable()
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
+                                                    
+                                                    let videoPlayer = AVPlayer(url: url)
+                                                    VideoPlayer(player: videoPlayer)
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                        .onAppear() {
+                                                            videoPlayer.play()
+                                                        }
+                                                        .onDisappear() {
+                                                            videoPlayer.pause()
+                                                        }
+                                                } else {
+                                                    Button(action: {
+                                                        // TODO: Pop up menu
+                                                        viewModel.isMediaOverlayOpened = true
+                                                    }, label: {
+                                                        EmptyImageCustomizationView()
+                                                    })
+                                                }
+                                                
+                                                Menu {
+                                                    Button(action: {
+                                                        cameraViewModel.isPhotoCaptured = false
+                                                        cameraViewModel.navigateToCamera = true
+                                                    }) {
+                                                        Label("Take Photo", systemImage: "camera")
+                                                    }
+                                                    
+                                                    Button(action: {
+                                                        cameraViewModel.isPhotoCaptured = false
+                                                        cameraViewModel.isImagePickerOpened = true
+                                                    }) {
+                                                        Label("Choose Photo", systemImage: "photo")
+                                                    }
+                                                    
+                                                    Button(action: {
+                                                        viewModel.isGotoScrapImage = true
+                                                    }) {
+                                                        Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                                    }
+                                                } label: {
+                                                    Image(systemName: "ellipsis")
+                                                        .font(.system(size: 26))
+                                                        .fontWeight(.bold)
+                                                        .foregroundStyle(Color("FSWhite"))
+                                                        .padding()
+                                                }
+                                            }
+                                            
+                                            TextField("Masukkan teks di sini", text: Binding(
+                                                get: { currentText },
+                                                set: { newValue in
+                                                    currentText = newValue
+                                                    resetTypingTimer()
+                                                }
+                                            ))
+                                            .padding(.horizontal, 19)
+                                            .padding(.vertical, 15)
+                                            .frame(width: 760, height: 117)
+                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(Color("FSBlack"))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .stroke(Color("FSBorderBlue7"), lineWidth: 2)
+                                            )
+                                            .onAppear {
+                                                currentText = page.pageText.first?.componentContent ?? ""
+                                            }
+                                            
                                         }
-                                    ))
-                                    .padding(.horizontal, 19)
-                                    .padding(.vertical, 15)
-                                    .frame(width: 760, height: 117)
-                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color("FSBlack"))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .stroke(Color("FSBorderBlue7"), lineWidth: 2)
-                                    )
-                                    .onAppear {
-                                        currentText = page.pageText.first?.componentContent ?? ""
                                     }
-                                    
                                 }
                             }
                         }
+                        NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+                            MiniQuizView(story: viewModel.story)
+                        }, label: {})
                     }
-                }
-                NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
-                    MiniQuizView(story: viewModel.story)
-                }, label: {})
-            }
-            .padding(.top, 26)
-            .ignoresSafeArea()
-            .background(Color("FSBlue6"))
-            .environmentObject(viewModel)
-            .onChange(of: viewModel.selectedPage) { newSelectedPage in
-                if let newPage = newSelectedPage {
-                    currentText = newPage.pageText.first?.componentContent ?? ""
-                } else {
-                    currentText = ""
-                }
-            }
-            .overlay {
-                if viewModel.isMediaOverlayOpened {
-                    ZStack {
-                        Color("FSBlack").opacity(0.4)
-                        UploadPhotoModalView()
-                        if viewModel.isGotoScrapImage {
-                            ScrappingInitialView()
+                    .padding(.top, 26)
+                    .ignoresSafeArea()
+                    .background(Color("FSBlue6"))
+                    .environmentObject(viewModel)
+                    .onChange(of: viewModel.selectedPage) { newSelectedPage in
+                        if let newPage = newSelectedPage {
+                            currentText = newPage.pageText.first?.componentContent ?? ""
+                        } else {
+                            currentText = ""
                         }
                     }
-                    .ignoresSafeArea()
-                    .environmentObject(viewModel)
-                    .environmentObject(cameraViewModel)
+                    .overlay {
+                        if viewModel.isMediaOverlayOpened {
+                            ZStack {
+                                Color("FSBlack").opacity(0.4)
+                                UploadPhotoModalView()
+                            }
+                            .ignoresSafeArea()
+                            .environmentObject(viewModel)
+                            .environmentObject(cameraViewModel)
+                        }
+                    }
+                    if viewModel.isGotoScrapImage {
+                        ScrappingInitialView()
+                            .background(.black.opacity(0.4))
+                            .environmentObject(viewModel)
+                        
+                    }
                 }
             }
         }
@@ -223,9 +230,9 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
-            ScrappingInitialView()
-        }, label: {})
+//        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
+//            ScrappingInitialView()
+//        }, label: {})
         
         // Show the cropping view when image is selected
         NavigationLink(
