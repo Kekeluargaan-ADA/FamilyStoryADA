@@ -300,7 +300,8 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
+                                                       pageSoundPath: "Sound",
+                                                       pageTextClassification: "Descriptive"
                                                       ),
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Instruction",
@@ -321,7 +322,8 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
+                                                       pageSoundPath: "Sound",
+                                                       pageTextClassification: "Descriptive"
                                                       ),
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Instruction",
@@ -342,7 +344,8 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
+                                                       pageSoundPath: "Sound",
+                                                       pageTextClassification: "Descriptive"
                                                       )
                                          ]))
 }
