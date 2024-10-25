@@ -17,14 +17,16 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     var pagePicture: [UUID]
     var pageVideo: [UUID]
     var pageSoundPath: String
+    var pageTextClassification: String
     
-    init(pageId: UUID, pageType: String, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String) {
+    init(pageId: UUID, pageType: String, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String, pageTextClassification: String) {
         self.pageId = pageId
         self.pageType = pageType
         self.pageText = pageText
         self.pagePicture = pagePicture
         self.pageVideo = pageVideo
         self.pageSoundPath = pageSoundPath
+        self.pageTextClassification = pageTextClassification
     }
     
 //    init (template: PageJSONObject) {
@@ -60,7 +62,8 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
                              pageText: convertToUUIDArray(jsonTemplate: jsonTemplate.pageText),
                              pagePicture: convertToUUIDArray(jsonTemplate: jsonTemplate.pagePicture),
                              pageVideo: convertToUUIDArray(jsonTemplate: jsonTemplate.pageVideo),
-                             pageSoundPath: jsonTemplate.pageSoundPath
+                             pageSoundPath: jsonTemplate.pageSoundPath,
+                             pageTextClassification: "Descriptive"
         )
     }
     
@@ -82,7 +85,8 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
                              pageText: convertToUUIDArray(entities: entity.pageText),
                              pagePicture: convertToUUIDArray(entities: entity.pagePicture),
                              pageVideo: convertToUUIDArray(entities: entity.pageVideo),
-                             pageSoundPath: entity.pageSoundPath
+                             pageSoundPath: entity.pageSoundPath,
+                             pageTextClassification: entity.pageTextClassification
         )
     }
     
@@ -100,7 +104,8 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
                           pageText: convertToEntitiesArray(componentIds: self.pageText, type: .text) as! [TextComponentEntity],
                           pagePicture: convertToEntitiesArray(componentIds: self.pagePicture, type: .picture) as! [PictureComponentEntity],
                           pageVideo: convertToEntitiesArray(componentIds: self.pageVideo, type: .video) as! [VideoComponentEntity],
-                          pageSoundPath: self.pageSoundPath
+                          pageSoundPath: self.pageSoundPath,
+                          pageTextClassification: self.pageTextClassification
         )
     }
     

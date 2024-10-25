@@ -77,7 +77,8 @@ struct FamilyStoryADATests {
                                  pageVideo: [
                                     
                                  ],
-                                 pageSoundPath: "DummySound.mp4"
+                                 pageSoundPath: "DummySound.mp4",
+                                 pageTextClassification: "Instructive"
         )
         _ = repo.addNewPage(page: page)
         

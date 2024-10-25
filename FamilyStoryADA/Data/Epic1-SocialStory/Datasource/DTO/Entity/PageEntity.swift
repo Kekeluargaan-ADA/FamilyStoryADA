@@ -14,6 +14,7 @@ public class PageEntity: IEntityAble, Equatable {
     var pagePicture: [PictureComponentEntity]
     var pageVideo: [VideoComponentEntity]
     var pageSoundPath: String
+    var pageTextClassification: String
     
     var componentTextWordCount: Int {
         var wordCount = 0
@@ -23,13 +24,14 @@ public class PageEntity: IEntityAble, Equatable {
         return wordCount
     }
     
-    init(pageId: UUID, pageType: String, pageText: [TextComponentEntity], pagePicture: [PictureComponentEntity], pageVideo: [VideoComponentEntity], pageSoundPath: String) {
+    init(pageId: UUID, pageType: String, pageText: [TextComponentEntity], pagePicture: [PictureComponentEntity], pageVideo: [VideoComponentEntity], pageSoundPath: String, pageTextClassification: String) {
         self.pageId = pageId
         self.pageType = pageType
         self.pageText = pageText
         self.pagePicture = pagePicture
         self.pageVideo = pageVideo
         self.pageSoundPath = pageSoundPath
+        self.pageTextClassification = pageTextClassification
     }
     
     public static func == (lhs: PageEntity, rhs: PageEntity) -> Bool {
