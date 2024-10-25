@@ -1,3 +1,4 @@
+
 //
 //  ScrappingInitialView.swift
 //  FamilyStoryADA
@@ -31,7 +32,15 @@ struct ScrappingInitialView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
+                                        
+                                        Button(action: {
+                                            viewModel.isGotoScrapImage = false
+                                            //presentationMode.wrappedValue.dismiss()
+                                        }) {
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                        }
+                                        
+                                        
                                         Spacer()
                                     }
                                     Text("Cari Foto")
