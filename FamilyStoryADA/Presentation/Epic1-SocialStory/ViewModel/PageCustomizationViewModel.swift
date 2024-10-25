@@ -42,7 +42,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                                  pageText: [],
                                  pagePicture: [],
                                  pageVideo: [],
-                                 pageSoundPath: ""
+                                 pageSoundPath: "",
+                                 pageTextClassification: ""
         )
         
         let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
@@ -162,8 +163,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                 if componentUsecase.addNewComponent(component: text) != nil {
                     page.pageText = []
                     page.pageText.append(text)
-                    //TODO: Update id in page
-                    
+                    // TODO: Update page.pageTextClassification
+                    page.pageTextClassification = "Instructive"
                     _ = pageUsecase.editPage(page: page)
                 }
             }
@@ -182,7 +183,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
-                    //TODO: Update id in page
+                    
                     _ = pageUsecase.editPage(page: page)
                 }
             }
