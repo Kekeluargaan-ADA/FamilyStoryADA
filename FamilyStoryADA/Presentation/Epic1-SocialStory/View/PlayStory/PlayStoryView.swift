@@ -24,26 +24,29 @@ struct PlayStoryView: View {
                 let widthRatio = ratios.widthRatio
                 
                 VStack {
-                    Spacer()
                     PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        dismiss()
+                        playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
                     })
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
-                    Spacer().frame(height: 21 * heightRatio)
+                    .padding(.bottom, 21 * heightRatio)
+                    
                     ZStack {
                         //Content
                         ZStack {
-                            
                             if let image = playStoryViewModel.selectedPage?.pagePicture.first {
                                 if image.componentCategory == "AssetPicture" {
                                     Image(image.componentContent)
+                                        .resizable()
+                                        .scaledToFit()
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                 } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
                                     Image(uiImage: imageAppStorage)
+                                        .resizable()
+                                        .scaledToFit()
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }else {
