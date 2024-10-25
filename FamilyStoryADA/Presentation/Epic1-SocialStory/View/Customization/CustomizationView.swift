@@ -307,8 +307,7 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound",
-                                                       pageTextClassification: "Descriptive"
+                                                       pageSoundPath: "Sound"
                                                       ),
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Instruction",
@@ -329,8 +328,7 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound",
-                                                       pageTextClassification: "Descriptive"
+                                                       pageSoundPath: "Sound"
                                                       ),
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Instruction",
@@ -351,8 +349,7 @@ struct CustomizationView: View {
                                                                                componentRotation: nil
                                                                               )
                                                        ], pageVideo: [],
-                                                       pageSoundPath: "Sound",
-                                                       pageTextClassification: "Descriptive"
+                                                       pageSoundPath: "Sound"
                                                       )
                                          ]))
 }
