@@ -22,54 +22,29 @@ struct CustomizationView: View {
     
     var body: some View {
         NavigationView {
-            HStack {
-                VStack(spacing: 32) {
-                    Button(action: {
-                        viewModel.updatePage()
-                        dismiss()
-                    }, label: {
-                        CustomizedBackButton()
-                    })
-                    DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
-                }
-                
-                ZStack {
-                    ZStack(alignment: .top) {
-                        Image("CustomizationBackground")
-                        ZStack (alignment: .center) {
-                            RoundedRectangle(cornerRadius: 28)
-                                .fill(Color("FSYellow"))
-                            Text(viewModel.story.storyName)
-                                .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                                .fontWeight(.medium)
-                                .foregroundStyle(Color("FSBlack"))
+            GeometryReader{ geometry in
+                ZStack{
+                    HStack {
+                        VStack(spacing: 32) {
+                            Button(action: {
+                                viewModel.updatePage()
+                                dismiss()
+                            }, label: {
+                                CustomizedBackButton()
+                            })
+                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                         }
-                        .frame(width: 268, height: 45)
-                        VStack(spacing: 48) {
-                            HStack {
-                                if viewModel.selectedPage != nil {
-                                    Button(action: {
-                                        viewModel.deletePage()
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
-                                    })
-                                }
-                                
-                                Spacer()
-                                //TODO: Disable when page is null
-                                HStack (spacing: 12) {
-                                    NavigationLink(destination: {
-                                        PlayStoryView(story: viewModel.story)
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
-                                    })
-                                    //                                .disabled(!viewModel.draggedPages.isEmpty) // MARK: Not working
-                                    
-                                    NavigationLink(destination: {
-                                        MiniQuizView(story: viewModel.story)
-                                    }, label: {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
-                                    })
+                        
+                        ZStack {
+                            ZStack(alignment: .top) {
+                                Image("CustomizationBackground")
+                                ZStack (alignment: .center) {
+                                    RoundedRectangle(cornerRadius: 28)
+                                        .fill(Color("FSYellow"))
+                                    Text(viewModel.story.storyName)
+                                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(Color("FSBlack"))
                                 }
                             }
                             .padding(.top, 20)
@@ -135,12 +110,19 @@ struct CustomizationView: View {
                                                 }) {
                                                     Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
                                                 }
-                                            } label: {
-                                                Image(systemName: "ellipsis")
-                                                    .font(.system(size: 26))
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(Color("FSWhite"))
-                                                    .padding()
+                                            ))
+                                            .padding(.horizontal, 19)
+                                            .padding(.vertical, 15)
+                                            .frame(width: 760, height: 117)
+                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(Color("FSBlack"))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .stroke(Color("FSBorderBlue7"), lineWidth: 2)
+                                            )
+                                            .onAppear {
+                                                currentText = page.pageText.first?.componentContent ?? ""
                                             }
                                     }
                                     
@@ -164,40 +146,69 @@ struct CustomizationView: View {
                                     .onAppear {
                                         currentText = page.pageText.first?.componentContent ?? ""
                                     }
-                                    
                                 }
                             }
+                            NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+                                MiniQuizView(story: viewModel.story)
+                            }, label: {})
                         }
                     }
-                }
-                NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
-                    MiniQuizView(story: viewModel.story)
-                }, label: {})
-            }
-            .padding(.top, 26)
-            .ignoresSafeArea()
-            .background(Color("FSBlue6"))
-            .environmentObject(viewModel)
-            .onChange(of: viewModel.selectedPage) { newSelectedPage in
-                if let newPage = newSelectedPage {
-                    currentText = newPage.pageText.first?.componentContent ?? ""
-                } else {
-                    currentText = ""
-                }
-            }
-            .overlay {
-                if viewModel.isMediaOverlayOpened {
-                    ZStack {
-                        Color("FSBlack").opacity(0.4)
-                        UploadPhotoModalView()
-                        if viewModel.isGotoScrapImage {
-                            ScrappingInitialView()
-                        }
-                    }
+                    .padding(.top, 26)
                     .ignoresSafeArea()
+                    .background(Color("FSBlue6"))
                     .environmentObject(viewModel)
-                    .environmentObject(cameraViewModel)
+                    .onChange(of: viewModel.selectedPage) { newSelectedPage in
+                        if let newPage = newSelectedPage {
+                            currentText = newPage.pageText.first?.componentContent ?? ""
+                        } else {
+                            currentText = ""
+                        }
+                    }
+                    .overlay {
+                        if viewModel.isMediaOverlayOpened {
+                            ZStack {
+                                Color("FSBlack").opacity(0.4)
+                                UploadPhotoModalView()
+                            }
+                            .ignoresSafeArea()
+                            .environmentObject(viewModel)
+                            .environmentObject(cameraViewModel)
+                        }
+                    }
+                    if viewModel.isGotoScrapImage {
+                        ScrappingInitialView()
+                            .frame(width: geometry.size.width,height: geometry.size.height)
+                            .background(.black.opacity(0.4))
+                    }
                 }
+                .navigationViewStyle(.stack)
+                .navigationBarBackButtonHidden()
+                
+//                NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
+//                    MiniQuizView(story: viewModel.story)
+//                }, label: {})
+                
+                NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
+                    CameraView()
+                        .environmentObject(cameraViewModel)
+                }, label: {})
+                .onDisappear {
+                    if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                        // Show crop view once an image is selected
+                        cameraViewModel.showCropView = true
+                    }
+                }
+                
+                NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
+                    ImagePicker(selectedImage: $cameraViewModel.savedImage, isPhotoCaptured: $cameraViewModel.isPhotoCaptured)
+                }, label: {})
+                .onDisappear {
+                    if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                        // Show crop view once an image is selected
+                        cameraViewModel.showCropView = true
+                    }
+                }
+
             }
         }
         .navigationViewStyle(.stack)
@@ -247,6 +258,7 @@ struct CustomizationView: View {
                 }
                 viewModel.updatePage()
                 cameraViewModel.savedImage = nil
+
             }
         }
     }
