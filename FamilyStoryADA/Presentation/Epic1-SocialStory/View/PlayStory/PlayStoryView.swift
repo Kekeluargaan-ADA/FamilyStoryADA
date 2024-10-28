@@ -56,20 +56,23 @@ struct PlayStoryView: View {
                                 }
                             } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 
-                                //Video
-                                let videoPlayer = AVPlayer(url: url)
-                                
-                                VideoPlayer(player: videoPlayer)
+                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .onAppear() {
                                         
-                                        videoPlayer.play()
-                                        
+                                        playStoryViewModel.setupPlayer(url: url)
                                     }
                                     .onDisappear() {
-                                        videoPlayer.pause()
+                                        playStoryViewModel.videoPlayer.pause()
+                                        playStoryViewModel.removePlayerObserver()
                                     }
+                                    .onChange(of: url) {
+                                        playStoryViewModel.removePlayerObserver()
+                                        playStoryViewModel.setupPlayer(url: url)
+                                    }
+                                    
+                                
                             } else {
                                 RoundedRectangle(cornerRadius: 12)
                                     .foregroundStyle(Color("FSWhite"))
