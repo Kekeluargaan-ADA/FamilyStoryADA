@@ -81,6 +81,7 @@ struct MiniQuizView: View {
                 Color("FSYellow1")
                 MiniQuizModalView()
             }
+            .onAppear(perform: {textToSpeechHelper.stopSpeaking()})
                 .presentationDetents([.height(700)])
         })
         .onChange(of: viewModel.isDismissed) { value in
