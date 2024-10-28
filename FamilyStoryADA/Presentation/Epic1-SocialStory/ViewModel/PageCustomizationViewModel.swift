@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 // TODO: PINDAHIN KE MANAGER KALO LOGIC BUSINESS
 
@@ -19,6 +20,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var isGotoCameraView: Bool = false
     @Published var isGotoImagePicker: Bool = false
     @Published var isGotoScrapImage: Bool = false
+    @Published var videoPlayer: AVPlayer = AVPlayer()
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
