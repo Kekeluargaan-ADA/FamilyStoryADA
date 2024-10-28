@@ -16,6 +16,8 @@ struct CustomizationView: View {
     @State var currentText: String = ""
     @State private var typingTimer: Timer? = nil
     
+    @StateObject private var keyboardHelper = KeyboardHelper()
+    
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story))
     }
@@ -84,24 +86,68 @@ struct CustomizationView: View {
                                             
                                             ZStack(alignment: .topTrailing) {
                                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                                    
-                                                    Image(imagePath)
-                                                        .resizable()
-                                                        .frame(width: 760, height: 468)
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                    
+                                                                                                        
+                                                    if keyboardHelper.isKeyboardShown {
+                                                        Image(imagePath)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                    } else {
+                                                        Image(imagePath)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    }
+
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                                                     
-                                                    Image(uiImage: image)
-                                                        .resizable()
-                                                        .frame(width: 760, height: 468)
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    if keyboardHelper.isKeyboardShown {
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                    } else {
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    }
+                                                    
                                                 } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                                                     
+                                                    let videoPlayer = AVPlayer(url: url)
                                                     
-                                                    CustomVideoPlayerView(player: viewModel.videoPlayer)
+                                                    if keyboardHelper.isKeyboardShown {
+                                                      CustomVideoPlayerView(player: viewModel.videoPlayer)
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                      .mask(Rectangle().padding(.top, 390))
+                                                        .onAppear() {
+                                                            
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                            // Loop video when it reaches the end
+                                                            
+                                                        }
+                                                        .onDisappear() {
+                                                            viewModel.videoPlayer.pause()
+                                                        }
+                                                        .onChange(of: url) {
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                        }
+                                                        .onTapGesture() {
+                                                            viewModel.videoPlayer.seek(to: .zero)
+                                                            viewModel.videoPlayer.play()
+                                                        }
+                                                    } else {
+                                                        CustomVideoPlayerView(player: viewModel.videoPlayer)
                                                         .frame(width: 760, height: 468)
                                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                                         .onAppear() {
@@ -122,6 +168,7 @@ struct CustomizationView: View {
                                                             viewModel.videoPlayer.seek(to: .zero)
                                                             viewModel.videoPlayer.play()
                                                         }
+                                                    }
                                                 } else {
                                                     Button(action: {
                                                         // TODO: Pop up menu
@@ -194,6 +241,7 @@ struct CustomizationView: View {
                                             }
                                             
                                         }
+                                        .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
                                     }
                                 }
                             }
