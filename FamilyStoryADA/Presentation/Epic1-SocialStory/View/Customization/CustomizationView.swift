@@ -149,7 +149,19 @@ struct CustomizationView: View {
                                             TextField("Masukkan teks di sini", text: Binding(
                                                 get: { currentText },
                                                 set: { newValue in
-                                                    currentText = newValue
+                                                    // Split the input text into words
+                                                    let words = newValue.split(separator: " ")
+
+                                                    // Check if the word count exceeds 15
+                                                    if words.count > 15 {
+                                                        // Limit to the first 15 words and join them back to a string
+                                                        currentText = words.prefix(15).joined(separator: " ")
+                                                    } else {
+                                                        // Update currentText as usual if the word count is within the limit
+                                                        currentText = newValue
+                                                    }
+
+                                                    // Reset the typing timer
                                                     resetTypingTimer()
                                                 }
                                             ))
