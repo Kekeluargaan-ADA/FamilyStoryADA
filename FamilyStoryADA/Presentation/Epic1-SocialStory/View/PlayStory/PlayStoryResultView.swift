@@ -10,7 +10,6 @@ import SwiftUI
 struct PlayStoryResultView: View {
     @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
     @Environment(\.dismiss) var dismiss
-    @State var isMiniQuizPresented: Bool = false
     private let textToSpeechHelper = TextToSpeechHelper()
     
     var body: some View {
@@ -51,20 +50,30 @@ struct PlayStoryResultView: View {
                         ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
                     })
                     Button(action: {
-//                        playStoryViewModel.isStoryCompleted = true
-                        isMiniQuizPresented = true
+                        
+                        playStoryViewModel.isStoryGoToMiniQuiz = true
                         textToSpeechHelper.stopSpeaking()
                     }, label: {
                         ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
                     })
                 }
             }
-            NavigationLink(isActive: $isMiniQuizPresented, destination: {
+            NavigationLink(isActive: $playStoryViewModel.isStoryGoToMiniQuiz, destination: {
                 MiniQuizView(story: playStoryViewModel.story)
             }, label: {})
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
+        .onChange(of: playStoryViewModel.isStoryCompleted) { value in
+            if value {
+                dismiss()
+            }
+        }
+        .onChange(of: playStoryViewModel.isStoryGoToMiniQuiz) { value in
+            if !value {
+                playStoryViewModel.isStoryCompleted = true
+            }
+        }
     }
 }
 

@@ -16,6 +16,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
+    @Published var isPlayStoryOpened: Bool = false
     @Published var isMediaOverlayOpened: Bool = false
     @Published var isGotoCameraView: Bool = false
     @Published var isGotoImagePicker: Bool = false
