@@ -11,6 +11,7 @@ import AVKit
 struct PlayStoryView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var playStoryViewModel: PlayStoryViewModel
+    private let textToSpeechHelper = TextToSpeechHelper()
     
     init(story: StoryEntity) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
@@ -28,6 +29,8 @@ struct PlayStoryView: View {
                         playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
+                        textToSpeechHelper.speakIndonesian((playStoryViewModel.selectedPage?.pageText[0].componentContent)!)
+                        print((playStoryViewModel.selectedPage?.pageText[0].componentContent)!)
                     })
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
