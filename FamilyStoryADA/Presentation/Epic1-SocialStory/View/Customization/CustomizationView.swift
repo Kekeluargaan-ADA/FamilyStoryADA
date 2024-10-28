@@ -149,7 +149,19 @@ struct CustomizationView: View {
                                             TextField("Masukkan teks di sini", text: Binding(
                                                 get: { currentText },
                                                 set: { newValue in
-                                                    currentText = newValue
+                                                    // Split the input text into words
+                                                    let words = newValue.split(separator: " ")
+
+                                                    // Check if the word count exceeds 15
+                                                    if words.count > 15 {
+                                                        // Limit to the first 15 words and join them back to a string
+                                                        currentText = words.prefix(15).joined(separator: " ")
+                                                    } else {
+                                                        // Update currentText as usual if the word count is within the limit
+                                                        currentText = newValue
+                                                    }
+
+                                                    // Reset the typing timer
                                                     resetTypingTimer()
                                                 }
                                             ))
@@ -280,76 +292,76 @@ struct CustomizationView: View {
     }
 }
 
-#Preview {
-    CustomizationView(story: StoryEntity(storyId: UUID(),
-                                         storyName: "ABC",
-                                         storyCoverImagePath: "DummyImage",
-                                         storyLastRead: Date(),
-                                         templateId: UUID(),
-                                         templateCategory: "Hygiene",
-                                         pages: [
-                                            PageEntity(pageId: UUID(),
-                                                       pageType: "Opening",
-                                                       pageText: [
-                                                        TextComponentEntity(componentId: UUID(),
-                                                                            componentContent: "Dummy Text",
-                                                                            componentCategory: "Text",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
-                                                       ], pagePicture: [
-                                                        PictureComponentEntity(componentId: UUID(),
-                                                                               componentContent: "DummyImage",
-                                                                               componentCategory: "AssetPicture",
-                                                                               componentRatio: nil,
-                                                                               componentScale: nil,
-                                                                               componentRotation: nil
-                                                                              )
-                                                       ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
-                                                      ),
-                                            PageEntity(pageId: UUID(),
-                                                       pageType: "Instruction",
-                                                       pageText: [
-                                                        TextComponentEntity(componentId: UUID(),
-                                                                            componentContent: "Dummy Text",
-                                                                            componentCategory: "Text",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
-                                                       ], pagePicture: [
-                                                        PictureComponentEntity(componentId: UUID(),
-                                                                               componentContent: "DummyImage",
-                                                                               componentCategory: "AssetPicture",
-                                                                               componentRatio: nil,
-                                                                               componentScale: nil,
-                                                                               componentRotation: nil
-                                                                              )
-                                                       ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
-                                                      ),
-                                            PageEntity(pageId: UUID(),
-                                                       pageType: "Instruction",
-                                                       pageText: [
-                                                        TextComponentEntity(componentId: UUID(),
-                                                                            componentContent: "Dummy Text",
-                                                                            componentCategory: "Text",
-                                                                            componentRatio: nil,
-                                                                            componentScale: nil,
-                                                                            componentRotation: nil
-                                                                           )
-                                                       ], pagePicture: [
-                                                        PictureComponentEntity(componentId: UUID(),
-                                                                               componentContent: "DummyImage",
-                                                                               componentCategory: "AssetPicture",
-                                                                               componentRatio: nil,
-                                                                               componentScale: nil,
-                                                                               componentRotation: nil
-                                                                              )
-                                                       ], pageVideo: [],
-                                                       pageSoundPath: "Sound"
-                                                      )
-                                         ]))
-}
+//#Preview {
+//    CustomizationView(story: StoryEntity(storyId: UUID(),
+//                                         storyName: "ABC",
+//                                         storyCoverImagePath: "DummyImage",
+//                                         storyLastRead: Date(),
+//                                         templateId: UUID(),
+//                                         templateCategory: "Hygiene",
+//                                         pages: [
+//                                            PageEntity(pageId: UUID(),
+//                                                       pageType: "Opening",
+//                                                       pageText: [
+//                                                        TextComponentEntity(componentId: UUID(),
+//                                                                            componentContent: "Dummy Text",
+//                                                                            componentCategory: "Text",
+//                                                                            componentRatio: nil,
+//                                                                            componentScale: nil,
+//                                                                            componentRotation: nil
+//                                                                           )
+//                                                       ], pagePicture: [
+//                                                        PictureComponentEntity(componentId: UUID(),
+//                                                                               componentContent: "DummyImage",
+//                                                                               componentCategory: "AssetPicture",
+//                                                                               componentRatio: nil,
+//                                                                               componentScale: nil,
+//                                                                               componentRotation: nil
+//                                                                              )
+//                                                       ], pageVideo: [],
+//                                                       pageSoundPath: "Sound"
+//                                                      ),
+//                                            PageEntity(pageId: UUID(),
+//                                                       pageType: "Instruction",
+//                                                       pageText: [
+//                                                        TextComponentEntity(componentId: UUID(),
+//                                                                            componentContent: "Dummy Text",
+//                                                                            componentCategory: "Text",
+//                                                                            componentRatio: nil,
+//                                                                            componentScale: nil,
+//                                                                            componentRotation: nil
+//                                                                           )
+//                                                       ], pagePicture: [
+//                                                        PictureComponentEntity(componentId: UUID(),
+//                                                                               componentContent: "DummyImage",
+//                                                                               componentCategory: "AssetPicture",
+//                                                                               componentRatio: nil,
+//                                                                               componentScale: nil,
+//                                                                               componentRotation: nil
+//                                                                              )
+//                                                       ], pageVideo: [],
+//                                                       pageSoundPath: "Sound"
+//                                                      ),
+//                                            PageEntity(pageId: UUID(),
+//                                                       pageType: "Instruction",
+//                                                       pageText: [
+//                                                        TextComponentEntity(componentId: UUID(),
+//                                                                            componentContent: "Dummy Text",
+//                                                                            componentCategory: "Text",
+//                                                                            componentRatio: nil,
+//                                                                            componentScale: nil,
+//                                                                            componentRotation: nil
+//                                                                           )
+//                                                       ], pagePicture: [
+//                                                        PictureComponentEntity(componentId: UUID(),
+//                                                                               componentContent: "DummyImage",
+//                                                                               componentCategory: "AssetPicture",
+//                                                                               componentRatio: nil,
+//                                                                               componentScale: nil,
+//                                                                               componentRotation: nil
+//                                                                              )
+//                                                       ], pageVideo: [],
+//                                                       pageSoundPath: "Sound"
+//                                                      )
+//                                         ]))
+//}
