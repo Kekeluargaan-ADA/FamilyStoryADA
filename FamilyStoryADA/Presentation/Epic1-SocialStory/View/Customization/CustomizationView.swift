@@ -16,6 +16,8 @@ struct CustomizationView: View {
     @State var currentText: String = ""
     @State private var typingTimer: Timer? = nil
     
+    @StateObject private var keyboardHelper = KeyboardHelper()
+    
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: PageCustomizationViewModel(story: story))
     }
@@ -170,6 +172,7 @@ struct CustomizationView: View {
                                         }
                                     }
                                 }
+                                .offset(y: keyboardHelper.isKeyboardShown ? -352 : 0)
                             }
                         }
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
