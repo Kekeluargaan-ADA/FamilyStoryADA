@@ -88,6 +88,7 @@ struct CustomizationView: View {
                                                     Image(imagePath)
                                                         .resizable()
                                                         .frame(width: 760, height: 468)
+                                                        .aspectRatio(contentMode: .fill)
                                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                                     
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
@@ -95,18 +96,31 @@ struct CustomizationView: View {
                                                     Image(uiImage: image)
                                                         .resizable()
                                                         .frame(width: 760, height: 468)
+                                                        .aspectRatio(contentMode: .fill)
                                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                                 } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                                                     
-                                                    let videoPlayer = AVPlayer(url: url)
-                                                    VideoPlayer(player: videoPlayer)
+                                                    
+                                                    CustomVideoPlayerView(player: viewModel.videoPlayer)
                                                         .frame(width: 760, height: 468)
                                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                                         .onAppear() {
-                                                            videoPlayer.play()
+                                                            
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                            // Loop video when it reaches the end
+                                                            
                                                         }
                                                         .onDisappear() {
-                                                            videoPlayer.pause()
+                                                            viewModel.videoPlayer.pause()
+                                                        }
+                                                        .onChange(of: url) {
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                        }
+                                                        .onTapGesture() {
+                                                            viewModel.videoPlayer.seek(to: .zero)
+                                                            viewModel.videoPlayer.play()
                                                         }
                                                 } else {
                                                     Button(action: {
@@ -151,7 +165,7 @@ struct CustomizationView: View {
                                                 set: { newValue in
                                                     // Split the input text into words
                                                     let words = newValue.split(separator: " ")
-
+                                                    
                                                     // Check if the word count exceeds 15
                                                     if words.count > 15 {
                                                         // Limit to the first 15 words and join them back to a string
@@ -160,7 +174,7 @@ struct CustomizationView: View {
                                                         // Update currentText as usual if the word count is within the limit
                                                         currentText = newValue
                                                     }
-
+                                                    
                                                     // Reset the typing timer
                                                     resetTypingTimer()
                                                 }
@@ -242,9 +256,9 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-//        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
-//            ScrappingInitialView()
-//        }, label: {})
+        //        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
+        //            ScrappingInitialView()
+        //        }, label: {})
         
         // Show the cropping view when image is selected
         NavigationLink(
@@ -365,3 +379,5 @@ struct CustomizationView: View {
 //                                                      )
 //                                         ]))
 //}
+
+
