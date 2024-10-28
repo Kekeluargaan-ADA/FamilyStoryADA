@@ -10,7 +10,8 @@ import SwiftUI
 struct MiniQuizView: View {
     @StateObject var viewModel: MiniQuizViewModel
     @Environment(\.dismiss) var dismiss
-    
+    private let textToSpeechHelper = TextToSpeechHelper()
+    var instruction = "Urutkan kartu di bawah sesuai dengan urutan yang benar."
     init(story: StoryEntity) {
         _viewModel = StateObject(wrappedValue: MiniQuizViewModel(story: story))
     }
@@ -20,10 +21,10 @@ struct MiniQuizView: View {
             Spacer(minLength: 47)
             PlayStoryNavigationView(heightRatio: 1, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                 dismiss()
-            }, onTapAudioButton: {})
+            }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(instruction)})
                 .padding(.horizontal, 46)
             Spacer(minLength: 60)
-            Text("Urutkan kartu di bawah sesuai dengan urutan yang benar.")
+            Text(instruction)
                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                 .fontWeight(.semibold)
                 .foregroundStyle(Color("FSBlack"))
@@ -80,6 +81,7 @@ struct MiniQuizView: View {
                 Color("FSYellow1")
                 MiniQuizModalView()
             }
+            .onAppear(perform: {textToSpeechHelper.stopSpeaking()})
                 .presentationDetents([.height(700)])
         })
         .onChange(of: viewModel.isDismissed) { value in

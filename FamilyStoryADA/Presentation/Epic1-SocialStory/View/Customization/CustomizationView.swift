@@ -90,12 +90,14 @@ struct CustomizationView: View {
                                                     if keyboardHelper.isKeyboardShown {
                                                         Image(imagePath)
                                                             .resizable()
+                                                            .aspectRatio(contentMode: .fill)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                                             .mask(Rectangle().padding(.top, 390))
                                                     } else {
                                                         Image(imagePath)
                                                             .resizable()
+                                                            .aspectRatio(contentMode: .fill)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                                     }
@@ -105,12 +107,14 @@ struct CustomizationView: View {
                                                     if keyboardHelper.isKeyboardShown {
                                                         Image(uiImage: image)
                                                             .resizable()
+                                                            .aspectRatio(contentMode: .fill)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                                             .mask(Rectangle().padding(.top, 390))
                                                     } else {
                                                         Image(uiImage: image)
                                                             .resizable()
+                                                            .aspectRatio(contentMode: .fill)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                                     }
@@ -120,28 +124,51 @@ struct CustomizationView: View {
                                                     let videoPlayer = AVPlayer(url: url)
                                                     
                                                     if keyboardHelper.isKeyboardShown {
-                                                        VideoPlayer(player: videoPlayer)
-                                                            .frame(width: 760, height: 468)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                            .mask(Rectangle().padding(.top, 390))
-                                                            .onAppear() {
-                                                                videoPlayer.play()
-                                                            }
-                                                            .onDisappear() {
-                                                                videoPlayer.pause()
-                                                            }
+                                                      CustomVideoPlayerView(player: viewModel.videoPlayer)
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                      .mask(Rectangle().padding(.top, 390))
+                                                        .onAppear() {
+                                                            
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                            // Loop video when it reaches the end
+                                                            
+                                                        }
+                                                        .onDisappear() {
+                                                            viewModel.videoPlayer.pause()
+                                                        }
+                                                        .onChange(of: url) {
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                        }
+                                                        .onTapGesture() {
+                                                            viewModel.videoPlayer.seek(to: .zero)
+                                                            viewModel.videoPlayer.play()
+                                                        }
                                                     } else {
-                                                        VideoPlayer(player: videoPlayer)
-                                                            .frame(width: 760, height: 468)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                            .onAppear() {
-                                                                videoPlayer.play()
-                                                            }
-                                                            .onDisappear() {
-                                                                videoPlayer.pause()
-                                                            }
+                                                        CustomVideoPlayerView(player: viewModel.videoPlayer)
+                                                        .frame(width: 760, height: 468)
+                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                        .onAppear() {
+                                                            
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                            // Loop video when it reaches the end
+                                                            
+                                                        }
+                                                        .onDisappear() {
+                                                            viewModel.videoPlayer.pause()
+                                                        }
+                                                        .onChange(of: url) {
+                                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                                            viewModel.videoPlayer.play()
+                                                        }
+                                                        .onTapGesture() {
+                                                            viewModel.videoPlayer.seek(to: .zero)
+                                                            viewModel.videoPlayer.play()
+                                                        }
                                                     }
-                                                    
                                                 } else {
                                                     Button(action: {
                                                         // TODO: Pop up menu
@@ -183,7 +210,19 @@ struct CustomizationView: View {
                                             TextField("Masukkan teks di sini", text: Binding(
                                                 get: { currentText },
                                                 set: { newValue in
-                                                    currentText = newValue
+                                                    // Split the input text into words
+                                                    let words = newValue.split(separator: " ")
+                                                    
+                                                    // Check if the word count exceeds 15
+                                                    if words.count > 15 {
+                                                        // Limit to the first 15 words and join them back to a string
+                                                        currentText = words.prefix(15).joined(separator: " ")
+                                                    } else {
+                                                        // Update currentText as usual if the word count is within the limit
+                                                        currentText = newValue
+                                                    }
+                                                    
+                                                    // Reset the typing timer
                                                     resetTypingTimer()
                                                 }
                                             ))
@@ -315,76 +354,76 @@ struct CustomizationView: View {
     }
 }
 
-//#Preview {
-//    CustomizationView(story: StoryEntity(storyId: UUID(),
-//                                         storyName: "ABC",
-//                                         storyCoverImagePath: "DummyImage",
-//                                         storyLastRead: Date(),
-//                                         templateId: UUID(),
-//                                         templateCategory: "Hygiene",
-//                                         pages: [
-//                                            PageEntity(pageId: UUID(),
-//                                                       pageType: "Opening",
-//                                                       pageText: [
-//                                                        TextComponentEntity(componentId: UUID(),
-//                                                                            componentContent: "Dummy Text",
-//                                                                            componentCategory: "Text",
-//                                                                            componentRatio: nil,
-//                                                                            componentScale: nil,
-//                                                                            componentRotation: nil
-//                                                                           )
-//                                                       ], pagePicture: [
-//                                                        PictureComponentEntity(componentId: UUID(),
-//                                                                               componentContent: "DummyImage",
-//                                                                               componentCategory: "AssetPicture",
-//                                                                               componentRatio: nil,
-//                                                                               componentScale: nil,
-//                                                                               componentRotation: nil
-//                                                                              )
-//                                                       ], pageVideo: [],
-//                                                       pageSoundPath: "Sound"
-//                                                      ),
-//                                            PageEntity(pageId: UUID(),
-//                                                       pageType: "Instruction",
-//                                                       pageText: [
-//                                                        TextComponentEntity(componentId: UUID(),
-//                                                                            componentContent: "Dummy Text",
-//                                                                            componentCategory: "Text",
-//                                                                            componentRatio: nil,
-//                                                                            componentScale: nil,
-//                                                                            componentRotation: nil
-//                                                                           )
-//                                                       ], pagePicture: [
-//                                                        PictureComponentEntity(componentId: UUID(),
-//                                                                               componentContent: "DummyImage",
-//                                                                               componentCategory: "AssetPicture",
-//                                                                               componentRatio: nil,
-//                                                                               componentScale: nil,
-//                                                                               componentRotation: nil
-//                                                                              )
-//                                                       ], pageVideo: [],
-//                                                       pageSoundPath: "Sound"
-//                                                      ),
-//                                            PageEntity(pageId: UUID(),
-//                                                       pageType: "Instruction",
-//                                                       pageText: [
-//                                                        TextComponentEntity(componentId: UUID(),
-//                                                                            componentContent: "Dummy Text",
-//                                                                            componentCategory: "Text",
-//                                                                            componentRatio: nil,
-//                                                                            componentScale: nil,
-//                                                                            componentRotation: nil
-//                                                                           )
-//                                                       ], pagePicture: [
-//                                                        PictureComponentEntity(componentId: UUID(),
-//                                                                               componentContent: "DummyImage",
-//                                                                               componentCategory: "AssetPicture",
-//                                                                               componentRatio: nil,
-//                                                                               componentScale: nil,
-//                                                                               componentRotation: nil
-//                                                                              )
-//                                                       ], pageVideo: [],
-//                                                       pageSoundPath: "Sound"
-//                                                      )
-//                                         ]))
-//}
+#Preview {
+    CustomizationView(story: StoryEntity(storyId: UUID(),
+                                         storyName: "ABC",
+                                         storyCoverImagePath: "DummyImage",
+                                         storyLastRead: Date(),
+                                         templateId: UUID(),
+                                         templateCategory: "Hygiene",
+                                         pages: [
+                                            PageEntity(pageId: UUID(),
+                                                       pageType: "Opening",
+                                                       pageText: [
+                                                        TextComponentEntity(componentId: UUID(),
+                                                                            componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
+                                                                            componentRatio: nil,
+                                                                            componentScale: nil,
+                                                                            componentRotation: nil
+                                                                           )
+                                                       ], pagePicture: [
+                                                        PictureComponentEntity(componentId: UUID(),
+                                                                               componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
+                                                       ], pageVideo: [],
+                                                       pageSoundPath: "Sound", pageTextClassification: ""
+                                                      ),
+                                            PageEntity(pageId: UUID(),
+                                                       pageType: "Instruction",
+                                                       pageText: [
+                                                        TextComponentEntity(componentId: UUID(),
+                                                                            componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
+                                                                            componentRatio: nil,
+                                                                            componentScale: nil,
+                                                                            componentRotation: nil
+                                                                           )
+                                                       ], pagePicture: [
+                                                        PictureComponentEntity(componentId: UUID(),
+                                                                               componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
+                                                       ], pageVideo: [],
+                                                       pageSoundPath: "Sound", pageTextClassification: ""
+                                                      ),
+                                            PageEntity(pageId: UUID(),
+                                                       pageType: "Instruction",
+                                                       pageText: [
+                                                        TextComponentEntity(componentId: UUID(),
+                                                                            componentContent: "Dummy Text",
+                                                                            componentCategory: "Text",
+                                                                            componentRatio: nil,
+                                                                            componentScale: nil,
+                                                                            componentRotation: nil
+                                                                           )
+                                                       ], pagePicture: [
+                                                        PictureComponentEntity(componentId: UUID(),
+                                                                               componentContent: "DummyImage",
+                                                                               componentCategory: "AssetPicture",
+                                                                               componentRatio: nil,
+                                                                               componentScale: nil,
+                                                                               componentRotation: nil
+                                                                              )
+                                                       ], pageVideo: [],
+                                                       pageSoundPath: "Sound", pageTextClassification: ""
+                                                      )
+                                         ]))
+}

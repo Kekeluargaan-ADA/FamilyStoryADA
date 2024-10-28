@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 class PlayStoryViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
@@ -13,6 +14,7 @@ class PlayStoryViewModel: Imageable, ObservableObject {
     @Published var currentPageNumber: Int
     @Published var isStoryCompleted: Bool = false
     @Published var isStoryGoToMiniQuiz: Bool = false
+    @Published var videoPlayer: AVPlayer = AVPlayer()
     
     init(story: StoryEntity) {
         self.story = story
@@ -38,6 +40,29 @@ class PlayStoryViewModel: Imageable, ObservableObject {
         }
         currentPageNumber += 1
         selectedPage = self.story.pages[currentPageNumber]
+    }
+    
+    func setupPlayer(url: URL) {
+        self.videoPlayer = AVPlayer(url: url)
+        self.videoPlayer.play()
+        
+        // Add observer to loop the video
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: self.videoPlayer.currentItem,
+            queue: .main
+        ) { _ in
+            self.videoPlayer.seek(to: .zero)
+            self.videoPlayer.play()
+        }
+    }
+
+    func removePlayerObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: self.videoPlayer.currentItem
+        )
     }
     
 }

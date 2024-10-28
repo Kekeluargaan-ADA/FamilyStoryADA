@@ -11,7 +11,8 @@ import AVKit
 struct PlayStoryView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var playStoryViewModel: PlayStoryViewModel
-    
+    private let textToSpeechHelper = TextToSpeechHelper()
+    @State var playStoryIsActive = false
     init(story: StoryEntity) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
     }
@@ -28,6 +29,7 @@ struct PlayStoryView: View {
                         playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
+                        textToSpeechHelper.speakIndonesian((playStoryViewModel.selectedPage?.pageText.first?.componentContent)!)
                     })
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
@@ -56,20 +58,23 @@ struct PlayStoryView: View {
                                 }
                             } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 
-                                //Video
-                                let videoPlayer = AVPlayer(url: url)
-                                
-                                VideoPlayer(player: videoPlayer)
+                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .onAppear() {
                                         
-                                        videoPlayer.play()
-                                        
+                                        playStoryViewModel.setupPlayer(url: url)
                                     }
                                     .onDisappear() {
-                                        videoPlayer.pause()
+                                        playStoryViewModel.videoPlayer.pause()
+                                        playStoryViewModel.removePlayerObserver()
                                     }
+                                    .onChange(of: url) {
+                                        playStoryViewModel.removePlayerObserver()
+                                        playStoryViewModel.setupPlayer(url: url)
+                                    }
+                                    
+                                
                             } else {
                                 RoundedRectangle(cornerRadius: 12)
                                     .foregroundStyle(Color("FSWhite"))
@@ -82,7 +87,9 @@ struct PlayStoryView: View {
                         HStack {
                             if playStoryViewModel.currentPageNumber > 0 {
                                 Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToPreviousPage()
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
                                 })
@@ -92,19 +99,29 @@ struct PlayStoryView: View {
                             Spacer()
                             if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
                                 Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToNextPage()
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
                                 
                                 .padding(.trailing, -32 * heightRatio)
                             } else {
-                                NavigationLink(destination: {
-                                    PlayStoryResultView()
-                                        .environmentObject(playStoryViewModel)
+                                
+                                Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
+//                                    playStoryViewModel.continueToNextPage()
+                                    playStoryIsActive = true
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
+                                
+                                NavigationLink(isActive: $playStoryIsActive,destination: {
+                                    PlayStoryResultView()
+                                        .environmentObject(playStoryViewModel)
+                                }, label: {})
                             }
                         }
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
