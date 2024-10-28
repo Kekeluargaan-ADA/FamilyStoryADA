@@ -107,7 +107,7 @@ struct CameraView: View {
             }
             .onChange(of: viewModel.savedImage) { value in
                 guard value != nil && viewModel.isPhotoCaptured else { return }
-                dismiss()
+                viewModel.navigateToCamera = false
             }
             .navigationBarHidden(true)
         }
