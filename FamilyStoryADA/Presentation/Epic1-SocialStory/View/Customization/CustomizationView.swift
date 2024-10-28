@@ -86,30 +86,62 @@ struct CustomizationView: View {
                                             
                                             ZStack(alignment: .topTrailing) {
                                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                                    
-                                                    Image(imagePath)
-                                                        .resizable()
-                                                        .frame(width: 760, height: 468)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                    
+                                                                                                        
+                                                    if keyboardHelper.isKeyboardShown {
+                                                        Image(imagePath)
+                                                            .resizable()
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                    } else {
+                                                        Image(imagePath)
+                                                            .resizable()
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    }
+
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                                                     
-                                                    Image(uiImage: image)
-                                                        .resizable()
-                                                        .frame(width: 760, height: 468)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    if keyboardHelper.isKeyboardShown {
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                    } else {
+                                                        Image(uiImage: image)
+                                                            .resizable()
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                    }
+                                                    
                                                 } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                                                     
                                                     let videoPlayer = AVPlayer(url: url)
-                                                    VideoPlayer(player: videoPlayer)
-                                                        .frame(width: 760, height: 468)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                        .onAppear() {
-                                                            videoPlayer.play()
-                                                        }
-                                                        .onDisappear() {
-                                                            videoPlayer.pause()
-                                                        }
+                                                    
+                                                    if keyboardHelper.isKeyboardShown {
+                                                        VideoPlayer(player: videoPlayer)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                            .onAppear() {
+                                                                videoPlayer.play()
+                                                            }
+                                                            .onDisappear() {
+                                                                videoPlayer.pause()
+                                                            }
+                                                    } else {
+                                                        VideoPlayer(player: videoPlayer)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .onAppear() {
+                                                                videoPlayer.play()
+                                                            }
+                                                            .onDisappear() {
+                                                                videoPlayer.pause()
+                                                            }
+                                                    }
+                                                    
                                                 } else {
                                                     Button(action: {
                                                         // TODO: Pop up menu
@@ -170,9 +202,9 @@ struct CustomizationView: View {
                                             }
                                             
                                         }
+                                        .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
                                     }
                                 }
-                                .offset(y: keyboardHelper.isKeyboardShown ? -352 : 0)
                             }
                         }
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
@@ -233,9 +265,9 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-//        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
-//            ScrappingInitialView()
-//        }, label: {})
+        //        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
+        //            ScrappingInitialView()
+        //        }, label: {})
         
         // Show the cropping view when image is selected
         NavigationLink(
