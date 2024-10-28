@@ -11,6 +11,7 @@ struct PlayStoryResultView: View {
     @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
     @Environment(\.dismiss) var dismiss
     @State var isMiniQuizPresented: Bool = false
+    private let textToSpeechHelper = TextToSpeechHelper()
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,7 +22,7 @@ struct PlayStoryResultView: View {
             VStack {
                 PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                     playStoryViewModel.isStoryCompleted = true
-                }, onTapAudioButton: {})
+                }, onTapAudioButton: {textToSpeechHelper.speakIndonesian("Apakah kamu ingin bermain susun kartu sekarang?")})
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.top, 46 * heightRatio)
                     .padding(.bottom, 24 * heightRatio)
@@ -52,6 +53,7 @@ struct PlayStoryResultView: View {
                     Button(action: {
 //                        playStoryViewModel.isStoryCompleted = true
                         isMiniQuizPresented = true
+                        textToSpeechHelper.stopSpeaking()
                     }, label: {
                         ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
                     })
