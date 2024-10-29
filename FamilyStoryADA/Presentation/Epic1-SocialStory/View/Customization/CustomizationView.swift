@@ -206,14 +206,13 @@ struct CustomizationView: View {
                                                         .padding()
                                                 }
                                             }
-                                            
-                                            HStack {
+                                            ZStack {
                                                 TextField("Masukkan teks di sini", text: Binding(
                                                     get: { currentText },
                                                     set: { newValue in
                                                         // Split the input text into words
                                                         let words = newValue.split(separator: " ")
-                                                        
+
                                                         // Check if the word count exceeds 15
                                                         if words.count > 15 {
                                                             // Limit to the first 15 words and join them back to a string
@@ -222,7 +221,7 @@ struct CustomizationView: View {
                                                             // Update currentText as usual if the word count is within the limit
                                                             currentText = newValue
                                                         }
-                                                        
+
                                                         // Reset the typing timer
                                                         resetTypingTimer()
                                                     }
@@ -247,7 +246,7 @@ struct CustomizationView: View {
                                                 .overlay(alignment: .bottomTrailing) {
                                                     Button(action: {
                                                         
-                                                    },label:{
+                                                    }, label: {
                                                         HStack(spacing: 8) {
                                                             Image(systemName: "sparkles")
                                                             Text("Optimalkan")
@@ -270,15 +269,21 @@ struct CustomizationView: View {
                                                 .onAppear {
                                                     currentText = page.pageText.first?.componentContent ?? ""
                                                 }
-                                                HStack {
-                                                    Image(systemName: "exclamationmark.triangle")
-                                                        .font(Font.custom("SF Pro", size: 16))
-                                                        .foregroundStyle(Color("FSPrimaryOrange5"))
-                                                    Text("Instruksional")
-                                                        .font(Font.custom("SF Pro", size: 16))
-                                                        .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                // Overlay the HStack at the top left
+                                                .overlay(alignment: .topLeading) {
+                                                    HStack {
+                                                        Image(systemName: "exclamationmark.triangle")
+                                                            .font(Font.custom("SF Pro", size: 16))
+                                                            .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                        Text("Instruksional")
+                                                            .font(Font.custom("SF Pro", size: 16))
+                                                            .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                    }
+                                                    .padding(.top, 14)
+                                                    .padding(.leading, 133)
                                                 }
                                             }
+
                                         }
                                         .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
                                     }
