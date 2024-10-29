@@ -48,9 +48,9 @@ struct PagePreviewModalView: View {
                             columns: [GridItem(.flexible(), spacing: 20), GridItem(.flexible(), spacing: 20)],
                             spacing: 8
                         ) {
-                            ForEach(1...6, id: \.self) { step in
-                                StepsSquareView(heightRatio: 1.0, widthRatio: 1.0, order: 1, text: "Ambil sikat gigi", imageAssetName: "MenggosokGigiScene1")
-                            }
+                            ForEach(Array(viewModel.getDisplayedPreview().enumerated()), id: \.offset) { index, value in
+                                    StepsSquareView(heightRatio: 1.0, widthRatio: 1.0, order: index + 1, text: value.templateText, imageAssetName: value.templateImage)
+                                }
                         }
                     }
                     .frame(width: 580)

@@ -19,7 +19,7 @@ struct SelectedImageView: View {
             // Display the passed image
             Image(uiImage: image)
                 .resizable()
-                .scaledToFit()
+                .scaledToFill()
                 .frame(width: 300, height: 300)
                 .border(Color.green, width: 4) // Green border for selected image
                 .padding()

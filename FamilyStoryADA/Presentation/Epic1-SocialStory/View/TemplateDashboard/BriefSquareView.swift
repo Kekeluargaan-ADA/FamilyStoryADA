@@ -15,7 +15,7 @@ struct BriefSquareView: View {
     var body: some View {
         if let template = viewModel.selectedTemplate {
             ZStack{
-                HStack {
+                HStack(spacing: 20) {
                     Image(template.templateCoverImagePath)
                         .resizable()
                         .aspectRatio(contentMode: .fill)

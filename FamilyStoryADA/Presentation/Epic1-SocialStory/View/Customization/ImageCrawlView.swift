@@ -67,7 +67,7 @@ struct ImageCrawlView: View {
                                     label: {
                                         Image(uiImage: image)
                                             .resizable()
-                                            .scaledToFit()
+                                            .scaledToFill()
                                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                                             .padding()
                                             .border(viewModel.selectedImage == image ? Color.green : Color.clear, width: 4) // Green border for selected image

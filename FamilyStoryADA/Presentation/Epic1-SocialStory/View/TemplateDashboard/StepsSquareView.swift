@@ -11,26 +11,34 @@ struct StepsSquareView: View {
     let heightRatio: CGFloat
     let widthRatio: CGFloat
     let order: Int
-    let text: String
-    let imageAssetName: String
+    let text: String?
+    let imageAssetName: String?
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Image(imageAssetName)
-                .resizable()
+            Rectangle()
                 .foregroundColor(Color("FSWhite"))
                 .frame(width: 280, height: 172)
                 .cornerRadius(8)
-                .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
-                .overlay(
-                    Text(text)
-                      .font(
-                        Font.custom("Fredoka", size: 16)
-                          .weight(.medium)
-                      )
-                      .foregroundColor(Color("FSBlack"))
-                      .padding(.bottom, 16 * heightRatio), alignment: .bottom
-                )
+                .overlay {
+                    VStack (alignment: .center, spacing: 6) {
+                        Image(imageAssetName ?? "")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 186, height: 115)
+                            .cornerRadius(8)
+                        Text(text ?? "")
+                          .font(
+                            Font.custom("Fredoka", size: 14)
+                              .weight(.medium)
+                          )
+                          .multilineTextAlignment(.center)
+                          .frame(width: 214)
+                          .lineLimit(2)
+                          .foregroundColor(Color("FSBlack"))
+                    }
+                }
+                 
             
             Circle()
                 .frame(width: 16 * heightRatio, height: 16 * heightRatio)
@@ -49,6 +57,6 @@ struct StepsSquareView: View {
 
 
 #Preview {
-    StepsSquareView(heightRatio: 1, widthRatio: 1, order: 1, text: "Ambil sikat gigi.", imageAssetName: "MenggosokGigiScene1")
+    StepsSquareView(heightRatio: 1, widthRatio: 1, order: 1, text: "Ambil sikat gigi dan makan makanan bergizi bersama sama dengan orang lain.", imageAssetName: "MenggosokGigiScene1")
 }
 

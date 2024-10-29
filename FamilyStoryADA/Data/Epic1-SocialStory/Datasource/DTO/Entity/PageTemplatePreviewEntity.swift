@@ -20,7 +20,7 @@ class PageTemplatePreviewEntity: IEntityAble {
     
     public static func convertToEntity(jsonTemplate: PageJSONObject) -> PageTemplatePreviewEntity {
         return PageTemplatePreviewEntity(templateText: jsonTemplate.pageText.first?.componentContent,
-                                         templateImage: jsonTemplate.pagePicture.first?.componentContent,
+                                         templateImage: jsonTemplate.pageVideo.first?.componentContent,
                                          templatePageCategory: jsonTemplate.pageType
                                          )
     }
