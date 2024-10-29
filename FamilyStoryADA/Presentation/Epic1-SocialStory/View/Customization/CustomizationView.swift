@@ -49,7 +49,7 @@ struct CustomizationView: View {
                                         .foregroundStyle(Color("FSBlack"))
                                 }
                                 .frame(width: 268, height: 45)
-                                VStack(spacing: 48) {
+                                VStack(spacing: 23) {
                                     HStack {
                                         if viewModel.selectedPage != nil {
                                             Button(action: {
@@ -228,13 +228,13 @@ struct CustomizationView: View {
                                             ))
                                             .padding(.horizontal, 19)
                                             .padding(.vertical, 15)
-                                            .frame(width: 760, height: 117)
+                                            .frame(width: 760, height: 168)
                                             .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                             .fontWeight(.semibold)
                                             .foregroundStyle(Color("FSBlack"))
                                             .overlay(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .stroke(Color("FSBorderBlue7"), lineWidth: 2)
+                                                TextBoxBackgroundView()
+                                                    .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
                                             )
                                             .overlay(alignment: .bottomTrailing) {
                                                 Button(action: {
