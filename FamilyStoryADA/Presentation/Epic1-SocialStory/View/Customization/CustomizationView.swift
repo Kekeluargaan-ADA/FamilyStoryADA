@@ -207,62 +207,78 @@ struct CustomizationView: View {
                                                 }
                                             }
                                             
-                                            TextField("Masukkan teks di sini", text: Binding(
-                                                get: { currentText },
-                                                set: { newValue in
-                                                    // Split the input text into words
-                                                    let words = newValue.split(separator: " ")
-                                                    
-                                                    // Check if the word count exceeds 15
-                                                    if words.count > 15 {
-                                                        // Limit to the first 15 words and join them back to a string
-                                                        currentText = words.prefix(15).joined(separator: " ")
-                                                    } else {
-                                                        // Update currentText as usual if the word count is within the limit
-                                                        currentText = newValue
+                                            HStack {
+                                                TextField("Masukkan teks di sini", text: Binding(
+                                                    get: { currentText },
+                                                    set: { newValue in
+                                                        // Split the input text into words
+                                                        let words = newValue.split(separator: " ")
+                                                        
+                                                        // Check if the word count exceeds 15
+                                                        if words.count > 15 {
+                                                            // Limit to the first 15 words and join them back to a string
+                                                            currentText = words.prefix(15).joined(separator: " ")
+                                                        } else {
+                                                            // Update currentText as usual if the word count is within the limit
+                                                            currentText = newValue
+                                                        }
+                                                        
+                                                        // Reset the typing timer
+                                                        resetTypingTimer()
                                                     }
-                                                    
-                                                    // Reset the typing timer
-                                                    resetTypingTimer()
+                                                ))
+                                                .padding(.horizontal, 19)
+                                                .padding(.vertical, 15)
+                                                .frame(width: 760, height: 168)
+                                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(Color("FSBlack"))
+                                                .overlay(
+                                                    TextBoxBackgroundView()
+                                                        .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
+                                                )
+                                                .overlay(alignment: .topLeading) {
+                                                    Text("15/15 words")
+                                                        .font(Font.custom("Fredoka", size: 16))
+                                                        .foregroundColor(Color("FSGrey"))
+                                                        .padding(.horizontal, 20)
+                                                        .padding(.top, 14)
                                                 }
-                                            ))
-                                            .padding(.horizontal, 19)
-                                            .padding(.vertical, 15)
-                                            .frame(width: 760, height: 168)
-                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(Color("FSBlack"))
-                                            .overlay(
-                                                TextBoxBackgroundView()
-                                                    .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
-                                            )
-                                            .overlay(alignment: .bottomTrailing) {
-                                                Button(action: {
-                                                    
-                                                },label:{
-                                                    HStack(spacing: 8) {
-                                                        Image(systemName: "sparkles")
-                                                        Text("Optimalkan")
-                                                            .font(.system(size: 16))
-                                                            .fontWeight(.medium)
-                                                    }
-                                                    .foregroundStyle(Color(.fsBlue9))
-                                                    .padding()
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 40)
-                                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                                            .background(
-                                                                RoundedRectangle(cornerRadius: 40)
-                                                                    .fill(Color.white)
-                                                            )
-                                                    )
-                                                    .padding()
-                                                })
+                                                .overlay(alignment: .bottomTrailing) {
+                                                    Button(action: {
+                                                        
+                                                    },label:{
+                                                        HStack(spacing: 8) {
+                                                            Image(systemName: "sparkles")
+                                                            Text("Optimalkan")
+                                                                .font(.system(size: 16))
+                                                                .fontWeight(.medium)
+                                                        }
+                                                        .foregroundStyle(Color(.fsBlue9))
+                                                        .padding()
+                                                        .background(
+                                                            RoundedRectangle(cornerRadius: 40)
+                                                                .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                                                .background(
+                                                                    RoundedRectangle(cornerRadius: 40)
+                                                                         .fill(Color.white)
+                                                                )
+                                                        )
+                                                        .padding()
+                                                    })
+                                                }
+                                                .onAppear {
+                                                    currentText = page.pageText.first?.componentContent ?? ""
+                                                }
+                                                HStack {
+                                                    Image(systemName: "exclamationmark.triangle")
+                                                        .font(Font.custom("SF Pro", size: 16))
+                                                        .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                    Text("Instruksional")
+                                                        .font(Font.custom("SF Pro", size: 16))
+                                                        .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                }
                                             }
-                                            .onAppear {
-                                                currentText = page.pageText.first?.componentContent ?? ""
-                                            }
-                                            
                                         }
                                         .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
                                     }
