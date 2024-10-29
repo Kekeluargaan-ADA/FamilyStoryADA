@@ -88,7 +88,7 @@ struct CustomizationView: View {
                                             ZStack(alignment: .topTrailing) {
                                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         Image(imagePath)
                                                             .resizable()
                                                             .aspectRatio(contentMode: .fill)
@@ -105,7 +105,7 @@ struct CustomizationView: View {
                                                     
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         Image(uiImage: image)
                                                             .resizable()
                                                             .aspectRatio(contentMode: .fill)
@@ -124,7 +124,7 @@ struct CustomizationView: View {
                                                     
                                                     let videoPlayer = AVPlayer(url: url)
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         CustomVideoPlayerView(player: viewModel.videoPlayer)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -265,7 +265,7 @@ struct CustomizationView: View {
                                             }
                                             
                                         }
-                                        .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
+                                        .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -378 : 0)
                                     }
                                 }
                             }
