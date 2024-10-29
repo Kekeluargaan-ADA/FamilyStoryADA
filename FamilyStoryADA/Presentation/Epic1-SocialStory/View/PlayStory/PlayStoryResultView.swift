@@ -35,7 +35,7 @@ struct PlayStoryResultView: View {
                 
                 Image("FinishStoryMenggosokGigi")
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
                     .padding(.bottom, 25 * heightRatio)
                 

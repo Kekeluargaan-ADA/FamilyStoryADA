@@ -64,6 +64,7 @@ struct ImageInputModal: View {
                         if templateViewModel.isEditingTextField {
                             // Show TextField for editing name
                             TextField("Enter name", text: $templateViewModel.childName)
+                                .background(Color("FSWhite"))
                                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))

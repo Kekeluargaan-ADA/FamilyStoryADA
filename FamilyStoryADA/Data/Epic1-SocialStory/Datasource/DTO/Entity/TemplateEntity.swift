@@ -14,16 +14,26 @@ class TemplateEntity: IEntityAble {
     var templateDescription: String
     var templateCoverImagePath: String
     var templateOptionCoverImagePath: [String]
-    var tmplatePreviewImagePath: [String]
+    var templatePreviewImagePath: [String]
+    var templatePagePreview: [PageTemplatePreviewEntity]
     
-    init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, templateOptionCoverImagePath: [String], tmplatePreviewImagePath: [String]) {
+    init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, templateOptionCoverImagePath: [String], templatePreviewImagePath: [String], templatePagePreview: [PageTemplatePreviewEntity]) {
         self.templateId = templateId
         self.templateName = templateName
         self.templateCategory = templateCategory
         self.templateDescription = templateDescription
         self.templateCoverImagePath = templateCoverImagePath
         self.templateOptionCoverImagePath = templateOptionCoverImagePath
-        self.tmplatePreviewImagePath = tmplatePreviewImagePath
+        self.templatePreviewImagePath = templatePreviewImagePath
+        self.templatePagePreview = templatePagePreview
+    }
+    
+    private static func convertToEntityArray(jsonTemplates: [PageJSONObject]) -> [PageTemplatePreviewEntity] {
+        var entities: [PageTemplatePreviewEntity] = []
+        for template in jsonTemplates {
+            entities.append(PageTemplatePreviewEntity.convertToEntity(jsonTemplate: template))
+        }
+        return entities
     }
     
     public static func convertToEntity(jsonTemplate: TemplateJSONObject) -> TemplateEntity {
@@ -33,7 +43,8 @@ class TemplateEntity: IEntityAble {
                               templateDescription: jsonTemplate.templateDescription,
                               templateCoverImagePath: jsonTemplate.templateCoverImagePath,
                               templateOptionCoverImagePath: jsonTemplate.templateOptionCoverImagePath,
-                              tmplatePreviewImagePath: jsonTemplate.templatePreviewImagePath
+                              templatePreviewImagePath: jsonTemplate.templatePreviewImagePath,
+                              templatePagePreview: convertToEntityArray(jsonTemplates: jsonTemplate.templatePage)
         )
     }
 }
