@@ -49,7 +49,7 @@ struct PagePreviewModalView: View {
                             spacing: 8
                         ) {
                             ForEach(1...6, id: \.self) { step in
-                                StepsSquareView(heightRatio: 1.0, widthRatio: 1.0)
+                                StepsSquareView(heightRatio: 1.0, widthRatio: 1.0, order: 1, text: "Ambil sikat gigi", imageAssetName: "MenggosokGigiScene1")
                             }
                         }
                     }

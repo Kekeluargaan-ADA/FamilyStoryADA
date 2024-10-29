@@ -117,4 +117,11 @@ class TemplateViewModel: ObservableObject {
             }
         }
     }
+    
+    public func getDisplayedTemplate() -> [PageEntity] {
+        var templates: [PageEntity] = []
+        
+        
+        return templates
+    }
 }
