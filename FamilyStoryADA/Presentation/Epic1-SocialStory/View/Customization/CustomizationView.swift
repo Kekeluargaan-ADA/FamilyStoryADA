@@ -237,11 +237,11 @@ struct CustomizationView: View {
                                                         .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
                                                 )
                                                 .overlay(alignment: .topLeading) {
-                                                    Text("15/15 words")
+                                                    Text("\(wordCount)/15 words")
                                                         .font(Font.custom("Fredoka", size: 16))
                                                         .foregroundColor(Color("FSGrey"))
                                                         .padding(.horizontal, 20)
-                                                        .padding(.top, 14)
+                                                        .padding(.top, 8)
                                                 }
                                                 .overlay(alignment: .bottomTrailing) {
                                                     Button(action: {
@@ -279,8 +279,8 @@ struct CustomizationView: View {
                                                             .font(Font.custom("SF Pro", size: 16))
                                                             .foregroundStyle(Color("FSPrimaryOrange5"))
                                                     }
-                                                    .padding(.top, 14)
-                                                    .padding(.leading, 133)
+                                                    .padding(.top, 8)
+                                                    .padding(.leading, 136)
                                                 }
                                             }
 
@@ -380,6 +380,10 @@ struct CustomizationView: View {
         typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             updatePageText()
         }
+    }
+    
+    private var wordCount: Int {
+        currentText.split(separator: " ").count
     }
     
     // Update the page text when the timer completes
