@@ -212,16 +212,17 @@ struct CustomizationView: View {
                                                     set: { newValue in
                                                         // Split the input text into words
                                                         let words = newValue.split(separator: " ")
-
-                                                        // Check if the word count exceeds 15
-                                                        if words.count > 15 {
-                                                            // Limit to the first 15 words and join them back to a string
-                                                            currentText = words.prefix(15).joined(separator: " ")
-                                                        } else {
-                                                            // Update currentText as usual if the word count is within the limit
-                                                            currentText = newValue
-                                                        }
-
+                                                        
+                                                        currentText = newValue
+                                                        //                                                        // Check if the word count exceeds 15
+                                                        //                                                        if words.count > 15 {
+                                                        //                                                            // Limit to the first 15 words and join them back to a string
+                                                        //                                                            currentText = words.prefix(15).joined(separator: " ")
+                                                        //                                                        } else {
+                                                        //                                                            // Update currentText as usual if the word count is within the limit
+                                                        //                                                            currentText = newValue
+                                                        //                                                        }
+                                                        
                                                         // Reset the typing timer
                                                         resetTypingTimer()
                                                     }
@@ -260,7 +261,7 @@ struct CustomizationView: View {
                                                                 .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
                                                                 .background(
                                                                     RoundedRectangle(cornerRadius: 40)
-                                                                         .fill(Color.white)
+                                                                        .fill(Color.white)
                                                                 )
                                                         )
                                                         .padding()
@@ -283,7 +284,7 @@ struct CustomizationView: View {
                                                     .padding(.leading, 136)
                                                 }
                                             }
-
+                                            
                                         }
                                         .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
                                     }
