@@ -44,8 +44,10 @@ struct EditCoverModalView: View {
             
             ZStack() {
                 TextField("Judul Story...", text: $storyName)
+                    .background(Color("FSWhite"))
                     .multilineTextAlignment(.center)
-                    .font(.system(size: 32, weight: .medium))
+                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                    .fontWeight(.medium)
                     .frame(width: 580, height: 80)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
