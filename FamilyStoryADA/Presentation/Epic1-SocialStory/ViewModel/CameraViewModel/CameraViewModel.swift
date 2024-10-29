@@ -17,7 +17,6 @@ class CameraViewModel: ObservableObject {
     @Published var showAlertError = false
     @Published var showSettingAlert = false
     @Published var isPermissionGranted: Bool = false
-    @Published var isImagePickerOpened: Bool = false
     @Published var isPhotoCaptured: Bool = false
     @Published var savedImage: UIImage?
     @Published var photosPickerItem: PhotosPickerItem?
