@@ -116,6 +116,7 @@ struct PlayStoryView: View {
                                     
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                        .padding(.trailing, -32 * heightRatio)
                                 })
                                 
                                 NavigationLink(isActive: $playStoryIsActive,destination: {

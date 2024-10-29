@@ -154,6 +154,7 @@ struct ChangePictureButton: View {
                 if !value, viewModel.isPhotoCaptured, viewModel.savedImage != nil {
                     // Show crop view once an image is selected
                     viewModel.showCropView = true
+                    viewModel.isPhotoCaptured = false
                 }
             }
         }
@@ -161,6 +162,7 @@ struct ChangePictureButton: View {
             if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
                 // Show crop view once an image is selected
                 viewModel.showCropView = true
+                viewModel.isPhotoCaptured = false
             }
         }) {
             ImagePicker()
