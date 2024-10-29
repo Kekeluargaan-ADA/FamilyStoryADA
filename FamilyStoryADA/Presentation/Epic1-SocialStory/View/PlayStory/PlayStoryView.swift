@@ -11,10 +11,12 @@ import AVKit
 struct PlayStoryView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var playStoryViewModel: PlayStoryViewModel
+    @Binding var isMiniQuizPresented: Bool
     private let textToSpeechHelper = TextToSpeechHelper()
     @State var playStoryIsActive = false
-    init(story: StoryEntity) {
+    init(story: StoryEntity, isMiniQuizPresented: Binding<Bool>) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
+        _isMiniQuizPresented = isMiniQuizPresented
     }
     
     var body: some View {
@@ -111,7 +113,6 @@ struct PlayStoryView: View {
                                 
                                 Button(action: {
                                     textToSpeechHelper.stopSpeaking()
-//                                    playStoryViewModel.continueToNextPage()
                                     playStoryIsActive = true
                                     
                                 }, label: {
@@ -120,7 +121,7 @@ struct PlayStoryView: View {
                                 })
                                 
                                 NavigationLink(isActive: $playStoryIsActive,destination: {
-                                    PlayStoryResultView()
+                                    PlayStoryResultView(isMiniQuizPresented: $isMiniQuizPresented)
                                         .environmentObject(playStoryViewModel)
                                 }, label: {})
                             }
@@ -166,12 +167,6 @@ struct PlayStoryView: View {
                         
                     
                 }
-                // TODO: Not working
-                NavigationLink(isActive: $playStoryViewModel.isStoryGoToMiniQuiz, destination: {
-                    MiniQuizView(story: playStoryViewModel.story)
-                }, label: {
-                    
-                })
             }
             .background(Color("FSYellow1"))
         }

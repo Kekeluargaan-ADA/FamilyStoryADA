@@ -13,7 +13,6 @@ class PlayStoryViewModel: Imageable, ObservableObject {
     @Published var selectedPage: PageEntity?
     @Published var currentPageNumber: Int
     @Published var isStoryCompleted: Bool = false
-    @Published var isStoryGoToMiniQuiz: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
     
     init(story: StoryEntity) {
