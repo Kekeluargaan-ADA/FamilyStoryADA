@@ -302,57 +302,56 @@ struct CustomizationView: View {
                         
                     }
                 }
+                NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
+                    CameraView.shared
+                        .environmentObject(cameraViewModel)
+                }, label: {})
+                .onChange(of: cameraViewModel.navigateToCamera) { value in
+                    if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+                        // Show crop view once an image is selected
+                        cameraViewModel.showCropView = true
+                    }
+                }
+                
+                NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
+                    ImagePicker(selectedImage: $cameraViewModel.savedImage)
+                        .environmentObject(cameraViewModel)
+                }, label: {})
+                .onChange(of: cameraViewModel.isImagePickerOpened) { value in
+                    if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+                        // Show crop view once an image is selected
+                        cameraViewModel.showCropView = true
+                    }
+                }
+                
+                NavigationLink(
+                    destination: CropImageView(croppingStyle: .landscape)
+                        .environmentObject(cameraViewModel),
+                    isActive: $cameraViewModel.showCropView,
+                    label: {
+                        EmptyView()
+                    }
+                )
+                .onChange(of: cameraViewModel.savedImage) { value in
+                    
+                    if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
+                        if currentPage.pagePicture.isEmpty {
+                            viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
+                        } else {
+                            viewModel.selectedPage?.pagePicture.first?.componentContent = imageFileName
+                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+                        }
+                        viewModel.updatePage()
+                        cameraViewModel.savedImage = nil
+                    }
+                }
             }
+            
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
         
-        NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
-            CameraView.shared
-                .environmentObject(cameraViewModel)
-        }, label: {})
-        .onChange(of: cameraViewModel.navigateToCamera) { value in
-            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-                // Show crop view once an image is selected
-                cameraViewModel.showCropView = true
-            }
-        }
         
-        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
-            ImagePicker(selectedImage: $cameraViewModel.savedImage, isPhotoCaptured: $cameraViewModel.isPhotoCaptured)
-        }, label: {})
-        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
-            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-                // Show crop view once an image is selected
-                cameraViewModel.showCropView = true
-            }
-        }
-        //        NavigationLink(isActive: $viewModel.isGotoScrapImage, destination: {
-        //            ScrappingInitialView()
-        //        }, label: {})
-        
-        // Show the cropping view when image is selected
-        NavigationLink(
-            destination: CropImageView(croppingStyle: .landscape)
-                .environmentObject(cameraViewModel),
-            isActive: $cameraViewModel.showCropView,
-            label: {
-                EmptyView()
-            }
-        )
-        .onChange(of: cameraViewModel.savedImage) { value in
-            
-            if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
-                if currentPage.pagePicture.isEmpty {
-                    viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
-                } else {
-                    viewModel.selectedPage?.pagePicture.first?.componentContent = imageFileName
-                    viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-                }
-                viewModel.updatePage()
-                cameraViewModel.savedImage = nil
-            }
-        }
     }
     
     private func resetTypingTimer() {

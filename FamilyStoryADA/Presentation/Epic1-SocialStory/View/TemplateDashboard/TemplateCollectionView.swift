@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TemplateCollectionView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = TemplateViewModel()
     @Environment(\.presentationMode) var presentationMode
     
@@ -32,6 +33,7 @@ struct TemplateCollectionView: View {
                                         TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) { category in
                                             viewModel.filterTemplates(by: category)
                                         }
+                                        .environmentObject(viewModel)
                                         ScrollView {
                                             LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                                 ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
@@ -59,6 +61,11 @@ struct TemplateCollectionView: View {
             .onAppear {
                 viewModel.fetchTemplates()
                 viewModel.filterTemplates(by: nil)
+            }
+            .onChange(of: viewModel.isTemplateClosed) { value in
+                if value {
+                    dismiss()
+                }
             }
         }
         .navigationViewStyle(.stack)

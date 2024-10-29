@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TemplateCategoriesView: View {
+    @EnvironmentObject var viewModel: TemplateViewModel
     let heightRatio: CGFloat
     let widthRatio: CGFloat
     @State private var selectedCategory: String? = nil
@@ -16,8 +17,8 @@ struct TemplateCategoriesView: View {
     var body: some View {
         ZStack {
             HStack {
-                NavigationLink(destination: {
-                    StoryDashboardView()
+                Button(action: {
+                    viewModel.isTemplateClosed = true
                 }, label: {
                     ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                 })
