@@ -9,40 +9,56 @@ import SwiftUI
 import Foundation
 
 struct ParaphraseModal: View {
-    
+    @Binding var isParaphrasingPresented: Bool
     var body: some View {
         ZStack(alignment: .topLeading) {
-            // Background with specified dimensions and rounded corners
-            Color.white
-                .frame(width: 1194, height: 368)
-                .cornerRadius(20)
-                .shadow(radius: 5)
             
             // Content aligned to the top leading
             HStack(alignment: .top, spacing: 16) {
                 // Close button (xmark)
-                Image(systemName: "xmark")
-                    .foregroundColor(Color.gray)
-                    .padding()
+                Button(action: {
+                    // TODO: Pop up menu
+                    isParaphrasingPresented.toggle()
+                }, label: {
+                    Image(systemName: "xmark")
+                        .font(Font.system(size: 22))
+                        .foregroundColor(Color.gray)
+                        .padding()
+                })
+                
                 
                 // Title and text items
                 VStack(alignment: .leading, spacing: 8) {
                     // Title with icon
                     HStack(spacing: 8) {
                         Image(systemName: "sparkles")
+                            .font(Font.system(size: 32))
                             .foregroundColor(Color.purple)
                         Text("Parafrase")
-                            .font(.headline)
-                            .foregroundColor(.black)
+                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color("FSBlack"))
                     }
                     
                     // Paraphrased text items
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Saya mengelap mulut menggunakan handuk.")
+                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                            .fontWeight(.regular)
+                            .foregroundStyle(Color("FSBlack"))
+                        Divider()
                         Text("Selanjutnya, keringkan mulut menggunakan handuk.")
+                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                            .fontWeight(.regular)
+                            .foregroundStyle(Color("FSBlack"))
+                        Divider()
                         Text("Lalu, saya membersihkan mulut menggunakan handuk.")
+                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                            .fontWeight(.regular)
+                            .foregroundStyle(Color("FSBlack"))
+                        Divider()
                     }
-                    .font(.body)
+                    .frame(width: 980)
                     .foregroundColor(.black)
                     HStack(spacing: 16) {
                         // Rephrase Button
@@ -51,13 +67,16 @@ struct ParaphraseModal: View {
                         }) {
                             HStack(spacing: 4) {
                                 Image(systemName: "arrow.clockwise")
+                                    .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                    .fontWeight(.medium)
                                 Text("Rephrase")
+                                    .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                    .fontWeight(.medium)
                             }
                             .font(.body)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue.opacity(0.1))
-                            .foregroundColor(Color.blue)
+                            .frame(width: 160,height: 60)
+                            .background(Color(.fsSecondaryBlue4))
+                            .foregroundColor(Color(.fsBlue9))
                             .cornerRadius(20)
                         }
                         
@@ -66,26 +85,32 @@ struct ParaphraseModal: View {
                             // Select action
                         }) {
                             Text("Pilih")
-                                .font(.body)
-                                .padding()
-                                .frame(maxWidth: .infinity)
+                                .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                .fontWeight(.medium)
+                                .frame(width: 160,height: 60)
                                 .background(Color.teal)
                                 .foregroundColor(.white)
                                 .cornerRadius(20)
                         }
                     }
+                    .frame(width: 980,alignment: .bottomTrailing)
                 }
-                .padding(.top, 16)
+//                .padding(.top, 16)
                 
                 Spacer()
             }
-            .padding(.leading, 16) // Padding to adjust alignment with background
-            .padding(.top, 16)
+//            .padding(.leading, 16) // Padding to adjust alignment with background
+//            .padding(.top, 16)
         }
-        .padding() // Outer padding for spacing from the screen edges
+        .frame(width: 1180, height: 256,alignment: .leading)
+//        .background(.red)
+        .cornerRadius(20)
+//        .shadow(radius: 5)
+        
+//        .padding()  Outer padding for spacing from the screen edges
     }
 }
 
-#Preview{
-    ParaphraseModal()
-}
+//#Preview{
+//    ParaphraseModal()
+//}

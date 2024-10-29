@@ -13,6 +13,7 @@ struct CustomizationView: View {
     @StateObject var viewModel: PageCustomizationViewModel
     @StateObject var cameraViewModel: CameraViewModel = CameraViewModel()
     
+    @State var isParaphrasingPresented = false
     @State var currentText: String = ""
     @State private var typingTimer: Timer? = nil
     
@@ -238,7 +239,7 @@ struct CustomizationView: View {
                                             )
                                             .overlay(alignment: .bottomTrailing) {
                                                 Button(action: {
-                                                    
+                                                    isParaphrasingPresented = true
                                                 },label:{
                                                     HStack(spacing: 8) {
                                                         Image(systemName: "sparkles")
@@ -268,6 +269,9 @@ struct CustomizationView: View {
                                     }
                                 }
                             }
+                            
+                            
+                            
                         }
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
                             MiniQuizView(story: viewModel.story)
@@ -301,6 +305,16 @@ struct CustomizationView: View {
                             .environmentObject(viewModel)
                         
                     }
+                    
+                    if isParaphrasingPresented{
+                        ZStack{
+                            ParaphraseModal(isParaphrasingPresented: $isParaphrasingPresented)
+                                .frame(width: 1200,height: 280)
+                                .background(.white)
+                        }.frame(height: 780,alignment: .bottom)
+                            
+                    }
+                    
                 }
                 NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
                     CameraView.shared
