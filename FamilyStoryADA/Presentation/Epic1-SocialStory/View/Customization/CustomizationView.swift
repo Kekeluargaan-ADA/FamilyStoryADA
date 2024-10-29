@@ -86,7 +86,7 @@ struct CustomizationView: View {
                                             
                                             ZStack(alignment: .topTrailing) {
                                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
-                                                                                                        
+                                                    
                                                     if keyboardHelper.isKeyboardShown {
                                                         Image(imagePath)
                                                             .resizable()
@@ -101,7 +101,7 @@ struct CustomizationView: View {
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                                     }
-
+                                                    
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                                                     
                                                     if keyboardHelper.isKeyboardShown {
@@ -124,50 +124,50 @@ struct CustomizationView: View {
                                                     let videoPlayer = AVPlayer(url: url)
                                                     
                                                     if keyboardHelper.isKeyboardShown {
-                                                      CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                                        .frame(width: 760, height: 468)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                      .mask(Rectangle().padding(.top, 390))
-                                                        .onAppear() {
-                                                            
-                                                            viewModel.videoPlayer = AVPlayer(url: url)
-                                                            viewModel.videoPlayer.play()
-                                                            // Loop video when it reaches the end
-                                                            
-                                                        }
-                                                        .onDisappear() {
-                                                            viewModel.videoPlayer.pause()
-                                                        }
-                                                        .onChange(of: url) {
-                                                            viewModel.videoPlayer = AVPlayer(url: url)
-                                                            viewModel.videoPlayer.play()
-                                                        }
-                                                        .onTapGesture() {
-                                                            viewModel.videoPlayer.seek(to: .zero)
-                                                            viewModel.videoPlayer.play()
-                                                        }
+                                                        CustomVideoPlayerView(player: viewModel.videoPlayer)
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .mask(Rectangle().padding(.top, 390))
+                                                            .onAppear() {
+                                                                
+                                                                viewModel.videoPlayer = AVPlayer(url: url)
+                                                                viewModel.videoPlayer.play()
+                                                                // Loop video when it reaches the end
+                                                                
+                                                            }
+                                                            .onDisappear() {
+                                                                viewModel.videoPlayer.pause()
+                                                            }
+                                                            .onChange(of: url) {
+                                                                viewModel.videoPlayer = AVPlayer(url: url)
+                                                                viewModel.videoPlayer.play()
+                                                            }
+                                                            .onTapGesture() {
+                                                                viewModel.videoPlayer.seek(to: .zero)
+                                                                viewModel.videoPlayer.play()
+                                                            }
                                                     } else {
                                                         CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                                        .frame(width: 760, height: 468)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                                        .onAppear() {
-                                                            
-                                                            viewModel.videoPlayer = AVPlayer(url: url)
-                                                            viewModel.videoPlayer.play()
-                                                            // Loop video when it reaches the end
-                                                            
-                                                        }
-                                                        .onDisappear() {
-                                                            viewModel.videoPlayer.pause()
-                                                        }
-                                                        .onChange(of: url) {
-                                                            viewModel.videoPlayer = AVPlayer(url: url)
-                                                            viewModel.videoPlayer.play()
-                                                        }
-                                                        .onTapGesture() {
-                                                            viewModel.videoPlayer.seek(to: .zero)
-                                                            viewModel.videoPlayer.play()
-                                                        }
+                                                            .frame(width: 760, height: 468)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                                            .onAppear() {
+                                                                
+                                                                viewModel.videoPlayer = AVPlayer(url: url)
+                                                                viewModel.videoPlayer.play()
+                                                                // Loop video when it reaches the end
+                                                                
+                                                            }
+                                                            .onDisappear() {
+                                                                viewModel.videoPlayer.pause()
+                                                            }
+                                                            .onChange(of: url) {
+                                                                viewModel.videoPlayer = AVPlayer(url: url)
+                                                                viewModel.videoPlayer.play()
+                                                            }
+                                                            .onTapGesture() {
+                                                                viewModel.videoPlayer.seek(to: .zero)
+                                                                viewModel.videoPlayer.play()
+                                                            }
                                                     }
                                                 } else {
                                                     Button(action: {
@@ -236,6 +236,29 @@ struct CustomizationView: View {
                                                 RoundedRectangle(cornerRadius: 12)
                                                     .stroke(Color("FSBorderBlue7"), lineWidth: 2)
                                             )
+                                            .overlay(alignment: .bottomTrailing) {
+                                                Button(action: {
+                                                    
+                                                },label:{
+                                                    HStack(spacing: 8) {
+                                                        Image(systemName: "sparkles")
+                                                        Text("Optimalkan")
+                                                            .font(.system(size: 16))
+                                                            .fontWeight(.medium)
+                                                    }
+                                                    .foregroundStyle(Color(.fsBlue9))
+                                                    .padding()
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 40)
+                                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                                            .background(
+                                                                RoundedRectangle(cornerRadius: 40)
+                                                                    .fill(Color.white)
+                                                            )
+                                                    )
+                                                    .padding()
+                                                })
+                                            }
                                             .onAppear {
                                                 currentText = page.pageText.first?.componentContent ?? ""
                                             }
