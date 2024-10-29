@@ -18,6 +18,7 @@ class TemplateViewModel: ObservableObject {
     @Published var selectedTemplate: TemplateEntity?
     @Published var createdStory: StoryEntity?
     @Published var isEditingTextField: Bool = false
+    @Published var isTemplateClosed = false
     @Published var childName: String = ""
     
     private let templateUsecase: TemplateUsecase

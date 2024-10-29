@@ -69,7 +69,8 @@ struct CameraView: View {
 //                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
 //                            }
                             NavigationLink(destination: {
-                                ImagePicker(selectedImage: $viewModel.savedImage, isPhotoCaptured: $viewModel.isPhotoCaptured)
+                                ImagePicker(selectedImage: $viewModel.savedImage)
+                                    .environmentObject(viewModel)
                             }, label: {
                                 PhotoThumbnail(selectedImage: $viewModel.savedImage)
                             })

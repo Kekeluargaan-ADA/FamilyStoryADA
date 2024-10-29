@@ -163,7 +163,8 @@ struct ChangePictureButton: View {
                 viewModel.showCropView = true
             }
         }) {
-            ImagePicker(selectedImage: $viewModel.savedImage, isPhotoCaptured: $viewModel.isPhotoCaptured)
+            ImagePicker(selectedImage: $viewModel.savedImage)
+                .environmentObject(viewModel)
         }
         
         // Show the cropping view when image is selected

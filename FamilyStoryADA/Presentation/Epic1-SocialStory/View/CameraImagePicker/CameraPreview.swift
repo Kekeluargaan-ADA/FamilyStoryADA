@@ -13,27 +13,33 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
     
     let session: AVCaptureSession
     var onTap: (CGPoint) -> Void
+    var videoPreview: VideoPreviewView = VideoPreviewView()
     
     func makeUIView(context: Context) -> VideoPreviewView {
         
-        let view = VideoPreviewView()
-        view.backgroundColor = .black
-        view.videoPreviewLayer.session = session
-        view.videoPreviewLayer.videoGravity = .resizeAspect
-        view.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+        videoPreview.backgroundColor = .black
+        videoPreview.videoPreviewLayer.session = session
+        videoPreview.videoPreviewLayer.frame = videoPreview.bounds
+        videoPreview.videoPreviewLayer.videoGravity = .resizeAspect
+        videoPreview.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
         
         // Add a tap gesture recognizer to the view
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTapGesture(_:)))
-        view.addGestureRecognizer(tapGesture)
+        videoPreview.addGestureRecognizer(tapGesture)
         
         DispatchQueue.main.async {
             UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
             UIViewController.attemptRotationToDeviceOrientation()
         }
-        return view
+        return videoPreview
     }
     
-    public func updateUIView(_ uiView: VideoPreviewView, context: Context) { }
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        DispatchQueue.main.async {
+            let view = UIView(frame: UIScreen.main.bounds)
+           videoPreview.videoPreviewLayer.frame = view.bounds
+        }
+      }
     
     class VideoPreviewView: UIView {
         override class var layerClass: AnyClass {
@@ -66,7 +72,7 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?  // This will hold the selected image
-    @Binding var isPhotoCaptured: Bool
+    @EnvironmentObject var viewModel: CameraViewModel
     @Environment(\.dismiss) var dismiss  // Used to dismiss the picker
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
@@ -106,7 +112,8 @@ struct ImagePicker: UIViewControllerRepresentable {
                     if let uiImage = image as? UIImage {
                         DispatchQueue.main.async {
                             self.parent.selectedImage = uiImage
-                            self.parent.isPhotoCaptured = true
+                            self.parent.viewModel.savedImage = uiImage
+                            self.parent.viewModel.isPhotoCaptured = true
                         }
                     }
                 }
