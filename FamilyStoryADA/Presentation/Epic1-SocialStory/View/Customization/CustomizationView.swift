@@ -319,17 +319,6 @@ struct CustomizationView: View {
                             }
                         }
                         
-                        //                        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
-                        //                            ImagePicker()
-                        //                                .environmentObject(cameraViewModel)
-                        //                        }, label: {})
-                        //                        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
-                        //                            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-                        //                                // Show crop view once an image is selected
-                        //                                cameraViewModel.showCropView = true
-                        //                            }
-                        //                        }
-                        
                         NavigationLink(
                             destination:
                                 CropImageView(croppingStyle: .landscape)
@@ -386,7 +375,8 @@ struct CustomizationView: View {
                         ScrappingInitialView()
                             .background(.black.opacity(0.4))
                             .environmentObject(viewModel)
-                        
+                            .environmentObject(cameraViewModel)
+                            
                     }
                     
                     if isParaphrasingPresented{
@@ -405,7 +395,11 @@ struct CustomizationView: View {
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
-        
+        .onChange(of: viewModel.isGotoScrapImage) { value in
+            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+                cameraViewModel.showCropView = true
+            }
+        }
         
     }
     
