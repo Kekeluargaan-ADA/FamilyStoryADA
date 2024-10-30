@@ -21,16 +21,21 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
         videoPreview.videoPreviewLayer.session = session
         videoPreview.videoPreviewLayer.frame = videoPreview.bounds
         videoPreview.videoPreviewLayer.videoGravity = .resizeAspect
-        videoPreview.videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+        
+        if videoPreview.videoPreviewLayer.connection == nil {
+            videoPreview.transform = CGAffineTransform(rotationAngle:  3 * .pi / 2)
+        } else {
+            videoPreview.videoPreviewLayer.connection?.videoRotationAngle = 0
+        }
         
         // Add a tap gesture recognizer to the view
         let tapGesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(context.coordinator.handleTapGesture(_:)))
         videoPreview.addGestureRecognizer(tapGesture)
         
-        DispatchQueue.main.async {
-            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
-            UIViewController.attemptRotationToDeviceOrientation()
-        }
+//        DispatchQueue.main.async {
+//            UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+//            UIViewController.attemptRotationToDeviceOrientation()
+//        }
         return videoPreview
     }
     
