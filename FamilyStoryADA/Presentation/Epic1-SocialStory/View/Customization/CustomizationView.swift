@@ -245,26 +245,23 @@ struct CustomizationView: View {
                                                         .padding(.horizontal, 20)
                                                         .padding(.top, 8)
                                                 }
-                                            ))
-                                            .padding(.horizontal, 19)
-                                            .padding(.vertical, 15)
-                                            .frame(width: 760, height: 117)
-                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(Color("FSBlack"))
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .stroke(Color("FSBorderBlue7"), lineWidth: 2)
-                                            )
-                                            .overlay(alignment: .bottomTrailing) {
-                                                Button(action: {
-                                                    isParaphrasingPresented = true
-                                                },label:{
-                                                    HStack(spacing: 8) {
-                                                        Image(systemName: "sparkles")
-                                                        Text("Optimalkan")
-                                                            .font(.system(size: 16))
-                                                            .fontWeight(.medium)
+                                                
+                                                .padding(.horizontal, 19)
+                                                .padding(.vertical, 15)
+                                                .frame(width: 760, height: 117)
+                                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(Color("FSBlack"))
+
+                                                .overlay(alignment: .bottomTrailing) {
+                                                    Button(action: {
+                                                        isParaphrasingPresented = true
+                                                    },label:{
+                                                        HStack(spacing: 8) {
+                                                            Image(systemName: "sparkles")
+                                                            Text("Optimalkan")
+                                                                .font(.system(size: 16))
+                                                                .fontWeight(.medium)
                                                         }
                                                         .foregroundStyle(Color(.fsBlue9))
                                                         .padding()
@@ -322,16 +319,16 @@ struct CustomizationView: View {
                             }
                         }
                         
-//                        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
-//                            ImagePicker()
-//                                .environmentObject(cameraViewModel)
-//                        }, label: {})
-//                        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
-//                            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-//                                // Show crop view once an image is selected
-//                                cameraViewModel.showCropView = true
-//                            }
-//                        }
+                        //                        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
+                        //                            ImagePicker()
+                        //                                .environmentObject(cameraViewModel)
+                        //                        }, label: {})
+                        //                        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
+                        //                            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+                        //                                // Show crop view once an image is selected
+                        //                                cameraViewModel.showCropView = true
+                        //                            }
+                        //                        }
                         
                         NavigationLink(
                             destination:
@@ -398,7 +395,7 @@ struct CustomizationView: View {
                                 .frame(width: 1200,height: 280)
                                 .background(.white)
                         }.frame(height: 780,alignment: .bottom)
-                            
+                        
                     }
                     
                 }
