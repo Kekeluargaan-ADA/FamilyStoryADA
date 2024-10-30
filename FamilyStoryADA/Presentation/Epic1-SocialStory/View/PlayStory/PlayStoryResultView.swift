@@ -10,6 +10,7 @@ import SwiftUI
 struct PlayStoryResultView: View {
     @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
     @Environment(\.dismiss) var dismiss
+    @Binding var isMiniQuizPresented: Bool
     private let textToSpeechHelper = TextToSpeechHelper()
     
     var body: some View {
@@ -34,7 +35,7 @@ struct PlayStoryResultView: View {
                 
                 Image("FinishStoryMenggosokGigi")
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
                     .padding(.bottom, 25 * heightRatio)
                 
@@ -51,16 +52,13 @@ struct PlayStoryResultView: View {
                     })
                     Button(action: {
                         
-                        playStoryViewModel.isStoryGoToMiniQuiz = true
+                        isMiniQuizPresented = true
                         textToSpeechHelper.stopSpeaking()
                     }, label: {
                         ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
                     })
                 }
             }
-            NavigationLink(isActive: $playStoryViewModel.isStoryGoToMiniQuiz, destination: {
-                MiniQuizView(story: playStoryViewModel.story)
-            }, label: {})
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
@@ -69,15 +67,11 @@ struct PlayStoryResultView: View {
                 dismiss()
             }
         }
-        .onChange(of: playStoryViewModel.isStoryGoToMiniQuiz) { value in
+        .onChange(of: isMiniQuizPresented) { value in
             if !value {
                 playStoryViewModel.isStoryCompleted = true
             }
         }
     }
-}
-
-#Preview {
-    PlayStoryResultView()
 }
 

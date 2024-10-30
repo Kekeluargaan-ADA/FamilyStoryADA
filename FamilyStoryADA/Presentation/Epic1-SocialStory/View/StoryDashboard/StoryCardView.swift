@@ -25,6 +25,7 @@ struct StoryCardView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Image(imagePath)
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 354, height: 220)
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {

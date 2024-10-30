@@ -117,4 +117,12 @@ class TemplateViewModel: ObservableObject {
             }
         }
     }
+    
+    public func getDisplayedPreview() -> [PageTemplatePreviewEntity] {
+        if let template = selectedTemplate {
+            return template.templatePagePreview.filter( { $0.templatePageCategory == "Introduction" || $0.templatePageCategory == "Instruction"})
+        } else {
+            return []
+        }
+    }
 }

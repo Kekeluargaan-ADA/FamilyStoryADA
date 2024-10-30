@@ -64,6 +64,7 @@ struct ImageInputModal: View {
                         if templateViewModel.isEditingTextField {
                             // Show TextField for editing name
                             TextField("Enter name", text: $templateViewModel.childName)
+                                .background(Color("FSWhite"))
                                 .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))
@@ -150,10 +151,11 @@ struct ChangePictureButton: View {
             // NavigationLink for CameraView
             NavigationLink(destination: CameraView.shared.environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
             }
-            .onDisappear {
-                if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
+            .onChange(of: viewModel.navigateToCamera) { value in
+                if !value, viewModel.isPhotoCaptured, viewModel.savedImage != nil {
                     // Show crop view once an image is selected
                     viewModel.showCropView = true
+                    viewModel.isPhotoCaptured = false
                 }
             }
         }
@@ -161,9 +163,10 @@ struct ChangePictureButton: View {
             if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
                 // Show crop view once an image is selected
                 viewModel.showCropView = true
+                viewModel.isPhotoCaptured = false
             }
         }) {
-            ImagePicker(selectedImage: $viewModel.savedImage)
+            ImagePicker()
                 .environmentObject(viewModel)
         }
         

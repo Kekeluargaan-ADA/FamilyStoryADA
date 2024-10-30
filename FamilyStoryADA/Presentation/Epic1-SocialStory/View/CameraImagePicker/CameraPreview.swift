@@ -71,7 +71,6 @@ struct CameraPreview: UIViewRepresentable { // for attaching AVCaptureVideoPrevi
 }
 
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: UIImage?  // This will hold the selected image
     @EnvironmentObject var viewModel: CameraViewModel
     @Environment(\.dismiss) var dismiss  // Used to dismiss the picker
 
@@ -111,7 +110,6 @@ struct ImagePicker: UIViewControllerRepresentable {
                 provider.loadObject(ofClass: UIImage.self) { (image, error) in
                     if let uiImage = image as? UIImage {
                         DispatchQueue.main.async {
-                            self.parent.selectedImage = uiImage
                             self.parent.viewModel.savedImage = uiImage
                             self.parent.viewModel.isPhotoCaptured = true
                         }

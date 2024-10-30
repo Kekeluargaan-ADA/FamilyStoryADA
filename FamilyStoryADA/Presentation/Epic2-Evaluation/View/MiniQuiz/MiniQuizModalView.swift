@@ -15,6 +15,7 @@ struct MiniQuizModalView: View {
             // TODO: Put this into db
             Image("MiniQuizResultMenggosokGigi")
                 .resizable()
+                .scaledToFill()
                 .frame(width: 541, height: 304)
                 .padding(.bottom, 8)
             Text("Kamu Keren!")

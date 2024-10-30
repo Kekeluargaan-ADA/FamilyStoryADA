@@ -50,7 +50,7 @@ struct CustomizationView: View {
                                         .foregroundStyle(Color("FSBlack"))
                                 }
                                 .frame(width: 268, height: 45)
-                                VStack(spacing: 48) {
+                                VStack(spacing: 23) {
                                     HStack {
                                         if viewModel.selectedPage != nil {
                                             Button(action: {
@@ -64,7 +64,7 @@ struct CustomizationView: View {
                                         //TODO: Disable when page is null
                                         HStack (spacing: 12) {
                                             NavigationLink( destination: {
-                                                PlayStoryView(story: viewModel.story)
+                                                PlayStoryView(story: viewModel.story, isMiniQuizPresented: $viewModel.isMiniQuizOpened)
                                             }, label: {
                                                 ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                                             })
@@ -189,7 +189,7 @@ struct CustomizationView: View {
                                                     
                                                     Button(action: {
                                                         cameraViewModel.isPhotoCaptured = false
-                                                        cameraViewModel.isImagePickerOpened = true
+                                                        cameraViewModel.showingImagePicker = true
                                                     }) {
                                                         Label("Choose Photo", systemImage: "photo")
                                                     }
@@ -207,24 +207,43 @@ struct CustomizationView: View {
                                                         .padding()
                                                 }
                                             }
-                                            
-                                            TextField("Masukkan teks di sini", text: Binding(
-                                                get: { currentText },
-                                                set: { newValue in
-                                                    // Split the input text into words
-                                                    let words = newValue.split(separator: " ")
-                                                    
-                                                    // Check if the word count exceeds 15
-                                                    if words.count > 15 {
-                                                        // Limit to the first 15 words and join them back to a string
-                                                        currentText = words.prefix(15).joined(separator: " ")
-                                                    } else {
-                                                        // Update currentText as usual if the word count is within the limit
+                                            ZStack {
+                                                TextField("Masukkan teks di sini", text: Binding(
+                                                    get: { currentText },
+                                                    set: { newValue in
+                                                        // Split the input text into words
+                                                        let words = newValue.split(separator: " ")
+                                                        
                                                         currentText = newValue
+                                                        //                                                        // Check if the word count exceeds 15
+                                                        //                                                        if words.count > 15 {
+                                                        //                                                            // Limit to the first 15 words and join them back to a string
+                                                        //                                                            currentText = words.prefix(15).joined(separator: " ")
+                                                        //                                                        } else {
+                                                        //                                                            // Update currentText as usual if the word count is within the limit
+                                                        //                                                            currentText = newValue
+                                                        //                                                        }
+                                                        
+                                                        // Reset the typing timer
+                                                        resetTypingTimer()
                                                     }
-                                                    
-                                                    // Reset the typing timer
-                                                    resetTypingTimer()
+                                                ))
+                                                .padding(.horizontal, 19)
+                                                .padding(.vertical, 15)
+                                                .frame(width: 760, height: 168)
+                                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(Color("FSBlack"))
+                                                .overlay(
+                                                    TextBoxBackgroundView()
+                                                        .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
+                                                )
+                                                .overlay(alignment: .topLeading) {
+                                                    Text("\(wordCount)/15 words")
+                                                        .font(Font.custom("Fredoka", size: 16))
+                                                        .foregroundColor(Color("FSGrey"))
+                                                        .padding(.horizontal, 20)
+                                                        .padding(.top, 8)
                                                 }
                                             ))
                                             .padding(.horizontal, 19)
@@ -246,22 +265,36 @@ struct CustomizationView: View {
                                                         Text("Optimalkan")
                                                             .font(.system(size: 16))
                                                             .fontWeight(.medium)
+                                                        }
+                                                        .foregroundStyle(Color(.fsBlue9))
+                                                        .padding()
+                                                        .background(
+                                                            RoundedRectangle(cornerRadius: 40)
+                                                                .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                                                .background(
+                                                                    RoundedRectangle(cornerRadius: 40)
+                                                                        .fill(Color.white)
+                                                                )
+                                                        )
+                                                        .padding()
+                                                    })
+                                                }
+                                                .onAppear {
+                                                    currentText = page.pageText.first?.componentContent ?? ""
+                                                }
+                                                // Overlay the HStack at the top left
+                                                .overlay(alignment: .topLeading) {
+                                                    HStack {
+                                                        Image(systemName: "exclamationmark.triangle")
+                                                            .font(Font.custom("SF Pro", size: 16))
+                                                            .foregroundStyle(Color("FSPrimaryOrange5"))
+                                                        Text("Instruksional")
+                                                            .font(Font.custom("SF Pro", size: 16))
+                                                            .foregroundStyle(Color("FSPrimaryOrange5"))
                                                     }
-                                                    .foregroundStyle(Color(.fsBlue9))
-                                                    .padding()
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 40)
-                                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                                            .background(
-                                                                RoundedRectangle(cornerRadius: 40)
-                                                                    .fill(Color.white)
-                                                            )
-                                                    )
-                                                    .padding()
-                                                })
-                                            }
-                                            .onAppear {
-                                                currentText = page.pageText.first?.componentContent ?? ""
+                                                    .padding(.top, 8)
+                                                    .padding(.leading, 136)
+                                                }
                                             }
                                             
                                         }
@@ -273,9 +306,62 @@ struct CustomizationView: View {
                             
                             
                         }
+                        
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
                             MiniQuizView(story: viewModel.story)
                         }, label: {})
+                        
+                        NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
+                            CameraView.shared
+                                .environmentObject(cameraViewModel)
+                        }, label: {})
+                        .onChange(of: cameraViewModel.navigateToCamera) { value in
+                            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+                                // Show crop view once an image is selected
+                                cameraViewModel.showCropView = true
+                            }
+                        }
+                        
+//                        NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
+//                            ImagePicker()
+//                                .environmentObject(cameraViewModel)
+//                        }, label: {})
+//                        .onChange(of: cameraViewModel.isImagePickerOpened) { value in
+//                            if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
+//                                // Show crop view once an image is selected
+//                                cameraViewModel.showCropView = true
+//                            }
+//                        }
+                        
+                        NavigationLink(
+                            destination:
+                                CropImageView(croppingStyle: .landscape)
+                                .environmentObject(cameraViewModel),
+                            isActive: $cameraViewModel.showCropView,
+                            label: {}
+                        )
+                        .onChange(of: cameraViewModel.savedImage) { value in
+                            
+                            if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
+                                if currentPage.pagePicture.isEmpty {
+                                    viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
+                                } else {
+                                    viewModel.selectedPage?.pagePicture.first?.componentContent = imageFileName
+                                    viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+                                }
+                                viewModel.updatePage()
+                                cameraViewModel.savedImage = nil
+                            }
+                        }
+                    }
+                    .sheet(isPresented: $cameraViewModel.showingImagePicker, onDismiss: {
+                        if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                            // Show crop view once an image is selected
+                            cameraViewModel.showCropView = true
+                        }
+                    }) {
+                        ImagePicker()
+                            .environmentObject(cameraViewModel)
                     }
                     .padding(.top, 26)
                     .ignoresSafeArea()
@@ -316,49 +402,7 @@ struct CustomizationView: View {
                     }
                     
                 }
-                NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
-                    CameraView.shared
-                        .environmentObject(cameraViewModel)
-                }, label: {})
-                .onChange(of: cameraViewModel.navigateToCamera) { value in
-                    if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-                        // Show crop view once an image is selected
-                        cameraViewModel.showCropView = true
-                    }
-                }
                 
-                NavigationLink(isActive: $cameraViewModel.isImagePickerOpened, destination: {
-                    ImagePicker(selectedImage: $cameraViewModel.savedImage)
-                        .environmentObject(cameraViewModel)
-                }, label: {})
-                .onChange(of: cameraViewModel.isImagePickerOpened) { value in
-                    if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
-                        // Show crop view once an image is selected
-                        cameraViewModel.showCropView = true
-                    }
-                }
-                
-                NavigationLink(
-                    destination: CropImageView(croppingStyle: .landscape)
-                        .environmentObject(cameraViewModel),
-                    isActive: $cameraViewModel.showCropView,
-                    label: {
-                        EmptyView()
-                    }
-                )
-                .onChange(of: cameraViewModel.savedImage) { value in
-                    
-                    if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
-                        if currentPage.pagePicture.isEmpty {
-                            viewModel.selectedPage?.pagePicture.append(PictureComponentEntity(componentId: UUID(), componentContent: imageFileName, componentCategory: "AppStoragePicture"))
-                        } else {
-                            viewModel.selectedPage?.pagePicture.first?.componentContent = imageFileName
-                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-                        }
-                        viewModel.updatePage()
-                        cameraViewModel.savedImage = nil
-                    }
-                }
             }
             
         }
@@ -373,6 +417,10 @@ struct CustomizationView: View {
         typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             updatePageText()
         }
+    }
+    
+    private var wordCount: Int {
+        currentText.split(separator: " ").count
     }
     
     // Update the page text when the timer completes

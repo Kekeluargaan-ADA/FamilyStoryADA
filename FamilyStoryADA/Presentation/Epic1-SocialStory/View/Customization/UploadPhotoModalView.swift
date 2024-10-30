@@ -50,7 +50,7 @@ struct UploadPhotoModalView: View {
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {
                                     cameraViewModel.isPhotoCaptured = false
-                                    cameraViewModel.isImagePickerOpened = true
+                                    cameraViewModel.showingImagePicker = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
                                     viewModel.isGotoScrapImage = true

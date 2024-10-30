@@ -89,6 +89,12 @@ struct MiniQuizView: View {
                 dismiss()
             }
         }
+        .onAppear {
+            print("Appear mini quiz")
+        }
+        .onDisappear {
+            print("Delete mini quiz view")
+        }
         .background(Color("FSYellow1"))
         .environmentObject(viewModel)
         .navigationBarBackButtonHidden()
