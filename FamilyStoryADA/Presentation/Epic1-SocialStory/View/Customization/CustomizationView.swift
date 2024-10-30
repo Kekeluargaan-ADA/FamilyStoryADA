@@ -53,11 +53,15 @@ struct CustomizationView: View {
                                 VStack(spacing: 23) {
                                     HStack {
                                         if viewModel.selectedPage != nil {
-                                            Button(action: {
-                                                viewModel.deletePage()
-                                            }, label: {
+                                            Menu {
+                                                Button(action: {
+                                                    viewModel.deletePage()
+                                                }, label: {
+                                                    Text("")
+                                                })
+                                            } label: {
                                                 ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
-                                            })
+                                            }
                                         }
                                         
                                         Spacer()
