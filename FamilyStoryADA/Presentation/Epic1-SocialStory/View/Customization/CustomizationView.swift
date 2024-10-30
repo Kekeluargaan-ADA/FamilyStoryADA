@@ -13,6 +13,7 @@ struct CustomizationView: View {
     @StateObject var viewModel: PageCustomizationViewModel
     @StateObject var cameraViewModel: CameraViewModel = CameraViewModel()
     
+    @State var isParaphrasingPresented = false
     @State var currentText: String = ""
     @State private var typingTimer: Timer? = nil
     
@@ -87,7 +88,7 @@ struct CustomizationView: View {
                                             ZStack(alignment: .topTrailing) {
                                                 if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         Image(imagePath)
                                                             .resizable()
                                                             .aspectRatio(contentMode: .fill)
@@ -104,7 +105,7 @@ struct CustomizationView: View {
                                                     
                                                 } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         Image(uiImage: image)
                                                             .resizable()
                                                             .aspectRatio(contentMode: .fill)
@@ -123,7 +124,7 @@ struct CustomizationView: View {
                                                     
                                                     let videoPlayer = AVPlayer(url: url)
                                                     
-                                                    if keyboardHelper.isKeyboardShown {
+                                                    if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
                                                         CustomVideoPlayerView(player: viewModel.videoPlayer)
                                                             .frame(width: 760, height: 468)
                                                             .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -244,15 +245,26 @@ struct CustomizationView: View {
                                                         .padding(.horizontal, 20)
                                                         .padding(.top, 8)
                                                 }
-                                                .overlay(alignment: .bottomTrailing) {
-                                                    Button(action: {
-                                                        
-                                                    }, label: {
-                                                        HStack(spacing: 8) {
-                                                            Image(systemName: "sparkles")
-                                                            Text("Optimalkan")
-                                                                .font(.system(size: 16))
-                                                                .fontWeight(.medium)
+                                            ))
+                                            .padding(.horizontal, 19)
+                                            .padding(.vertical, 15)
+                                            .frame(width: 760, height: 117)
+                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(Color("FSBlack"))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .stroke(Color("FSBorderBlue7"), lineWidth: 2)
+                                            )
+                                            .overlay(alignment: .bottomTrailing) {
+                                                Button(action: {
+                                                    isParaphrasingPresented = true
+                                                },label:{
+                                                    HStack(spacing: 8) {
+                                                        Image(systemName: "sparkles")
+                                                        Text("Optimalkan")
+                                                            .font(.system(size: 16))
+                                                            .fontWeight(.medium)
                                                         }
                                                         .foregroundStyle(Color(.fsBlue9))
                                                         .padding()
@@ -286,10 +298,13 @@ struct CustomizationView: View {
                                             }
                                             
                                         }
-                                        .offset(y: keyboardHelper.isKeyboardShown ? -378 : 0)
+                                        .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -378 : 0)
                                     }
                                 }
                             }
+                            
+                            
+                            
                         }
                         
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
@@ -376,6 +391,16 @@ struct CustomizationView: View {
                             .environmentObject(viewModel)
                         
                     }
+                    
+                    if isParaphrasingPresented{
+                        ZStack{
+                            ParaphraseModal(isParaphrasingPresented: $isParaphrasingPresented)
+                                .frame(width: 1200,height: 280)
+                                .background(.white)
+                        }.frame(height: 780,alignment: .bottom)
+                            
+                    }
+                    
                 }
                 
             }
