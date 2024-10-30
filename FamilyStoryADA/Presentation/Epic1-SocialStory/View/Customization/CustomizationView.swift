@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import Combine
 
 struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
@@ -208,26 +209,10 @@ struct CustomizationView: View {
                                                 }
                                             }
                                             ZStack {
-                                                TextField("Masukkan teks di sini", text: Binding(
-                                                    get: { currentText },
-                                                    set: { newValue in
-                                                        // Split the input text into words
-                                                        let words = newValue.split(separator: " ")
-                                                        
-                                                        currentText = newValue
-                                                        //                                                        // Check if the word count exceeds 15
-                                                        //                                                        if words.count > 15 {
-                                                        //                                                            // Limit to the first 15 words and join them back to a string
-                                                        //                                                            currentText = words.prefix(15).joined(separator: " ")
-                                                        //                                                        } else {
-                                                        //                                                            // Update currentText as usual if the word count is within the limit
-                                                        //                                                            currentText = newValue
-                                                        //                                                        }
-                                                        
-                                                        // Reset the typing timer
-                                                        resetTypingTimer()
+                                                TextField("Masukkan teks di sini", text: $currentText)
+                                                    .onReceive(Just(currentText)) { _ in
+                                                        limitWords(15)
                                                     }
-                                                ))
                                                 .padding(.horizontal, 19)
                                                 .padding(.vertical, 15)
                                                 .frame(width: 760, height: 168)
@@ -418,6 +403,13 @@ struct CustomizationView: View {
     
     private var wordCount: Int {
         currentText.split(separator: " ").count
+    }
+    
+    private func limitWords(_ limit: Int) {
+        let words = currentText.split(separator: " ")
+        if words.count > limit {
+            currentText = words.prefix(limit).joined(separator: " ")
+        }
     }
     
     // Update the page text when the timer completes
