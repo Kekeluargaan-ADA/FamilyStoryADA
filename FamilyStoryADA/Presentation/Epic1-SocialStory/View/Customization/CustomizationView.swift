@@ -57,10 +57,19 @@ struct CustomizationView: View {
                                                 Button(action: {
                                                     viewModel.deletePage()
                                                 }, label: {
-                                                    Text("")
+                                                    Text("Hapus Halaman")
                                                 })
                                             } label: {
-                                                ButtonCircle(heightRatio: 1.0, buttonImage: "trash", buttonColor: .blue)
+                                                ButtonCircle(heightRatio: 1.0,
+                                                             buttonImage: "trash",
+                                                             buttonColor: viewModel.isDeleteSelected ? .yellow : .blue
+                                                )
+                                            }
+                                            .onAppear {
+                                                viewModel.isDeleteSelected = false
+                                            }
+                                            .onTapGesture {
+                                                viewModel.isDeleteSelected.toggle()
                                             }
                                         }
                                         

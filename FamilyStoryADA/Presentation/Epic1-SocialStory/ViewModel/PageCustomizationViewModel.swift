@@ -21,6 +21,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var isGotoCameraView: Bool = false
     @Published var isGotoImagePicker: Bool = false
     @Published var isGotoScrapImage: Bool = false
+    @Published var isDeleteSelected: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
     
     var pageUsecase: PageUsecase
