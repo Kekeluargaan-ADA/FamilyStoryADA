@@ -13,6 +13,7 @@ struct ScrappingInitialView: View {
     @StateObject private var crawlViewModel = ImageCrawlViewModel()
     @State private var isImageSelected: Bool = false
     @EnvironmentObject var viewModel: PageCustomizationViewModel
+    @EnvironmentObject var cameraViewModel: CameraViewModel
     
     @AppStorage("selectedImageUUID") var selectedImageUUID: String?
     
@@ -97,27 +98,31 @@ struct ScrappingInitialView: View {
                             
                             Button(action: {
                                 if let selectedImage = crawlViewModel.selectedImage {
-                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
-                                        // Update the page with new image
-                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
-                                            viewModel.selectedPage?.pagePicture.append(
-                                                PictureComponentEntity(
-                                                    componentId: UUID(),
-                                                    componentContent: filename,
-                                                    componentCategory: "AppStoragePicture"
-                                                )
-                                            )
-                                        } else {
-                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
-                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-                                        }
-                                        
-                                        // Update the page and close the view
-                                        viewModel.updatePage()
-                                        viewModel.isGotoScrapImage = false
-                                        viewModel.isMediaOverlayOpened = false
-                                        crawlViewModel.deleteImages()
-                                    }
+//                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
+//                                        // Update the page with new image
+//                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
+//                                            viewModel.selectedPage?.pagePicture.append(
+//                                                PictureComponentEntity(
+//                                                    componentId: UUID(),
+//                                                    componentContent: filename,
+//                                                    componentCategory: "AppStoragePicture"
+//                                                )
+//                                            )
+//                                        } else {
+//                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
+//                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+//                                        }
+//                                        
+//                                        // Update the page and close the view
+//                                        viewModel.updatePage()
+//                                        viewModel.isGotoScrapImage = false
+//                                        viewModel.isMediaOverlayOpened = false
+//                                        crawlViewModel.deleteImages()
+//                                    }
+                                    cameraViewModel.savedImage = selectedImage
+                                    cameraViewModel.isPhotoCaptured = true
+                                    crawlViewModel.deleteImages()
+                                    viewModel.isGotoScrapImage = false
                                 }
                             }) {
                                 ZStack {
