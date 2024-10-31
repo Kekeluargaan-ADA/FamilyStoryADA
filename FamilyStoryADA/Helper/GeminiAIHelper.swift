@@ -30,3 +30,25 @@ func getResponse(prompt: String) async throws -> String {
     let response = try await model.generateContent(prompt)
     return response.text ?? "No response text available."
 }
+
+// qwerty
+
+struct ParaphraseData: Decodable {
+    let originalText: String
+    let paraphrasedOptions: [ParaphraseOption]
+
+    enum CodingKeys: String, CodingKey {
+        case originalText = "original_text"
+        case paraphrasedOptions = "paraphrased_options"
+    }
+}
+
+struct ParaphraseOption: Decodable {
+    let option: String
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let dictionary = try container.decode([String: String].self)
+        self.option = dictionary.values.first ?? ""
+    }
+}

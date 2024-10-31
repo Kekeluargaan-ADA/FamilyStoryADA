@@ -238,6 +238,7 @@ struct CustomizationView: View {
                                                         //                                                        }
                                                         
                                                         // Reset the typing timer
+                                                        
                                                         resetTypingTimer()
                                                     }
                                                 ))
@@ -259,16 +260,19 @@ struct CustomizationView: View {
                                                         .padding(.top, 8)
                                                 }
                                                 
-                                                .padding(.horizontal, 19)
-                                                .padding(.vertical, 15)
-                                                .frame(width: 760, height: 117)
-                                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                                .fontWeight(.semibold)
-                                                .foregroundStyle(Color("FSBlack"))
 
                                                 .overlay(alignment: .bottomTrailing) {
                                                     Button(action: {
-                                                        isParaphrasingPresented = true
+                                                            Task {
+                                                                do {
+                                                                    let result = try await viewModel.getParaphrasing(for: currentText)
+//                                                                    currentText = result
+                                                                    isParaphrasingPresented = true
+                                                                } catch {
+                                                                    print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                                                    // Handle error here, possibly by setting an error message in viewModel
+                                                                }
+                                                            }
                                                     },label:{
                                                         HStack(spacing: 8) {
                                                             Image(systemName: "sparkles")
@@ -292,13 +296,17 @@ struct CustomizationView: View {
                                                 .onAppear {
                                                     currentText = page.pageText.first?.componentContent ?? ""
                                                 }
+                                                .onChange(of: page.pageText.first?.componentContent){
+                                                    currentText = page.pageText.first?.componentContent ?? ""
+                                                }
                                                 // Overlay the HStack at the top left
                                                 .overlay(alignment: .topLeading) {
                                                     HStack {
                                                         Image(systemName: "exclamationmark.triangle")
                                                             .font(Font.custom("SF Pro", size: 16))
                                                             .foregroundStyle(Color("FSPrimaryOrange5"))
-                                                        Text("Instruksional")
+//                                                        Text("Instruksional")
+                                                        Text("\(viewModel.selectedPage!.pageTextClassification)")
                                                             .font(Font.custom("SF Pro", size: 16))
                                                             .foregroundStyle(Color("FSPrimaryOrange5"))
                                                     }
@@ -404,7 +412,7 @@ struct CustomizationView: View {
                     
                     if isParaphrasingPresented{
                         ZStack{
-                            ParaphraseModal(isParaphrasingPresented: $isParaphrasingPresented)
+                            ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented)
                                 .frame(width: 1200,height: 280)
                                 .background(.white)
                         }.frame(height: 780,alignment: .bottom)
@@ -425,9 +433,21 @@ struct CustomizationView: View {
     private func resetTypingTimer() {
         typingTimer?.invalidate()
         typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            updatePageText()
+            Task {
+                do {
+                    let result = try await viewModel.getTextClassification(for: currentText)
+                    // Uncomment to assign the result if needed
+                    // currentText = result
+                    viewModel.selectedPage?.pageTextClassification = String(result.dropLast())
+                } catch {
+                    print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                    // Handle error here, possibly by setting an error message in viewModel
+                }
+                updatePageText() // Call this after the async operation if order matters
+            }
         }
     }
+
     
     private var wordCount: Int {
         currentText.split(separator: " ").count
