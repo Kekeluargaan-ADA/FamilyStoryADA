@@ -23,6 +23,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var isGotoScrapImage: Bool = false
     @Published var isDeleteSelected: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
+    @Published var paraphrasedOptions: [String] = []
+
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -151,6 +153,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
     
+    
+    
     public func updatePage() {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
@@ -193,6 +197,72 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             }
         }
     }
+    
+    public func getParaphrasing(for text: String) async throws -> [String] {
+        let prompt = """
+                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
+
+                {
+                    "original_text": "{teks}",
+                    "paraphrased_options": [
+                        {
+                            "option_1": "{parafrase_1}"
+                        },
+                        {
+                            "option_2": "{parafrase_2}"
+                        },
+                        {
+                            "option_3": "{parafrase_3}"
+                        }
+                    ]
+                }
+
+                Kalimat: \(text)
+
+                Contoh deskriptif: "aku menggosok gigi."
+                Contoh instruksional (yang harus dihindari): "ayo gosok gigi."
+                """
+        
+        let response = try await getResponse(prompt: prompt)
+            
+        guard let jsonData = response.data(using: .utf8) else {
+                throw NSError(domain: "Invalid JSON format", code: -1, userInfo: nil)
+            }
+            
+            do {
+                let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: jsonData)
+                let options = paraphraseData.paraphrasedOptions.map { $0.option }
+                
+                // Update the @Published property on the main thread
+                DispatchQueue.main.async {
+                    self.paraphrasedOptions = options
+                }
+                
+                return options
+            } catch {
+                print("Failed to parse JSON: \(error.localizedDescription)")
+                throw error
+            }
+    }
+
+    public func getTextClassification(for text: String) async throws -> String {
+        let prompt = """
+                Anda bertugas mengidentifikasi apakah teks berikut adalah "instruktif" atau "deskriptif." 
+                Contoh deskriptif: aku menggosok gigi. 
+                Contoh instruktif: ayo gosok gigi. 
+                Kembalikan hasil hanya dalam format: "Deskriptif" atau "Instruktif."
+                text: \(text)
+"""
+        
+        do {
+            let response = try await getResponse(prompt: prompt)
+            return response
+        } catch {
+            throw error
+        }
+    }
+    
+    
 }
 
 extension PageCustomizationViewModel {
@@ -217,7 +287,7 @@ extension PageCustomizationViewModel {
         isGotoScrapImage = false
         isMediaOverlayOpened = false
     }
-  
+    
     //filter requirement for add new page to be added
     func isAddButtonAppeared() -> Bool {
         return self.story.pages.count(where: { $0.pageType == "Introduction" || $0.pageType == "Instruction" }) < 10

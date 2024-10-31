@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 struct ParaphraseModal: View {
+    @StateObject var viewModel: PageCustomizationViewModel
     @Binding var isParaphrasingPresented: Bool
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -42,21 +43,23 @@ struct ParaphraseModal: View {
                     
                     // Paraphrased text items
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Saya mengelap mulut menggunakan handuk.")
-                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("FSBlack"))
-                        Divider()
-                        Text("Selanjutnya, keringkan mulut menggunakan handuk.")
-                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("FSBlack"))
-                        Divider()
-                        Text("Lalu, saya membersihkan mulut menggunakan handuk.")
-                            .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                            .fontWeight(.regular)
-                            .foregroundStyle(Color("FSBlack"))
-                        Divider()
+                        
+                        
+                        
+                        ForEach(viewModel.paraphrasedOptions, id: \.self) { paraphrasedText in
+                            
+                            Button(action: {
+                                viewModel.selectedPage?.pageText.first?.componentContent = paraphrasedText
+                                isParaphrasingPresented = false
+                            }) {
+                                Text(paraphrasedText)
+                                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                                    .fontWeight(.regular)
+                                    .foregroundColor(Color("FSBlack"))
+                            }
+                            Divider()
+                            
+                        }
                     }
                     .frame(width: 980)
                     .foregroundColor(.black)
@@ -64,6 +67,16 @@ struct ParaphraseModal: View {
                         // Rephrase Button
                         Button(action: {
                             // Rephrase action
+                            Task {
+                                do {
+                                    let result = try await viewModel.getParaphrasing(for: viewModel.selectedPage!.pageText.first!.componentContent)
+//                                                                    currentText = result
+                                    isParaphrasingPresented = true
+                                } catch {
+                                    print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                    // Handle error here, possibly by setting an error message in viewModel
+                                }
+                            }
                         }) {
                             HStack(spacing: 4) {
                                 Image(systemName: "arrow.clockwise")
