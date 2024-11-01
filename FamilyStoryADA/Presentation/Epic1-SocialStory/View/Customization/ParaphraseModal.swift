@@ -109,8 +109,10 @@ struct ParaphraseModal: View {
                         
                         // Pilih Button
                         Button(action: {
-                            viewModel.selectedPage?.pageText.first?.componentContent = selectedOption!
-                            isParaphrasingPresented = false
+                            if let option = selectedOption {
+                                viewModel.selectedPage?.pageText.first?.componentContent = option
+                                isParaphrasingPresented = false
+                            }
                         }) {
                             Text("Pilih")
                                 .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
