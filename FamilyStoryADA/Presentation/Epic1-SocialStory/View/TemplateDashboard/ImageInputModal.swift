@@ -72,10 +72,23 @@ struct ImageInputModal: View {
                                 .frame(width: 200)
                             
                         } else {
-                            Text(templateViewModel.childName)
-                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color(.fsBlack))
+                            if templateViewModel.childName.isEmpty {
+                                Text("Enter name")
+                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color(.fsBlack))
+                                    .onTapGesture {
+                                        templateViewModel.isEditingTextField.toggle()
+                                    }
+                            } else {
+                                Text(templateViewModel.childName)
+                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color(.fsBlack))
+                                    .onTapGesture {
+                                        templateViewModel.isEditingTextField.toggle()
+                                    }
+                            }
                         }
                         
                         Button(action: {
