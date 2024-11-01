@@ -38,6 +38,14 @@ struct CropImageView: View {
                 dismiss()
             }
             .ignoresSafeArea()
+            .onAppear() {
+                print(viewModel.savedImage)
+            }
+        } else {
+            EmptyView()
+                .onAppear() {
+                    print(viewModel.savedImage)
+                }
         }
     }
     

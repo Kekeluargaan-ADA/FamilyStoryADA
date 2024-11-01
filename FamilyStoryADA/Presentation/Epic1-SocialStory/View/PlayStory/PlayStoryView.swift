@@ -31,7 +31,9 @@ struct PlayStoryView: View {
                         playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
-                        textToSpeechHelper.speakIndonesian((playStoryViewModel.selectedPage?.pageText.first?.componentContent)!)
+                        if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
+                            textToSpeechHelper.speakIndonesian(text)
+                        }
                     })
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
@@ -42,11 +44,19 @@ struct PlayStoryView: View {
                         ZStack {
                             if let image = playStoryViewModel.selectedPage?.pagePicture.first {
                                 if image.componentCategory == "AssetPicture" {
-                                    Image(image.componentContent)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                                        Image(image.componentContent)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 300 * widthRatio, height: 400 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    } else {
+                                        Image(image.componentContent)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    }
                                 } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
                                     Image(uiImage: imageAppStorage)
                                         .resizable()

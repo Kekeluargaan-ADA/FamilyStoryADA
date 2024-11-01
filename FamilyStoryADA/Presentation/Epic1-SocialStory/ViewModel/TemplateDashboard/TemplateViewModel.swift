@@ -20,6 +20,7 @@ class TemplateViewModel: ObservableObject {
     @Published var isEditingTextField: Bool = false
     @Published var isTemplateClosed = false
     @Published var childName: String = ""
+    @Published var chosenImage: UIImage?
     
     private let templateUsecase: TemplateUsecase
     private let storyUsecase: StoryUsecase

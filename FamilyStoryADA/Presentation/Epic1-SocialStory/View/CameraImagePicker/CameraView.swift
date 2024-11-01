@@ -83,8 +83,10 @@ struct CameraView: View {
                             }
                             Spacer()
                             CaptureButton {
-                                viewModel.captureImage()
-                                viewModel.isPhotoCaptured = true
+                                Task {
+                                    viewModel.captureImage()
+                                    viewModel.isPhotoCaptured = true
+                                }
                             }
                             Spacer()
                             CameraSwitchButton { viewModel.switchCamera() }
