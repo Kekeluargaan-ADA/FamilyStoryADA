@@ -62,8 +62,10 @@ struct CustomizationView: View {
                                     )
                                     .padding(.top, 20)
                                     .padding(.horizontal, 46)
+
                                     CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
                                         .environmentObject(keyboardHelper)
+                                        .environmentObject(cameraViewModel)
                                 }
                             }
                             
@@ -104,6 +106,7 @@ struct CustomizationView: View {
                                 }
                                 viewModel.updatePage()
                                 cameraViewModel.savedImage = nil
+                                viewModel.isMediaOverlayOpened = false
                             }
                         }
                     }
