@@ -18,13 +18,15 @@ struct CameraView: View {
     private var didCrop: ((CropView.CroppedRect) -> ())?
     private var didCancel: (() -> ())?
     
+    public static var shared = CameraView()
+    
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
                     Color.black.edgesIgnoringSafeArea(.all)
                     
-                    VStack(spacing: 0) {
+                    HStack(spacing: 0) {
                         Button(action: {
                             viewModel.switchFlash()
                         }, label: {
@@ -46,7 +48,10 @@ struct CameraView: View {
                                     self.currentZoomFactor = min(max(self.currentZoomFactor, 0.5), 10)
                                     self.viewModel.zoom(with: currentZoomFactor)
                                 })
-                            //                        .animation(.easeInOut, value: 0.5)
+                            .onAppear(){
+                                UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+                                UIViewController.attemptRotationToDeviceOrientation()
+                            }
                             
                             if isFocused {
                                 FocusView(position: $focusLocation)
@@ -63,27 +68,30 @@ struct CameraView: View {
                             }
                         }
                         
-                        HStack {
-                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
-                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
+                        VStack {
+                            //                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
+                            //                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
+                            //                            }
+                            NavigationLink(destination: {
+                                ImagePicker()
+                                    .environmentObject(viewModel)
+                            }, label: {
+                                PhotoThumbnail(selectedImage: $viewModel.savedImage)
+                            })
+                            .onAppear() {
+                                viewModel.savedImage = nil
                             }
                             Spacer()
                             CaptureButton {
-                                viewModel.captureImage()
+                                Task {
+                                    viewModel.captureImage()
+                                    viewModel.isPhotoCaptured = true
+                                }
                             }
                             Spacer()
                             CameraSwitchButton { viewModel.switchCamera() }
                         }
                         .padding(20)
-                        
-                        NavigationLink(
-                            destination: cropView(),
-                            isActive: $viewModel.isPhotoCaptured,
-                            label: {
-                                EmptyView()
-                            }
-                        )
-                        .hidden()
                     }
                 }
                 
@@ -104,52 +112,56 @@ struct CameraView: View {
                 UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
                 UIViewController.attemptRotationToDeviceOrientation()
             }
+            .onChange(of: viewModel.savedImage) { value in
+                guard value != nil && viewModel.isPhotoCaptured else { return }
+                viewModel.navigateToCamera = false
+            }
             .navigationBarHidden(true)
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
     
     // Create a separate function for the crop view navigation
-    func cropView() -> some View {
-        if let selectedImage = viewModel.capturedImage {
-            return AnyView(
-                CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
-                    viewModel.capturedImage = nil
-                    viewModel.photosPickerItem = nil
-                    
-                    // Save image and get the filename
-                    let filename = CameraDelegate.saveImageToAppStorage(image.image)
-                    viewModel.savedImageFilename = filename
-                    viewModel.savedImage = CameraDelegate.loadImageFromAppStorage(named: filename)
-                    // Trigger didCrop closure (if you want to pass it elsewhere)
-                    self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
-                    
-                    // Save the image to gallery
-                    CameraDelegate.saveImageToGallery(image.image)
-                    
-                    //dismiss
-                    viewModel.isPhotoCaptured = false
-                    dismiss()
-                } didCropImageToRect: { _ in
-                    
-                } didFinishCancelled: { _ in
-                    viewModel.capturedImage = nil
-                    viewModel.photosPickerItem = nil
-                    viewModel.isPhotoCaptured = false
-                }
-                .ignoresSafeArea()
-            )
-        } else {
-            return AnyView(
-                EmptyView()
-                    .onAppear(){
-                        dismiss()
-                }
-                    .environmentObject(viewModel)   //Inject view model with the saved filename
-                )
-        }
-    }
-
+    //    func cropView() -> some View {
+    //        if let selectedImage = viewModel.capturedImage {
+    //            return AnyView(
+    //                CropView(image: selectedImage.image, croppingStyle: .default, croppingOptions: .init()) { image in
+    //                    viewModel.capturedImage = nil
+    //                    viewModel.photosPickerItem = nil
+    //
+    //                    // Save image and get the filename
+    //                    let filename = CameraDelegate.saveImageToAppStorage(image.image)
+    //                    viewModel.savedImageFilename = filename
+    //                    viewModel.savedImage = CameraDelegate.loadImageFromAppStorage(named: filename)
+    //                    // Trigger didCrop closure (if you want to pass it elsewhere)
+    //                    self.didCrop?(CropView.CroppedRect(rect: image.rect, angle: image.angle))
+    //
+    //                    // Save the image to gallery
+    //                    CameraDelegate.saveImageToGallery(image.image)
+    //
+    //                    //dismiss
+    //                    viewModel.isPhotoCaptured = false
+    //                    dismiss()
+    //                } didCropImageToRect: { _ in
+    //
+    //                } didFinishCancelled: { _ in
+    //                    viewModel.capturedImage = nil
+    //                    viewModel.photosPickerItem = nil
+    //                    viewModel.isPhotoCaptured = false
+    //                }
+    //                .ignoresSafeArea()
+    //            )
+    //        } else {
+    //            return AnyView(
+    //                EmptyView()
+    //                    .onAppear(){
+    //                        dismiss()
+    //                }
+    //                    .environmentObject(viewModel)   //Inject view model with the saved filename
+    //                )
+    //        }
+    //    }
+    
     
     
     func openSettings() {
@@ -166,11 +178,11 @@ struct CameraView: View {
 }
 
 struct PhotoThumbnail: View {
-    @Binding var selectedImage: SelectedImage?
+    @Binding var selectedImage: UIImage?
     
     var body: some View {
         Group {
-            if let photo = selectedImage?.image {
+            if let photo = selectedImage {
                 Image(uiImage: photo)
                     .resizable()
                     .aspectRatio(contentMode: .fill)

@@ -7,16 +7,24 @@
 
 import Foundation
 import UIKit
+import AVFoundation
+
+// TODO: PINDAHIN KE MANAGER KALO LOGIC BUSINESS
 
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
+    @Published var isPlayStoryOpened: Bool = false
     @Published var isMediaOverlayOpened: Bool = false
     @Published var isGotoCameraView: Bool = false
     @Published var isGotoImagePicker: Bool = false
     @Published var isGotoScrapImage: Bool = false
+    @Published var isDeleteSelected: Bool = false
+    @Published var videoPlayer: AVPlayer = AVPlayer()
+    @Published var paraphrasedOptions: [String] = []
+
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -24,11 +32,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     
     init(story: StoryEntity) {
         self.story = story
-        self.pageUsecase = ImplementedPageUsecase()
-        self.storyUsecase = ImplementedStoryUsecase()
-        self.componentUsecase = ImplementedComponentUsecase()
+        self.pageUsecase = ImplementedPageUsecase.shared
+        self.storyUsecase = ImplementedStoryUsecase.shared
+        self.componentUsecase = ImplementedComponentUsecase.shared
         
-        self.selectedPage = story.pages[1]
+        self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
         
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
     }
@@ -36,19 +44,24 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     //make new blank page
     public func addNewBlankPage() {
         let newPage = PageEntity(pageId: UUID(),
+                                 pageType: "Instruction",
                                  pageText: [],
                                  pagePicture: [],
                                  pageVideo: [],
-                                 pageSoundPath: ""
+                                 pageSoundPath: "",
+                                 pageTextClassification: ""
         )
         
+        let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
+        
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.insert(newPage, at: story.pages.count - 1) // Add blank page before end of story
+            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1)) // Add blank page before end of story
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
+                self.selectedPage = newPage // redirect display to the newly made page
                 if selectedPage == nil {
-                    if let firstPage = story.pages.first {
+                    if let firstPage = story.pages.first(where: {$0.pageType == "Instruction" || $0.pageType == "Introduction"}) {
                         self.selectedPage = firstPage
                     }
                 }
@@ -73,11 +86,15 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     private func reorderStoryPages() {
         var reorderedPages = [PageEntity]()
         
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening"}))
+        
         for draggedPage in draggedPages {
             if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
                 reorderedPages.append(matchingPage)
             }
         }
+        
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Closing"}))
         
         story.pages = reorderedPages
         
@@ -113,15 +130,30 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                         selectedPage = nil
                         return
                     }
-                    if storyIndex > 0 {
+                    // old next page algorithm
+                    //                    if storyIndex > 0 {
+                    //                        selectedPage = story.pages[storyIndex - 1]
+                    //                    } else {
+                    //                        selectedPage = story.pages[storyIndex]
+                    //                    }
+                    
+                    // new next page algorithm
+                    if storyIndex < story.pages.count, story.pages[storyIndex].pageType != "Closing" {
+                        // next index is selectedPage
+                        selectedPage = story.pages[storyIndex]
+                    } else if storyIndex - 1 >= 0, story.pages[storyIndex - 1].pageType != "Opening" {
+                        // previous index is selectedPage
                         selectedPage = story.pages[storyIndex - 1]
                     } else {
-                        selectedPage = story.pages[storyIndex]
+                        self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
                     }
                 }
+                
             }
         }
     }
+    
+    
     
     public func updatePage() {
         if let currentPage = self.selectedPage {
@@ -131,9 +163,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     }
     
     private func updateTextComponent(page: PageEntity) {
-
         if let text = page.pageText.first {
-            
             if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
                 changedPage.pageText = []
                 changedPage.pageText.append(text)
@@ -141,8 +171,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                 if componentUsecase.addNewComponent(component: text) != nil {
                     page.pageText = []
                     page.pageText.append(text)
-                    //TODO: Update id in page
-                    
+                    // TODO: Update page.pageTextClassification
+                    page.pageTextClassification = "Instructive"
                     _ = pageUsecase.editPage(page: page)
                 }
             }
@@ -161,11 +191,106 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
-                    //TODO: Update id in page
+                    
                     _ = pageUsecase.editPage(page: page)
                 }
             }
         }
+    }
+    
+    public func getParaphrasing(for text: String) async throws -> [String] {
+        let prompt = """
+                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
+
+                {
+                    "original_text": "{teks}",
+                    "paraphrased_options": [
+                        {
+                            "option_1": "{parafrase_1}"
+                        },
+                        {
+                            "option_2": "{parafrase_2}"
+                        },
+                        {
+                            "option_3": "{parafrase_3}"
+                        }
+                    ]
+                }
+
+                Kalimat: \(text)
+
+                Contoh deskriptif: "aku menggosok gigi."
+                Contoh instruksional (yang harus dihindari): "ayo gosok gigi."
+                """
+        
+        let response = try await getResponse(prompt: prompt)
+            
+        guard let jsonData = response.data(using: .utf8) else {
+                throw NSError(domain: "Invalid JSON format", code: -1, userInfo: nil)
+            }
+            
+            do {
+                let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: jsonData)
+                let options = paraphraseData.paraphrasedOptions.map { $0.option }
+                
+                // Update the @Published property on the main thread
+                DispatchQueue.main.async {
+                    self.paraphrasedOptions = options
+                }
+                
+                return options
+            } catch {
+                print("Failed to parse JSON: \(error.localizedDescription)")
+                throw error
+            }
+    }
+
+    public func getTextClassification(for text: String) async throws -> String {
+        let prompt = """
+                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." 
+                Contoh deskriptif: aku menggosok gigi. 
+                Contoh instruktif: ayo gosok gigi. 
+                Kembalikan hasil hanya dalam format: "Instructive" atau "Descriptive"
+                text: \(text)
+"""
+        
+        do {
+            let response = try await getResponse(prompt: prompt)
+            return response
+        } catch {
+            throw error
+        }
+    }
+    
+    
+}
+
+extension PageCustomizationViewModel {
+    func handleScrapImageSelection(_ filename: String) {
+        if let page = selectedPage, page.pagePicture.isEmpty {
+            // Create new picture component if none exists
+            selectedPage?.pagePicture.append(
+                PictureComponentEntity(
+                    componentId: UUID(),
+                    componentContent: filename,
+                    componentCategory: "AppStoragePicture"
+                )
+            )
+        } else {
+            // Update existing picture component
+            selectedPage?.pagePicture.first?.componentContent = filename
+            selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+        }
+        
+        // Update the page and close related views
+        updatePage()
+        isGotoScrapImage = false
+        isMediaOverlayOpened = false
+    }
+    
+    //filter requirement for add new page to be added
+    func isAddButtonAppeared() -> Bool {
+        return self.story.pages.count(where: { $0.pageType == "Introduction" || $0.pageType == "Instruction" }) < 10
     }
     
 }

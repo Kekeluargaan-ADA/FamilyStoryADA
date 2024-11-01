@@ -11,9 +11,12 @@ import AVKit
 struct PlayStoryView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var playStoryViewModel: PlayStoryViewModel
-    
-    init(story: StoryEntity) {
+    @Binding var isMiniQuizPresented: Bool
+    private let textToSpeechHelper = TextToSpeechHelper()
+    @State var playStoryIsActive = false
+    init(story: StoryEntity, isMiniQuizPresented: Binding<Bool>) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
+        _isMiniQuizPresented = isMiniQuizPresented
     }
     
     var body: some View {
@@ -24,26 +27,40 @@ struct PlayStoryView: View {
                 let widthRatio = ratios.widthRatio
                 
                 VStack {
-                    Spacer()
                     PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        dismiss()
+                        playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
+                        if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
+                            textToSpeechHelper.speakIndonesian(text)
+                        }
                     })
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
-                    Spacer().frame(height: 21 * heightRatio)
+                    .padding(.bottom, 21 * heightRatio)
+                    
                     ZStack {
                         //Content
                         ZStack {
-                            
                             if let image = playStoryViewModel.selectedPage?.pagePicture.first {
                                 if image.componentCategory == "AssetPicture" {
-                                    Image(image.componentContent)
-                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                                        Image(image.componentContent)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 300 * widthRatio, height: 400 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    } else {
+                                        Image(image.componentContent)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    }
                                 } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
                                     Image(uiImage: imageAppStorage)
+                                        .resizable()
+                                        .scaledToFit()
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }else {
@@ -53,20 +70,23 @@ struct PlayStoryView: View {
                                 }
                             } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 
-                                //Video
-                                let videoPlayer = AVPlayer(url: url)
-                                
-                                VideoPlayer(player: videoPlayer)
+                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .onAppear() {
                                         
-                                        videoPlayer.play()
-                                        
+                                        playStoryViewModel.setupPlayer(url: url)
                                     }
                                     .onDisappear() {
-                                        videoPlayer.pause()
+                                        playStoryViewModel.videoPlayer.pause()
+                                        playStoryViewModel.removePlayerObserver()
                                     }
+                                    .onChange(of: url) {
+                                        playStoryViewModel.removePlayerObserver()
+                                        playStoryViewModel.setupPlayer(url: url)
+                                    }
+                                    
+                                
                             } else {
                                 RoundedRectangle(cornerRadius: 12)
                                     .foregroundStyle(Color("FSWhite"))
@@ -79,7 +99,9 @@ struct PlayStoryView: View {
                         HStack {
                             if playStoryViewModel.currentPageNumber > 0 {
                                 Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToPreviousPage()
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
                                 })
@@ -89,25 +111,35 @@ struct PlayStoryView: View {
                             Spacer()
                             if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
                                 Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToNextPage()
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
                                 
                                 .padding(.trailing, -32 * heightRatio)
                             } else {
-                                NavigationLink(destination: {
-                                    // TODO: Goto PageClosing
-                                    PlayStoryResultView()
+                                
+                                Button(action: {
+                                    textToSpeechHelper.stopSpeaking()
+                                    playStoryIsActive = true
+                                    
                                 }, label: {
                                     ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                        .padding(.trailing, -32 * heightRatio)
                                 })
+                                
+                                NavigationLink(isActive: $playStoryIsActive,destination: {
+                                    PlayStoryResultView(isMiniQuizPresented: $isMiniQuizPresented)
+                                        .environmentObject(playStoryViewModel)
+                                }, label: {})
                             }
                         }
                         .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
                     
-                    if playStoryViewModel.currentPageNumber <= 0 || playStoryViewModel.currentPageNumber >= playStoryViewModel.story.pages.count - 1 {
+                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
                         Spacer().frame(height: 19 * heightRatio)
                         
                         ZStack {
@@ -145,12 +177,6 @@ struct PlayStoryView: View {
                         
                     
                 }
-                // TODO: Not working
-                NavigationLink(isActive: $playStoryViewModel.isStoryGoToMiniQuiz, destination: {
-                    MiniQuizView(story: playStoryViewModel.story)
-                }, label: {
-                    
-                })
             }
             .background(Color("FSYellow1"))
         }

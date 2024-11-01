@@ -12,17 +12,21 @@ import SwiftData
 class PageSwiftData: Identifiable, ISwiftDataAble {
     
     var pageId: UUID
+    var pageType: String
     var pageText: [UUID]
     var pagePicture: [UUID]
     var pageVideo: [UUID]
     var pageSoundPath: String
+    var pageTextClassification: String
     
-    init (pageId: UUID, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String) {
+    init(pageId: UUID, pageType: String, pageText: [UUID], pagePicture: [UUID], pageVideo: [UUID], pageSoundPath: String, pageTextClassification: String) {
         self.pageId = pageId
+        self.pageType = pageType
         self.pageText = pageText
         self.pagePicture = pagePicture
         self.pageVideo = pageVideo
         self.pageSoundPath = pageSoundPath
+        self.pageTextClassification = pageTextClassification
     }
     
 //    init (template: PageJSONObject) {
@@ -54,15 +58,17 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     static func convertToSwiftData(jsonTemplate: PageJSONObject) -> PageSwiftData {
         return PageSwiftData(pageId: UUID(),
+                             pageType: jsonTemplate.pageType,
                              pageText: convertToUUIDArray(jsonTemplate: jsonTemplate.pageText),
                              pagePicture: convertToUUIDArray(jsonTemplate: jsonTemplate.pagePicture),
                              pageVideo: convertToUUIDArray(jsonTemplate: jsonTemplate.pageVideo),
-                             pageSoundPath: jsonTemplate.pageSoundPath
+                             pageSoundPath: jsonTemplate.pageSoundPath,
+                             pageTextClassification: "Descriptive"
         )
     }
     
     static private func convertToUUIDArray(jsonTemplate: [ComponentJSONObject]) -> [UUID] {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         var array: [(UUID)] = []
         for object in jsonTemplate {
             let component = StoryComponentSwiftData.convertToSwiftData(jsonTemplate: object)
@@ -75,10 +81,12 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     static func convertToSwiftData(entity: PageEntity) -> PageSwiftData {
         return PageSwiftData(pageId: entity.pageId,
+                             pageType: entity.pageType,
                              pageText: convertToUUIDArray(entities: entity.pageText),
                              pagePicture: convertToUUIDArray(entities: entity.pagePicture),
                              pageVideo: convertToUUIDArray(entities: entity.pageVideo),
-                             pageSoundPath: entity.pageSoundPath
+                             pageSoundPath: entity.pageSoundPath,
+                             pageTextClassification: entity.pageTextClassification
         )
     }
     
@@ -92,15 +100,17 @@ class PageSwiftData: Identifiable, ISwiftDataAble {
     
     func convertToEntity() -> PageEntity {
         return PageEntity(pageId: self.pageId,
+                          pageType: self.pageType,
                           pageText: convertToEntitiesArray(componentIds: self.pageText, type: .text) as! [TextComponentEntity],
                           pagePicture: convertToEntitiesArray(componentIds: self.pagePicture, type: .picture) as! [PictureComponentEntity],
                           pageVideo: convertToEntitiesArray(componentIds: self.pageVideo, type: .video) as! [VideoComponentEntity],
-                          pageSoundPath: self.pageSoundPath
+                          pageSoundPath: self.pageSoundPath,
+                          pageTextClassification: self.pageTextClassification
         )
     }
     
     private func convertToEntitiesArray(componentIds: [(UUID)], type: StoryComponentType) -> [StoryComponentEntity] {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         
         var array: [StoryComponentEntity] = []
         for id in componentIds {

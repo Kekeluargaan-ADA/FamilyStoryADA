@@ -6,49 +6,65 @@
 //
 import SwiftUI
 
+enum CroppingStyleType {
+    case portrait, landscape
+}
 
 struct CropImageView: View {
-    @Binding var selectedImage: UIImage?
-    @Binding var showCropView: Bool
-    @ObservedObject var viewModel: CameraViewModel
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: CameraViewModel
+    var croppingStyle: CroppingStyleType
+    
+    var style: CroppedPhotosPickerOptions {
+        switch croppingStyle {
+        case .portrait:
+            return .init(customAspectRatio: CGSize(width: 3, height: 4))
+        case .landscape:
+            return .init(customAspectRatio: CGSize(width: 16, height: 9))
+        }
+    }
     
     var body: some View {
-        if let selectedImage = selectedImage {
-            CropView(image: selectedImage, croppingStyle: .default, croppingOptions: .init()) { image in
+        if let image = viewModel.savedImage {
+            CropView(image: image, croppingStyle: .default, croppingOptions: style) { image in
                 // Handle cropped image here
                 handleCroppedImage(image)
+                dismiss()
             } didCropImageToRect: { _ in
                 // Handle additional crop rect logic if needed
             } didFinishCancelled: { _ in
                 // Handle cancel action
                 handleCancelAction()
+                dismiss()
             }
             .ignoresSafeArea()
+            .onAppear() {
+                print(viewModel.savedImage)
+            }
         } else {
             EmptyView()
+                .onAppear() {
+                    print(viewModel.savedImage)
+                }
         }
     }
     
     private func handleCroppedImage(_ image: CropView.CroppedImage) {
         // Update the viewModel's saved image after cropping
-        viewModel.capturedImage = nil
+//        viewModel.capturedImage = nil
         viewModel.photosPickerItem = nil
         
-        // Save image and get the filename
-        let filename = CameraDelegate.saveImageToAppStorage(image.image)
-        viewModel.savedImageFilename = filename
-        viewModel.savedImage = CameraDelegate.loadImageFromAppStorage(named: filename)  // <-- Update the savedImage
-        
-        // Save the image to the gallery
-        CameraDelegate.saveImageToGallery(image.image)
+        viewModel.savedImage = image.image
+        viewModel.isPhotoCaptured = false
         
         // Dismiss crop view after saving
-        showCropView = false
+        viewModel.showCropView = false
     }
     
     private func handleCancelAction() {
-        viewModel.capturedImage = nil
+        viewModel.savedImage = nil
         viewModel.photosPickerItem = nil
-        showCropView = false
+        viewModel.isPhotoCaptured = false
+        viewModel.showCropView = false
     }
 }

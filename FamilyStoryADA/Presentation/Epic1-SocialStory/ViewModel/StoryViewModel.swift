@@ -26,8 +26,8 @@ class StoryViewModel: ObservableObject {
     
     @MainActor
     init() {
-        self.storyUsecase = ImplementedStoryUsecase()
-        self.templateUsecase = JSONTemplateUsecase()
+        self.storyUsecase = ImplementedStoryUsecase.shared
+        self.templateUsecase = JSONTemplateUsecase.shared
         self.stories = [StoryEntity]()
         self.displayedStory = [StoryEntity]()
         
@@ -56,10 +56,8 @@ class StoryViewModel: ObservableObject {
         objectWillChange.send()
     }
     
-    func addNewStory(templateId: UUID) {
-        let _ = storyUsecase.addNewStory(templateId: templateId)
-        
-        fetchStories()
+    func fetchStoryById(storyId: UUID) -> StoryEntity? {
+        return storyUsecase.fetchStoryById(storyId: storyId)
     }
     
     public func searchStories() {

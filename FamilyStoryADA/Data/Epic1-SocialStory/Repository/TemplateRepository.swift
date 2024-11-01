@@ -15,6 +15,10 @@ internal protocol TemplateRepository {
 internal final class JSONTemplateRepository: TemplateRepository {
     
     private let jsonManager = JsonManager.shared
+    public static let shared = JSONTemplateRepository()
+    private init() {
+        
+    }
     
     func fetchTemplates() -> ([TemplateJSONObject], ErrorHandler?) {
         let result = jsonManager.loadJSONData(from: "Template", as: [TemplateJSONObject].self)

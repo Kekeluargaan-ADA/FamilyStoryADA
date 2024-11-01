@@ -18,6 +18,7 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var processedImages: [UIImage] = []
     @Published var shouldRemoveBackground: Bool = false
     @Published var selectedImage: UIImage? = nil
+    @Published var savedImageFilename: String? = nil  // Added new property
 
     private let imageProcessor = CrawlImageHelper()
 
@@ -122,6 +123,7 @@ class ImageCrawlViewModel: ObservableObject {
     // Clear the selected image
     func clearSelection() {
         selectedImage = nil
+        savedImageFilename = nil  // Also clear the saved filename when clearing selection
     }
 
     // Function to save the selected image to app storage
@@ -139,6 +141,7 @@ class ImageCrawlViewModel: ObservableObject {
 
             do {
                 try data.write(to: fileURL)
+                self.savedImageFilename = filename  // Update the published property
                 print("Selected image saved to app storage: \(fileURL.path)")
                 return filename
             } catch {

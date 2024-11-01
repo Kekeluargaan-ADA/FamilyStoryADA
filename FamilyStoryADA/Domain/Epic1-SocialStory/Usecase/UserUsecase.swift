@@ -14,9 +14,10 @@ internal protocol UserUsecase {
 
 public final class ImplementedUserUsecase: UserUsecase {
     private let repository: UserRepository
+    public static let shared = ImplementedUserUsecase()
     
-    init() {
-        self.repository = SwiftDataUserRepository()
+    private init() {
+        self.repository = SwiftDataUserRepository.shared
     }
     
     func fetchUsers() -> [UserEntity] {

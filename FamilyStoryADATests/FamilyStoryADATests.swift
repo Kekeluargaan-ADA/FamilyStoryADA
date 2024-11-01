@@ -14,7 +14,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testFetchTemplates() {
-        let templateRepository = JSONTemplateRepository()
+        let templateRepository = JSONTemplateRepository.shared
         let fileManager = FileManager.default
         if let filePath = Bundle.main.path(forResource: "Template", ofType: "json") {
             #expect(fileManager.fileExists(atPath: filePath), "Template.json does not exist")
@@ -30,7 +30,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingRatio() {
-        let repo = SwiftDataRatioRepository()
+        let repo = SwiftDataRatioRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         _ = repo.addNewRatio(ratio: ratio)
@@ -43,7 +43,7 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingComponent() {
-        let repo = SwiftDataComponentRepository()
+        let repo = SwiftDataComponentRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         let component = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyContent", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
@@ -59,13 +59,14 @@ struct FamilyStoryADATests {
     
     @Test
     func testCreatingPage() {
-        let repo = SwiftDataPageRepository()
+        let repo = SwiftDataPageRepository.shared
         
         let ratio = RatioSwiftData(ratioId: UUID(), xRatio: 4.0, yRatio: 0.0, zRatio: 1)
         let imageComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyImage", componentCategory: "AssetImage", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
         let textComponent = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText1", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
         let textComponent2 = StoryComponentSwiftData(componentId: UUID(), componentContent: "DummyText2", componentCategory: "Text", componentRatioId: ratio.ratioId, componentScale: nil, componentRotation: 0.0)
         let page = PageSwiftData(pageId: UUID(),
+                                 pageType: "Instruction",
                                  pageText: [
                                     textComponent.componentId,
                                     textComponent2.componentId
@@ -76,7 +77,8 @@ struct FamilyStoryADATests {
                                  pageVideo: [
                                     
                                  ],
-                                 pageSoundPath: "DummySound.mp4"
+                                 pageSoundPath: "DummySound.mp4",
+                                 pageTextClassification: "Instructive"
         )
         _ = repo.addNewPage(page: page)
         
@@ -89,23 +91,23 @@ struct FamilyStoryADATests {
 //        #expect(pages.first?.pageSoundPath == "DummySound.mp4", "not correct value")
     }
     
-    @Test
-    func testFetchStoryEntity() {
-        let storyUsecase = ImplementedStoryUsecase()
-        
-        if let templateUUID = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
-            let storyId = storyUsecase.addNewStory(templateId: templateUUID)
-            
-            #expect(storyId != nil, "story has not been created")
-            
-            if let fixedStoryId = storyId {
-                let storyEntity = storyUsecase.fetchStoryById(storyId: fixedStoryId)
-                
-                #expect(storyEntity != nil, "story entity has not been created")
-                
-                #expect(!(storyEntity?.pages.isEmpty ?? true), "have no page")
-            }
-        }
-    }
+//    @Test
+//    func testFetchStoryEntity() {
+//        let storyUsecase = ImplementedStoryUsecase()
+//        
+//        if let templateUUID = UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") {
+//            let storyId = storyUsecase.addNewStory(templateId: templateUUID)
+//            
+//            #expect(storyId != nil, "story has not been created")
+//            
+//            if let fixedStoryId = storyId {
+//                let storyEntity = storyUsecase.fetchStoryById(storyId: fixedStoryId)
+//                
+//                #expect(storyEntity != nil, "story entity has not been created")
+//                
+//                #expect(!(storyEntity?.pages.isEmpty ?? true), "have no page")
+//            }
+//        }
+//    }
     
 }

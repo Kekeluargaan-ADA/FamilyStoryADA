@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UploadPhotoModalView: View {
     @EnvironmentObject var viewModel: PageCustomizationViewModel
+    @EnvironmentObject var cameraViewModel: CameraViewModel
     @State private var isModalPresented = false
     
     var body: some View {
@@ -35,6 +36,7 @@ struct UploadPhotoModalView: View {
                                         Spacer()
                                     }
                                     Text("Upload Foto")
+                                        .foregroundStyle(Color("FSBlack"))
                                         .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                         .fontWeight(.bold)
                                         .foregroundStyle(Color("FSBlack"))
@@ -43,13 +45,15 @@ struct UploadPhotoModalView: View {
                             Spacer().frame(height: 36 * heightRatio)
                             HStack(spacing: 24 * widthRatio) {
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "camera", text: "Kamera", onTap: {
-                                    viewModel.isGotoCameraView = true
+                                    cameraViewModel.isPhotoCaptured = false
+                                    cameraViewModel.navigateToCamera = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo", text: "Galeri", onTap: {
-                                    viewModel.isGotoImagePicker = true
+                                    cameraViewModel.isPhotoCaptured = false
+                                    cameraViewModel.showingImagePicker = true
                                 })
                                 ButtonSquare(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "photo.on.rectangle.angled", text: "Cari Foto", onTap: {
-                                    // TODO: Enable scrapping image
+                                    viewModel.isGotoScrapImage = true
                                 })
                             }
                             Spacer()

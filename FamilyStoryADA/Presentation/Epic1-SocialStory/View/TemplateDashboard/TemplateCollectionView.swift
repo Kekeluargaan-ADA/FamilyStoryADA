@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct TemplateCollectionView: View {
-    @StateObject private var viewModel = TemplateViewModel(templateUsecase: JSONTemplateUsecase())
+    @Environment(\.dismiss) var dismiss
+    @StateObject private var viewModel = TemplateViewModel()
     @Environment(\.presentationMode) var presentationMode
-    
-    @State private var isModalPresented = false
-    @State private var selectedTemplate: TemplateEntity?
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
@@ -35,12 +33,13 @@ struct TemplateCollectionView: View {
                                         TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) { category in
                                             viewModel.filterTemplates(by: category)
                                         }
+                                        .environmentObject(viewModel)
                                         ScrollView {
                                             LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                                 ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
                                                     TemplateCardView(template: template) {
-                                                        selectedTemplate = template
-                                                        isModalPresented = true
+                                                        viewModel.selectedTemplate = template
+                                                        viewModel.isPagePreviewModalPresented = true
                                                     }
                                                 }
                                             }
@@ -50,8 +49,9 @@ struct TemplateCollectionView: View {
                                 )
                         }
                     }
-                    if isModalPresented, let selectedTemplate = selectedTemplate {
-                        PagePreviewModalView(template: selectedTemplate)
+                    if viewModel.isPagePreviewModalPresented, let template = Binding($viewModel.selectedTemplate) {
+                        PagePreviewModalView()
+                            .environmentObject(viewModel)
                         
                     }
                 }
@@ -61,6 +61,11 @@ struct TemplateCollectionView: View {
             .onAppear {
                 viewModel.fetchTemplates()
                 viewModel.filterTemplates(by: nil)
+            }
+            .onChange(of: viewModel.isTemplateClosed) { value in
+                if value {
+                    dismiss()
+                }
             }
         }
         .navigationViewStyle(.stack)

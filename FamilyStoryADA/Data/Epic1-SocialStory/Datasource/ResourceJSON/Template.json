@@ -6,10 +6,11 @@
         "templateCategory": "Hygiene",
         "templatePage": [
             {
+                "pageType": "Opening",
                 "pageText":
                 [
                     {
-                        "componentContent": "Halo! Namaku <CHILD_NAME> Saat ini, aku mau mempelajari tentang Cara Menggosok Gigi!",
+                        "componentContent": "Halo! Namaku <CHILD_NAME>. Saat ini, aku mau mempelajari tentang Cara Menggosok Gigi!",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -32,10 +33,49 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Introduction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Ambil sikat gigi",
+                        "componentContent": "Halo! Ini Bima.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "MenggosokGigiScene3",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Bima mengambil sikat gigi di kamar mandi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -69,10 +109,11 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Taruh sedikit pasta gigi pada sikat gigi",
+                        "componentContent": "Bima menuangkan sedikit pasta gigi pada sikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -106,10 +147,11 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Gosok gigi ke atas dan bawah",
+                        "componentContent": "Bima menggosok gigi ke atas dan bawah.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -143,10 +185,11 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Menuangkan air dari keran ke gelas",
+                        "componentContent": "Bima menuangkan air dari keran ke gelas.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -180,10 +223,11 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Kumur-kumur setelah menyikat gigi",
+                        "componentContent": "Bima mengkumur setelah menyikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -217,10 +261,11 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Instruction",
                 "pageText":
                 [
                     {
-                        "componentContent": "Keluarkan air kumur dari mulut ke wastafel",
+                        "componentContent": "Bima mengeluarkan air kumur dari mulut ke wastafel.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -254,6 +299,7 @@
                 "pageSoundPath": ""
             },
             {
+                "pageType": "Closing",
                 "pageText":
                 [
                     {

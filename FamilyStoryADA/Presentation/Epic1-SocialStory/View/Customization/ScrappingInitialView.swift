@@ -1,3 +1,4 @@
+
 //
 //  ScrappingInitialView.swift
 //  FamilyStoryADA
@@ -9,8 +10,10 @@ import SwiftUI
 
 struct ScrappingInitialView: View {
     @State private var isModalPresented = false
-    @StateObject private var viewModel = ImageCrawlViewModel()
+    @StateObject private var crawlViewModel = ImageCrawlViewModel()
     @State private var isImageSelected: Bool = false
+    @EnvironmentObject var viewModel: PageCustomizationViewModel
+    @EnvironmentObject var cameraViewModel: CameraViewModel
     
     @AppStorage("selectedImageUUID") var selectedImageUUID: String?
     
@@ -30,20 +33,29 @@ struct ScrappingInitialView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
+                                        
+                                        Button(action: {
+                                            viewModel.isGotoScrapImage = false
+                                            //presentationMode.wrappedValue.dismiss()
+                                        }) {
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                        }
+                                        
+                                        
                                         Spacer()
                                     }
                                     Text("Cari Foto")
-                                        .font(.system(size: 32 * heightRatio))
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio))
+                                        .foregroundStyle(Color("FSBlack"))
                                         .fontWeight(.bold)
                                 }
                             }
                             HStack {
-                                SearchBarView(searchText: $viewModel.keyword) {
-                                    viewModel.crawlImages()
+                                SearchBarView(searchText: $crawlViewModel.keyword) {
+                                    crawlViewModel.crawlImages()
                                 }
                                 Button(action: {
-                                    viewModel.deleteImages()
+                                    crawlViewModel.deleteImages()
                                 }, label: {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
@@ -53,7 +65,7 @@ struct ScrappingInitialView: View {
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
                             ) {
-                                ForEach(viewModel.processedImages.prefix(6), id: \.self) { image in
+                                ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
                                     ZStack {
                                         Image(uiImage: image)
                                             .resizable()
@@ -63,14 +75,14 @@ struct ScrappingInitialView: View {
                                             .cornerRadius(12)
                                             .shadow(radius: 2, y: 4)
                                             .onTapGesture {
-                                                viewModel.selectedImage = image
+                                                crawlViewModel.selectedImage = image
                                             }
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                    .stroke(viewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
                                             )
                                         
-                                        if viewModel.selectedImage == image {
+                                        if crawlViewModel.selectedImage == image {
                                             Image(systemName: "checkmark.circle.fill")
                                                 .foregroundColor(Color("FSWhite"))
                                                 .font(.system(size: 20 * heightRatio))
@@ -85,10 +97,32 @@ struct ScrappingInitialView: View {
                             Spacer()
                             
                             Button(action: {
-                                if let selectedImage = viewModel.selectedImage {
-                                    let uuid = viewModel.saveSelectedImageToAppStorage() // Use the ViewModel's method
-                                    selectedImageUUID = uuid // Save the UUID in AppStorage
-                                    isModalPresented = true
+                                if let selectedImage = crawlViewModel.selectedImage {
+//                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
+//                                        // Update the page with new image
+//                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
+//                                            viewModel.selectedPage?.pagePicture.append(
+//                                                PictureComponentEntity(
+//                                                    componentId: UUID(),
+//                                                    componentContent: filename,
+//                                                    componentCategory: "AppStoragePicture"
+//                                                )
+//                                            )
+//                                        } else {
+//                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
+//                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
+//                                        }
+//                                        
+//                                        // Update the page and close the view
+//                                        viewModel.updatePage()
+//                                        viewModel.isGotoScrapImage = false
+//                                        viewModel.isMediaOverlayOpened = false
+//                                        crawlViewModel.deleteImages()
+//                                    }
+                                    cameraViewModel.savedImage = selectedImage
+                                    cameraViewModel.isPhotoCaptured = true
+                                    crawlViewModel.deleteImages()
+                                    viewModel.isGotoScrapImage = false
                                 }
                             }) {
                                 ZStack {
@@ -101,9 +135,6 @@ struct ScrappingInitialView: View {
                                                 .foregroundColor(.white)
                                         )
                                 }
-                            }
-                            .sheet(isPresented: $isModalPresented) {
-                                AnotherView() // Present AnotherView modally
                             }
                         }
                         .padding(24 * heightRatio)
