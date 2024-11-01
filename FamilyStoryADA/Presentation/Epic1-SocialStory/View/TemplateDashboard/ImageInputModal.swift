@@ -9,13 +9,15 @@ struct ImageInputModal: View {
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     
     var body: some View {
-        GeometryReader{ geometry in
-            NavigationView {
+        NavigationView {
+            GeometryReader{ geometry in
+                
                 VStack {
                     HStack {
                         ZStack {
                             HStack {
                                 Button(action: {
+                                    templateViewModel.chosenImage = nil
                                     templateViewModel.isImageInputModalPresented.toggle()
                                     //                                    presentationMode.wrappedValue.dismiss()
                                 }) {
@@ -40,14 +42,16 @@ struct ImageInputModal: View {
                         .frame(width: 381,height: 50, alignment: .center)
                     
                     // Display saved image if exists, otherwise show placeholder
-                    if let uiImage = viewModel.savedImage {
+                    if let uiImage = templateViewModel.chosenImage {
                         Image(uiImage: uiImage)
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                             .frame(width: 300, height: 400)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(alignment: .bottom) {
                                 ChangePictureButton()
+                                    .environmentObject(viewModel)
+                                    .environmentObject(templateViewModel)
                             }
                     } else {
                         // Placeholder if no image is found
@@ -57,6 +61,8 @@ struct ImageInputModal: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(alignment: .bottom) {
                                 ChangePictureButton()
+                                    .environmentObject(viewModel)
+                                    .environmentObject(templateViewModel)
                             }
                     }
                     
@@ -102,6 +108,7 @@ struct ImageInputModal: View {
                     .padding()
                     
                     Button(action: {
+                        viewModel.savedImage = templateViewModel.chosenImage
                         templateViewModel.editNewStory(imageName: viewModel.saveImage())
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
@@ -120,19 +127,37 @@ struct ImageInputModal: View {
                     .frame(width: 728, alignment: .trailing)
                     
                 }
-                .frame(width: 728,height: 743)
-                .background(Color(.fsBlue1))
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .padding()
+                
+                // Show the cropping view when image is selected
+                
             }
-            .navigationViewStyle(.stack)
-            .environmentObject(viewModel)
+            .frame(width: 728,height: 743)
+            .background(Color(.fsBlue1))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .padding()
+            
+            NavigationLink(
+                destination: CropImageView(croppingStyle: .portrait)
+                    .environmentObject(viewModel),
+                isActive: $viewModel.showCropView,
+                label: {
+                    EmptyView()
+                }
+            ).onChange(of: viewModel.showCropView) { value in
+                if !value, let croppedImage = viewModel.savedImage {
+                    templateViewModel.chosenImage = croppedImage
+                    
+                }
+            }
         }
+        .navigationViewStyle(.stack)
+        .environmentObject(viewModel)
     }
 }
 
 struct ChangePictureButton: View {
     @EnvironmentObject var viewModel: CameraViewModel  // Shared ViewModel
+    @EnvironmentObject var templateViewModel: TemplateViewModel  // Shared ViewModel
     
     var body: some View {
         VStack {
@@ -163,15 +188,21 @@ struct ChangePictureButton: View {
             .padding(.bottom, 20)
             
             // NavigationLink for CameraView
-            NavigationLink(destination: CameraView.shared.environmentObject(viewModel), isActive: $viewModel.navigateToCamera) {
+            NavigationLink(destination: CameraView.shared
+                .environmentObject(viewModel),
+                           isActive: $viewModel.navigateToCamera) {
             }
-            .onChange(of: viewModel.navigateToCamera) { value in
-                if !value, viewModel.isPhotoCaptured, viewModel.savedImage != nil {
-                    // Show crop view once an image is selected
-                    viewModel.showCropView = true
-                    viewModel.isPhotoCaptured = false
-                }
-            }
+                           .onChange(of: viewModel.navigateToCamera) { value in
+                               if !value, viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
+                                   // Show crop view once an image is selected
+                                   templateViewModel.chosenImage = selectedImage
+                                   viewModel.savedImage = selectedImage
+//                                   viewModel.showCropView = true //TODO: Fix crop view for this, for now lets say langsung foto
+                                   viewModel.isPhotoCaptured = false
+                                   
+                               }
+                           }
+            
         }
         .sheet(isPresented: $viewModel.showingImagePicker, onDismiss: {
             if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
@@ -184,15 +215,6 @@ struct ChangePictureButton: View {
                 .environmentObject(viewModel)
         }
         
-        // Show the cropping view when image is selected
-        NavigationLink(
-            destination: CropImageView(croppingStyle: .portrait)
-                .environmentObject(viewModel),
-            isActive: $viewModel.showCropView,
-            label: {
-                EmptyView()
-            }
-        )
     }
 }
 
