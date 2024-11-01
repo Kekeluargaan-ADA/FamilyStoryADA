@@ -16,6 +16,7 @@ struct CustomizationView: View {
     @State var isParaphrasingPresented = false
     @State var currentText: String = ""
     @State private var typingTimer: Timer? = nil
+    @State private var isLimitReached = false
     
     @StateObject private var keyboardHelper = KeyboardHelper()
     
@@ -221,59 +222,82 @@ struct CustomizationView: View {
                                                 }
                                             }
                                             ZStack {
-                                                TextField("Masukkan teks di sini", text: Binding(
-                                                    get: { currentText },
-                                                    set: { newValue in
-                                                        // Split the input text into words
-                                                        let words = newValue.split(separator: " ")
-                                                        
-                                                        currentText = newValue
-                                                        //                                                        // Check if the word count exceeds 15
-                                                        //                                                        if words.count > 15 {
-                                                        //                                                            // Limit to the first 15 words and join them back to a string
-                                                        //                                                            currentText = words.prefix(15).joined(separator: " ")
-                                                        //                                                        } else {
-                                                        //                                                            // Update currentText as usual if the word count is within the limit
-                                                        //                                                            currentText = newValue
-                                                        //                                                        }
-                                                        
-                                                        // Reset the typing timer
-                                                        
-                                                        resetTypingTimer()
+                                                ZStack(alignment: .topLeading) {
+                                                    TextEditor(text: Binding(
+                                                        get: { currentText },
+                                                        set: { newValue in
+                                                            let words = newValue.split(separator: " ")
+                                                            if words.count <= 15 {
+                                                                currentText = newValue
+                                                                isLimitReached = false
+                                                            } else {
+                                                                // Keep only the first 15 words
+                                                                currentText = words.prefix(15).joined(separator: " ")
+                                                                isLimitReached = true
+                                                                
+                                                                // Show feedback to user
+                                                                withAnimation {
+                                                                    // Reset the limit reached state after a delay
+                                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                                        isLimitReached = false
+                                                                    }
+                                                                }
+                                                            }
+                                                            resetTypingTimer()
+                                                        }
+                                                    ))
+                                                    .scrollContentBackground(.hidden)
+                                                    .background(Color.clear)
+                                                    .padding(.horizontal, 19)
+                                                    .padding(.vertical, 15)
+                                                    .padding(.top, 24) // Additional padding for word count
+                                                    .frame(width: 760, height: 168)
+                                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                                    .fontWeight(.semibold)
+                                                    .foregroundStyle(Color("FSBlack"))
+                                                    
+                                                    if currentText.isEmpty {
+                                                        Text("Masukkan teks di sini")
+                                                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                                            .fontWeight(.semibold)
+                                                            .foregroundColor(Color("FSGrey").opacity(0.5))
+                                                            .padding(.horizontal, 19)
+                                                            .padding(.vertical, 15)
+                                                            .padding(.top, 24)
+                                                            .allowsHitTesting(false)
                                                     }
-                                                ))
-                                                .padding(.horizontal, 19)
-                                                .padding(.vertical, 15)
-                                                .frame(width: 760, height: 168)
-                                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                                .fontWeight(.semibold)
-                                                .foregroundStyle(Color("FSBlack"))
+                                                }
                                                 .overlay(
                                                     TextBoxBackgroundView()
                                                         .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
                                                 )
                                                 .overlay(alignment: .topLeading) {
-                                                    Text("\(wordCount)/15 words")
-                                                        .font(Font.custom("Fredoka", size: 16))
-                                                        .foregroundColor(Color("FSGrey"))
-                                                        .padding(.horizontal, 20)
-                                                        .padding(.top, 8)
+                                                    HStack(spacing: 4) {
+                                                        Text("\(wordCount)/15 words")
+                                                            .font(Font.custom("Fredoka", size: 16))
+                                                            .foregroundColor(isLimitReached ? Color("FSPrimaryOrange5") : Color("FSGrey"))
+                                                            .animation(.easeInOut(duration: 0.2), value: isLimitReached)
+                                                        
+                                                        if isLimitReached {
+                                                            Image(systemName: "exclamationmark.circle.fill")
+                                                                .foregroundColor(Color("FSPrimaryOrange5"))
+                                                                .transition(.scale.combined(with: .opacity))
+                                                        }
+                                                    }
+                                                    .padding(.horizontal, 20)
+                                                    .padding(.top, 8)
                                                 }
-                                                
-
                                                 .overlay(alignment: .bottomTrailing) {
                                                     Button(action: {
-                                                            Task {
-                                                                do {
-                                                                    let result = try await viewModel.getParaphrasing(for: currentText)
-//                                                                    currentText = result
-                                                                    isParaphrasingPresented = true
-                                                                } catch {
-                                                                    print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                                                    // Handle error here, possibly by setting an error message in viewModel
-                                                                }
+                                                        Task {
+                                                            do {
+                                                                let result = try await viewModel.getParaphrasing(for: currentText)
+                                                                isParaphrasingPresented = true
+                                                            } catch {
+                                                                print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                                                             }
-                                                    },label:{
+                                                        }
+                                                    }, label: {
                                                         HStack(spacing: 8) {
                                                             Image(systemName: "sparkles")
                                                             Text("Optimalkan")
@@ -296,16 +320,14 @@ struct CustomizationView: View {
                                                 .onAppear {
                                                     currentText = page.pageText.first?.componentContent ?? ""
                                                 }
-                                                .onChange(of: page.pageText.first?.componentContent){
+                                                .onChange(of: page.pageText.first?.componentContent) {
                                                     currentText = page.pageText.first?.componentContent ?? ""
                                                 }
-                                                // Overlay the HStack at the top left
                                                 .overlay(alignment: .topLeading) {
                                                     HStack {
                                                         Image(systemName: "exclamationmark.triangle")
                                                             .font(Font.custom("SF Pro", size: 16))
                                                             .foregroundStyle(Color("FSPrimaryOrange5"))
-//                                                        Text("Instruksional")
                                                         Text("\(viewModel.selectedPage!.pageTextClassification)")
                                                             .font(Font.custom("SF Pro", size: 16))
                                                             .foregroundStyle(Color("FSPrimaryOrange5"))
