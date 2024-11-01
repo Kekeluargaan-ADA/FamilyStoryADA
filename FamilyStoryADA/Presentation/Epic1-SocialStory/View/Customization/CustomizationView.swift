@@ -62,7 +62,7 @@ struct CustomizationView: View {
                                     )
                                     .padding(.top, 20)
                                     .padding(.horizontal, 46)
-                                    CustomizationMediaView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: isParaphrasingPresented, isLimitReached: isLimitReached)
+                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: isParaphrasingPresented, isLimitReached: isLimitReached)
                                 }
                             }
                             

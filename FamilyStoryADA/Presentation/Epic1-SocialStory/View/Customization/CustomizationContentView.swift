@@ -1,5 +1,5 @@
 //
-//  CustomizationMediaView.swift
+//  CutomizationContentView.swift
 //  FamilyStoryADA
 //
 //  Created by Daniel Ian on 01/11/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import AVKit
 
-struct CustomizationMediaView: View {
+struct CustomizationContentView: View {
     @ObservedObject var viewModel: PageCustomizationViewModel
     @EnvironmentObject var keyboardHelper: KeyboardHelper
     @EnvironmentObject var cameraViewModel: CameraViewModel
