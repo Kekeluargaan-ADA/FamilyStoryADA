@@ -14,7 +14,7 @@ struct CustomizationContentView: View {
     @EnvironmentObject var cameraViewModel: CameraViewModel
     
     @State var currentText: String
-    @State var isParaphrasingPresented: Bool
+    @Binding var isParaphrasingPresented: Bool
     @State var isLimitReached: Bool
     private let wordLimit = 15
     
@@ -193,8 +193,15 @@ struct CustomizationContentView: View {
                         }
                     }
                     .overlay(
-                        TextBoxBackgroundView()
-                            .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
+                        Group {
+                            if viewModel.selectedPage?.pageTextClassification == "Instructive" {
+                                TextBoxBackgroundView()
+                                    .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
+                            } else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
+                                TextBoxBackgroundView()
+                                    .stroke(Color(.fsBorderBlue7), lineWidth: 2)
+                            }
+                        }
                     )
                     .overlay(alignment: .topLeading) {
                         HStack(spacing: 4) {
@@ -218,6 +225,7 @@ struct CustomizationContentView: View {
                                 do {
                                     let result = try await viewModel.getParaphrasing(for: currentText)
                                     isParaphrasingPresented = true
+                                    keyboardHelper.isKeyboardShown = false
                                 } catch {
                                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                                 }
@@ -250,12 +258,22 @@ struct CustomizationContentView: View {
                     }
                     .overlay(alignment: .topLeading) {
                         HStack {
-                            Image(systemName: "exclamationmark.triangle")
-                                .font(Font.custom("SF Pro", size: 16))
-                                .foregroundStyle(Color("FSPrimaryOrange5"))
-                            Text("\(viewModel.selectedPage!.pageTextClassification)")
-                                .font(Font.custom("SF Pro", size: 16))
-                                .foregroundStyle(Color("FSPrimaryOrange5"))
+                            if viewModel.selectedPage?.pageTextClassification == "Instructive" {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .font(Font.custom("SF Pro", size: 16))
+                                    .foregroundStyle(Color(.fsPrimaryOrange5))
+                                Text("Instruksional")
+                                    .font(Font.custom("SF Pro", size: 16))
+                                    .foregroundStyle(Color(.fsPrimaryOrange5))
+                            }
+                            else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
+                                Image(systemName: "hand.thumbsup")
+                                    .font(Font.custom("SF Pro", size: 16))
+                                    .foregroundStyle(Color(.fsBorderBlue7))
+                                Text("Deskriptif")
+                                    .font(Font.custom("SF Pro", size: 16))
+                                    .foregroundStyle(Color(.fsBorderBlue7))
+                            }
                         }
                         .padding(.top, 8)
                         .padding(.leading, 136)
@@ -263,6 +281,7 @@ struct CustomizationContentView: View {
                 }
                 
             }
+            .disabled(isParaphrasingPresented)
             .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -378 : 0)
         }
     }
@@ -275,7 +294,7 @@ struct CustomizationContentView: View {
                     let result = try await viewModel.getTextClassification(for: currentText)
                     // Uncomment to assign the result if needed
                     // currentText = result
-                    viewModel.selectedPage?.pageTextClassification = String(result.dropLast())
+                    viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
                 } catch {
                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                     // Handle error here, possibly by setting an error message in viewModel

@@ -11,6 +11,7 @@ import Foundation
 struct ParaphraseModal: View {
     @StateObject var viewModel: PageCustomizationViewModel
     @Binding var isParaphrasingPresented: Bool
+    @State var selectedOption: String?
     var body: some View {
         ZStack(alignment: .topLeading) {
             
@@ -48,19 +49,32 @@ struct ParaphraseModal: View {
                         
                         ForEach(viewModel.paraphrasedOptions, id: \.self) { paraphrasedText in
                             
-                            Button(action: {
-                                viewModel.selectedPage?.pageText.first?.componentContent = paraphrasedText
-                                isParaphrasingPresented = false
-                            }) {
-                                Text(paraphrasedText)
-                                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
-                                    .fontWeight(.regular)
-                                    .foregroundColor(Color("FSBlack"))
-                            }
-                            Divider()
+                            ParaphraseOptionButton(option: paraphrasedText, selectedOption: $selectedOption)
                             
                         }
+                        
                     }
+//                    VStack(spacing: 0) {
+//                        ForEach(viewModel.paraphrasedOptions, id: \.self) { paraphrasedText in
+//                            Button(action: {
+//                                viewModel.selectedPage?.pageText.first?.componentContent = paraphrasedText
+//                                isParaphrasingPresented = false
+//                            }) {
+//                                Text(paraphrasedText)
+//                                    .font(.custom("Fredoka", size: 24, relativeTo: .title2))
+//                                    .fontWeight(.regular)
+//                                    .foregroundColor(Color("FSBlack"))
+//                                    .padding()
+//                                    .frame(maxWidth: .infinity, alignment: .leading)
+//                                    .background(Color("FSYellow").opacity(0.1))
+//                                    .cornerRadius(8)
+//                            }
+//                            .buttonStyle(PlainButtonStyle())
+//                            
+//                            Divider() // Adds a divider between each option
+//                                .padding(.horizontal)
+//                        }
+//                    }
                     .frame(width: 980)
                     .foregroundColor(.black)
                     HStack(spacing: 16) {
@@ -95,7 +109,8 @@ struct ParaphraseModal: View {
                         
                         // Pilih Button
                         Button(action: {
-                            // Select action
+                            viewModel.selectedPage?.pageText.first?.componentContent = selectedOption!
+                            isParaphrasingPresented = false
                         }) {
                             Text("Pilih")
                                 .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
@@ -112,10 +127,8 @@ struct ParaphraseModal: View {
                 
                 Spacer()
             }
-//            .padding(.leading, 16) // Padding to adjust alignment with background
-//            .padding(.top, 16)
         }
-        .frame(width: 1180, height: 256,alignment: .leading)
+        .frame(width: 1150, height: 400,alignment: .topLeading)
 //        .background(.red)
         .cornerRadius(20)
 //        .shadow(radius: 5)
@@ -127,3 +140,35 @@ struct ParaphraseModal: View {
 //#Preview{
 //    ParaphraseModal()
 //}
+
+
+struct ParaphraseOptionButton: View {
+    let option: String
+    @Binding var selectedOption: String?
+    
+    var body: some View {
+        Button(action: {
+            selectedOption = option
+        }) {
+            HStack{
+                Text(option)
+                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                    .fontWeight(selectedOption == option ? .medium : .regular )
+                    .foregroundColor(Color("FSBlack"))
+                        Spacer()
+                if(selectedOption==option){
+
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(Color(.fsBlue9))
+                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                        .fontWeight(.medium)
+                }
+            }
+            .frame(width: 980,height:20,alignment: .leading)
+            .padding()
+            .cornerRadius(8)
+            .background(selectedOption == option ? Color(.fsBlue1) : Color.white)
+        }
+        Divider()
+    }
+}

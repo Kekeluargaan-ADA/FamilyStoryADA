@@ -247,10 +247,10 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
 
     public func getTextClassification(for text: String) async throws -> String {
         let prompt = """
-                Anda bertugas mengidentifikasi apakah teks berikut adalah "instruktif" atau "deskriptif." 
+                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." 
                 Contoh deskriptif: aku menggosok gigi. 
                 Contoh instruktif: ayo gosok gigi. 
-                Kembalikan hasil hanya dalam format: "Deskriptif" atau "Instruktif."
+                Kembalikan hasil hanya dalam format: "Instructive" atau "Descriptive"
                 text: \(text)
 """
         

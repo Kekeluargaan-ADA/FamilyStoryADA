@@ -62,7 +62,8 @@ struct CustomizationView: View {
                                     )
                                     .padding(.top, 20)
                                     .padding(.horizontal, 46)
-                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: isParaphrasingPresented, isLimitReached: isLimitReached)
+
+                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
                                         .environmentObject(keyboardHelper)
                                         .environmentObject(cameraViewModel)
                                 }
@@ -151,9 +152,10 @@ struct CustomizationView: View {
                     if isParaphrasingPresented{
                         ZStack{
                             ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented)
-                                .frame(width: 1200,height: 280)
+                                .frame(width: 1200,height: 450)
+                                .cornerRadius(32)
                                 .background(.white)
-                        }.frame(height: 780,alignment: .bottom)
+                        }.frame(height: 900,alignment: .bottom)
                         
                     }
                     
