@@ -200,6 +200,9 @@ struct CustomizationContentView: View {
                             } else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
                                 TextBoxBackgroundView()
                                     .stroke(Color(.fsBorderBlue7), lineWidth: 2)
+                            } else {
+                                TextBoxBackgroundView()
+                                    .stroke(Color(.fsBlack), lineWidth: 2)
                             }
                         }
                     )
