@@ -105,6 +105,7 @@ struct ImageInputModal: View {
                         templateViewModel.editNewStory(imageName: viewModel.saveImage())
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
+                        templateViewModel.isTemplateClosed = true
                         dismiss()
                     }) {
                         Text("Lanjut")
