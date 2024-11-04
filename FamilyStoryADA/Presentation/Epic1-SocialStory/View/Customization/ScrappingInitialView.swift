@@ -33,14 +33,11 @@ struct ScrappingInitialView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        
                                         Button(action: {
                                             viewModel.isGotoScrapImage = false
-                                            //presentationMode.wrappedValue.dismiss()
                                         }) {
-                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                         }
-                                        
                                         
                                         Spacer()
                                     }
@@ -98,27 +95,6 @@ struct ScrappingInitialView: View {
                             
                             Button(action: {
                                 if let selectedImage = crawlViewModel.selectedImage {
-//                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
-//                                        // Update the page with new image
-//                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
-//                                            viewModel.selectedPage?.pagePicture.append(
-//                                                PictureComponentEntity(
-//                                                    componentId: UUID(),
-//                                                    componentContent: filename,
-//                                                    componentCategory: "AppStoragePicture"
-//                                                )
-//                                            )
-//                                        } else {
-//                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
-//                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-//                                        }
-//                                        
-//                                        // Update the page and close the view
-//                                        viewModel.updatePage()
-//                                        viewModel.isGotoScrapImage = false
-//                                        viewModel.isMediaOverlayOpened = false
-//                                        crawlViewModel.deleteImages()
-//                                    }
                                     cameraViewModel.savedImage = selectedImage
                                     cameraViewModel.isPhotoCaptured = true
                                     crawlViewModel.deleteImages()
@@ -137,8 +113,16 @@ struct ScrappingInitialView: View {
                                 }
                             }
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
+                if crawlViewModel.isLoading {
+                    VStack {
+                        Spacer()
+                        Rectangle().foregroundStyle(.red)
+                        Spacer()
+                    }
+                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
