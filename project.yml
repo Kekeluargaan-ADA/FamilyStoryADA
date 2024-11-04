@@ -78,7 +78,7 @@ targets:
       path: FamilyStoryADATests/Info.plist
       properties:
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
-        CFBundleName: $(PRODUCT_NAME)
+        CFBundleName: TinyTales
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundlePackageType: BNDL
     settings:
