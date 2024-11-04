@@ -24,7 +24,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var isDeleteSelected: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
     @Published var paraphrasedOptions: [String] = []
-
+    @Published var paraphraseModalIsLoading: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
