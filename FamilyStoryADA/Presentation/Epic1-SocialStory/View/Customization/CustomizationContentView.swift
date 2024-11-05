@@ -279,18 +279,18 @@ struct CustomizationContentView: View {
                             HStack {
                                 if viewModel.selectedPage?.pageTextClassification == "Instructive" {
                                     Image(systemName: "exclamationmark.triangle")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                     Text("Instruksional")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                 }
                                 else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
                                     Image(systemName: "hand.thumbsup")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                     Text("Deskriptif")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                 }
                             }
@@ -317,6 +317,7 @@ struct CustomizationContentView: View {
                     // Uncomment to assign the result if needed
                     // currentText = result
                     viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                    viewModel.updatePage()
                 } catch {
                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                     // Handle error here, possibly by setting an error message in viewModel

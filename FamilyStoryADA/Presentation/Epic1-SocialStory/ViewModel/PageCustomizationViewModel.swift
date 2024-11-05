@@ -153,8 +153,6 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
     
-    
-    
     public func updatePage() {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
@@ -172,7 +170,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                     page.pageText = []
                     page.pageText.append(text)
                     // TODO: Update page.pageTextClassification
-                    page.pageTextClassification = "Instructive"
+                    page.pageTextClassification = self.selectedPage?.pageTextClassification ?? "Instructive"
                     _ = pageUsecase.editPage(page: page)
                 }
             }
@@ -247,7 +245,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
 
     public func getTextClassification(for text: String) async throws -> String {
         let prompt = """
-                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." 
+                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive". 
                 Contoh deskriptif: aku menggosok gigi. 
                 Contoh instruktif: ayo gosok gigi. 
                 Kembalikan hasil hanya dalam format: "Instructive" atau "Descriptive"
