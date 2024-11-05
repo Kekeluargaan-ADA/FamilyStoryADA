@@ -69,13 +69,17 @@ struct ScrappingInitialView: View {
                                             Button(action: {
                                                 crawlViewModel.selectedImage = image
                                             }) {
-                                                Image(uiImage: image)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                                    .clipped()
-                                                    .cornerRadius(12)
-                                                    .shadow(radius: 2, y: 4)
+                                                AsyncImage(url: URL(string: url)) { image in
+                                                    image
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                                        .clipped()
+                                                        .cornerRadius(12)
+                                                        .shadow(radius: 2, y: 4)
+                                                } placeholder: {
+                                                    Color.gray
+                                                }
                                             }
                                             .buttonStyle(PlainButtonStyle())
                                             .contentShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
@@ -140,4 +144,3 @@ struct ScrappingInitialView: View {
         }
     }
 }
-
