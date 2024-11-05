@@ -201,7 +201,7 @@ struct CustomizationContentView: View {
                                     .foregroundColor(Color("FSGrey").opacity(0.5))
                                     .padding(.horizontal, 19)
                                     .padding(.vertical, 15)
-                                    .padding(.top, 24)
+                                    .padding(.top, 28)
                                     .allowsHitTesting(false)
                             }
                         }
