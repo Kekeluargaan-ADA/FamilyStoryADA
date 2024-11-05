@@ -176,7 +176,7 @@ struct CustomizationContentView: View {
                                         // Show feedback to user
                                         withAnimation {
                                             // Reset the limit reached state after a delay
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                                 isLimitReached = false
                                             }
                                         }
@@ -310,10 +310,10 @@ struct CustomizationContentView: View {
     
     private func resetTypingTimer() {
         typingTimer?.invalidate()
-        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+        typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             Task {
                 do {
-                    updatePageText() // Call this after the async operation if order matters
+                    
                     let result = try await viewModel.getTextClassification(for: currentText)
                     // Uncomment to assign the result if needed
                     // currentText = result
@@ -323,6 +323,7 @@ struct CustomizationContentView: View {
                     // Handle error here, possibly by setting an error message in viewModel
                 }
             }
+            updatePageText() // Call this after the async operation if order matters
         }
     }
     
