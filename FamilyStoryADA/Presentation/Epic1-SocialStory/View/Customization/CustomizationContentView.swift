@@ -35,12 +35,18 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                             } else {
                                 Image(imagePath)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                             }
                             
                         } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
@@ -52,12 +58,18 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                             } else {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                             }
                             
                         } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
@@ -69,12 +81,12 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                                     .onAppear() {
-                                        
                                         viewModel.videoPlayer = AVPlayer(url: url)
                                         viewModel.videoPlayer.play()
-                                        // Loop video when it reaches the end
-                                        
                                     }
                                     .onDisappear() {
                                         viewModel.videoPlayer.pause()
@@ -91,12 +103,13 @@ struct CustomizationContentView: View {
                                 CustomVideoPlayerView(player: viewModel.videoPlayer)
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .overlay(
+                                            VignetteEffectView()
+                                        )
                                     .onAppear() {
                                         
                                         viewModel.videoPlayer = AVPlayer(url: url)
                                         viewModel.videoPlayer.play()
-                                        // Loop video when it reaches the end
-                                        
                                     }
                                     .onDisappear() {
                                         viewModel.videoPlayer.pause()
@@ -112,7 +125,6 @@ struct CustomizationContentView: View {
                             }
                         } else {
                             Button(action: {
-                                // TODO: Pop up menu
                                 viewModel.isMediaOverlayOpened = true
                             }, label: {
                                 EmptyImageCustomizationView()
