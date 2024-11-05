@@ -157,22 +157,27 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
             updateMedia(page: currentPage)
+            _ = pageUsecase.editPage(page: currentPage)
+            _ = storyUsecase.updateStory(story: self.story)
         }
     }
     
     private func updateTextComponent(page: PageEntity) {
         if let text = page.pageText.first {
-            if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
+            if text.componentContent.isEmpty, componentUsecase.removeComponent(componentId: text.componentId) {
+                page.pageText = []
+                page.pageTextClassification = ""
+            } else if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
                 changedPage.pageText = []
                 changedPage.pageText.append(text)
-            } else {
-                if componentUsecase.addNewComponent(component: text) != nil {
-                    page.pageText = []
-                    page.pageText.append(text)
-                    // TODO: Update page.pageTextClassification
-                    page.pageTextClassification = self.selectedPage?.pageTextClassification ?? "Instructive"
-                    _ = pageUsecase.editPage(page: page)
-                }
+            } else if componentUsecase.addNewComponent(component: text) != nil {
+                page.pageText = []
+                page.pageText.append(text)
+//                    if let classification = selectedPage?.pageTextClassification {
+//                        page.pageTextClassification = classification
+//                    } else {
+//                        page.pageTextClassification = ""
+//                    }
             }
         }
     }
@@ -189,8 +194,6 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
-                    
-                    _ = pageUsecase.editPage(page: page)
                 }
             }
         }
