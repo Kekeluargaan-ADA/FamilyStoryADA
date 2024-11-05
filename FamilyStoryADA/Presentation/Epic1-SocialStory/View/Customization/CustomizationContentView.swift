@@ -201,7 +201,7 @@ struct CustomizationContentView: View {
                                     .foregroundColor(Color("FSGrey").opacity(0.5))
                                     .padding(.horizontal, 19)
                                     .padding(.vertical, 15)
-                                    .padding(.top, 24)
+                                    .padding(.top, 28)
                                     .allowsHitTesting(false)
                             }
                         }
@@ -279,18 +279,18 @@ struct CustomizationContentView: View {
                             HStack {
                                 if viewModel.selectedPage?.pageTextClassification == "Instructive" {
                                     Image(systemName: "exclamationmark.triangle")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                     Text("Instruksional")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                 }
                                 else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
                                     Image(systemName: "hand.thumbsup")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                     Text("Deskriptif")
-                                        .font(Font.custom("SF Pro", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                 }
                             }
@@ -310,9 +310,10 @@ struct CustomizationContentView: View {
     
     private func resetTypingTimer() {
         typingTimer?.invalidate()
-        typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             Task {
                 do {
+                    updatePageText() // Call this after the async operation if order matters
                     let result = try await viewModel.getTextClassification(for: currentText)
                     // Uncomment to assign the result if needed
                     // currentText = result
@@ -321,7 +322,6 @@ struct CustomizationContentView: View {
                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                     // Handle error here, possibly by setting an error message in viewModel
                 }
-                updatePageText() // Call this after the async operation if order matters
             }
         }
     }
@@ -332,7 +332,6 @@ struct CustomizationContentView: View {
     }
     
     func updatePageText() {
-        // TODO: Notify to update SwiftData model
         if let selectedPage = viewModel.selectedPage, !selectedPage.pageText.isEmpty {
             selectedPage.pageText.first?.componentContent = currentText
         } else {
