@@ -310,7 +310,7 @@ struct CustomizationContentView: View {
     
     private func resetTypingTimer() {
         typingTimer?.invalidate()
-        typingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
+        typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             Task {
                 do {
                     let result = try await viewModel.getTextClassification(for: currentText)
