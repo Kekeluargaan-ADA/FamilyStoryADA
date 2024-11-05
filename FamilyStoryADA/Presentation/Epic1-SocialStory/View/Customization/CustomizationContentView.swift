@@ -73,7 +73,6 @@ struct CustomizationContentView: View {
                                         
                                         viewModel.videoPlayer = AVPlayer(url: url)
                                         viewModel.videoPlayer.play()
-                                        // Loop video when it reaches the end
                                         
                                     }
                                     .onDisappear() {
