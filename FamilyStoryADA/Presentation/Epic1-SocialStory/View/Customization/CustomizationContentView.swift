@@ -313,16 +313,15 @@ struct CustomizationContentView: View {
         typingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             Task {
                 do {
+                    updatePageText() // Call this after the async operation if order matters
                     let result = try await viewModel.getTextClassification(for: currentText)
                     // Uncomment to assign the result if needed
                     // currentText = result
                     viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
-                    viewModel.updatePage()
                 } catch {
                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                     // Handle error here, possibly by setting an error message in viewModel
                 }
-                updatePageText() // Call this after the async operation if order matters
             }
         }
     }
@@ -333,7 +332,6 @@ struct CustomizationContentView: View {
     }
     
     func updatePageText() {
-        // TODO: Notify to update SwiftData model
         if let selectedPage = viewModel.selectedPage, !selectedPage.pageText.isEmpty {
             selectedPage.pageText.first?.componentContent = currentText
         } else {
