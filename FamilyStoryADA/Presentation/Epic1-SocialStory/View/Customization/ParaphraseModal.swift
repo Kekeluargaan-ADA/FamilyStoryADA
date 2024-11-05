@@ -81,6 +81,16 @@ struct ParaphraseModal: View {
                         Button(action: {
                             if let option = selectedOption {
                                 viewModel.selectedPage?.pageText.first?.componentContent = option
+                                // TODO: Refactor this
+                                Task {
+                                    do {
+                                        let result = try await viewModel.getTextClassification(for: option)
+                                        viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    } catch {
+                                        print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                        // Handle error here, possibly by setting an error message in viewModel
+                                    }
+                                }
                                 isParaphrasingPresented = false
                             }
                         }) {
