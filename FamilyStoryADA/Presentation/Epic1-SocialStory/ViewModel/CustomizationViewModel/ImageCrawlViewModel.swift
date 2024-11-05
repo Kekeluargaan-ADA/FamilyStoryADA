@@ -22,7 +22,6 @@ class ImageCrawlViewModel: ObservableObject {
 
     private let imageProcessor = CrawlImageHelper()
 
-    // Fetch images based on the entered keyword
     func crawlImages() {
         clearImageCache()
 
@@ -50,11 +49,11 @@ class ImageCrawlViewModel: ObservableObject {
 
                 if let decodedResponse = try? JSONDecoder().decode(CrawlResponseObject.self, from: data) {
                     self.statusMessage = "\(decodedResponse.message) (Time taken: \(decodedResponse.timeTaken))"
-                    self.imageUrls = decodedResponse.imageUrls
+                    self.imageUrls = []  // Clear URLs before adding new ones
 
-                    for imageUrl in self.imageUrls {
+                    for imageUrl in decodedResponse.imageUrls {
                         if let url = URL(string: imageUrl) {
-                            self.downloadAndProcessImage(from: url)
+                            self.downloadAndProcessImage(from: url, imageUrl: imageUrl)
                         }
                     }
                 } else {
@@ -64,26 +63,24 @@ class ImageCrawlViewModel: ObservableObject {
         }.resume()
     }
 
-    // Download and process images from URL
-    private func downloadAndProcessImage(from url: URL) {
+    private func downloadAndProcessImage(from url: URL, imageUrl: String) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data, let uiImage = UIImage(data: data) {
                 let processedImage = self.shouldRemoveBackground ? self.imageProcessor.removeBackground(from: uiImage) : uiImage
                 DispatchQueue.main.async {
                     if let image = processedImage {
                         self.processedImages.append(image)
+                        self.imageUrls.append(imageUrl)  // Add corresponding URL
                     }
                 }
             }
         }.resume()
     }
 
-    // Delete all images except the selected one
     func deleteOtherImages(keeping selectedImage: UIImage) {
         processedImages = [selectedImage]
     }
 
-    // Function to delete all images
     func deleteImages() {
         guard let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/") else {
             statusMessage = "Invalid URL"
@@ -113,20 +110,17 @@ class ImageCrawlViewModel: ObservableObject {
         }.resume()
     }
 
-    // Clear cache
     private func clearImageCache() {
         let cache = URLCache.shared
         cache.removeAllCachedResponses()
         print("Image cache cleared")
     }
 
-    // Clear the selected image
     func clearSelection() {
         selectedImage = nil
-        savedImageFilename = nil  // Also clear the saved filename when clearing selection
+        savedImageFilename = nil
     }
 
-    // Function to save the selected image to app storage
     func saveSelectedImageToAppStorage() -> String? {
         guard let image = selectedImage, let data = image.jpegData(compressionQuality: 1.0) else {
             print("Error: No image selected or could not create JPEG data.")
@@ -141,7 +135,7 @@ class ImageCrawlViewModel: ObservableObject {
 
             do {
                 try data.write(to: fileURL)
-                self.savedImageFilename = filename  // Update the published property
+                self.savedImageFilename = filename
                 print("Selected image saved to app storage: \(fileURL.path)")
                 return filename
             } catch {

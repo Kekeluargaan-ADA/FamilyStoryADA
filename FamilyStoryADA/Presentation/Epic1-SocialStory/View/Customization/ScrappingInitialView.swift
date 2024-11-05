@@ -57,35 +57,47 @@ struct ScrappingInitialView: View {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
+                            .zIndex(1)
                             
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
                             ) {
-                                ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
-                                    ZStack {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                            .clipped()
-                                            .cornerRadius(12)
-                                            .shadow(radius: 2, y: 4)
-                                            .onTapGesture {
+                                ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
+                                    VStack {
+                                        ZStack {
+                                            Button(action: {
                                                 crawlViewModel.selectedImage = image
+                                            }) {
+                                                Image(uiImage: image)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                                    .clipped()
+                                                    .cornerRadius(12)
+                                                    .shadow(radius: 2, y: 4)
                                             }
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                            )
-                                        
-                                        if crawlViewModel.selectedImage == image {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(Color("FSWhite"))
-                                                .font(.system(size: 20 * heightRatio))
-                                                .bold()
-                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                            .buttonStyle(PlainButtonStyle())
+                                            .contentShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                                .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+
+                                            if crawlViewModel.selectedImage == image {
+                                                Image(systemName: "checkmark.circle.fill")
+                                                    .foregroundColor(Color("FSWhite"))
+                                                    .font(.system(size: 20 * heightRatio))
+                                                    .bold()
+                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                            }
                                         }
+                                        Text(url)
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(width: 214 * widthRatio, alignment: .leading)
+                                            .lineLimit(1)
+                                            .truncationMode(.tail)
                                     }
                                 }
                             }
@@ -113,7 +125,7 @@ struct ScrappingInitialView: View {
                                 }
                             }
                         }
-                            .padding(24 * heightRatio)
+                        .padding(24 * heightRatio)
                     )
                 if crawlViewModel.isLoading {
                     VStack {
@@ -128,3 +140,4 @@ struct ScrappingInitialView: View {
         }
     }
 }
+
