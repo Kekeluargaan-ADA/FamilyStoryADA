@@ -33,14 +33,11 @@ struct ScrappingInitialView: View {
                             HStack {
                                 ZStack {
                                     HStack {
-                                        
                                         Button(action: {
                                             viewModel.isGotoScrapImage = false
-                                            //presentationMode.wrappedValue.dismiss()
                                         }) {
-                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                         }
-                                        
                                         
                                         Spacer()
                                     }
@@ -60,35 +57,51 @@ struct ScrappingInitialView: View {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
+                            .zIndex(1)
                             
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
                             ) {
-                                ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
-                                    ZStack {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                            .clipped()
-                                            .cornerRadius(12)
-                                            .shadow(radius: 2, y: 4)
-                                            .onTapGesture {
+                                ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
+                                    VStack {
+                                        ZStack {
+                                            Button(action: {
                                                 crawlViewModel.selectedImage = image
+                                            }) {
+                                                AsyncImage(url: URL(string: url)) { image in
+                                                    image
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                                        .clipped()
+                                                        .cornerRadius(12)
+                                                        .shadow(radius: 2, y: 4)
+                                                } placeholder: {
+                                                    Color.gray
+                                                }
                                             }
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                            )
-                                        
-                                        if crawlViewModel.selectedImage == image {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(Color("FSWhite"))
-                                                .font(.system(size: 20 * heightRatio))
-                                                .bold()
-                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                            .buttonStyle(PlainButtonStyle())
+                                            .contentShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                                .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+
+                                            if crawlViewModel.selectedImage == image {
+                                                Image(systemName: "checkmark.circle.fill")
+                                                    .foregroundColor(Color("FSWhite"))
+                                                    .font(.system(size: 20 * heightRatio))
+                                                    .bold()
+                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                            }
                                         }
+                                        Text(url)
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                            .frame(width: 214 * widthRatio, alignment: .leading)
+                                            .lineLimit(1)
+                                            .truncationMode(.tail)
                                     }
                                 }
                             }
@@ -98,27 +111,6 @@ struct ScrappingInitialView: View {
                             
                             Button(action: {
                                 if let selectedImage = crawlViewModel.selectedImage {
-//                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
-//                                        // Update the page with new image
-//                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
-//                                            viewModel.selectedPage?.pagePicture.append(
-//                                                PictureComponentEntity(
-//                                                    componentId: UUID(),
-//                                                    componentContent: filename,
-//                                                    componentCategory: "AppStoragePicture"
-//                                                )
-//                                            )
-//                                        } else {
-//                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
-//                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-//                                        }
-//                                        
-//                                        // Update the page and close the view
-//                                        viewModel.updatePage()
-//                                        viewModel.isGotoScrapImage = false
-//                                        viewModel.isMediaOverlayOpened = false
-//                                        crawlViewModel.deleteImages()
-//                                    }
                                     cameraViewModel.savedImage = selectedImage
                                     cameraViewModel.isPhotoCaptured = true
                                     crawlViewModel.deleteImages()
@@ -139,6 +131,14 @@ struct ScrappingInitialView: View {
                         }
                         .padding(24 * heightRatio)
                     )
+                if crawlViewModel.isLoading {
+                    VStack {
+                        Spacer()
+                        Rectangle().foregroundStyle(.red)
+                        Spacer()
+                    }
+                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
