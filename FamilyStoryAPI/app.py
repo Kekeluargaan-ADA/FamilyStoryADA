@@ -13,14 +13,12 @@ nest_asyncio.apply()
 
 app = FastAPI()
 
-# Create a base images directory if it doesn't exist
 if not os.path.exists('images'):
     os.makedirs('images')
 
-# Mount the images directory for static file serving
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
-all_urls = []  # Global list to store all URLs
+all_urls = []
 
 def checkCrawlURL(log_record):
     """Capture image URLs from log messages and store them in all_urls."""
@@ -33,7 +31,6 @@ def checkCrawlURL(log_record):
 async def async_download_images(keyword: str, max_num: int = 3, user_id: str = None):
     start_time = time.time()
     
-    # Create a unique directory for each hashed user ID
     user_dir = os.path.join('images', user_id if user_id else str(uuid.uuid4()))
     os.makedirs(user_dir, exist_ok=True)
 
@@ -41,12 +38,12 @@ async def async_download_images(keyword: str, max_num: int = 3, user_id: str = N
         feeder_threads=1,
         parser_threads=2,
         downloader_threads=4,
-        storage={'root_dir': user_dir}  # Store images in user-specific directory
+        storage={'root_dir': user_dir} 
     )
 
     google_crawler.downloader.logger.addFilter(checkCrawlURL)
 
-    filters = dict(license='commercial')
+    filters = dict(license='commercial,modify')
     google_crawler.crawl(keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0)
     
     image_files = [os.path.join(user_dir, f) for f in os.listdir(user_dir) if f.endswith((".jpg", ".png", ".jpeg"))]
@@ -65,7 +62,6 @@ async def crawl_images(
     global all_urls
     all_urls.clear()
 
-    # Generate a unique user ID based on client host and timestamp, then hash it
     raw_user_id = request.client.host + "_" + str(time.time()).replace('.', '')
     hashed_user_id = hashlib.sha256(raw_user_id.encode()).hexdigest()
 
@@ -78,8 +74,8 @@ async def crawl_images(
         "status": "success",
         "message": f"Downloaded {max_num} images for keyword '{keyword}'.",
         "time_taken": f"{result['elapsed_time']:.2f} seconds",
-        "image_urls": result["image_urls"],  # Original URLs
-        "image_paths": full_image_paths,  # Local paths to downloaded images
+        "image_urls": result["image_urls"],
+        "image_paths": full_image_paths,
         "user_id": hashed_user_id
     }
 
