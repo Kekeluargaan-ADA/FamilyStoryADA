@@ -8,5 +8,9 @@
 import Foundation
 
 class MiniGameViewModel: Imageable, ObservableObject {
+    @Published var story: StoryEntity
     
+    init(story: StoryEntity) {
+        self.story = story
+    }
 }

@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct MiniGameView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @StateObject var viewModel: MiniGameViewModel
+    init(story: StoryEntity) {
+        _viewModel = StateObject(wrappedValue: MiniGameViewModel(story: story))
     }
-}
-
-#Preview {
-    MiniGameView()
+    
+    var body: some View {
+        NavigationView{
+            GeometryReader { geometry in
+                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+                let heightRatio = ratios.heightRatio
+                let widthRatio = ratios.widthRatio
+                
+                Spacer(minLength: 47)
+                PlayStoryNavigationView(heightRatio: heightRatio, title: "Cara Menyikat Gigi", buttonColor: .yellow, onTapHomeButton: {}, onTapAudioButton: {})
+                    .padding(.horizontal, 46)
+                
+                Spacer(minLength: 60)
+                
+                
+            }
+        }
+        .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden()
+    }
 }
