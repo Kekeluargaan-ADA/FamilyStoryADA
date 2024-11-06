@@ -37,6 +37,9 @@ struct CustomizationContentView: View {
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                             } else {
                                 Image(imagePath)
@@ -46,6 +49,9 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                             }
                             
@@ -60,6 +66,9 @@ struct CustomizationContentView: View {
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                             } else {
                                 Image(uiImage: image)
@@ -69,6 +78,9 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                             }
                             
@@ -83,6 +95,9 @@ struct CustomizationContentView: View {
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                                     .onAppear() {
                                         viewModel.videoPlayer = AVPlayer(url: url)
@@ -105,6 +120,9 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
                                             VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                )
                                         )
                                     .onAppear() {
                                         
