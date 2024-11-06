@@ -11,8 +11,8 @@ import CoreTransferable
 
 struct DraggablePage: Codable {
     
-    let id: UUID?
-    let picturePath: String
+    var id: UUID?
+    var picturePath: String
     
     
     // debug function
