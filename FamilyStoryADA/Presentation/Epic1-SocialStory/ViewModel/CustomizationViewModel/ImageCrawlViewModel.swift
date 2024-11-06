@@ -18,8 +18,9 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var processedImages: [UIImage] = []
     @Published var shouldRemoveBackground: Bool = false
     @Published var selectedImage: UIImage? = nil
-    @Published var savedImageFilename: String? = nil  // Added new property
-
+    @Published var savedImageFilename: String? = nil
+    private var userID: String?  // Store hashed user ID
+    
     private let imageProcessor = CrawlImageHelper()
 
     func crawlImages() {
@@ -49,7 +50,8 @@ class ImageCrawlViewModel: ObservableObject {
 
                 if let decodedResponse = try? JSONDecoder().decode(CrawlResponseObject.self, from: data) {
                     self.statusMessage = "\(decodedResponse.message) (Time taken: \(decodedResponse.timeTaken))"
-                    self.imageUrls = []  // Clear URLs before adding new ones
+                    self.imageUrls = []
+                    self.userID = decodedResponse.userID  // Capture hashedUserId
 
                     for imageUrl in decodedResponse.imageUrls {
                         if let url = URL(string: imageUrl) {
@@ -82,8 +84,9 @@ class ImageCrawlViewModel: ObservableObject {
     }
 
     func deleteImages() {
-        guard let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/") else {
-            statusMessage = "Invalid URL"
+        guard let userID = userID,
+              let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/?user_id=\(userID)") else {
+            statusMessage = "Invalid URL or missing user ID"
             return
         }
 

@@ -10,12 +10,14 @@ struct CrawlResponseObject: Codable {
     let message: String
     let timeTaken: String
     let imageUrls: [String]
+    let userID: String
 
     enum CodingKeys: String, CodingKey {
         case status
         case message
         case timeTaken = "time_taken"
         case imageUrls = "image_urls"
+        case userID = "user_id"
     }
 }
 
