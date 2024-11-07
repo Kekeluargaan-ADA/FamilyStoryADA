@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct MiniGamOptionCardView: View {
-    var image: UIImage?
+struct MiniGameOptionCardView: View {
+    @State var image: UIImage?
     var isOption: Bool
     
     var body: some View {
@@ -44,7 +44,7 @@ struct MiniGamOptionCardView: View {
 #Preview {
     ZStack {
         Color(.red)
-        MiniGamOptionCardView(image: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), isOption: true)
+        MiniGameOptionCardView(image: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), isOption: true)
         
     }
 }

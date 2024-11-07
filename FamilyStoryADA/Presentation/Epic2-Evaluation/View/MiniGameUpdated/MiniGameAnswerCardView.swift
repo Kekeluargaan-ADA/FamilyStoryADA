@@ -7,10 +7,14 @@
 
 import SwiftUI
 
+enum AnswerCardStatus {
+    case blank, revealed, checked
+}
+
 struct MiniGameAnswerCardView: View {
     var order: Int
-    var imagePath: UIImage?
-    var isCurrentlyQuestioned: Bool
+    @State var imagePath: UIImage?
+    var answerCardStatus: AnswerCardStatus
     
     var body: some View {
         VStack {
@@ -29,7 +33,18 @@ struct MiniGameAnswerCardView: View {
                     .frame(width: 124, height: 123)
                     .foregroundStyle(Color("FSYellow2").gradient.shadow(.inner(color: Color("FSBlack").opacity(0.1), radius: 15)))
                 
-                if isCurrentlyQuestioned {
+                switch answerCardStatus {
+                case .revealed:
+                    if let image = imagePath {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 124, height: 123)
+                            .clipShape(
+                                RoundedRectangle(cornerRadius: 12)
+                            )
+                    }
+                case .checked:
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(style: StrokeStyle(lineWidth: 3, dash: [5]))
                         .frame(width: 124, height: 123)
@@ -40,21 +55,17 @@ struct MiniGameAnswerCardView: View {
                         .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                         .fontWeight(.bold)
                         .foregroundStyle(Color("FSPrimaryOrange5"))
-                } else if let image = imagePath {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 124, height: 123)
-                        .clipShape(
-                            RoundedRectangle(cornerRadius: 12)
-                        )
+                default:
+                    EmptyView()
                 }
-                
             }
+        }
+        .onAppear {
+            print(order)
         }
     }
 }
 
 #Preview {
-    MiniGameAnswerCardView(order: 1, imagePath: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), isCurrentlyQuestioned: false)
+    MiniGameAnswerCardView(order: 1, imagePath: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), answerCardStatus: .blank)
 }

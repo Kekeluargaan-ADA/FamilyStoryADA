@@ -11,9 +11,21 @@ struct MiniGameAnswerArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
     var body: some View {
         ScrollView(.horizontal) {
-            ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
-                MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), isCurrentlyQuestioned: viewModel.currentlyCheckedIndex == index)
+            HStack {
+                ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
+                    MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index))
+                }
             }
+        }
+    }
+    
+    func getCardStatus(index: Int) -> AnswerCardStatus {
+        if viewModel.currentlyCheckedIndex == index {
+            return .checked
+        } else if index < viewModel.currentlyCheckedIndex {
+            return .revealed
+        } else {
+            return .blank
         }
     }
 }

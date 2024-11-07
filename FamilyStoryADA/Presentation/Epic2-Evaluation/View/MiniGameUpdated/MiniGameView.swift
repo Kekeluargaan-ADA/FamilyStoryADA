@@ -40,12 +40,14 @@ struct MiniGameView: View {
                         .padding(.bottom, 28)
                     
                     MiniGameOptionArrayView()
-                        .padding(.horizontal, 80)
+                        .padding(.leading, 80)
                         .padding(.bottom, 27)
                         .environmentObject(viewModel)
                     
                     ZStack {
-                        
+                        MiniGameAnswerArrayView()
+                            .padding(.leading, 80)
+                            .environmentObject(viewModel)
                     }
                 }
             }
