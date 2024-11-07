@@ -9,7 +9,7 @@ struct ImageInputModal: View {
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @StateObject var storyViewModel = StoryViewModel()
     @State var editedText = ""
-    @State private var isEditing = false
+    
     var body: some View {
         NavigationView {
             GeometryReader{ geometry in
@@ -27,7 +27,7 @@ struct ImageInputModal: View {
                                 Spacer()
                             }
                             
-                            if isEditing {
+                            if templateViewModel.isEditingStoryName {
                                 // Editable TextField with auto-save on every keystroke
                                 TextField("\(templateViewModel.selectedTemplate?.templateName ?? "")", text: $editedText)
                                     .font(Font.custom("Fredoka", size: 32).weight(.semibold))
@@ -46,14 +46,14 @@ struct ImageInputModal: View {
                                     .onTapGesture {
                                         // Enable editing mode and load text into editedText
                                         //                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
-                                        isEditing = true
+                                        templateViewModel.isEditingStoryName = true
                                     }
                             }
                         }
                         .onTapGesture {
-                            if isEditing {
+                            if templateViewModel.isEditingStoryName {
                                 
-                                isEditing = false
+                                templateViewModel.isEditingStoryName = false
                             }
                         }
                         .padding()

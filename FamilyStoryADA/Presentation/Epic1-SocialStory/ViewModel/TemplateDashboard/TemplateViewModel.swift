@@ -12,7 +12,7 @@ import SwiftUI
 class TemplateViewModel: ObservableObject {
     @Published var templates: [TemplateEntity] = []
     @Published var filteredTemplates: [TemplateEntity] = []
-    
+    @Published var isEditingStoryName = false
     @Published var isPagePreviewModalPresented = false
     @Published var isImageInputModalPresented = false
     @Published var selectedTemplate: TemplateEntity?
