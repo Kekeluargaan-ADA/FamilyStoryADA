@@ -83,10 +83,15 @@ struct ScrappingInitialView: View {
                                             )
                                         
                                         if crawlViewModel.selectedImage == image {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(Color("FSWhite"))
-                                                .font(.system(size: 20 * heightRatio))
-                                                .bold()
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundStyle(Color("FSWhite"))
+                                                    .frame(width: 20 * widthRatio, height: 20 * heightRatio)
+                                                Image(systemName: "checkmark.circle")
+                                                    .foregroundStyle(Color("FSBlue9"))
+                                                    .font(.system(size: 20 * heightRatio))
+                                                    .bold()
+                                            }
                                                 .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
                                         }
                                     }
