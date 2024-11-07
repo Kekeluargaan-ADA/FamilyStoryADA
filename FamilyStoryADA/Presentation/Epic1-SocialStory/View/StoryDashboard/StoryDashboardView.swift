@@ -44,8 +44,8 @@ struct StoryDashboardView: View {
                             Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
-                                                                    viewModel.searchText = keywords
-                                                                    viewModel.searchStories()
+                                    viewModel.searchText = keywords
+                                    viewModel.searchStories()
                                 }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
                                 ProfileButtonView(imageName: "")
                             }
@@ -123,7 +123,7 @@ struct StoryDashboardView: View {
                 }
                 .background(Color("FSBlue6"))
                 .onAppear() {
-//                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    //                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
                     viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {

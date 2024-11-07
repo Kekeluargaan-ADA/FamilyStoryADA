@@ -31,15 +31,19 @@ struct SearchBarView: View {
                     .foregroundStyle(Color("FSBlue9"))
                     .textFieldStyle(PlainTextFieldStyle())
                 }
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(Color("FSBlue9"))
-                    .font(.system(size: 24))
-                    .bold()
+                Button(action: {
+                    onCommit()
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }) {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(Color("FSBlue9"))
+                        .font(.system(size: 24))
+                        .bold()
+                }
             }
             .padding(.horizontal, 24)
         }
         .frame(width: 540, height: 60)
-
     }
 }
 
