@@ -63,8 +63,8 @@ struct ImageInputModal: View {
                             }
                         )
                     }
-
-
+                    
+                    
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
@@ -164,7 +164,7 @@ struct ImageInputModal: View {
                     .frame(width: 728, alignment: .trailing)
                     
                 }
-                .offset(y: keyboardHelper.isKeyboardShown ? -126 : 0)
+                .offset(y: keyboardOffset)
                 
                 // Show the cropping view when image is selected
                 
@@ -190,6 +190,16 @@ struct ImageInputModal: View {
         }
         .navigationViewStyle(.stack)
         .environmentObject(viewModel)
+    }
+    
+    private var keyboardOffset: CGFloat {
+        guard keyboardHelper.isKeyboardShown else { return 0 }
+        if templateViewModel.isEditingTextField {
+            return -126
+        } else if templateViewModel.isEditingStoryName {
+            return 200
+        }
+        return 0
     }
 }
 
