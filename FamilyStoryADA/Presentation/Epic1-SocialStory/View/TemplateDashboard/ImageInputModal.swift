@@ -29,14 +29,12 @@ struct ImageInputModal: View {
                             
                             if templateViewModel.isEditingStoryName {
                                 // Editable TextField with auto-save on every keystroke
-                                TextField("\(templateViewModel.selectedTemplate?.templateName ?? "")", text: $editedText)
+                                TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $editedText)
                                     .font(Font.custom("Fredoka", size: 32).weight(.semibold))
                                     .foregroundColor(Color("FSBlack"))
                                     .multilineTextAlignment(.center)
                                     .onChange(of: editedText) { newValue in
-                                        // Update the view model in real-time or handle side effects
                                         editedText = newValue
-                                        print(editedText)
                                     }
                             } else {
                                 // Non-editable Text view
@@ -45,19 +43,27 @@ struct ImageInputModal: View {
                                     .foregroundColor(Color("FSBlack"))
                                     .onTapGesture {
                                         // Enable editing mode and load text into editedText
-                                        //                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
                                         templateViewModel.isEditingStoryName = true
+                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
                                     }
                             }
                         }
-                        .onTapGesture {
-                            if templateViewModel.isEditingStoryName {
-                                
-                                templateViewModel.isEditingStoryName = false
-                            }
-                        }
                         .padding()
+                        .background(
+                            // Overlay that detects taps outside the TextField
+                            Group {
+                                if templateViewModel.isEditingStoryName {
+                                    Color.clear
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            templateViewModel.isEditingStoryName = false
+                                        }
+                                }
+                            }
+                        )
                     }
+
+
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
@@ -138,6 +144,9 @@ struct ImageInputModal: View {
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
                         templateViewModel.isTemplateClosed = true
+                        if (editedText.trimmingCharacters(in: .whitespacesAndNewlines) == ""){
+                            editedText = templateViewModel.selectedTemplate!.templateName
+                        }
                         templateViewModel.createdStory?.storyName = editedText
                         storyViewModel.updateStory(story: templateViewModel.createdStory!)
                         dismiss()
