@@ -74,16 +74,19 @@ struct PlayStoryView: View {
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .onAppear() {
-                                        
-                                        playStoryViewModel.setupPlayer(url: url)
+                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                        playStoryViewModel.videoPlayer.play()
                                     }
                                     .onDisappear() {
                                         playStoryViewModel.videoPlayer.pause()
-                                        playStoryViewModel.removePlayerObserver()
                                     }
                                     .onChange(of: url) {
-                                        playStoryViewModel.removePlayerObserver()
-                                        playStoryViewModel.setupPlayer(url: url)
+                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                        playStoryViewModel.videoPlayer.play()
+                                    }
+                                    .onTapGesture() {
+                                        playStoryViewModel.videoPlayer.seek(to: .zero)
+                                        playStoryViewModel.videoPlayer.play()
                                     }
                                     
                                 
