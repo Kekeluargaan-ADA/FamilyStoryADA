@@ -10,16 +10,17 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var searchText: String
     var onCommit: () -> Void
+    var searchPlaceholder: String
     
     var body: some View {
         HStack {
             ZStack(alignment: .leading) {
                 if searchText.isEmpty {
-                    Text("Cari")
+                    Text(searchPlaceholder)
                         .font(Font.custom("Fredoka", size: 20))
                         .foregroundColor(Color("FSBlue9"))
                 }
-                TextField("Cari", text: $searchText, onCommit: {
+                TextField(searchPlaceholder, text: $searchText, onCommit: {
                     onCommit()
                 })
                 .font(Font.custom("Fredoka", size: 20))
@@ -27,9 +28,9 @@ struct SearchBarView: View {
             }
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(Color("FSBlue9"))
-                .padding(.trailing, 10)
+                .font(.system(size: 24))
+                .bold()
         }
-        .frame(width: 540, height: 60)
         .padding(.horizontal, 24)
         .background(Color("FSSecondaryBlue4"))
         .cornerRadius(60)
@@ -38,5 +39,5 @@ struct SearchBarView: View {
 
 #Preview {
     @Previewable @State var searchText = ""
-    SearchBarView(searchText: $searchText,  onCommit: {})
+    SearchBarView(searchText: $searchText, onCommit: {}, searchPlaceholder: "Caris")
 }

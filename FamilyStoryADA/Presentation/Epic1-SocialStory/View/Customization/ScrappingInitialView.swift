@@ -51,9 +51,9 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-                                SearchBarView(searchText: $crawlViewModel.keyword) {
-                                    crawlViewModel.crawlImages()
-                                }
+//                                SearchBarView(searchText: $crawlViewModel.keyword) {
+//                                    crawlViewModel.crawlImages()
+//                                }
                                 Button(action: {
                                     crawlViewModel.deleteImages()
                                 }, label: {

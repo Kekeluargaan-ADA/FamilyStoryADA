@@ -45,8 +45,9 @@ struct StoryDashboardView: View {
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                                                     viewModel.searchText = keywords
-                                                                    viewModel.searchStories() // Trigger search when user commits
-                                                                })
+                                                                    viewModel.searchStories()
+                                }, searchPlaceholder: "Cari")
+                                .frame(width: 540, height: 60)
                                 ProfileButtonView(imageName: "")
                             }
                         }
