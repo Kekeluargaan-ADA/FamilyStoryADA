@@ -11,8 +11,8 @@ import CoreTransferable
 
 struct DraggablePage: Codable {
     
-    let id: UUID?
-    let picturePath: String
+    var id: UUID?
+    var picturePath: String
     
     
     // debug function
@@ -36,6 +36,7 @@ struct DraggablePage: Codable {
         var draggedPages = [DraggablePage]()
         for page in story.pages {
             guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
+//            guard page.pageType == "Instruction" else { continue }
             if let picture = page.pagePicture.first {
                 draggedPages.append(DraggablePage(id: page.pageId,
                                                   picturePath: picture.componentContent
