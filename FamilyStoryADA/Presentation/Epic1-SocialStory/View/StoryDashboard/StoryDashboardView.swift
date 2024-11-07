@@ -41,13 +41,12 @@ struct StoryDashboardView: View {
                                 .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
-                            Spacer(minLength: geometry.size.width / 2)
+                            Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                                                     viewModel.searchText = keywords
                                                                     viewModel.searchStories()
-                                }, searchPlaceholder: "Cari")
-                                .frame(width: 540, height: 60)
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
                                 ProfileButtonView(imageName: "")
                             }
                         }
