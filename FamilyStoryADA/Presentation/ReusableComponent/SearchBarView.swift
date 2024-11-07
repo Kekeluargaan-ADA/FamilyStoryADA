@@ -10,22 +10,44 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var searchText: String
     var onCommit: () -> Void
+    var searchPlaceholder: String
     
     var body: some View {
-        HStack {
-            TextField("Cari berdasarkan judul, kategori,...", text: $searchText, onCommit: {
-                onCommit()
-            })
-                .padding(10)
-                .cornerRadius(25)
-                .foregroundStyle(Color("FSBlue9"))
-            
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(Color("FSBlue9"))
-                .padding(.trailing, 10)
+        ZStack {
+            Rectangle()
+                .foregroundStyle(Color("FSSecondaryBlue4"))
+                .cornerRadius(60)
+            HStack {
+                ZStack(alignment: .leading) {
+                    if searchText.isEmpty {
+                        Text(searchPlaceholder)
+                            .font(Font.custom("Fredoka", size: 20))
+                            .foregroundStyle(Color("FSBlue9"))
+                    }
+                    TextField(searchPlaceholder, text: $searchText, onCommit: {
+                        onCommit()
+                    })
+                    .font(Font.custom("Fredoka", size: 20))
+                    .foregroundStyle(Color("FSBlue9"))
+                    .textFieldStyle(PlainTextFieldStyle())
+                }
+                Button(action: {
+                    onCommit()
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }) {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundStyle(Color("FSBlue9"))
+                        .font(.system(size: 24))
+                        .bold()
+                }
+            }
+            .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 16)
-        .background(Color("FSSecondaryBlue4"))
-        .cornerRadius(25)
+        .frame(width: 540, height: 60)
     }
+}
+
+#Preview {
+    @Previewable @State var searchText = ""
+    SearchBarView(searchText: $searchText, onCommit: {}, searchPlaceholder: "Caris")
 }

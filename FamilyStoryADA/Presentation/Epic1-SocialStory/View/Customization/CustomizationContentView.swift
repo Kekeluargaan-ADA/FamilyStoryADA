@@ -318,10 +318,11 @@ struct CustomizationContentView: View {
                     }
                     
                 }
-                
-                .disabled(isParaphrasingPresented)
-                .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -378 : 0)
             }
+
+            .disabled(isParaphrasingPresented)
+            .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
+
         }
         
     }
