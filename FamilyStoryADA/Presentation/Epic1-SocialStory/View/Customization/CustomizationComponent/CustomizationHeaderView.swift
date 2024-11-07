@@ -48,7 +48,8 @@ struct CustomizationHeaderView: View {
                 })
                 
                 NavigationLink(destination: {
-                    MiniQuizView(story: story)
+//                    MiniQuizView(story: story)
+                    MiniGameView(story: story)
                 }, label: {
                     ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
                 })

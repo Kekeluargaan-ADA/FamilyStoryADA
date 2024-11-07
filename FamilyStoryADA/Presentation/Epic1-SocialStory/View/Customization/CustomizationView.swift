@@ -36,6 +36,7 @@ struct CustomizationView: View {
                                 CustomizedBackButton()
                             })
                             DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+                                .disabled(keyboardHelper.isKeyboardShown)
                         }
                         
                         ZStack {
@@ -69,8 +70,12 @@ struct CustomizationView: View {
                                 }
                             }
                             
-                            
-                            
+                        }
+                        .onTapGesture {
+                            if keyboardHelper.isKeyboardShown {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                keyboardHelper.isKeyboardShown = false
+                            }
                         }
                         
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {

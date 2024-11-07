@@ -21,7 +21,9 @@ struct MiniQuizView: View {
             Spacer(minLength: 47)
             PlayStoryNavigationView(heightRatio: 1, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                 dismiss()
-            }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(instruction)})
+            }, onTapAudioButton: {
+                textToSpeechHelper.speakIndonesian(instruction)
+            })
                 .padding(.horizontal, 46)
             Spacer(minLength: 60)
             Text(instruction)
@@ -88,12 +90,6 @@ struct MiniQuizView: View {
             if value {
                 dismiss()
             }
-        }
-        .onAppear {
-            print("Appear mini quiz")
-        }
-        .onDisappear {
-            print("Delete mini quiz view")
         }
         .background(Color("FSYellow1"))
         .environmentObject(viewModel)

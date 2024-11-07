@@ -34,6 +34,7 @@ struct ScrappingInitialView: View {
                                 ZStack {
                                     HStack {
                                         Button(action: {
+                                            crawlViewModel.deleteImages()
                                             viewModel.isGotoScrapImage = false
                                         }) {
                                             ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
@@ -48,9 +49,12 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-                                SearchBarView(searchText: $crawlViewModel.keyword) {
+
+
+                                SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
+
                                     crawlViewModel.crawlImages()
-                                }
+                                }, searchPlaceholder: "Cari")
                                 Button(action: {
                                     crawlViewModel.deleteImages()
                                 }, label: {
@@ -81,27 +85,32 @@ struct ScrappingInitialView: View {
                                                     Color.gray
                                                 }
                                             }
-                                            .buttonStyle(PlainButtonStyle())
-                                            .contentShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
 
-                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                                .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-
-                                            if crawlViewModel.selectedImage == image {
-                                                Image(systemName: "checkmark.circle.fill")
-                                                    .foregroundColor(Color("FSWhite"))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                            )
+                                        
+                                        if crawlViewModel.selectedImage == image {
+                                            ZStack {
+                                                Circle()
+                                                    .foregroundStyle(Color("FSWhite"))
+                                                    .frame(width: 20 * widthRatio, height: 20 * heightRatio)
+                                                Image(systemName: "checkmark.circle")
+                                                    .foregroundStyle(Color("FSBlue9"))
                                                     .font(.system(size: 20 * heightRatio))
                                                     .bold()
-                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                            }
+                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+
                                             }
                                         }
-                                        Text(url)
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                            .frame(width: 214 * widthRatio, alignment: .leading)
-                                            .lineLimit(1)
-                                            .truncationMode(.tail)
+//                                        Text(url)
+//                                            .font(.caption)
+//                                            .foregroundColor(.gray)
+//                                            .frame(width: 214 * widthRatio, alignment: .leading)
+//                                            .lineLimit(1)
+//                                            .truncationMode(.tail)
                                     }
                                 }
                             }

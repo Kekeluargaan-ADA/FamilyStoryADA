@@ -41,12 +41,12 @@ struct StoryDashboardView: View {
                                 .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
-                            Spacer(minLength: geometry.size.width / 2)
+                            Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
-                                                                    viewModel.searchText = keywords
-                                                                    viewModel.searchStories() // Trigger search when user commits
-                                                                })
+                                    viewModel.searchText = keywords
+                                    viewModel.searchStories()
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -123,7 +123,7 @@ struct StoryDashboardView: View {
                 }
                 .background(Color("FSBlue6"))
                 .onAppear() {
-//                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    //                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
                     viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
