@@ -7,6 +7,7 @@ struct ImageInputModal: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var templateViewModel: TemplateViewModel
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
+    @StateObject private var keyboardHelper = KeyboardHelper()  // Keyboard Helper
     
     var body: some View {
         NavigationView {
@@ -127,6 +128,7 @@ struct ImageInputModal: View {
                     .frame(width: 728, alignment: .trailing)
                     
                 }
+                .offset(y: keyboardHelper.isKeyboardShown ? -126 : 0)
                 
                 // Show the cropping view when image is selected
                 
