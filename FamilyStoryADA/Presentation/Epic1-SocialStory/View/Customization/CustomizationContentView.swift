@@ -285,7 +285,7 @@ struct CustomizationContentView: View {
                 
             }
             .disabled(isParaphrasingPresented)
-            .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -378 : 0)
+            .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
         }
     }
     
