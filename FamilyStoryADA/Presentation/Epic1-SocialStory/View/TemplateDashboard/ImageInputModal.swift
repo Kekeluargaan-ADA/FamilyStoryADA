@@ -7,6 +7,8 @@ struct ImageInputModal: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var templateViewModel: TemplateViewModel
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
+    @StateObject var storyViewModel = StoryViewModel()
+    @State var editedText = ""
     
     var body: some View {
         NavigationView {
@@ -19,21 +21,49 @@ struct ImageInputModal: View {
                                 Button(action: {
                                     templateViewModel.chosenImage = nil
                                     templateViewModel.isImageInputModalPresented.toggle()
-                                    //                                    presentationMode.wrappedValue.dismiss()
                                 }) {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                 }
                                 Spacer()
                             }
-                            Text(templateViewModel.selectedTemplate?.templateName ?? "")
-                                .font(
-                                    Font.custom("Fredoka", size: 32)
-                                        .weight(.semibold)
-                                )
-                                .foregroundColor(Color("FSBlack"))
+                            
+                            if templateViewModel.isEditingStoryName {
+                                // Editable TextField with auto-save on every keystroke
+                                TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $editedText)
+                                    .font(Font.custom("Fredoka", size: 32).weight(.semibold))
+                                    .foregroundColor(Color("FSBlack"))
+                                    .multilineTextAlignment(.center)
+                                    .onChange(of: editedText) { newValue in
+                                        editedText = newValue
+                                    }
+                            } else {
+                                // Non-editable Text view
+                                Text(templateViewModel.selectedTemplate?.templateName ?? "")
+                                    .font(Font.custom("Fredoka", size: 32).weight(.semibold))
+                                    .foregroundColor(Color("FSBlack"))
+                                    .onTapGesture {
+                                        // Enable editing mode and load text into editedText
+                                        templateViewModel.isEditingStoryName = true
+                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
+                                    }
+                            }
                         }
                         .padding()
+                        .background(
+                            // Overlay that detects taps outside the TextField
+                            Group {
+                                if templateViewModel.isEditingStoryName {
+                                    Color.clear
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            templateViewModel.isEditingStoryName = false
+                                        }
+                                }
+                            }
+                        )
                     }
+
+
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
@@ -108,11 +138,17 @@ struct ImageInputModal: View {
                     .padding()
                     
                     Button(action: {
+                        
                         viewModel.savedImage = templateViewModel.chosenImage
                         templateViewModel.editNewStory(imageName: viewModel.saveImage())
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
                         templateViewModel.isTemplateClosed = true
+                        if (editedText.trimmingCharacters(in: .whitespacesAndNewlines) == ""){
+                            editedText = templateViewModel.selectedTemplate!.templateName
+                        }
+                        templateViewModel.createdStory?.storyName = editedText
+                        storyViewModel.updateStory(story: templateViewModel.createdStory!)
                         dismiss()
                     }) {
                         Text("Lanjut")
@@ -197,7 +233,7 @@ struct ChangePictureButton: View {
                                    // Show crop view once an image is selected
                                    templateViewModel.chosenImage = selectedImage
                                    viewModel.savedImage = selectedImage
-//                                   viewModel.showCropView = true //TODO: Fix crop view for this, for now lets say langsung foto
+                                   //                                   viewModel.showCropView = true //TODO: Fix crop view for this, for now lets say langsung foto
                                    viewModel.isPhotoCaptured = false
                                    
                                }
@@ -221,7 +257,6 @@ struct ChangePictureButton: View {
 
 
 //
-//#Preview {
-//    @Previewable @State var isPresented = true  // State for preview purposes
-//    ImageInputModal(isPresented: $isPresented)
-//}
+#Preview {
+    ImageInputModal()
+}
