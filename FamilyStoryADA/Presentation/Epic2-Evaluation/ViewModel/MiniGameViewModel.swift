@@ -10,6 +10,8 @@ import UIKit
 
 class MiniGameViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
+    @Published var isDismissed: Bool = false
+    @Published var isAllCorrect: Bool = false
     @Published var draggedPages: [DraggablePage] = []
     @Published var correctAnswer: [DraggablePage] = []
     @Published var currentlyCheckedIndex: Int = 0
@@ -30,5 +32,11 @@ class MiniGameViewModel: Imageable, ObservableObject {
         }
         
         return image
+    }
+    
+    public func resetGame() {
+        self.draggedPages = DraggablePage.fetchDraggedPage(story: story).shuffled()
+        self.currentlyCheckedIndex = 0
+        self.isAllCorrect = false
     }
 }

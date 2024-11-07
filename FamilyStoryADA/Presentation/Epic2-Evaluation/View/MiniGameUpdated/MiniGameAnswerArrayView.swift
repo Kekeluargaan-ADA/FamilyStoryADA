@@ -11,7 +11,7 @@ struct MiniGameAnswerArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
     var body: some View {
         ScrollView(.horizontal) {
-            HStack {
+            HStack(spacing: 20) {
                 ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
                     MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index))
                 }

@@ -34,24 +34,49 @@ struct MiniGameView: View {
                     .padding(.bottom, 16 * heightRatio)
                     
                     Text(instruction)
-                        .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                         .fontWeight(.semibold)
                         .foregroundStyle(Color("FSBlack"))
-                        .padding(.bottom, 28)
+                        .padding(.bottom, 16 * heightRatio)
                     
                     MiniGameOptionArrayView()
-                        .padding(.leading, 80)
-                        .padding(.bottom, 27)
+                        .padding(.leading, 80 * widthRatio)
+                        .padding(.bottom, 27 * heightRatio)
                         .environmentObject(viewModel)
                     
                     ZStack {
+                        RoundedRectangle(cornerRadius: 40)
+                            .foregroundStyle(Color("FSWhite"))
+                            .frame(width: 1195 * widthRatio, height: 220 * heightRatio)
+                            .shadow(radius: 10, y: -4)
                         MiniGameAnswerArrayView()
-                            .padding(.leading, 80)
+                            .padding(.leading, 80 * widthRatio)
+                            .padding(.top, 20 * heightRatio)
+                            .padding(.bottom, 36 * heightRatio)
                             .environmentObject(viewModel)
                     }
                 }
             }
             .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
+        .onChange(of: viewModel.currentlyCheckedIndex) { value in
+            if value == viewModel.correctAnswer.count {
+                viewModel.isAllCorrect = true
+            }
+        }
+        .sheet(isPresented: $viewModel.isAllCorrect, content: {
+            ZStack {
+                Color("FSYellow1")
+                MiniQuizModalView()
+                    .environmentObject(viewModel)
+            }
+            .onAppear(perform: {textToSpeechHelper.stopSpeaking()})
+                .presentationDetents([.height(727)])
+        })
+        .onChange(of: viewModel.isDismissed) { value in
+            if value {
+                dismiss()
+            }
+        }
     }
 }

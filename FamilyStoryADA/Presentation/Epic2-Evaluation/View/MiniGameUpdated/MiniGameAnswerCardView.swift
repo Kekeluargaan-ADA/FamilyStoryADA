@@ -46,10 +46,12 @@ struct MiniGameAnswerCardView: View {
                     }
                 case .checked:
                     RoundedRectangle(cornerRadius: 12)
+                        .frame(width: 124, height: 123)
+                        .foregroundStyle(Color("FSYellow2"))
+                    RoundedRectangle(cornerRadius: 12)
                         .stroke(style: StrokeStyle(lineWidth: 3, dash: [5]))
                         .frame(width: 124, height: 123)
                         .foregroundStyle(Color("FSPrimaryOrange5"))
-                        .background(Color("FSYellow2"))
                         .shadow(color: Color("FSPrimaryOrange5"), radius: 8)
                     Text("?")
                         .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))

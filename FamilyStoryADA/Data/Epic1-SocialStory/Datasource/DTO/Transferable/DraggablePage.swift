@@ -35,8 +35,8 @@ struct DraggablePage: Codable {
     public static func fetchDraggedPage(story: StoryEntity) -> [DraggablePage] {
         var draggedPages = [DraggablePage]()
         for page in story.pages {
-//            guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
-            guard page.pageType == "Instruction" else { continue }
+            guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
+//            guard page.pageType == "Instruction" else { continue }
             if let picture = page.pagePicture.first {
                 draggedPages.append(DraggablePage(id: page.pageId,
                                                   picturePath: picture.componentContent

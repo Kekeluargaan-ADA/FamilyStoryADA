@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MiniQuizModalView: View {
-    @EnvironmentObject var viewModel: MiniQuizViewModel
+//    @EnvironmentObject var viewModel: MiniQuizViewModel
+    @EnvironmentObject var viewModel: MiniGameViewModel
     @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack {
@@ -36,7 +37,8 @@ struct MiniQuizModalView: View {
                     ButtonElips(text: "Tidak", buttonPreset: .yellow, buttonStyle: .secondary)
                 })
                 Button(action: {
-                    viewModel.resetQuiz()
+//                    viewModel.resetQuiz()
+                    viewModel.resetGame()
                 }, label: {
                     ButtonElips(text: "Main Lagi", buttonPreset: .yellow, buttonStyle: .primary)
                 })
