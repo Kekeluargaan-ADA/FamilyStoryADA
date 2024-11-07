@@ -12,6 +12,7 @@ class MiniGameViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
     @Published var draggedPages: [DraggablePage] = []
     @Published var correctAnswer: [DraggablePage] = []
+    @Published var currentlyCheckedIndex: Int = 0
     
     init(story: StoryEntity) {
         self.story = story

@@ -19,8 +19,11 @@ struct MiniGameOptionArrayView: View {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
                     MiniGamOptionCardView(image: viewModel.displayImage(fileName: value.picturePath), isOption: value.id != nil)
                         .onTapGesture {
-                            viewModel.draggedPages[index].id = nil
-                            viewModel.draggedPages[index].picturePath = ""
+                            if value.id != nil, viewModel.correctAnswer[viewModel.currentlyCheckedIndex].id == value.id {
+                                viewModel.draggedPages[index].id = nil
+                                viewModel.draggedPages[index].picturePath = ""
+                                viewModel.currentlyCheckedIndex += 1
+                            }
                         }
                 }
             }

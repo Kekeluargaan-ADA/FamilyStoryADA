@@ -11,8 +11,8 @@ struct MiniGameAnswerArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
     var body: some View {
         ScrollView(.horizontal) {
-            ForEach(viewModel.correctAnswer, id: \.id) { value in
-//                MiniGamOptionCardView(image: viewModel.displayImage(fileName: value.picturePath), isOption: value.id != nil)
+            ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
+                MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), isCurrentlyQuestioned: viewModel.currentlyCheckedIndex == index)
             }
         }
     }
