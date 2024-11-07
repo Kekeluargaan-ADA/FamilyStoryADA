@@ -13,19 +13,30 @@ struct SearchBarView: View {
     
     var body: some View {
         HStack {
-            TextField("Cari berdasarkan judul, kategori,...", text: $searchText, onCommit: {
-                onCommit()
-            })
-                .padding(10)
-                .cornerRadius(25)
-                .foregroundStyle(Color("FSBlue9"))
-            
+            ZStack(alignment: .leading) {
+                if searchText.isEmpty {
+                    Text("Cari")
+                        .font(Font.custom("Fredoka", size: 20))
+                        .foregroundColor(Color("FSBlue9"))
+                }
+                TextField("Cari", text: $searchText, onCommit: {
+                    onCommit()
+                })
+                .font(Font.custom("Fredoka", size: 20))
+                .foregroundColor(Color("FSBlue9"))
+            }
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(Color("FSBlue9"))
                 .padding(.trailing, 10)
         }
-        .padding(.horizontal, 16)
+        .frame(width: 540, height: 60)
+        .padding(.horizontal, 24)
         .background(Color("FSSecondaryBlue4"))
-        .cornerRadius(25)
+        .cornerRadius(60)
     }
+}
+
+#Preview {
+    @Previewable @State var searchText = ""
+    SearchBarView(searchText: $searchText,  onCommit: {})
 }
