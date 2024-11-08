@@ -13,7 +13,10 @@ struct DraggablePageReorderedCustomizationView: View {
     @Binding var introPages: [DraggablePage]
     
     var body: some View {
-            VStack {
+        ZStack {
+            Color("FSBlue6")
+                .ignoresSafeArea()
+            List {
                 ForEach(introPages, id: \.id) { page in
                     if let image = viewModel.loadImageFromDiskWith(fileName: page.picturePath) {
                         DraggedPageView(imagePath: image,
@@ -84,6 +87,7 @@ struct DraggablePageReorderedCustomizationView: View {
             .listRowBackground(Color.clear)
             .background(Color.clear)
         }
+    }
 }
 
 //#Preview {
