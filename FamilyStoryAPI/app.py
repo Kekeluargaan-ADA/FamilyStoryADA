@@ -7,6 +7,7 @@ import nest_asyncio
 import re
 import uuid
 import hashlib
+import asyncio
 
 nest_asyncio.apply()
 
@@ -43,7 +44,8 @@ async def async_download_images(keyword: str, max_num: int = 3, user_id: str = N
     google_crawler.downloader.logger.addFilter(checkCrawlURL)
 
     filters = dict(license='commercial,modify')
-    google_crawler.crawl(keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0)
+    
+    await asyncio.to_thread(google_crawler.crawl, keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0)
     
     image_files = [os.path.join(user_dir, f) for f in os.listdir(user_dir) if f.endswith((".jpg", ".png", ".jpeg"))]
 

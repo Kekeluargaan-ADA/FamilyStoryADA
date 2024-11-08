@@ -52,7 +52,7 @@ struct ScrappingInitialView: View {
 
 
                                 SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
-
+                                    crawlViewModel.deleteImages()
                                     crawlViewModel.crawlImages()
                                 }, searchPlaceholder: "Cari")
                                 Button(action: {
@@ -62,7 +62,6 @@ struct ScrappingInitialView: View {
                                 })
                             }
                             .zIndex(1)
-                            
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
