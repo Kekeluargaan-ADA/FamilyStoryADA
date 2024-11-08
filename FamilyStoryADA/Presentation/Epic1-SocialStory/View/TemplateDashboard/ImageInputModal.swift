@@ -6,10 +6,11 @@ struct ImageInputModal: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var templateViewModel: TemplateViewModel
+    @FocusState private var isTextFieldFocused: Bool
+    @StateObject private var keyboardHelper = KeyboardHelper()
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @StateObject var storyViewModel = StoryViewModel()
     @State var editedText = ""
-    @StateObject private var keyboardHelper = KeyboardHelper()  // Keyboard Helper
     
     var body: some View {
         NavigationView {
@@ -18,16 +19,6 @@ struct ImageInputModal: View {
                 VStack {
                     HStack {
                         ZStack {
-                            HStack {
-                                Button(action: {
-                                    templateViewModel.chosenImage = nil
-                                    templateViewModel.isImageInputModalPresented.toggle()
-                                }) {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
-                                }
-                                Spacer()
-                            }
-                            
                             if templateViewModel.isEditingStoryName {
                                 // Editable TextField with auto-save on every keystroke
                                 TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $editedText)
@@ -37,32 +28,47 @@ struct ImageInputModal: View {
                                     .onChange(of: editedText) { newValue in
                                         editedText = newValue
                                     }
+                                
+                                    .focused($isTextFieldFocused) // Bind focus state to TextField
+                                    .onAppear {
+                                        // Set focus when entering edit mode to show the keyboard
+                                        isTextFieldFocused = true
+                                    }
+                                    .onChange(of: isTextFieldFocused) { focused in
+                                        if !focused {
+                                            // Exit edit mode when TextField loses focus (keyboard is dismissed)
+                                            templateViewModel.isEditingStoryName = false
+                                        }
+                                    }
                             } else {
                                 // Non-editable Text view
-                                Text(templateViewModel.selectedTemplate?.templateName ?? "")
+                                Text(editedText)
                                     .font(Font.custom("Fredoka", size: 32).weight(.semibold))
+                                
                                     .foregroundColor(Color("FSBlack"))
                                     .onTapGesture {
                                         // Enable editing mode and load text into editedText
                                         templateViewModel.isEditingStoryName = true
-                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
+                                        isTextFieldFocused = true
+                                        //                                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
                                     }
+                            }
+                            HStack {
+                                Button(action: {
+                                    templateViewModel.isEditingStoryName = false
+                                    templateViewModel.chosenImage = nil
+                                    templateViewModel.isImageInputModalPresented.toggle()
+                                }) {
+                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
+                                }
+                                Spacer()
                             }
                         }
                         .padding()
-                        .background(
-                            // Overlay that detects taps outside the TextField
-                            Group {
-                                if templateViewModel.isEditingStoryName {
-                                    Color.clear
-                                        .contentShape(Rectangle())
-                                        .onTapGesture {
-                                            templateViewModel.isEditingStoryName = false
-                                        }
-                                }
-                            }
-                        )
+                    }.onAppear(){
+                        editedText = templateViewModel.selectedTemplate?.templateName ?? ""
                     }
+
                     
                     
                     Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
@@ -71,102 +77,121 @@ struct ImageInputModal: View {
                         .fontWeight(.medium)
                         .foregroundStyle(Color(.fsBlack))
                         .frame(width: 381,height: 50, alignment: .center)
+
                     
-                    // Display saved image if exists, otherwise show placeholder
-                    if let uiImage = templateViewModel.chosenImage {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 300, height: 400)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .overlay(alignment: .bottom) {
-                                ChangePictureButton()
-                                    .environmentObject(viewModel)
-                                    .environmentObject(templateViewModel)
-                            }
-                    } else {
-                        // Placeholder if no image is found
-                        Rectangle()
-                            .frame(width: 300, height: 400)
-                            .foregroundColor(.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .overlay(alignment: .bottom) {
-                                ChangePictureButton()
-                                    .environmentObject(viewModel)
-                                    .environmentObject(templateViewModel)
-                            }
-                    }
                     
-                    HStack {
-                        if templateViewModel.isEditingTextField {
-                            // Show TextField for editing name
-                            TextField("Enter name", text: $templateViewModel.childName)
-                                .background(Color("FSWhite"))
-                                .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color(.fsBlack))
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 200)
-                            
-                        } else {
-                            if templateViewModel.childName.isEmpty {
-                                Text("Enter name")
-                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color(.fsBlack))
-                                    .onTapGesture {
-                                        templateViewModel.isEditingTextField.toggle()
-                                    }
-                            } else {
-                                Text(templateViewModel.childName)
-                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color(.fsBlack))
-                                    .onTapGesture {
-                                        templateViewModel.isEditingTextField.toggle()
-                                    }
-                            }
-                        }
-                        
-                        Button(action: {
-                            templateViewModel.isEditingTextField.toggle()  // Toggle editing state
-                        }) {
-                            Image(systemName: "pencil")
-                                .frame(width: 22,height: 22)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding()
-                    
-                    Button(action: {
-                        
-                        viewModel.savedImage = templateViewModel.chosenImage
-                        templateViewModel.editNewStory(imageName: viewModel.saveImage())
-                        templateViewModel.isImageInputModalPresented = false
-                        templateViewModel.isPagePreviewModalPresented = false
-                        templateViewModel.isTemplateClosed = true
-                        if (editedText.trimmingCharacters(in: .whitespacesAndNewlines) == ""){
-                            editedText = templateViewModel.selectedTemplate!.templateName
-                        }
-                        templateViewModel.createdStory?.storyName = editedText
-                        storyViewModel.updateStory(story: templateViewModel.createdStory!)
-                        dismiss()
-                    }) {
-                        Text("Lanjut")
+                    VStack {
+                        Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
+                            .multilineTextAlignment(.center)
                             .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                             .fontWeight(.medium)
-                            .foregroundStyle(Color(.fsWhite))
-                            .frame(width: 160,height: 60)
-                            .background(Color(.fsBlue9))
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .foregroundStyle(Color(.fsBlack))
+                            .frame(width: 381,height: 50, alignment: .center)
+                        if let uiImage = templateViewModel.chosenImage {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 300, height: 400)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .overlay(alignment: .bottom) {
+                                    ChangePictureButton()
+                                        .environmentObject(viewModel)
+                                        .environmentObject(templateViewModel)
+                                }
+                        } else {
+                            // Placeholder if no image is found
+                            Rectangle()
+                                .frame(width: 300, height: 400)
+                                .foregroundColor(.gray)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .overlay(alignment: .bottom) {
+                                    ChangePictureButton()
+                                        .environmentObject(viewModel)
+                                        .environmentObject(templateViewModel)
+                                }
+                        }
+                        
+                        HStack {
+                            if templateViewModel.isEditingTextField {
+                                // Show TextField for editing name
+                                TextField("Enter name", text: $templateViewModel.childName)
+                                    .background(Color("FSWhite"))
+                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color(.fsBlack))
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 200)
+                                
+                            } else {
+                                if templateViewModel.childName.isEmpty {
+                                    Text("Enter name")
+                                        .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color(.fsBlack))
+                                        .onTapGesture {
+                                            templateViewModel.isEditingTextField.toggle()
+                                        }
+                                } else {
+                                    Text(templateViewModel.childName)
+                                        .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color(.fsBlack))
+                                        .onTapGesture {
+                                            templateViewModel.isEditingTextField.toggle()
+                                        }
+                                }
+                            }
+                            
+                            Button(action: {
+                                templateViewModel.isEditingTextField.toggle()  // Toggle editing state
+                            }) {
+                                Image(systemName: "pencil")
+                                    .frame(width: 22,height: 22)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        .padding()
+                        
+                        Button(action: {
+                            
+                            viewModel.savedImage = templateViewModel.chosenImage
+                            templateViewModel.editNewStory(imageName: viewModel.saveImage())
+                            templateViewModel.isImageInputModalPresented = false
+                            templateViewModel.isPagePreviewModalPresented = false
+                            templateViewModel.isTemplateClosed = true
+                            if (editedText.trimmingCharacters(in: .whitespacesAndNewlines) == ""){
+                                editedText = templateViewModel.selectedTemplate!.templateName
+                            }
+                            templateViewModel.createdStory?.storyName = editedText
+                            storyViewModel.updateStory(story: templateViewModel.createdStory!)
+                            dismiss()
+                        }) {
+                            Text("Lanjut")
+                                .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color(.fsWhite))
+                                .frame(width: 160,height: 60)
+                                .background(Color(.fsBlue9))
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                        }
+                        .padding()
+                        .frame(width: 728, alignment: .trailing)
                     }
-                    .padding()
-                    .frame(width: 728, alignment: .trailing)
-                    
+                    .background(
+                        // Overlay that detects taps outside the TextField
+                        Group {
+                            if templateViewModel.isEditingStoryName {
+                                Color.clear
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        templateViewModel.isEditingStoryName = false
+                                    }
+                            }
+                        }
+                        
+                    )
                 }
                 .offset(y: keyboardOffset)
-                
-                // Show the cropping view when image is selected
                 
             }
             .frame(width: 728,height: 743)

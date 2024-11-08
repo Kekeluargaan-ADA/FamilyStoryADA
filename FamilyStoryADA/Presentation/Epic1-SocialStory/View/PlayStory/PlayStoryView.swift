@@ -14,6 +14,7 @@ struct PlayStoryView: View {
     @Binding var isMiniQuizPresented: Bool
     private let textToSpeechHelper = TextToSpeechHelper()
     @State var playStoryIsActive = false
+    private let soundEffectHelper = SoundEffectHelper()
     init(story: StoryEntity, isMiniQuizPresented: Binding<Bool>) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
         _isMiniQuizPresented = isMiniQuizPresented
@@ -87,8 +88,12 @@ struct PlayStoryView: View {
                                     .onTapGesture() {
                                         playStoryViewModel.videoPlayer.seek(to: .zero)
                                         playStoryViewModel.videoPlayer.play()
+                                        Task {
+                                            //MARK: turn this on when we need play sound effect
+//                                            await soundEffectHelper.playSound(fileName: )
+                                        }
                                     }
-                                    
+                                
                                 
                             } else {
                                 RoundedRectangle(cornerRadius: 12)
@@ -177,7 +182,7 @@ struct PlayStoryView: View {
                                 .foregroundStyle(Color("FSBlack"))
                         }
                     }
-                        
+                    
                     
                 }
             }
