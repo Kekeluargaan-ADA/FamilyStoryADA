@@ -38,28 +38,47 @@ struct DraggablePage: Codable, Identifiable, Equatable {
         return emptryArray
     }
     
+    private static func getPage(_ page: PageEntity, order: Int) -> DraggablePage {
+        if let picture = page.pagePicture.first {
+            return DraggablePage(id: page.pageId,
+                                 order: order,
+                                              picturePath: picture.componentContent
+                                             )
+        } else if let video = page.pageVideo.first {
+            return DraggablePage(id: page.pageId,
+                                 order: order,
+                                              picturePath: video.componentContent
+                                             )
+        } else {
+            return DraggablePage(id: page.pageId,
+                                 order: order,
+                                              picturePath: ""
+                                             )
+        }
+    }
+    
+    public static func fetchIntroductionPages(story: StoryEntity) -> [DraggablePage] {
+        var draggedPages = [DraggablePage]()
+        var counter = 0
+        for page in story.pages {
+//            guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
+            guard page.pageType == "Introduction" else { continue }
+            
+            draggedPages.append(getPage(page, order: counter))
+            counter += 1
+            
+        }
+        return draggedPages
+    }
+    
     public static func fetchDraggedPage(story: StoryEntity) -> [DraggablePage] {
         var draggedPages = [DraggablePage]()
         var counter = 0
         for page in story.pages {
-            guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
-//            guard page.pageType == "Instruction" else { continue }
-            if let picture = page.pagePicture.first {
-                draggedPages.append(DraggablePage(id: page.pageId,
-                                                  order: counter,
-                                                  picturePath: picture.componentContent
-                                                 ))
-            } else if let video = page.pageVideo.first {
-                draggedPages.append(DraggablePage(id: page.pageId,
-                                                  order: counter,
-                                                  picturePath: video.componentContent
-                                                 ))
-            } else {
-                draggedPages.append(DraggablePage(id: page.pageId,
-                                                  order: counter,
-                                                  picturePath: ""
-                                                 ))
-            }
+//            guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
+            guard page.pageType == "Instruction" else { continue }
+            
+            draggedPages.append(getPage(page, order: counter))
             counter += 1
             
         }
