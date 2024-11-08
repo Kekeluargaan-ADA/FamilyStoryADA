@@ -27,7 +27,7 @@ struct CustomizationView: View {
         NavigationView {
             GeometryReader{ geometry in
                 ZStack{
-                    HStack {
+                    HStack(alignment: .top) {
                         VStack(spacing: 32) {
                             Button(action: {
                                 viewModel.updatePage()
