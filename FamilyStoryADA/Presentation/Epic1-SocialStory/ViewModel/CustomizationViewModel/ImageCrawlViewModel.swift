@@ -14,6 +14,8 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var maxNum: String = "6"
     @Published var statusMessage: String = ""
     @Published var isLoading: Bool = false
+    @Published var isImageUnprocessable: Bool = false
+    @Published var isBadGateway: Bool = false
     @Published var imageUrls: [String] = []
     @Published var processedImages: [UIImage] = []
     @Published var shouldRemoveBackground: Bool = false
@@ -43,6 +45,21 @@ class ImageCrawlViewModel: ObservableObject {
                     return
                 }
 
+                if let httpResponse = response as? HTTPURLResponse {
+                    switch httpResponse.statusCode {
+                    case 422:
+                        self.isImageUnprocessable = true
+                        self.statusMessage = "Unprocessable Image Error (HTTP 422)"
+                        return
+                    case 502:
+                        self.isBadGateway = true
+                        self.statusMessage = "Bad Gateway Error (HTTP 502)"
+                        return
+                    default:
+                        break
+                    }
+                }
+
                 guard let data = data else {
                     self.statusMessage = "No data received"
                     return
@@ -67,6 +84,25 @@ class ImageCrawlViewModel: ObservableObject {
 
     private func downloadAndProcessImage(from url: URL, imageUrl: String) {
         URLSession.shared.dataTask(with: url) { data, response, error in
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 422:
+                    DispatchQueue.main.async {
+                        self.isImageUnprocessable = true
+                        self.statusMessage = "Unprocessable Image Error (HTTP 422)"
+                    }
+                    return
+                case 502:
+                    DispatchQueue.main.async {
+                        self.isBadGateway = true
+                        self.statusMessage = "Bad Gateway Error (HTTP 502)"
+                    }
+                    return
+                default:
+                    break
+                }
+            }
+
             if let data = data, let uiImage = UIImage(data: data) {
                 let processedImage = self.shouldRemoveBackground ? self.imageProcessor.removeBackground(from: uiImage) : uiImage
                 DispatchQueue.main.async {
