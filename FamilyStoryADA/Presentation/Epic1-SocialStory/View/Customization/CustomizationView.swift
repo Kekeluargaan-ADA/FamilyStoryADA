@@ -35,7 +35,9 @@ struct CustomizationView: View {
                             }, label: {
                                 CustomizedBackButton()
                             })
-                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+//                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+//                                .disabled(keyboardHelper.isKeyboardShown)
+                            DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages)
                                 .disabled(keyboardHelper.isKeyboardShown)
                         }
                         

@@ -295,3 +295,16 @@ extension PageCustomizationViewModel {
     }
     
 }
+
+
+// For the new .onMove method
+extension PageCustomizationViewModel {
+    public func reorderPage() {
+        for index in 0..<draggedPages.count {
+            if draggedPages[index].order != index {
+                draggedPages[index].order = index
+            }
+        }
+        reorderStoryPages()
+    }
+}

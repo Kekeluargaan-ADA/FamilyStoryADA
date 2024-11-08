@@ -9,47 +9,58 @@ import Foundation
 import UniformTypeIdentifiers
 import CoreTransferable
 
-struct DraggablePage: Codable {
+struct DraggablePage: Codable, Identifiable, Equatable {
     
     var id: UUID?
+    var order: Int
     var picturePath: String
     
+    static func == (lhs: DraggablePage, rhs: DraggablePage) -> Bool {
+        lhs.id == rhs.id
+    }
     
     // debug function
     static func loadDummyData() -> [DraggablePage] {
         return [
-            DraggablePage(id: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID(), picturePath: "DummyImage"),
-            DraggablePage(id: UUID(), picturePath: "DummyImage2"),
-            DraggablePage(id: UUID(), picturePath: "DummyImage3"),
+            DraggablePage(id: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ac") ?? UUID(), order: 0, picturePath: "DummyImage"),
+            DraggablePage(id: UUID(), order: 1, picturePath: "DummyImage2"),
+            DraggablePage(id: UUID(), order: 2, picturePath: "DummyImage3"),
         ]
     }
     
     static func loadEmptyArray(storyPageCount: Int) -> [(DraggablePage, Bool)] {
         var emptryArray: [(DraggablePage, Bool)] = []
+        var counter = 0
         for _ in 0..<storyPageCount {
-            emptryArray.append((DraggablePage(id: nil, picturePath: ""), false))
+            emptryArray.append((DraggablePage(id: nil, order: counter, picturePath: ""), false))
+            counter += 1
         }
         return emptryArray
     }
     
     public static func fetchDraggedPage(story: StoryEntity) -> [DraggablePage] {
         var draggedPages = [DraggablePage]()
+        var counter = 0
         for page in story.pages {
             guard page.pageType != "Opening" && page.pageType != "Closing" else { continue } // not include the first and last page
 //            guard page.pageType == "Instruction" else { continue }
             if let picture = page.pagePicture.first {
                 draggedPages.append(DraggablePage(id: page.pageId,
+                                                  order: counter,
                                                   picturePath: picture.componentContent
                                                  ))
             } else if let video = page.pageVideo.first {
                 draggedPages.append(DraggablePage(id: page.pageId,
+                                                  order: counter,
                                                   picturePath: video.componentContent
                                                  ))
             } else {
                 draggedPages.append(DraggablePage(id: page.pageId,
+                                                  order: counter,
                                                   picturePath: ""
                                                  ))
             }
+            counter += 1
             
         }
         return draggedPages
