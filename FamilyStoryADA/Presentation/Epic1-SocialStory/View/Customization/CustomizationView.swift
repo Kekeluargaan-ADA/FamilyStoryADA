@@ -37,7 +37,7 @@ struct CustomizationView: View {
                             })
 //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
 //                                .disabled(keyboardHelper.isKeyboardShown)
-                            DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages)
+                            DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
                                 .disabled(keyboardHelper.isKeyboardShown)
                         }
                         

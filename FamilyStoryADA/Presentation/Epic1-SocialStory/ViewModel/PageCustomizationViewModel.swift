@@ -13,6 +13,7 @@ import AVFoundation
 
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
+    @Published var introPages: [DraggablePage] = []
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
@@ -38,6 +39,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         
         self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
         
+        self.introPages = DraggablePage.fetchIntroductionPages(story: story)
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
     }
     
@@ -55,11 +57,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
         
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1)) // Add blank page before end of story
+            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1))
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
-                self.selectedPage = newPage // redirect display to the newly made page
+                self.selectedPage = newPage
                 if selectedPage == nil {
                     if let firstPage = story.pages.first(where: {$0.pageType == "Instruction" || $0.pageType == "Introduction"}) {
                         self.selectedPage = firstPage
@@ -86,7 +88,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     private func reorderStoryPages() {
         var reorderedPages = [PageEntity]()
         
-        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening"}))
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening" || $0.pageType == "Introduction"}))
         
         for draggedPage in draggedPages {
             if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
@@ -125,6 +127,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                 //update pageid in story swiftdata, by updating
                 if storyUsecase.updateStory(story: story) {
                     //update draggedPage
+                    self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                     guard !story.pages.isEmpty else {
                         selectedPage = nil
@@ -188,11 +191,13 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             if componentUsecase.updateComponent(component: picture) {
                 page.pagePicture = []
                 page.pagePicture.append(picture)
+                self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
             } else {
                 if componentUsecase.addNewComponent(component: picture) != nil {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
+                    self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
                 }
             }
@@ -291,7 +296,7 @@ extension PageCustomizationViewModel {
     
     //filter requirement for add new page to be added
     func isAddButtonAppeared() -> Bool {
-        return self.story.pages.count(where: { $0.pageType == "Introduction" || $0.pageType == "Instruction" }) < 10
+        return self.story.pages.count(where: { $0.pageType == "Instruction" }) < 10
     }
     
 }
