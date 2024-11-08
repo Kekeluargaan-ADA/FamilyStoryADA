@@ -40,7 +40,7 @@ struct DroppableArrayView: View {
                         .onTapGesture {
                             if page.0.id != nil && !page.1 {
                                 viewModel.draggedPages.append(page.0)
-                                viewModel.droppableBox[index] = (DraggablePage(id: nil, picturePath: ""), false)
+                                viewModel.droppableBox[index] = (DraggablePage(id: nil, order: 0, picturePath: ""), false) // TODO: Fix
                             }
                         }
                 }

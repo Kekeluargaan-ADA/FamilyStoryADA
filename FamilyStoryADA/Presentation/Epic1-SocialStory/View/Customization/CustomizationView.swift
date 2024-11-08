@@ -27,7 +27,7 @@ struct CustomizationView: View {
         NavigationView {
             GeometryReader{ geometry in
                 ZStack{
-                    HStack {
+                    HStack(alignment: .top) {
                         VStack(spacing: 32) {
                             Button(action: {
                                 viewModel.updatePage()
@@ -35,7 +35,9 @@ struct CustomizationView: View {
                             }, label: {
                                 CustomizedBackButton()
                             })
-                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+//                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+//                                .disabled(keyboardHelper.isKeyboardShown)
+                            DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
                                 .disabled(keyboardHelper.isKeyboardShown)
                         }
                         
