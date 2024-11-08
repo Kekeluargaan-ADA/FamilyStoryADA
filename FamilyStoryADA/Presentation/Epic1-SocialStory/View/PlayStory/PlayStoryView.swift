@@ -89,6 +89,7 @@ struct PlayStoryView: View {
                                         playStoryViewModel.videoPlayer.seek(to: .zero)
                                         playStoryViewModel.videoPlayer.play()
                                         Task {
+                                            //MARK: turn this on when we need play sound effect
 //                                            await soundEffectHelper.playSound(fileName: )
                                         }
                                     }
