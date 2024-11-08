@@ -49,10 +49,8 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-
-
                                 SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
-
+                                    crawlViewModel.deleteImages()
                                     crawlViewModel.crawlImages()
                                 }, searchPlaceholder: "Cari")
                                 Button(action: {
@@ -62,7 +60,6 @@ struct ScrappingInitialView: View {
                                 })
                             }
                             .zIndex(1)
-                            
                             LazyVGrid(
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                 spacing: 10
@@ -143,7 +140,23 @@ struct ScrappingInitialView: View {
                 if crawlViewModel.isLoading {
                     VStack {
                         Spacer()
+                        LottieView(animationName: "load-state-icon", width: 68, height: 72)
+                        Spacer()
+                    }
+                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                }
+                if crawlViewModel.isImageUnprocessable {
+                    VStack {
+                        Spacer()
                         Rectangle().foregroundStyle(.red)
+                        Spacer()
+                    }
+                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                }
+                if crawlViewModel.isBadGateway {
+                    VStack {
+                        Spacer()
+                        Rectangle().foregroundStyle(.blue)
                         Spacer()
                     }
                     .frame(width: 728 * widthRatio, height: 743 * heightRatio)
