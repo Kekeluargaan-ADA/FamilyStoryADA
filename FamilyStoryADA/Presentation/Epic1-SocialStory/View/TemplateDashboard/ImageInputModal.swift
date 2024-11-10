@@ -81,12 +81,6 @@ struct ImageInputModal: View {
                     
                     
                     VStack {
-                        Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
-                            .multilineTextAlignment(.center)
-                            .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
-                            .fontWeight(.medium)
-                            .foregroundStyle(Color(.fsBlack))
-                            .frame(width: 381,height: 50, alignment: .center)
                         if let uiImage = templateViewModel.chosenImage {
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -196,7 +190,7 @@ struct ImageInputModal: View {
             }
             .frame(width: 728,height: 743)
             .background(Color(.fsBlue1))
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .cornerRadius(20)
             .padding()
             
             NavigationLink(

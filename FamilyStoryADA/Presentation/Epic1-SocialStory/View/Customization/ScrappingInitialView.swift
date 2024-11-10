@@ -11,9 +11,9 @@ import SwiftUI
 struct ScrappingInitialView: View {
     @State private var isModalPresented = false
     @StateObject private var crawlViewModel = ImageCrawlViewModel()
-    @State private var isImageSelected: Bool = false
     @EnvironmentObject var viewModel: PageCustomizationViewModel
     @EnvironmentObject var cameraViewModel: CameraViewModel
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @AppStorage("selectedImageUUID") var selectedImageUUID: String?
     
@@ -153,7 +153,7 @@ struct ScrappingInitialView: View {
                     }
                     .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                 }
-                if crawlViewModel.isBadGateway {
+                if !networkMonitor.isConnected {
                     VStack {
                         Spacer()
                         Rectangle().foregroundStyle(.blue)

@@ -51,10 +51,6 @@ class ImageCrawlViewModel: ObservableObject {
                         self.isImageUnprocessable = true
                         self.statusMessage = "Unprocessable Image Error (HTTP 422)"
                         return
-                    case 502:
-                        self.isBadGateway = true
-                        self.statusMessage = "Bad Gateway Error (HTTP 502)"
-                        return
                     default:
                         break
                     }
