@@ -176,6 +176,14 @@ struct CustomizationContentView: View {
                                 .foregroundStyle(Color("FSWhite"))
                                 .padding()
                         }
+                        .highlight(
+                            order: 3,
+                            title: "Ganti Gambar",
+                            description: "Ganti gambar yang disediakan dengan foto atau video sendiri.",
+                            cornerRadius: 20,
+                            style: .circular,
+                            position: .bottomLeading
+                        )
                     }
                     ZStack {
                         ZStack(alignment: .topLeading) {
@@ -254,6 +262,18 @@ struct CustomizationContentView: View {
                             .padding(.top, 8)
                         }
                         .overlay(alignment: .bottomTrailing) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 40)
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 123, height: 30)
+                                .highlight(
+                                    order: 5,
+                                    title: "Gunakan AI",
+                                    description: "Optimisasi konten menggunakan parafrase dengan AI.",
+                                    cornerRadius: 40,
+                                    style: .continuous,
+                                    position: .topCenter
+                                )
                             if (viewModel.selectedPage?.pageTextClassification == "Instructive" || viewModel.selectedPage?.pageTextClassification == "Descriptive"){
                                 Button(action: {
                                     isParaphrasingPresented = true
@@ -317,7 +337,19 @@ struct CustomizationContentView: View {
                             .padding(.top, 8)
                             .padding(.leading, 136)
                         }
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.clear)
+                            .frame(width: 760, height: 170)
+                            .highlight(
+                                order: 4,
+                                title: "Edit Teks",
+                                description: "Tekan untuk mengedit teks jika dibutuhkan dan atur sesuai kebiasaan anak.",
+                                cornerRadius: 10,
+                                style: .continuous,
+                                position: .topCenter
+                            )
                     }
+                    
                     
                 }
                 

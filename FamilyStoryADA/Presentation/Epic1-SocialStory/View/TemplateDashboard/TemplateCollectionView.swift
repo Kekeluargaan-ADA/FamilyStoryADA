@@ -66,7 +66,9 @@ struct TemplateCollectionView: View {
             .onChange(of: viewModel.isTemplateClosed) { value in
                 if value {
                     storyViewModel.currentlySelectedStory = viewModel.createdStory
-                    storyViewModel.isCustomizationViewOpened = true
+                    if viewModel.createdStory != nil {
+                        storyViewModel.isCustomizationViewOpened = true
+                    }
                     storyViewModel.isTemplateDashboardOpened = false
                 }
             }

@@ -36,11 +36,38 @@ struct CustomizationView: View {
                             }, label: {
                                 CustomizedBackButton()
                             })
-//                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
-//                                .disabled(keyboardHelper.isKeyboardShown)
-                            DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
-                                .disabled(keyboardHelper.isKeyboardShown)
+                            //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+                            //                                .disabled(keyboardHelper.isKeyboardShown)
+                            ZStack {
+                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
+                                    .disabled(keyboardHelper.isKeyboardShown)
+                                
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 170, height: 685)
+                                    .highlight(
+                                        order: 2,
+                                        title: "Edit Halaman",
+                                        description: "Tahan dan geser halaman untuk mengganti sequence.",
+                                        cornerRadius: 8,
+                                        style: .continuous,
+                                        position: .centerTrailing
+                                    )
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 170, height: 685)
+                                    .highlight(
+                                        order: 1,
+                                        title: "Lihat Semua Halaman",
+                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
+                                        cornerRadius: 8,
+                                        style: .continuous,
+                                        position: .centerTrailing
+                                    )
+                            }
+                                
                         }
+                        
                         
                         ZStack {
                             ZStack(alignment: .top) {
@@ -66,7 +93,7 @@ struct CustomizationView: View {
                                     )
                                     .padding(.top, 20)
                                     .padding(.horizontal, 46)
-
+                                    
                                     CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
                                         .environmentObject(keyboardHelper)
                                         .environmentObject(cameraViewModel)
@@ -180,7 +207,9 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-        
+        .modifier(HighlightRoot(showHighlights: true, onFinished: {
+            print("Finished oboarding")
+        }))
     }
     
 }
