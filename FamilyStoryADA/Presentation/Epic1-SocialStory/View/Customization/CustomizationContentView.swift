@@ -266,47 +266,49 @@ struct CustomizationContentView: View {
                                 RoundedRectangle(cornerRadius: 40)
                                     .foregroundStyle(.clear)
                                     .frame(width: 123, height: 30)
-                                .highlight(
-                                    order: 5,
-                                    title: "Gunakan AI",
-                                    description: "Optimisasi konten menggunakan parafrase dengan AI.",
-                                    cornerRadius: 40,
-                                    style: .continuous,
-                                    position: .topCenter
-                                )
-                            if (viewModel.selectedPage?.pageTextClassification == "Instructive" || viewModel.selectedPage?.pageTextClassification == "Descriptive"){
-                                Button(action: {
-                                    isParaphrasingPresented = true
-                                    viewModel.paraphraseModalIsLoading = true
-                                    Task {
-                                        do {
-                                            let result = try await viewModel.getParaphrasing(for: currentText)
-                                            keyboardHelper.isKeyboardShown = false
-                                            viewModel.paraphraseModalIsLoading = false
-                                        } catch {
-                                            print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                            viewModel.paraphraseModalIsLoading = false
-                                        }
-                                    }
-                                }, label: {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "sparkles")
-                                        Text("Optimalkan")
-                                            .font(.system(size: 16))
-                                            .fontWeight(.medium)
-                                    }
-                                    .foregroundStyle(Color(.fsBlue9))
-                                    .padding()
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 40)
-                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 40)
-                                                    .fill(Color.white)
-                                            )
+                                    .highlight(
+                                        order: 5,
+                                        title: "Gunakan AI",
+                                        description: "Optimisasi konten menggunakan parafrase dengan AI.",
+                                        cornerRadius: 40,
+                                        style: .continuous,
+                                        position: .topCenter
                                     )
-                                    .padding()
-                                })
+                                //TODO: Handle delay for paraphrasing
+                                if (viewModel.selectedPage?.pageTextClassification == "Instructive" || viewModel.selectedPage?.pageTextClassification == "Descriptive"){
+                                    Button(action: {
+                                        isParaphrasingPresented = true
+                                        viewModel.paraphraseModalIsLoading = true
+                                        Task {
+                                            do {
+                                                let result = try await viewModel.getParaphrasing(for: currentText)
+                                                keyboardHelper.isKeyboardShown = false
+                                                viewModel.paraphraseModalIsLoading = false
+                                            } catch {
+                                                print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                                viewModel.paraphraseModalIsLoading = false
+                                            }
+                                        }
+                                    }, label: {
+                                        HStack(spacing: 8) {
+                                            Image(systemName: "sparkles")
+                                            Text("Optimalkan")
+                                                .font(.system(size: 16))
+                                                .fontWeight(.medium)
+                                        }
+                                        .foregroundStyle(Color(.fsBlue9))
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 40)
+                                                .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 40)
+                                                        .fill(Color.white)
+                                                )
+                                        )
+                                        .padding()
+                                    })
+                                }
                             }
                         }
                         .onAppear {
