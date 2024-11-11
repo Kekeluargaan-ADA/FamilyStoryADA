@@ -39,7 +39,6 @@ struct ScrappingInitialView: View {
                                         }) {
                                             ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                         }
-                                        
                                         Spacer()
                                     }
                                     Text("Cari Foto")
@@ -55,63 +54,103 @@ struct ScrappingInitialView: View {
                                 }, searchPlaceholder: "Cari")
                                 Button(action: {
                                     crawlViewModel.deleteImages()
+                                    crawlViewModel.crawlImages()
                                 }, label: {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
                             .zIndex(1)
-                            LazyVGrid(
-                                columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
-                                spacing: 10
-                            ) {
-                                ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
-                                    VStack {
-                                        ZStack {
-                                            Button(action: {
-                                                crawlViewModel.selectedImage = image
-                                            }) {
-                                                AsyncImage(url: URL(string: url)) { image in
-                                                    image
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                                        .clipped()
-                                                        .cornerRadius(12)
-                                                        .shadow(radius: 2, y: 4)
-                                                } placeholder: {
-                                                    Color.gray
+                            if !networkMonitor.isConnected {
+                                VStack {
+                                    Spacer()
+                                    LostConnectionView()
+                                        .foregroundStyle(Color("FSBorderBlue7"))
+                                    Text("Koneksi hilang")
+                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                        .foregroundColor(Color("FSBorderBlue7"))
+                                    Text("Cek koneksi internet dan coba lagi.")
+                                        .font(Font.custom("Fredoka", size: 20))
+                                        .foregroundColor(Color("FSBorderBlue7"))
+                                    Spacer()
+                                }
+                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                            } else if crawlViewModel.isLoading {
+                                VStack {
+                                    LottieView(animationName: "load-state-icon", width: 68, height: 72)
+                                }
+                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                            } else if crawlViewModel.processedImages.isEmpty {
+                                VStack {
+                                    ImageSearchView()
+                                        .frame(width: 180, height: 180)
+                                        .foregroundStyle(Color("FSBorderBlue7"))
+                                    Text("Masih kosong, nih")
+                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                        .foregroundStyle(Color("FSBorderBlue7"))
+                                    Text("Masukkan kata kunci yang sesuai untuk menampilkan hasil.")
+                                        .font(Font.custom("Fredoka", size: 20))
+                                        .foregroundStyle(Color("FSBorderBlue7"))
+                                }
+                            } else if crawlViewModel.isImageUnprocessable {
+                                VStack {
+                                    Spacer()
+                                    ImageNoResultView()
+                                        .foregroundStyle(Color("FSBorderBlue7"))
+                                    Text("Ups, tidak ada hasil")
+                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                        .foregroundColor(Color("FSBorderBlue7"))
+                                    Text("Coba masukkan kata kunci lain.")
+                                        .font(Font.custom("Fredoka", size: 20))
+                                        .foregroundColor(Color("FSBorderBlue7"))
+                                    Spacer()
+                                }
+                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                            } else {
+                                LazyVGrid(
+                                    columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
+                                    spacing: 10
+                                ) {
+                                    ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
+                                        VStack {
+                                            ZStack {
+                                                Button(action: {
+                                                    crawlViewModel.selectedImage = image
+                                                }) {
+                                                    AsyncImage(url: URL(string: url)) { image in
+                                                        image
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                                            .clipped()
+                                                            .cornerRadius(12)
+                                                            .shadow(radius: 2, y: 4)
+                                                    } placeholder: {
+                                                        Color.gray
+                                                    }
+                                                }
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                        .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                                )
+
+                                                if crawlViewModel.selectedImage == image {
+                                                    ZStack {
+                                                        Circle()
+                                                            .foregroundStyle(Color("FSWhite"))
+                                                            .frame(width: 20 * widthRatio, height: 20 * heightRatio)
+                                                        Image(systemName: "checkmark.circle")
+                                                            .foregroundStyle(Color("FSBlue9"))
+                                                            .font(.system(size: 20 * heightRatio))
+                                                            .bold()
+                                                    }
+                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
                                                 }
                                             }
-
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                            )
-                                        
-                                        if crawlViewModel.selectedImage == image {
-                                            ZStack {
-                                                Circle()
-                                                    .foregroundStyle(Color("FSWhite"))
-                                                    .frame(width: 20 * widthRatio, height: 20 * heightRatio)
-                                                Image(systemName: "checkmark.circle")
-                                                    .foregroundStyle(Color("FSBlue9"))
-                                                    .font(.system(size: 20 * heightRatio))
-                                                    .bold()
-                                            }
-                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
-
-                                            }
                                         }
-//                                        Text(url)
-//                                            .font(.caption)
-//                                            .foregroundColor(.gray)
-//                                            .frame(width: 214 * widthRatio, alignment: .leading)
-//                                            .lineLimit(1)
-//                                            .truncationMode(.tail)
                                     }
                                 }
+                                .frame(width: 666 * widthRatio, height: 284 * heightRatio)
                             }
-                            .frame(width: 666 * widthRatio, height: 284 * heightRatio)
                             
                             Spacer()
                             
@@ -137,50 +176,6 @@ struct ScrappingInitialView: View {
                         }
                         .padding(24 * heightRatio)
                     )
-                if crawlViewModel.isLoading {
-                    VStack {
-                        Spacer()
-                        LottieView(animationName: "load-state-icon", width: 68, height: 72)
-                        Spacer()
-                    }
-                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
-                }
-                if crawlViewModel.isImageUnprocessable {
-                    VStack {
-                        Spacer()
-                        ImageNoResultView()
-                            .foregroundStyle(Color("FSBlue7"))
-                        Text("Ups, tidak ada hasil")
-                          .font(
-                            Font.custom("Fredoka", size: 24)
-                              .weight(.medium)
-                          )
-                          .foregroundColor(Color("FSBlue7"))
-                        Text("Coba masukkan kata kunci lain.")
-                          .font(Font.custom("Fredoka", size: 20))
-                          .foregroundColor(Color("FSBlue7"))
-                        Spacer()
-                    }
-                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
-                }
-                if !networkMonitor.isConnected {
-                    VStack {
-                        Spacer()
-                        LostConnectionView()
-                            .foregroundStyle(Color("FSBlue7"))
-                        Text("Koneksi hilang")
-                          .font(
-                            Font.custom("Fredoka", size: 24)
-                              .weight(.medium)
-                          )
-                          .foregroundColor(Color("FSBlue7"))
-                        Text("Cek koneksi internet dan coba lagi.")
-                          .font(Font.custom("Fredoka", size: 20))
-                          .foregroundColor(Color("FSBlue7"))
-                        Spacer()
-                    }
-                    .frame(width: 728 * widthRatio, height: 743 * heightRatio)
-                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
