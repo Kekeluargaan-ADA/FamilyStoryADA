@@ -22,13 +22,14 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var selectedImage: UIImage? = nil
     @Published var savedImageFilename: String? = nil
     private var userID: String?  // Store hashed user ID
+    private var backendURL: String = "https://a7cb-158-140-189-122.ngrok-free.app"
     
     private let imageProcessor = CrawlImageHelper()
     
     func crawlImages() {
         clearImageCache()
         
-        guard let url = URL(string: "https://3c21-158-140-189-122.ngrok-free.app/crawl_images/?keyword=\(keyword)&max_num=\(maxNum)") else {
+        guard let url = URL(string: "\(backendURL)/crawl_images/?keyword=\(keyword)&max_num=\(maxNum)") else {
             statusMessage = "Invalid URL"
             return
         }
@@ -117,7 +118,7 @@ class ImageCrawlViewModel: ObservableObject {
     
     func deleteImages() {
         guard let userID = userID,
-              let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/?user_id=\(userID)") else {
+              let url = URL(string: "\(backendURL)/delete_images/?user_id=\(userID)") else {
             statusMessage = "Invalid URL or missing user ID"
             return
         }
