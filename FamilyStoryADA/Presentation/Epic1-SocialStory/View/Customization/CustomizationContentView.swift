@@ -36,11 +36,11 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                             } else {
                                 Image(imagePath)
                                     .resizable()
@@ -48,11 +48,11 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                             }
                             
                         } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
@@ -65,11 +65,11 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                             } else {
                                 Image(uiImage: image)
                                     .resizable()
@@ -77,11 +77,11 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                             }
                             
                         } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
@@ -94,11 +94,11 @@ struct CustomizationContentView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .mask(Rectangle().padding(.top, 390))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                                     .onAppear() {
                                         viewModel.videoPlayer = AVPlayer(url: url)
                                         viewModel.videoPlayer.play()
@@ -119,11 +119,11 @@ struct CustomizationContentView: View {
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .overlay(
-                                            VignetteEffectView()
-                                                .clipShape(
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                )
-                                        )
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12)
+                                            )
+                                    )
                                     .onAppear() {
                                         
                                         viewModel.videoPlayer = AVPlayer(url: url)
@@ -254,38 +254,40 @@ struct CustomizationContentView: View {
                             .padding(.top, 8)
                         }
                         .overlay(alignment: .bottomTrailing) {
-                            Button(action: {
-                                isParaphrasingPresented = true
-                                viewModel.paraphraseModalIsLoading = true
-                                Task {
-                                    do {
-                                        let result = try await viewModel.getParaphrasing(for: currentText)
-                                        keyboardHelper.isKeyboardShown = false
-                                        viewModel.paraphraseModalIsLoading = false
-                                    } catch {
-                                        print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                        viewModel.paraphraseModalIsLoading = false
+                            if (viewModel.selectedPage?.pageTextClassification == "Instructive" || viewModel.selectedPage?.pageTextClassification == "Descriptive"){
+                                Button(action: {
+                                    isParaphrasingPresented = true
+                                    viewModel.paraphraseModalIsLoading = true
+                                    Task {
+                                        do {
+                                            let result = try await viewModel.getParaphrasing(for: currentText)
+                                            keyboardHelper.isKeyboardShown = false
+                                            viewModel.paraphraseModalIsLoading = false
+                                        } catch {
+                                            print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                            viewModel.paraphraseModalIsLoading = false
+                                        }
                                     }
-                                }
-                            }, label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "sparkles")
-                                    Text("Optimalkan")
-                                        .font(.system(size: 16))
-                                        .fontWeight(.medium)
-                                }
-                                .foregroundStyle(Color(.fsBlue9))
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 40)
-                                        .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 40)
-                                                .fill(Color.white)
-                                        )
-                                )
-                                .padding()
-                            })
+                                }, label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "sparkles")
+                                        Text("Optimalkan")
+                                            .font(.system(size: 16))
+                                            .fontWeight(.medium)
+                                    }
+                                    .foregroundStyle(Color(.fsBlue9))
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 40)
+                                                    .fill(Color.white)
+                                            )
+                                    )
+                                    .padding()
+                                })
+                            }
                         }
                         .onAppear {
                             currentText = page.pageText.first?.componentContent ?? ""
@@ -322,8 +324,8 @@ struct CustomizationContentView: View {
                 .disabled(isParaphrasingPresented)
                 .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
             }
-
-
+            
+            
         }
         
     }
