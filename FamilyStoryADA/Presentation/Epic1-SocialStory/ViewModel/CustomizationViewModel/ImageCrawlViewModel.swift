@@ -24,19 +24,19 @@ class ImageCrawlViewModel: ObservableObject {
     private var userID: String?  // Store hashed user ID
     
     private let imageProcessor = CrawlImageHelper()
-
+    
     func crawlImages() {
         clearImageCache()
-
-        guard let url = URL(string: "https://working-epic-dodo.ngrok-free.app/crawl_images/?keyword=\(keyword)&max_num=\(maxNum)") else {
+        
+        guard let url = URL(string: "https://3c21-158-140-189-122.ngrok-free.app/crawl_images/?keyword=\(keyword)&max_num=\(maxNum)") else {
             statusMessage = "Invalid URL"
             return
         }
-
+        
         isLoading = true
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.isLoading = false
@@ -44,32 +44,28 @@ class ImageCrawlViewModel: ObservableObject {
                     self.statusMessage = "Request failed: \(error.localizedDescription)"
                     return
                 }
-
+                
                 if let httpResponse = response as? HTTPURLResponse {
                     switch httpResponse.statusCode {
                     case 422:
                         self.isImageUnprocessable = true
                         self.statusMessage = "Unprocessable Image Error (HTTP 422)"
                         return
-                    case 502:
-                        self.isBadGateway = true
-                        self.statusMessage = "Bad Gateway Error (HTTP 502)"
-                        return
                     default:
                         break
                     }
                 }
-
+                
                 guard let data = data else {
                     self.statusMessage = "No data received"
                     return
                 }
-
+                
                 if let decodedResponse = try? JSONDecoder().decode(CrawlResponseObject.self, from: data) {
                     self.statusMessage = "\(decodedResponse.message) (Time taken: \(decodedResponse.timeTaken))"
                     self.imageUrls = []
                     self.userID = decodedResponse.userID  // Capture hashedUserId
-
+                    
                     for imageUrl in decodedResponse.imageUrls {
                         if let url = URL(string: imageUrl) {
                             self.downloadAndProcessImage(from: url, imageUrl: imageUrl)
@@ -81,7 +77,7 @@ class ImageCrawlViewModel: ObservableObject {
             }
         }.resume()
     }
-
+    
     private func downloadAndProcessImage(from url: URL, imageUrl: String) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let httpResponse = response as? HTTPURLResponse {
@@ -102,7 +98,7 @@ class ImageCrawlViewModel: ObservableObject {
                     break
                 }
             }
-
+            
             if let data = data, let uiImage = UIImage(data: data) {
                 let processedImage = self.shouldRemoveBackground ? self.imageProcessor.removeBackground(from: uiImage) : uiImage
                 DispatchQueue.main.async {
@@ -114,22 +110,22 @@ class ImageCrawlViewModel: ObservableObject {
             }
         }.resume()
     }
-
+    
     func deleteOtherImages(keeping selectedImage: UIImage) {
         processedImages = [selectedImage]
     }
-
+    
     func deleteImages() {
         guard let userID = userID,
               let url = URL(string: "https://working-epic-dodo.ngrok-free.app/delete_images/?user_id=\(userID)") else {
             statusMessage = "Invalid URL or missing user ID"
             return
         }
-
+        
         isLoading = true
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 self.isLoading = false
@@ -137,7 +133,7 @@ class ImageCrawlViewModel: ObservableObject {
                     self.statusMessage = "Request failed: \(error.localizedDescription)"
                     return
                 }
-
+                
                 if let decodedResponse = try? JSONDecoder().decode(DeleteResponseObject.self, from: data!) {
                     self.statusMessage = decodedResponse.message
                     self.processedImages.removeAll()
@@ -148,30 +144,30 @@ class ImageCrawlViewModel: ObservableObject {
             }
         }.resume()
     }
-
+    
     private func clearImageCache() {
         let cache = URLCache.shared
         cache.removeAllCachedResponses()
         print("Image cache cleared")
     }
-
+    
     func clearSelection() {
         selectedImage = nil
         savedImageFilename = nil
     }
-
+    
     func saveSelectedImageToAppStorage() -> String? {
         guard let image = selectedImage, let data = image.jpegData(compressionQuality: 1.0) else {
             print("Error: No image selected or could not create JPEG data.")
             return nil
         }
-
+        
         let filename = UUID().uuidString + ".jpg"
         let fileManager = FileManager.default
-
+        
         if let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = documentsDirectory.appendingPathComponent(filename)
-
+            
             do {
                 try data.write(to: fileURL)
                 self.savedImageFilename = filename

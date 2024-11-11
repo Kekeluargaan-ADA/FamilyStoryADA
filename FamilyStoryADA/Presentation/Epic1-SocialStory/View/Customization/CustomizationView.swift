@@ -12,6 +12,7 @@ struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: PageCustomizationViewModel
     @StateObject var cameraViewModel: CameraViewModel = CameraViewModel()
+    @StateObject private var networkMonitor = NetworkMonitor()
     
     @State var isParaphrasingPresented = false
     @State var currentText: String = ""
@@ -153,6 +154,7 @@ struct CustomizationView: View {
                             .background(.black.opacity(0.4))
                             .environmentObject(viewModel)
                             .environmentObject(cameraViewModel)
+                            .environmentObject(networkMonitor)
                         
                     }
                     

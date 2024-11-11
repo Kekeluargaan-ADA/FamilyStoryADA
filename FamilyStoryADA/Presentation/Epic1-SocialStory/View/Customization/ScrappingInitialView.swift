@@ -11,9 +11,9 @@ import SwiftUI
 struct ScrappingInitialView: View {
     @State private var isModalPresented = false
     @StateObject private var crawlViewModel = ImageCrawlViewModel()
-    @State private var isImageSelected: Bool = false
     @EnvironmentObject var viewModel: PageCustomizationViewModel
     @EnvironmentObject var cameraViewModel: CameraViewModel
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @AppStorage("selectedImageUUID") var selectedImageUUID: String?
     
@@ -148,15 +148,35 @@ struct ScrappingInitialView: View {
                 if crawlViewModel.isImageUnprocessable {
                     VStack {
                         Spacer()
-                        Rectangle().foregroundStyle(.red)
+                        ImageNoResultView()
+                            .foregroundStyle(Color("FSBlue7"))
+                        Text("Ups, tidak ada hasil")
+                          .font(
+                            Font.custom("Fredoka", size: 24)
+                              .weight(.medium)
+                          )
+                          .foregroundColor(Color("FSBlue7"))
+                        Text("Coba masukkan kata kunci lain.")
+                          .font(Font.custom("Fredoka", size: 20))
+                          .foregroundColor(Color("FSBlue7"))
                         Spacer()
                     }
                     .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                 }
-                if crawlViewModel.isBadGateway {
+                if !networkMonitor.isConnected {
                     VStack {
                         Spacer()
-                        Rectangle().foregroundStyle(.blue)
+                        LostConnectionView()
+                            .foregroundStyle(Color("FSBlue7"))
+                        Text("Koneksi hilang")
+                          .font(
+                            Font.custom("Fredoka", size: 24)
+                              .weight(.medium)
+                          )
+                          .foregroundColor(Color("FSBlue7"))
+                        Text("Cek koneksi internet dan coba lagi.")
+                          .font(Font.custom("Fredoka", size: 20))
+                          .foregroundColor(Color("FSBlue7"))
                         Spacer()
                     }
                     .frame(width: 728 * widthRatio, height: 743 * heightRatio)
