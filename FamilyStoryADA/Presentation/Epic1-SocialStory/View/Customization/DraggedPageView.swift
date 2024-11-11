@@ -39,6 +39,8 @@ struct DraggedPageView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(Color("FSBlue9"))
         }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
     }
 }
 
