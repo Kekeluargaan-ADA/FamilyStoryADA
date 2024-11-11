@@ -81,16 +81,20 @@ struct ScrappingInitialView: View {
                                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                             } else if crawlViewModel.processedImages.isEmpty {
                                 VStack {
+                                    Spacer().frame(height: 100)
                                     ImageSearchView()
                                         .frame(width: 180, height: 180)
                                         .foregroundStyle(Color("FSBorderBlue7"))
+                                    Spacer().frame(height: 8)
                                     Text("Masih kosong, nih")
                                         .font(Font.custom("Fredoka", size: 24).weight(.medium))
                                         .foregroundStyle(Color("FSBorderBlue7"))
-                                    Text("Masukkan kata kunci yang sesuai untuk menampilkan hasil.")
+                                    Spacer().frame(height: 8)
+                                    Text("Masukkan kata kunci yang sesuai untuk\nmenampilkan hasil.")
                                         .font(Font.custom("Fredoka", size: 20))
                                         .foregroundStyle(Color("FSBorderBlue7"))
                                 }
+                                .multilineTextAlignment(.center)
                             } else if crawlViewModel.isImageUnprocessable {
                                 VStack {
                                     Spacer()
