@@ -20,7 +20,6 @@ struct CustomizationContentView: View {
     
     @State private var typingTimer: Timer? = nil
     
-    
     var body: some View {
         VStack{
             if let page = viewModel.selectedPage {
@@ -28,7 +27,7 @@ struct CustomizationContentView: View {
                     ZStack(alignment: .topTrailing) {
                         if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
                             
-                            if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
+                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
                                 Image(imagePath)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -57,7 +56,7 @@ struct CustomizationContentView: View {
                             
                         } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
                             
-                            if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
+                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -88,7 +87,7 @@ struct CustomizationContentView: View {
                             
                             let videoPlayer = AVPlayer(url: url)
                             
-                            if (keyboardHelper.isKeyboardShown || isParaphrasingPresented) {
+                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
                                 CustomVideoPlayerView(player: viewModel.videoPlayer)
                                     .frame(width: 760, height: 468)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -143,6 +142,7 @@ struct CustomizationContentView: View {
                             }
                         } else {
                             Button(action: {
+                                isParaphrasingPresented = true
                                 viewModel.isMediaOverlayOpened = true
                             }, label: {
                                 EmptyImageCustomizationView()
@@ -320,10 +320,8 @@ struct CustomizationContentView: View {
                 }
                 
                 .disabled(isParaphrasingPresented)
-                .offset(y: (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
+                .offset(y: !viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
             }
-
-
         }
         
     }
