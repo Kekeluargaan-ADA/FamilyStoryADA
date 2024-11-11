@@ -253,12 +253,14 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
 
     public func getTextClassification(for text: String) async throws -> String {
         let prompt = """
-                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive". 
-                Contoh deskriptif: aku menggosok gigi. 
-                Contoh instruktif: ayo gosok gigi. 
-                Kembalikan hasil hanya dalam format: "Instructive" atau "Descriptive"
-                text: \(text)
-"""
+        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
+
+        Contoh deskriptif: aku menggosok gigi.  
+        Contoh instruktif: ayo gosok gigi.  
+
+        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
+        text: \(text)
+        """
         
         do {
             let response = try await getResponse(prompt: prompt)
