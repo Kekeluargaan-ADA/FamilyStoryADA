@@ -20,6 +20,9 @@ class StoryViewModel: ObservableObject {
     @Published var selectedOption: SortOption = .newest
     @Published var isEditCoverSheetOpened: Bool = false
     @Published var currentlyEditedStory: StoryEntity?
+    @Published var isCustomizationViewOpened: Bool = false
+    @Published var currentlySelectedStory: StoryEntity?
+    @Published var isTemplateDashboardOpened: Bool = false
     
     private let storyUsecase: StoryUsecase
     private let templateUsecase: TemplateUsecase

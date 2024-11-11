@@ -65,14 +65,18 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) {
+                                                Button(action: {
+                                                    viewModel.isTemplateDashboardOpened = true
+                                                }, label: {
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
-                                                }
+                                                })
                                             } else {
                                                 ZStack(alignment: .topTrailing) {
-                                                    NavigationLink(destination: CustomizationView(story: item),
-                                                                   label: {
+                                                    Button(action: {
+                                                        viewModel.currentlySelectedStory = item
+                                                        viewModel.isCustomizationViewOpened = true
+                                                    }, label: {
                                                         StoryCardView(
                                                             viewModel: viewModel,
                                                             storyName: item.storyName,
@@ -156,6 +160,23 @@ struct StoryDashboardView: View {
                         viewModel.updateStoryDisplay()
                     }
                 }
+                NavigationLink(isActive: $viewModel.isTemplateDashboardOpened,
+                               destination: {
+                    TemplateCollectionView()
+                        .environmentObject(viewModel)
+                },
+                               label: {
+                    EmptyView()
+                })
+                NavigationLink(isActive: $viewModel.isCustomizationViewOpened, destination: {
+                    if let story = viewModel.currentlySelectedStory{
+                        CustomizationView(story: story)
+                    } else {
+                        EmptyView()
+                    }
+                }, label: {
+                    EmptyView()
+                })
             }
         }
         .navigationViewStyle(.stack)

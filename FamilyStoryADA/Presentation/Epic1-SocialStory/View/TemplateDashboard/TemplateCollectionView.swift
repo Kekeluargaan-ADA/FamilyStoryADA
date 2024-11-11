@@ -11,6 +11,7 @@ struct TemplateCollectionView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = TemplateViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var storyViewModel: StoryViewModel
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
@@ -64,7 +65,9 @@ struct TemplateCollectionView: View {
             }
             .onChange(of: viewModel.isTemplateClosed) { value in
                 if value {
-                    dismiss()
+                    storyViewModel.currentlySelectedStory = viewModel.createdStory
+                    storyViewModel.isCustomizationViewOpened = true
+                    storyViewModel.isTemplateDashboardOpened = false
                 }
             }
         }
