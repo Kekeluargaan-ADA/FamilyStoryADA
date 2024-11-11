@@ -65,7 +65,7 @@ struct ScrappingInitialView: View {
                                     Spacer().frame(height: 124)
                                     LostConnectionView()
                                         .foregroundStyle(Color("FSBorderBlue7"))
-                                        .frame(height: 127.65)
+                                        .frame(width: 127.65, height: 127.65)
                                     Spacer().frame(height: 32)
                                     Text("Koneksi hilang")
                                         .font(Font.custom("Fredoka", size: 24).weight(.medium))
@@ -86,7 +86,7 @@ struct ScrappingInitialView: View {
                                 VStack {
                                     Spacer().frame(height: 100)
                                     ImageSearchView()
-                                        .frame(height: 131.25)
+                                        .frame(width: 152, height: 131.25)
                                         .foregroundStyle(Color("FSBorderBlue7"))
                                     Spacer().frame(height: 8)
                                     Text("Masih kosong, nih")
@@ -102,7 +102,7 @@ struct ScrappingInitialView: View {
                                 VStack {
                                     Spacer().frame(height: 100)
                                     ImageNoResultView()
-                                        .frame(height: 131.25)
+                                        .frame(width: 152, height: 131.25)
                                         .foregroundStyle(Color("FSBorderBlue7"))
                                     Spacer().frame(height: 8)
                                     Text("Ups, tidak ada hasil")
