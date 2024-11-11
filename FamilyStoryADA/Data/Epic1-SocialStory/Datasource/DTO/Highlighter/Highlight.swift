@@ -10,27 +10,35 @@ import SwiftUI
 
 
 enum PositionStyle {
-    case top, left, right, bottom
+    case topLeading, topCenter, topTrailing, centerLeading, centerTrailing, bottomLeading, bottomCenter, bottomTrailing
     
-    static func calculateXOffset(for position: PositionStyle, highlightRect: CGRect) -> CGFloat {
+    static func calculateXOffset(for position: PositionStyle, highlightRect: CGRect, width: CGFloat) -> CGFloat {
         switch position {
-        case .left:
-            return highlightRect.minX - 10
-        case .right:
-            return highlightRect.maxX + 10
-        case .top, .bottom:
-            return highlightRect.midX
+        case .centerLeading:
+            return highlightRect.midX - width / 2 - (highlightRect.width / 2 + 150) - 10
+        case .centerTrailing:
+            return highlightRect.midX - width / 2 + (highlightRect.width / 2 + 150) + 10
+        case .topCenter, .bottomCenter:
+            return highlightRect.midX - width / 2
+        case .topLeading, .bottomLeading:
+            return highlightRect.midX - width / 2 - (highlightRect.width / 2 + 150) + highlightRect.width
+        case .topTrailing, .bottomTrailing:
+            return highlightRect.midX - width / 2 + (highlightRect.width / 2 + 150) - highlightRect.width
         }
     }
 
-    static func calculateYOffset(for position: PositionStyle, highlightRect: CGRect) -> CGFloat {
+    static func calculateYOffset(for position: PositionStyle, highlightRect: CGRect, height: CGFloat) -> CGFloat {
         switch position {
-        case .top:
-            return highlightRect.minY - 10
-        case .bottom:
-            return highlightRect.maxY + 10
-        case .left, .right:
-            return highlightRect.midY
+        case .topCenter:
+            return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) - 10
+        case .bottomLeading, .bottomCenter, .bottomTrailing:
+            return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) + 10
+        case .centerLeading, .centerTrailing:
+            return highlightRect.midY - height / 2
+        case .topLeading, .topTrailing:
+            return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) + highlightRect.height
+        case .bottomLeading, .bottomTrailing:
+            return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) - highlightRect.height
         }
     }
 }

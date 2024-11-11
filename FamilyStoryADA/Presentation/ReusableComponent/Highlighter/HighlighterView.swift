@@ -85,6 +85,8 @@ struct HighlightRoot: ViewModifier {
                     }
                     .onAppear {
                         showTitle = true
+                        print(highlightRect.midX)
+                        print(highlightRect.midY)
                     }
                 
                 // Overlayed text for title and description
@@ -103,12 +105,20 @@ struct HighlightRoot: ViewModifier {
                         }
                     }
                     .frame(width: 300, height: 160)
-                    //                    .offset(x: PositionStyle.calculateXOffset(for: highlight.position, highlightRect: highlightRect),
-                    //                            y: PositionStyle.calculateYOffset(for: highlight.position, highlightRect: highlightRect))
-                    .offset(
-                        x: highlightRect.midX - geometry.size.width / 2 + highlightRect.width,
-                        y: highlightRect.midY - geometry.size.height / 2
-                    )
+                                        .offset(x: PositionStyle.calculateXOffset(for: highlight.position, highlightRect: highlightRect, width: geometry.size.width),
+                                                y: PositionStyle.calculateYOffset(for: highlight.position, highlightRect: highlightRect, height: geometry.size.height))
+                    //                    .offset(
+                    //                        x: highlightRect.midX - geometry.size.width / 2 + highlightRect.width / 2 + 150,
+                    //                        y: highlightRect.midY - geometry.size.height / 2
+                    //                    )
+//                    .offset(
+//                        x: highlightRect.midX - geometry.size.width / 2,
+//                        y: highlightRect.midY - geometry.size.height / 2  + highlightRect.height / 2 + 80
+//                    )
+                    //                    .offset(
+                    //                        x: -( highlightRect.width / 2 + 150/2),
+                    //                        y: highlightRect.midY
+                    //                    )
                     .transition(.opacity)
                     .animation(.easeInOut, value: showTitle)
                 }

@@ -176,6 +176,14 @@ struct CustomizationContentView: View {
                                 .foregroundStyle(Color("FSWhite"))
                                 .padding()
                         }
+                        .highlight(
+                            order: 3,
+                            title: "Ganti Gambar",
+                            description: "Ganti gambar yang disediakan dengan foto atau video sendiri.",
+                            cornerRadius: 20,
+                            style: .circular,
+                            position: .bottomLeading
+                        )
                     }
                     ZStack {
                         ZStack(alignment: .topLeading) {
@@ -286,6 +294,14 @@ struct CustomizationContentView: View {
                                 )
                                 .padding()
                             })
+                            .highlight(
+                                order: 5,
+                                title: "Gunakan AI",
+                                description: "Optimisasi konten menggunakan parafrase dengan AI.",
+                                cornerRadius: 40,
+                                style: .continuous,
+                                position: .topLeading
+                            )
                         }
                         .onAppear {
                             currentText = page.pageText.first?.componentContent ?? ""
@@ -316,6 +332,14 @@ struct CustomizationContentView: View {
                             .padding(.leading, 136)
                         }
                     }
+                    .highlight(
+                        order: 4,
+                        title: "Edit Teks",
+                        description: "Tekan untuk mengedit teks jika dibutuhkan dan atur sesuai kebiasaan anak.",
+                        cornerRadius: 10,
+                        style: .continuous,
+                        position: .topCenter
+                    )
                     
                 }
                 
