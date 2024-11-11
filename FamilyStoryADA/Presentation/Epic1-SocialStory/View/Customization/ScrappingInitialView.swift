@@ -62,20 +62,23 @@ struct ScrappingInitialView: View {
                             .zIndex(1)
                             if !networkMonitor.isConnected {
                                 VStack {
-                                    Spacer()
+                                    Spacer().frame(height: 124)
                                     LostConnectionView()
                                         .foregroundStyle(Color("FSBorderBlue7"))
+                                        .frame(height: 127.65)
+                                    Spacer().frame(height: 32)
                                     Text("Koneksi hilang")
                                         .font(Font.custom("Fredoka", size: 24).weight(.medium))
                                         .foregroundColor(Color("FSBorderBlue7"))
+                                    Spacer().frame(height: 8)
                                     Text("Cek koneksi internet dan coba lagi.")
                                         .font(Font.custom("Fredoka", size: 20))
                                         .foregroundColor(Color("FSBorderBlue7"))
-                                    Spacer()
                                 }
                                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                             } else if crawlViewModel.isLoading {
                                 VStack {
+                                    Spacer().frame(height: 188)
                                     LottieView(animationName: "load-state-icon", width: 68, height: 72)
                                 }
                                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
@@ -83,7 +86,7 @@ struct ScrappingInitialView: View {
                                 VStack {
                                     Spacer().frame(height: 100)
                                     ImageSearchView()
-                                        .frame(width: 180, height: 180)
+                                        .frame(height: 131.25)
                                         .foregroundStyle(Color("FSBorderBlue7"))
                                     Spacer().frame(height: 8)
                                     Text("Masih kosong, nih")
@@ -97,16 +100,18 @@ struct ScrappingInitialView: View {
                                 .multilineTextAlignment(.center)
                             } else if crawlViewModel.isImageUnprocessable {
                                 VStack {
-                                    Spacer()
+                                    Spacer().frame(height: 100)
                                     ImageNoResultView()
+                                        .frame(height: 131.25)
                                         .foregroundStyle(Color("FSBorderBlue7"))
+                                    Spacer().frame(height: 8)
                                     Text("Ups, tidak ada hasil")
                                         .font(Font.custom("Fredoka", size: 24).weight(.medium))
                                         .foregroundColor(Color("FSBorderBlue7"))
+                                    Spacer().frame(height: 8)
                                     Text("Coba masukkan kata kunci lain.")
                                         .font(Font.custom("Fredoka", size: 20))
                                         .foregroundColor(Color("FSBorderBlue7"))
-                                    Spacer()
                                 }
                                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                             } else {
