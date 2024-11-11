@@ -64,29 +64,8 @@ struct HighlightRoot: ViewModifier {
                             .offset(x: highlightRect.minX - 2.5, y: highlightRect.minY + safeArea.top - 2.5)
                     }
                     .ignoresSafeArea()
-                    .onTapGesture {
-                        if currentHighlightOrder >= highlightOrder.count - 1 {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                showView = false
-                            }
-                            onFinished()
-                        } else {
-                            withAnimation(.interactiveSpring(response: 0.3,
-                                                             dampingFraction: 0.7,
-                                                             blendDuration: 0.7)) {
-                                //                                showTitle = false
-                                currentHighlightOrder += 1
-                            }
-                            
-                            //                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                            //                                showTitle = true
-                            //                            }
-                        }
-                    }
                     .onAppear {
                         showTitle = true
-                        print(highlightRect.midX)
-                        print(highlightRect.midY)
                     }
                 
                 // Overlayed text for title and description
@@ -96,29 +75,76 @@ struct HighlightRoot: ViewModifier {
                             .foregroundStyle(Color("FSWhite"))
                             .frame(width: 300, height: 160)
                             .shadow(radius: 10)
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 8) {
                             Text(highlight.title)
-                                .font(.headline)
+                                .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                .fontWeight(.medium)
                                 .foregroundStyle(Color("FSBlack"))
-                                .padding(10)
-                            //                                .cornerRadius(8)
+                                .multilineTextAlignment(.leading)
+                            Text(highlight.description)
+                                .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                .fontWeight(.regular)
+                                .foregroundStyle(Color("FSBlack"))
+                                .multilineTextAlignment(.leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                            
+                            Spacer()
+                            HStack {
+                                Text("\(currentHighlightOrder + 1) / \(highlightOrder.count)")
+                                    .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                    .fontWeight(.regular)
+                                    .foregroundStyle(Color("FSGrey4"))
+                                    .multilineTextAlignment(.leading)
+                                Spacer()
+                                if currentHighlightOrder >= highlightOrder.count - 1 {
+                                    Text("Done")
+                                        .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                        .fontWeight(.regular)
+                                        .foregroundStyle(Color("FSBlue9"))
+                                        .multilineTextAlignment(.leading)
+                                        .onTapGesture {
+                                            withAnimation(.easeInOut(duration: 0.25)) {
+                                                showView = false
+                                            }
+                                            onFinished()
+                                        }
+                                } else {
+                                    HStack(spacing: 32) {
+                                        Text("Skip")
+                                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                            .fontWeight(.regular)
+                                            .foregroundStyle(Color("FSGrey"))
+                                            .multilineTextAlignment(.leading)
+                                            .onTapGesture {
+                                                withAnimation(.easeInOut(duration: 0.25)) {
+                                                    showView = false
+                                                }
+                                                onFinished()
+                                            }
+                                        Text("Next")
+                                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                            .fontWeight(.regular)
+                                            .foregroundStyle(Color("FSBlue9"))
+                                            .multilineTextAlignment(.leading)
+                                            .onTapGesture {
+                                                withAnimation(.interactiveSpring(response: 0.3,
+                                                                                 dampingFraction: 0.7,
+                                                                                 blendDuration: 0.7)) {
+                                                    currentHighlightOrder += 1
+                                                }
+                                            }
+                                    }
+                                }
+                                
+                            }
                         }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        .padding(.bottom, 12)
                     }
                     .frame(width: 300, height: 160)
-                                        .offset(x: PositionStyle.calculateXOffset(for: highlight.position, highlightRect: highlightRect, width: geometry.size.width),
-                                                y: PositionStyle.calculateYOffset(for: highlight.position, highlightRect: highlightRect, height: geometry.size.height))
-                    //                    .offset(
-                    //                        x: highlightRect.midX - geometry.size.width / 2 + highlightRect.width / 2 + 150,
-                    //                        y: highlightRect.midY - geometry.size.height / 2
-                    //                    )
-//                    .offset(
-//                        x: highlightRect.midX - geometry.size.width / 2,
-//                        y: highlightRect.midY - geometry.size.height / 2  + highlightRect.height / 2 + 80
-//                    )
-                    //                    .offset(
-                    //                        x: -( highlightRect.width / 2 + 150/2),
-                    //                        y: highlightRect.midY
-                    //                    )
+                    .offset(x: PositionStyle.calculateXOffset(for: highlight.position, highlightRect: highlightRect, width: geometry.size.width),
+                            y: PositionStyle.calculateYOffset(for: highlight.position, highlightRect: highlightRect, height: geometry.size.height))
                     .transition(.opacity)
                     .animation(.easeInOut, value: showTitle)
                 }

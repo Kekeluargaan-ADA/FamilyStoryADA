@@ -262,46 +262,52 @@ struct CustomizationContentView: View {
                             .padding(.top, 8)
                         }
                         .overlay(alignment: .bottomTrailing) {
-                            Button(action: {
-                                isParaphrasingPresented = true
-                                viewModel.paraphraseModalIsLoading = true
-                                Task {
-                                    do {
-                                        let result = try await viewModel.getParaphrasing(for: currentText)
-                                        keyboardHelper.isKeyboardShown = false
-                                        viewModel.paraphraseModalIsLoading = false
-                                    } catch {
-                                        print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                        viewModel.paraphraseModalIsLoading = false
-                                    }
-                                }
-                            }, label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "sparkles")
-                                    Text("Optimalkan")
-                                        .font(.system(size: 16))
-                                        .fontWeight(.medium)
-                                }
-                                .foregroundStyle(Color(.fsBlue9))
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 40)
-                                        .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 40)
-                                                .fill(Color.white)
-                                        )
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 40)
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 123, height: 30)
+                                .highlight(
+                                    order: 5,
+                                    title: "Gunakan AI",
+                                    description: "Optimisasi konten menggunakan parafrase dengan AI.",
+                                    cornerRadius: 40,
+                                    style: .continuous,
+                                    position: .topCenter
                                 )
-                                .padding()
-                            })
-                            .highlight(
-                                order: 5,
-                                title: "Gunakan AI",
-                                description: "Optimisasi konten menggunakan parafrase dengan AI.",
-                                cornerRadius: 40,
-                                style: .continuous,
-                                position: .topLeading
-                            )
+                                Button(action: {
+                                    isParaphrasingPresented = true
+                                    viewModel.paraphraseModalIsLoading = true
+                                    Task {
+                                        do {
+                                            let result = try await viewModel.getParaphrasing(for: currentText)
+                                            keyboardHelper.isKeyboardShown = false
+                                            viewModel.paraphraseModalIsLoading = false
+                                        } catch {
+                                            print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                            viewModel.paraphraseModalIsLoading = false
+                                        }
+                                    }
+                                }, label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "sparkles")
+                                        Text("Optimalkan")
+                                            .font(.system(size: 16))
+                                            .fontWeight(.medium)
+                                    }
+                                    .foregroundStyle(Color(.fsBlue9))
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 40)
+                                                    .fill(Color.white)
+                                            )
+                                    )
+                                    .padding()
+                                })
+                            }
+                            
                         }
                         .onAppear {
                             currentText = page.pageText.first?.componentContent ?? ""
@@ -331,15 +337,19 @@ struct CustomizationContentView: View {
                             .padding(.top, 8)
                             .padding(.leading, 136)
                         }
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(.clear)
+                            .frame(width: 760, height: 170)
+                            .highlight(
+                                order: 4,
+                                title: "Edit Teks",
+                                description: "Tekan untuk mengedit teks jika dibutuhkan dan atur sesuai kebiasaan anak.",
+                                cornerRadius: 10,
+                                style: .continuous,
+                                position: .topCenter
+                            )
                     }
-                    .highlight(
-                        order: 4,
-                        title: "Edit Teks",
-                        description: "Tekan untuk mengedit teks jika dibutuhkan dan atur sesuai kebiasaan anak.",
-                        cornerRadius: 10,
-                        style: .continuous,
-                        position: .topCenter
-                    )
+                    
                     
                 }
                 
