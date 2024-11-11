@@ -142,10 +142,9 @@ struct CustomizationContentView: View {
                             }
                         } else {
                             Button(action: {
-                                isParaphrasingPresented = true
                                 viewModel.isMediaOverlayOpened = true
                             }, label: {
-                                EmptyImageCustomizationView()
+                                EmptyImageCustomizationView(isParaphrasingPresented: $isParaphrasingPresented, viewModel: viewModel)
                             })
                         }
                         
