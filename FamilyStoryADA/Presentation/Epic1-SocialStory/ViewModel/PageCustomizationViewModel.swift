@@ -13,6 +13,7 @@ import AVFoundation
 
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
+    @Published var introPages: [DraggablePage] = []
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
     @Published var isMiniQuizOpened: Bool = false
@@ -24,7 +25,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var isDeleteSelected: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
     @Published var paraphrasedOptions: [String] = []
-
+    @Published var paraphraseModalIsLoading: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
@@ -38,6 +39,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         
         self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
         
+        self.introPages = DraggablePage.fetchIntroductionPages(story: story)
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
     }
     
@@ -55,11 +57,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         let closingFirstIndex = story.pages.firstIndex(where: {$0.pageType == "Closing"})
         
         if pageUsecase.addPage(page: newPage) == newPage.pageId {
-            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1)) // Add blank page before end of story
+            story.pages.insert(newPage, at: (closingFirstIndex ?? story.pages.count - 1))
             if storyUsecase.updateStory(story: story) {
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                 
-                self.selectedPage = newPage // redirect display to the newly made page
+                self.selectedPage = newPage
                 if selectedPage == nil {
                     if let firstPage = story.pages.first(where: {$0.pageType == "Instruction" || $0.pageType == "Introduction"}) {
                         self.selectedPage = firstPage
@@ -86,7 +88,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     private func reorderStoryPages() {
         var reorderedPages = [PageEntity]()
         
-        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening"}))
+        reorderedPages.append(contentsOf: story.pages.filter({ $0.pageType == "Opening" || $0.pageType == "Introduction"}))
         
         for draggedPage in draggedPages {
             if let matchingPage = story.pages.first(where: { $0.pageId == draggedPage.id }) {
@@ -125,6 +127,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                 //update pageid in story swiftdata, by updating
                 if storyUsecase.updateStory(story: story) {
                     //update draggedPage
+                    self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: self.story)
                     guard !story.pages.isEmpty else {
                         selectedPage = nil
@@ -153,28 +156,31 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
     
-    
-    
     public func updatePage() {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
             updateMedia(page: currentPage)
+            _ = pageUsecase.editPage(page: currentPage)
+            _ = storyUsecase.updateStory(story: self.story)
         }
     }
     
     private func updateTextComponent(page: PageEntity) {
         if let text = page.pageText.first {
-            if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
+            if text.componentContent.isEmpty, componentUsecase.removeComponent(componentId: text.componentId) {
+                page.pageText = []
+                page.pageTextClassification = ""
+            } else if componentUsecase.updateComponent(component: text), let changedPage = story.pages.first(where: {$0.pageId == page.pageId}) {
                 changedPage.pageText = []
                 changedPage.pageText.append(text)
-            } else {
-                if componentUsecase.addNewComponent(component: text) != nil {
-                    page.pageText = []
-                    page.pageText.append(text)
-                    // TODO: Update page.pageTextClassification
-                    page.pageTextClassification = "Instructive"
-                    _ = pageUsecase.editPage(page: page)
-                }
+            } else if componentUsecase.addNewComponent(component: text) != nil {
+                page.pageText = []
+                page.pageText.append(text)
+//                    if let classification = selectedPage?.pageTextClassification {
+//                        page.pageTextClassification = classification
+//                    } else {
+//                        page.pageTextClassification = ""
+//                    }
             }
         }
     }
@@ -185,14 +191,14 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             if componentUsecase.updateComponent(component: picture) {
                 page.pagePicture = []
                 page.pagePicture.append(picture)
+                self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                 self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
             } else {
                 if componentUsecase.addNewComponent(component: picture) != nil {
                     page.pagePicture = []
                     page.pagePicture.append(picture)
+                    self.introPages = DraggablePage.fetchIntroductionPages(story: self.story)
                     self.draggedPages = DraggablePage.fetchDraggedPage(story: story)
-                    
-                    _ = pageUsecase.editPage(page: page)
                 }
             }
         }
@@ -247,12 +253,14 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
 
     public func getTextClassification(for text: String) async throws -> String {
         let prompt = """
-                Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." 
-                Contoh deskriptif: aku menggosok gigi. 
-                Contoh instruktif: ayo gosok gigi. 
-                Kembalikan hasil hanya dalam format: "Instructive" atau "Descriptive"
-                text: \(text)
-"""
+        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
+
+        Contoh deskriptif: aku menggosok gigi.  
+        Contoh instruktif: ayo gosok gigi.  
+
+        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
+        text: \(text)
+        """
         
         do {
             let response = try await getResponse(prompt: prompt)
@@ -290,7 +298,20 @@ extension PageCustomizationViewModel {
     
     //filter requirement for add new page to be added
     func isAddButtonAppeared() -> Bool {
-        return self.story.pages.count(where: { $0.pageType == "Introduction" || $0.pageType == "Instruction" }) < 10
+        return self.story.pages.count(where: { $0.pageType == "Instruction" }) < 10
     }
     
+}
+
+
+// For the new .onMove method
+extension PageCustomizationViewModel {
+    public func reorderPage() {
+        for index in 0..<draggedPages.count {
+            if draggedPages[index].order != index {
+                draggedPages[index].order = index
+            }
+        }
+        reorderStoryPages()
+    }
 }

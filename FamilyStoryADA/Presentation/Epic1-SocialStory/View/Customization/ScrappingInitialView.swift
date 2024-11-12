@@ -11,9 +11,9 @@ import SwiftUI
 struct ScrappingInitialView: View {
     @State private var isModalPresented = false
     @StateObject private var crawlViewModel = ImageCrawlViewModel()
-    @State private var isImageSelected: Bool = false
     @EnvironmentObject var viewModel: PageCustomizationViewModel
     @EnvironmentObject var cameraViewModel: CameraViewModel
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @AppStorage("selectedImageUUID") var selectedImageUUID: String?
     
@@ -30,18 +30,15 @@ struct ScrappingInitialView: View {
                     .cornerRadius(20 * heightRatio)
                     .overlay(
                         VStack {
-                            HStack {
+                            HStack(alignment: .top) {
                                 ZStack {
                                     HStack {
-                                        
                                         Button(action: {
+                                            crawlViewModel.deleteImages()
                                             viewModel.isGotoScrapImage = false
-                                            //presentationMode.wrappedValue.dismiss()
                                         }) {
-                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue) // Use fixed height for button
+                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                         }
-                                        
-                                        
                                         Spacer()
                                     }
                                     Text("Cari Foto")
@@ -51,93 +48,130 @@ struct ScrappingInitialView: View {
                                 }
                             }
                             HStack {
-                                SearchBarView(searchText: $crawlViewModel.keyword) {
+                                SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
+                                    crawlViewModel.deleteImages()
                                     crawlViewModel.crawlImages()
-                                }
+                                }, searchPlaceholder: "Cari")
                                 Button(action: {
                                     crawlViewModel.deleteImages()
+                                    crawlViewModel.crawlImages()
                                 }, label: {
                                     ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
-                            
-                            LazyVGrid(
-                                columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
-                                spacing: 10
-                            ) {
-                                ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
-                                    ZStack {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                            .clipped()
-                                            .cornerRadius(12)
-                                            .shadow(radius: 2, y: 4)
-                                            .onTapGesture {
-                                                crawlViewModel.selectedImage = image
+                            .zIndex(1)
+                            if !networkMonitor.isConnected {
+                                Spacer().frame(height: 124)
+                                LostConnectionView()
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                    .frame(width: 127.65, height: 127.65)
+                                Spacer().frame(height: 32)
+                                Text("Koneksi hilang")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Cek koneksi internet dan coba lagi.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer()
+                            } else if crawlViewModel.isLoading {
+                                LottieView(animationName: "load-state-icon", width: 68, height: 72)
+                                Spacer()
+                            } else if crawlViewModel.processedImages.isEmpty {
+                                Spacer().frame(height: 100)
+                                ImageSearchView()
+                                    .frame(width: 152, height: 131.25)
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Masih kosong, nih")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Masukkan kata kunci yang sesuai untuk\nmenampilkan hasil.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer()
+                            } else if crawlViewModel.isImageUnprocessable {
+                                Spacer().frame(height: 100)
+                                ImageNoResultView()
+                                    .frame(width: 152, height: 131.25)
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Ups, tidak ada hasil")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Coba masukkan kata kunci lain.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer()
+                            } else {
+                                LazyVGrid(
+                                    columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
+                                    spacing: 10
+                                ) {
+                                    ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
+                                        VStack {
+                                            ZStack {
+                                                Button(action: {
+                                                    crawlViewModel.selectedImage = image
+                                                }) {
+                                                    AsyncImage(url: URL(string: url)) { image in
+                                                        image
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fill)
+                                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                                                            .clipped()
+                                                            .cornerRadius(12)
+                                                            .shadow(radius: 2, y: 4)
+                                                    } placeholder: {
+                                                        Color.gray
+                                                    }
+                                                }
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                        .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                                                )
+                                                if crawlViewModel.selectedImage == image {
+                                                    ZStack {
+                                                        Circle()
+                                                            .foregroundStyle(Color("FSWhite"))
+                                                            .frame(width: 20 * widthRatio, height: 20 * heightRatio)
+                                                        Image(systemName: "checkmark.circle")
+                                                            .foregroundStyle(Color("FSBlue9"))
+                                                            .font(.system(size: 20 * heightRatio))
+                                                            .bold()
+                                                    }
+                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                                                }
                                             }
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                    .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                            )
-                                        
-                                        if crawlViewModel.selectedImage == image {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(Color("FSWhite"))
-                                                .font(.system(size: 20 * heightRatio))
-                                                .bold()
-                                                .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
                                         }
                                     }
                                 }
-                            }
-                            .frame(width: 666 * widthRatio, height: 284 * heightRatio)
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                if let selectedImage = crawlViewModel.selectedImage {
-//                                    if let filename = crawlViewModel.saveSelectedImageToAppStorage() {
-//                                        // Update the page with new image
-//                                        if let page = viewModel.selectedPage, page.pagePicture.isEmpty {
-//                                            viewModel.selectedPage?.pagePicture.append(
-//                                                PictureComponentEntity(
-//                                                    componentId: UUID(),
-//                                                    componentContent: filename,
-//                                                    componentCategory: "AppStoragePicture"
-//                                                )
-//                                            )
-//                                        } else {
-//                                            viewModel.selectedPage?.pagePicture.first?.componentContent = filename
-//                                            viewModel.selectedPage?.pagePicture.first?.componentCategory = "AppStoragePicture"
-//                                        }
-//                                        
-//                                        // Update the page and close the view
-//                                        viewModel.updatePage()
-//                                        viewModel.isGotoScrapImage = false
-//                                        viewModel.isMediaOverlayOpened = false
-//                                        crawlViewModel.deleteImages()
-//                                    }
-                                    cameraViewModel.savedImage = selectedImage
-                                    cameraViewModel.isPhotoCaptured = true
-                                    crawlViewModel.deleteImages()
-                                    viewModel.isGotoScrapImage = false
-                                }
-                            }) {
-                                ZStack {
-                                    Rectangle()
-                                        .frame(width: 160, height: 60)
-                                        .foregroundStyle(Color("FSBlue9"))
-                                        .cornerRadius(40)
-                                        .overlay(
-                                            Text("Pilih")
-                                                .foregroundColor(.white)
-                                        )
+                                .frame(width: 666 * widthRatio, height: 284 * heightRatio)
+                                Spacer()
+                                Button(action: {
+                                    if let selectedImage = crawlViewModel.selectedImage {
+                                        cameraViewModel.savedImage = selectedImage
+                                        cameraViewModel.isPhotoCaptured = true
+                                        crawlViewModel.deleteImages()
+                                        viewModel.isGotoScrapImage = false
+                                    }
+                                }) {
+                                    ZStack {
+                                        Rectangle()
+                                            .frame(width: 160, height: 60)
+                                            .foregroundStyle(Color("FSBlue9"))
+                                            .cornerRadius(40)
+                                            .overlay(
+                                                Text("Pilih")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
                                 }
                             }
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

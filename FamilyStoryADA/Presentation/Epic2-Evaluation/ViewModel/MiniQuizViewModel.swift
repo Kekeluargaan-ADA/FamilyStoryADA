@@ -31,7 +31,7 @@ class MiniQuizViewModel: Imageable, ObservableObject {
         for (index, page) in droppableBox.enumerated() {
             if self.story.pages[index+1].pageId != page.0.id { // +1 for skipping opening
                 draggedPages.append(page.0)
-                droppableBox[index] = (.init(id: nil, picturePath: ""), false)
+                droppableBox[index] = (.init(id: nil, order: 0, picturePath: ""), false) // TODO: Fix
                 isAnswerCorrect = false
             } else {
                 droppableBox[index].1 = true

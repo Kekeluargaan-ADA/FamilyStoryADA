@@ -41,12 +41,12 @@ struct StoryDashboardView: View {
                                 .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
-                            Spacer(minLength: geometry.size.width / 2)
+                            Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
-                                                                    viewModel.searchText = keywords
-                                                                    viewModel.searchStories() // Trigger search when user commits
-                                                                })
+                                    viewModel.searchText = keywords
+                                    viewModel.searchStories()
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
                                 ProfileButtonView(imageName: "")
                             }
                         }
@@ -65,14 +65,18 @@ struct StoryDashboardView: View {
                                     LazyVGrid(columns: flexibleColumn, spacing: 26) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
-                                                NavigationLink(destination: TemplateCollectionView()) {
+                                                Button(action: {
+                                                    viewModel.isTemplateDashboardOpened = true
+                                                }, label: {
                                                     NewStoryCardView()
                                                         .padding(.horizontal, 10)
-                                                }
+                                                })
                                             } else {
                                                 ZStack(alignment: .topTrailing) {
-                                                    NavigationLink(destination: CustomizationView(story: item),
-                                                                   label: {
+                                                    Button(action: {
+                                                        viewModel.currentlySelectedStory = item
+                                                        viewModel.isCustomizationViewOpened = true
+                                                    }, label: {
                                                         StoryCardView(
                                                             viewModel: viewModel,
                                                             storyName: item.storyName,
@@ -123,7 +127,7 @@ struct StoryDashboardView: View {
                 }
                 .background(Color("FSBlue6"))
                 .onAppear() {
-//                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
+                    //                    viewModel.addNewStory(templateId: UUID(uuidString: "819f2cc6-345d-4bfa-b081-2b0d4afc53ab") ?? UUID())
                     viewModel.fetchStories()
                 }
                 .sheet(isPresented: $viewModel.isEditCoverSheetOpened) {
@@ -156,6 +160,23 @@ struct StoryDashboardView: View {
                         viewModel.updateStoryDisplay()
                     }
                 }
+                NavigationLink(isActive: $viewModel.isTemplateDashboardOpened,
+                               destination: {
+                    TemplateCollectionView()
+                        .environmentObject(viewModel)
+                },
+                               label: {
+                    EmptyView()
+                })
+                NavigationLink(isActive: $viewModel.isCustomizationViewOpened, destination: {
+                    if let story = viewModel.currentlySelectedStory{
+                        CustomizationView(story: story)
+                    } else {
+                        EmptyView()
+                    }
+                }, label: {
+                    EmptyView()
+                })
             }
         }
         .navigationViewStyle(.stack)

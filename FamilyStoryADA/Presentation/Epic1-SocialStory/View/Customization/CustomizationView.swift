@@ -12,6 +12,7 @@ struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: PageCustomizationViewModel
     @StateObject var cameraViewModel: CameraViewModel = CameraViewModel()
+    @StateObject private var networkMonitor = NetworkMonitor()
     
     @State var isParaphrasingPresented = false
     @State var currentText: String = ""
@@ -27,7 +28,7 @@ struct CustomizationView: View {
         NavigationView {
             GeometryReader{ geometry in
                 ZStack{
-                    HStack {
+                    HStack(alignment: .top) {
                         VStack(spacing: 32) {
                             Button(action: {
                                 viewModel.updatePage()
@@ -35,8 +36,38 @@ struct CustomizationView: View {
                             }, label: {
                                 CustomizedBackButton()
                             })
-                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+                            //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
+                            //                                .disabled(keyboardHelper.isKeyboardShown)
+                            ZStack {
+                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
+                                    .disabled(keyboardHelper.isKeyboardShown)
+                                
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 170, height: 685)
+                                    .highlight(
+                                        order: 2,
+                                        title: "Edit Halaman",
+                                        description: "Tahan dan geser halaman untuk mengganti sequence.",
+                                        cornerRadius: 8,
+                                        style: .continuous,
+                                        position: .centerTrailing
+                                    )
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(width: 170, height: 685)
+                                    .highlight(
+                                        order: 1,
+                                        title: "Lihat Semua Halaman",
+                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
+                                        cornerRadius: 8,
+                                        style: .continuous,
+                                        position: .centerTrailing
+                                    )
+                            }
+                                
                         }
+                        
                         
                         ZStack {
                             ZStack(alignment: .top) {
@@ -62,19 +93,23 @@ struct CustomizationView: View {
                                     )
                                     .padding(.top, 20)
                                     .padding(.horizontal, 46)
-
+                                    
                                     CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
                                         .environmentObject(keyboardHelper)
                                         .environmentObject(cameraViewModel)
                                 }
                             }
                             
-                            
-                            
+                        }
+                        .onTapGesture {
+                            if keyboardHelper.isKeyboardShown {
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                keyboardHelper.isKeyboardShown = false
+                            }
                         }
                         
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
-                            MiniQuizView(story: viewModel.story)
+                            MiniGameView(story: viewModel.story)
                         }, label: {})
                         
                         NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
@@ -146,6 +181,7 @@ struct CustomizationView: View {
                             .background(.black.opacity(0.4))
                             .environmentObject(viewModel)
                             .environmentObject(cameraViewModel)
+                            .environmentObject(networkMonitor)
                         
                     }
                     
@@ -171,7 +207,10 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-        
+        .modifier(HighlightRoot(showHighlights: UserDefaults.standard.bool(forKey: "customizationTutorial"), onFinished: {
+            UserDefaults.standard.set(false, forKey: "customizationTutorial")
+            UserDefaults.standard.synchronize()
+        }))
     }
     
 }

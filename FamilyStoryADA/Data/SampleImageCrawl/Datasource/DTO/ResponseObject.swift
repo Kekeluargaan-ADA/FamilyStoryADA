@@ -7,15 +7,15 @@
 
 struct CrawlResponseObject: Codable {
     let status: String
-    let message: String
-    let timeTaken: String
+    let userID: String
     let imageUrls: [String]
+    
 
     enum CodingKeys: String, CodingKey {
         case status
-        case message
-        case timeTaken = "time_taken"
-        case imageUrls = "image_urls"
+        case userID = "user_id"
+        case imageUrls = "images_urls"
+        
     }
 }
 

@@ -22,7 +22,7 @@ struct PlayStoryResultView: View {
             VStack {
                 PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                     playStoryViewModel.isStoryCompleted = true
-                }, onTapAudioButton: {textToSpeechHelper.speakIndonesian("Apakah kamu ingin bermain susun kartu sekarang?")})
+                }, onTapAudioButton: {textToSpeechHelper.speakIndonesian("Apakah kamu ingin bermain susun kartu sekarang?")}, showAudioButton: true)
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.top, 46 * heightRatio)
                     .padding(.bottom, 24 * heightRatio)

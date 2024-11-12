@@ -14,6 +14,7 @@ struct PlayStoryView: View {
     @Binding var isMiniQuizPresented: Bool
     private let textToSpeechHelper = TextToSpeechHelper()
     @State var playStoryIsActive = false
+    private let soundEffectHelper = SoundEffectHelper()
     init(story: StoryEntity, isMiniQuizPresented: Binding<Bool>) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
         _isMiniQuizPresented = isMiniQuizPresented
@@ -34,7 +35,7 @@ struct PlayStoryView: View {
                         if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
                             textToSpeechHelper.speakIndonesian(text)
                         }
-                    })
+                    }, showAudioButton: true)
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.bottom, 21 * heightRatio)
@@ -74,18 +75,25 @@ struct PlayStoryView: View {
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                     .onAppear() {
-                                        
-                                        playStoryViewModel.setupPlayer(url: url)
+                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                        playStoryViewModel.videoPlayer.play()
                                     }
                                     .onDisappear() {
                                         playStoryViewModel.videoPlayer.pause()
-                                        playStoryViewModel.removePlayerObserver()
                                     }
                                     .onChange(of: url) {
-                                        playStoryViewModel.removePlayerObserver()
-                                        playStoryViewModel.setupPlayer(url: url)
+                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                        playStoryViewModel.videoPlayer.play()
                                     }
-                                    
+                                    .onTapGesture() {
+                                        playStoryViewModel.videoPlayer.seek(to: .zero)
+                                        playStoryViewModel.videoPlayer.play()
+                                        Task {
+                                            //MARK: turn this on when we need play sound effect
+//                                            await soundEffectHelper.playSound(fileName: )
+                                        }
+                                    }
+                                
                                 
                             } else {
                                 RoundedRectangle(cornerRadius: 12)
@@ -174,7 +182,7 @@ struct PlayStoryView: View {
                                 .foregroundStyle(Color("FSBlack"))
                         }
                     }
-                        
+                    
                     
                 }
             }

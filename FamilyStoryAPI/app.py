@@ -1,9 +1,14 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 import os
+from fastapi.responses import FileResponse, JSONResponse
 import time
 from icrawler.builtin import GoogleImageCrawler
 from fastapi.staticfiles import StaticFiles
 import nest_asyncio
+import re
+import uuid
+import hashlib
+import asyncio
 
 nest_asyncio.apply()
 
@@ -14,76 +19,129 @@ if not os.path.exists('images'):
 
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
-async def async_download_images(keyword: str, max_num: int = 3):
+all_urls = []
+
+def checkCrawlURL(log_record):
+    """Capture image URLs from log messages and store them in all_urls."""
+    print("INFO - downloader -", log_record.getMessage())
+    match = re.search(r"image #\d+\t(.*)", log_record.getMessage())
+    if match:
+        all_urls.append(match.group(1))
+        print("Current URLs:", all_urls)
+
+async def async_download_images(keyword: str, max_num: int = 3, user_id: str = None):
     start_time = time.time()
+    
+    user_dir = os.path.join('images', user_id if user_id else str(uuid.uuid4()))
+    os.makedirs(user_dir, exist_ok=True)
 
     google_crawler = GoogleImageCrawler(
         feeder_threads=1,
         parser_threads=2,
         downloader_threads=4,
-        storage={'root_dir': 'images'}
+        storage={'root_dir': user_dir} 
     )
 
-    # Adjust the filters if needed
-    filters = dict(license='commercial') 
+    google_crawler.downloader.logger.addFilter(checkCrawlURL)
 
-    crawl_start_time = time.time()
-    # google_crawler.crawl(keyword=keyword, max_num=max_num, file_idx_offset=0) # no filters
-    google_crawler.crawl(keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0) # with filters
-    crawl_end_time = time.time()
-    print(f"Crawling completed in {crawl_end_time - crawl_start_time:.2f} seconds")
-
-    image_files = []
-    for filename in os.listdir('images'):
-        if filename.endswith((".jpg", ".png", ".jpeg")):
-            file_path = os.path.join('images', filename)
-            image_files.append(file_path) 
+    filters = dict(license='commercial,modify')
+    
+    await asyncio.to_thread(google_crawler.crawl, keyword=keyword, filters=filters, max_num=max_num, file_idx_offset=0)
+    
+    image_files = [os.path.join(user_dir, f) for f in os.listdir(user_dir) if f.endswith((".jpg", ".png", ".jpeg"))]
 
     end_time = time.time()
-    elapsed_time = end_time - start_time  
+    elapsed_time = end_time - start_time
 
-    return {"elapsed_time": elapsed_time, "image_files": image_files[:max_num]}
+    return {"elapsed_time": elapsed_time, "image_files": image_files[:max_num], "image_urls": all_urls[:max_num]}
 
-@app.get("/crawl_images/")
-async def crawl_images(keyword: str = Query(..., min_length=1), max_num: int = Query(3, ge=1)):
-    result = await async_download_images(keyword, max_num)
+@app.get("/crawl_images/{user_id}")
+async def crawl_images(
+    request: Request, 
+    user_id: str,
+    keyword: str = Query(..., min_length=1), 
+    max_num: int = Query(3, ge=1)
+):
+    global all_urls
+    all_urls.clear()
 
-    ngrok_url = "https://working-epic-dodo.ngrok-free.app"
-    full_image_urls = [f"{ngrok_url}/images/{os.path.basename(image)}" for image in result["image_files"]]
+    # Pass user_id to the async_download_images function
+    await async_download_images(keyword, max_num, user_id)
 
-    response = {
+    folder_path = os.path.join("images", user_id)
+    
+    # Check if the user's folder exists
+    if not os.path.exists(folder_path):
+        return JSONResponse(
+            status_code=404, 
+            content={"status": "failure", "message": f"No images found for user {user_id}."}
+        )
+    
+    # List all image files in the folder
+    image_files = []
+    for file_name in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, file_name)
+        
+        # Only include files with image extensions
+        if os.path.isfile(file_path) and file_name.lower().endswith((".jpg", ".png", ".jpeg")):
+            image_files.append(f"{request.base_url}fetch_image/{user_id}/{file_name}")
+    
+    # Check if no images were found in the folder
+    if not image_files:
+        return JSONResponse(
+            status_code=404, 
+            content={"status": "failure", "message": f"No images found for user {user_id}."}
+        )
+    
+    # Return the list of images and their details
+    return {
         "status": "success",
-        "message": f"Downloaded {max_num} images for keyword '{keyword}'.",
-        "time_taken": f"{result['elapsed_time']:.2f} seconds",
-        "image_urls": full_image_urls 
+        "user_id": user_id,
+        "images_urls": image_files
     }
 
-    return response
 
 @app.delete("/delete_images/")
-async def delete_images():
-    folder_path = 'images'
+async def delete_images(user_id: str = Query(None)):
+    folder_path = os.path.join('images', user_id) if user_id else 'images'
 
     if os.path.exists(folder_path):
         deleted_files = []
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
+        for root, dirs, files in os.walk(folder_path, topdown=False):
+            for file in files:
+                file_path = os.path.join(root, file)
+                os.remove(file_path)
+                deleted_files.append(file)
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
+        os.rmdir(folder_path)
 
-            try:
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-                    deleted_files.append(filename)
-            except Exception as e:
-                print(f"Error deleting file {file_path}: {e}")
-                return {"status": "failure", "message": f"Error deleting file: {str(e)}"}
-
-        print(f"Deleted files: {deleted_files}")
-        
-        return {"status": "success", "message": f"Deleted {len(deleted_files)} images.", "deleted_files": deleted_files}
+        return {
+            "status": "success",
+            "message": f"Deleted {len(deleted_files)} images for user {user_id}.",
+            "deleted_files": deleted_files
+        }
     else:
         return {"status": "failure", "message": "Images directory does not exist."}
+    
 
+@app.get("/fetch_image/{user_id}/{filename}")
+async def fetch_image(user_id: str, filename: str):
+    """
+    Serve a specific image file for a user.
+    """
+    file_path = os.path.join("images", user_id, filename)
+    
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    # Determine the media type based on the file extension
+    media_type = "image/jpeg" if filename.lower().endswith(".jpg") or filename.lower().endswith(".jpeg") else "image/png"
+    
+    # Return the file as a streaming response
+    return FileResponse(file_path, media_type=media_type, filename=filename)
 
 @app.get("/")
 async def root():
-    return {"message": "FastAPI server is working with ngrok!"}
+    return {"message": "FastAPI server is working with dynamic base URL!"}

@@ -26,9 +26,9 @@ struct CropImageView: View {
     
     var body: some View {
         if let image = viewModel.savedImage {
-            CropView(image: image, croppingStyle: .default, croppingOptions: style) { image in
+            CropView(image: image, croppingStyle: .default, croppingOptions: style) { croppedImage in
                 // Handle cropped image here
-                handleCroppedImage(image)
+                handleCroppedImage(croppedImage)
                 dismiss()
             } didCropImageToRect: { _ in
                 // Handle additional crop rect logic if needed
@@ -38,14 +38,8 @@ struct CropImageView: View {
                 dismiss()
             }
             .ignoresSafeArea()
-            .onAppear() {
-                print(viewModel.savedImage)
-            }
         } else {
             EmptyView()
-                .onAppear() {
-                    print(viewModel.savedImage)
-                }
         }
     }
     
@@ -54,7 +48,18 @@ struct CropImageView: View {
 //        viewModel.capturedImage = nil
         viewModel.photosPickerItem = nil
         
-        viewModel.savedImage = image.image
+        guard let cgImage = image.image.cgImage?.copy() else {
+                viewModel.savedImage = image.image
+                viewModel.isPhotoCaptured = false
+                viewModel.showCropView = false
+                return
+            }
+        let newImage = UIImage(cgImage: cgImage,
+                               scale: image.image.scale,
+                               orientation: image.image.imageOrientation
+        )
+        
+        viewModel.savedImage = newImage
         viewModel.isPhotoCaptured = false
         
         // Dismiss crop view after saving

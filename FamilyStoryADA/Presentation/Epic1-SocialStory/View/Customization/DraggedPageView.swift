@@ -18,10 +18,9 @@ struct DraggedPageView: View {
                 if let image = imagePath {
                     Image(uiImage: image)
                         .resizable()
+                        .scaledToFill()
                         .frame(width: 152, height: 93.37)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .aspectRatio(contentMode: .fill)
-                        .clipped()
                 } else {
                     RoundedRectangle(cornerRadius: 12)
                         .foregroundStyle(Color("FSWhite"))
@@ -40,6 +39,8 @@ struct DraggedPageView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(Color("FSBlue9"))
         }
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
     }
 }
 
