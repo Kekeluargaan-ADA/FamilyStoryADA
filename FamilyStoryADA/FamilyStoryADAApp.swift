@@ -15,6 +15,7 @@ struct FamilyStoryADAApp: App {
             if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
                 UserDefaults.standard.set(true, forKey: "customizationTutorial")
                 UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+                UserDefaults.standard.set(UserIDHelper().generateUserID(), forKey: "UserID")
                 UserDefaults.standard.synchronize()
             }
         }
