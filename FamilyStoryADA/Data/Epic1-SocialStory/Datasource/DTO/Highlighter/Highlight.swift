@@ -31,7 +31,7 @@ enum PositionStyle {
         switch position {
         case .topCenter:
             return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) - 10
-        case .bottomLeading, .bottomCenter, .bottomTrailing:
+        case .bottomCenter:
             return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) + 10
         case .centerLeading, .centerTrailing:
             return highlightRect.midY - height / 2
