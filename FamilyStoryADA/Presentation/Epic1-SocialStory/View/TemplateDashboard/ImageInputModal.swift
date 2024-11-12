@@ -201,22 +201,23 @@ struct ImageInputModal: View {
             .cornerRadius(20)
             .padding()
             
-            NavigationLink(
-                destination: CropImageView(croppingStyle: .portrait)
-                    .environmentObject(viewModel),
-                isActive: $viewModel.showCropView,
-                label: {
-                    EmptyView()
-                }
-            ).onChange(of: viewModel.showCropView) { value in
-                if !value, let croppedImage = viewModel.savedImage {
-                    templateViewModel.chosenImage = croppedImage
-                    
-                }
-            }
         }
         .navigationViewStyle(.stack)
         .environmentObject(viewModel)
+        
+        NavigationLink (
+            destination: CropImageView(croppingStyle: .portrait)
+                .environmentObject(viewModel),
+            isActive: $viewModel.showCropView,
+            label: {
+                EmptyView()
+            }
+        ).onChange(of: viewModel.showCropView) { value in
+            if !value, let croppedImage = viewModel.savedImage {
+                templateViewModel.chosenImage = croppedImage
+                
+            }
+        }
     }
     
     private var keyboardOffset: CGFloat {
@@ -272,7 +273,8 @@ struct ChangePictureButton: View {
                                    // Show crop view once an image is selected
                                    templateViewModel.chosenImage = selectedImage
                                    viewModel.savedImage = selectedImage
-                                   //                                   viewModel.showCropView = true //TODO: Fix crop view for this, for now lets say langsung foto
+//                                                                      viewModel.showCropView = true
+                                   //TODO: Fix crop view for this, for now lets say langsung foto
                                    viewModel.isPhotoCaptured = false
                                    
                                }
