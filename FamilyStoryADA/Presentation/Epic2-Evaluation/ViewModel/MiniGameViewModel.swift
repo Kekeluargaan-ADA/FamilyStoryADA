@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class MiniGameViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
@@ -46,7 +47,11 @@ class MiniGameViewModel: Imageable, ObservableObject {
     public func startTutorialTimer() {
         tutorialTimer?.invalidate() // Ensure any previous timer is canceled
         tutorialTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-            self.isTutorialShown = true
+            DispatchQueue.main.async {
+                withAnimation(.easeIn(duration: 0.3)) { // Add easeIn animation
+                    self.isTutorialShown = true
+                }
+            }
         }
     }
     

@@ -13,7 +13,14 @@ struct HandTapOverlay: View {
             Color("FSBlack")
                 .opacity(0.5)
                 .ignoresSafeArea()
-            LottieView(animationName: "hand-tap-gesture", width: 217, height: 218)
+            VStack (spacing: 11) {
+                LottieView(animationName: "hand-tap-gesture", width: 217, height: 218)
+                    .frame(width: 217, height: 218)
+                Text("Tekan kartu untuk memilih")
+                    .font(Font.custom("Fredoka", size: 48, relativeTo: .largeTitle))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color("FSWhite"))
+            }
         }
     }
 }
