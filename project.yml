@@ -30,6 +30,7 @@ targets:
         NSCameraUsageDescription: "Nyalakan kamera untuk mengambil gambar"
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleDisplayName: $(APP_NAME)
         LSRequiresIPhoneOS: YES
         UILaunchStoryboardName: "LaunchScreen"
         UIApplicationSupportsIndirectInputEvents: YES
@@ -65,9 +66,15 @@ targets:
           - GoogleGenerativeAI
       - package: Lottie
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: kekeluargaan.FamilyStoryADA
-      INFOPLIST_FILE: FamilyStoryADA/Info.plist
-      ENABLE_TESTABILITY: YES
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: kekeluargaan.FamilyStoryADA
+        INFOPLIST_FILE: FamilyStoryADA/Info.plist
+        ENABLE_TESTABILITY: YES
+      configs:
+        Debug:
+          APP_NAME: "TinyTales"
+        Release:
+          APP_NAME: "TinyTales"
   FamilyStoryADATests:
     type: bundle.unit-test
     platform: iOS
