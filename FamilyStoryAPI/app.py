@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query, Request
 import os
+from fastapi.responses import FileResponse, JSONResponse
 import time
 from icrawler.builtin import GoogleImageCrawler
 from fastapi.staticfiles import StaticFiles
@@ -54,33 +55,51 @@ async def async_download_images(keyword: str, max_num: int = 3, user_id: str = N
 
     return {"elapsed_time": elapsed_time, "image_files": image_files[:max_num], "image_urls": all_urls[:max_num]}
 
-@app.get("/crawl_images/")
+@app.get("/crawl_images/{user_id}")
 async def crawl_images(
     request: Request, 
+    user_id: str,
     keyword: str = Query(..., min_length=1), 
     max_num: int = Query(3, ge=1)
 ):
     global all_urls
     all_urls.clear()
 
-    raw_user_id = request.client.host + "_" + str(time.time()).replace('.', '')
-    hashed_user_id = hashlib.sha256(raw_user_id.encode()).hexdigest()
+    # Pass user_id to the async_download_images function
+    await async_download_images(keyword, max_num, user_id)
 
-    result = await async_download_images(keyword, max_num, hashed_user_id)
-
-    base_url = str(request.base_url).rstrip("/")
-    full_image_paths = [f"{base_url}/images/{hashed_user_id}/{os.path.basename(image)}" for image in result["image_files"]]
-
-    response = {
+    folder_path = os.path.join("images", user_id)
+    
+    # Check if the user's folder exists
+    if not os.path.exists(folder_path):
+        return JSONResponse(
+            status_code=404, 
+            content={"status": "failure", "message": f"No images found for user {user_id}."}
+        )
+    
+    # List all image files in the folder
+    image_files = []
+    for file_name in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, file_name)
+        
+        # Only include files with image extensions
+        if os.path.isfile(file_path) and file_name.lower().endswith((".jpg", ".png", ".jpeg")):
+            image_files.append(f"{request.base_url}fetch_image/{user_id}/{file_name}")
+    
+    # Check if no images were found in the folder
+    if not image_files:
+        return JSONResponse(
+            status_code=404, 
+            content={"status": "failure", "message": f"No images found for user {user_id}."}
+        )
+    
+    # Return the list of images and their details
+    return {
         "status": "success",
-        "message": f"Downloaded {max_num} images for keyword '{keyword}'.",
-        "time_taken": f"{result['elapsed_time']:.2f} seconds",
-        "image_urls": result["image_urls"],
-        "image_paths": full_image_paths,
-        "user_id": hashed_user_id
+        "user_id": user_id,
+        "images_urls": image_files
     }
 
-    return response
 
 @app.delete("/delete_images/")
 async def delete_images(user_id: str = Query(None)):
@@ -104,6 +123,24 @@ async def delete_images(user_id: str = Query(None)):
         }
     else:
         return {"status": "failure", "message": "Images directory does not exist."}
+    
+
+@app.get("/fetch_image/{user_id}/{filename}")
+async def fetch_image(user_id: str, filename: str):
+    """
+    Serve a specific image file for a user.
+    """
+    file_path = os.path.join("images", user_id, filename)
+    
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    # Determine the media type based on the file extension
+    media_type = "image/jpeg" if filename.lower().endswith(".jpg") or filename.lower().endswith(".jpeg") else "image/png"
+    
+    # Return the file as a streaming response
+    return FileResponse(file_path, media_type=media_type, filename=filename)
 
 @app.get("/")
 async def root():
