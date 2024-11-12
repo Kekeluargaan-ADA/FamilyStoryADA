@@ -13,7 +13,8 @@ struct PlayStoryNavigationView: View {
     let buttonColor: ButtonPreset
     let onTapHomeButton: () -> Void
     let onTapAudioButton: () -> Void
-    
+    let showAudioButton: Bool
+
     var body: some View {
         HStack {
             Button(action: {
@@ -27,15 +28,24 @@ struct PlayStoryNavigationView: View {
                 .fontWeight(.bold)
                 .foregroundStyle(Color("FSBlack"))
             Spacer()
-            Button(action: {
-                onTapAudioButton()
-            }, label: {
-                ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
-            })
+            if showAudioButton {
+                Button(action: {
+                    onTapAudioButton()
+                }, label: {
+                    ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
+                })
+            }
         }
     }
 }
 
 #Preview {
-    PlayStoryNavigationView(heightRatio: 1, title: "Title", buttonColor: .blue, onTapHomeButton: {}, onTapAudioButton: {})
+    PlayStoryNavigationView(
+        heightRatio: 1,
+        title: "Title",
+        buttonColor: .blue,
+        onTapHomeButton: {},
+        onTapAudioButton: {},
+        showAudioButton: true // Change to 'false' to hide the audio button
+    )
 }

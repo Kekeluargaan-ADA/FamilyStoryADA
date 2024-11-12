@@ -35,7 +35,7 @@ struct PlayStoryView: View {
                         if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
                             textToSpeechHelper.speakIndonesian(text)
                         }
-                    })
+                    }, showAudioButton: true)
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.bottom, 21 * heightRatio)

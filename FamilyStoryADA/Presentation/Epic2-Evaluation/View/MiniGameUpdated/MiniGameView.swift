@@ -25,11 +25,18 @@ struct MiniGameView: View {
             
             ZStack {
                 VStack {
-                    PlayStoryNavigationView(heightRatio: heightRatio, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        dismiss()
-                    }, onTapAudioButton: {
-                        textToSpeechHelper.speakIndonesian(instruction)
-                    })
+                    PlayStoryNavigationView(
+                        heightRatio: heightRatio,
+                        title: viewModel.story.storyName,
+                        buttonColor: .yellow,
+                        onTapHomeButton: {
+                            dismiss()
+                        },
+                        onTapAudioButton: {
+                            textToSpeechHelper.speakIndonesian(instruction)
+                        },
+                        showAudioButton: false // Pass 'false' to hide the audio button
+                    )
                     .padding(.top, 47 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
                     .padding(.bottom, 16 * heightRatio)
