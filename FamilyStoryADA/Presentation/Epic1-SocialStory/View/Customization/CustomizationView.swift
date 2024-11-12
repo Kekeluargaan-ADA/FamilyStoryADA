@@ -207,8 +207,9 @@ struct CustomizationView: View {
                 cameraViewModel.showCropView = true
             }
         }
-        .modifier(HighlightRoot(showHighlights: true, onFinished: {
-            print("Finished oboarding")
+        .modifier(HighlightRoot(showHighlights: UserDefaults.standard.bool(forKey: "customizationTutorial"), onFinished: {
+            UserDefaults.standard.set(false, forKey: "customizationTutorial")
+            UserDefaults.standard.synchronize()
         }))
     }
     
