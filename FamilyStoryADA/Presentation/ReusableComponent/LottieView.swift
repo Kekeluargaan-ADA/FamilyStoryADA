@@ -13,12 +13,13 @@ struct LottieView: UIViewRepresentable {
     var animationName: String
     var width: CGFloat = 1600 // Default width
     var height: CGFloat = 900 // Default height
+    var loopMode: LottieLoopMode = .loop
     
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
         animationView.animation = LottieAnimation.named(animationName)
         animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .loop // Set to loop
+        animationView.loopMode = loopMode
         animationView.play()
         animationView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(animationView)
@@ -41,5 +42,5 @@ struct LottieView: UIViewRepresentable {
 
 #Preview {
     // Example usage with default size
-    LottieView(animationName: "MenggosokGigiScene2")
+    LottieView(animationName: "hand-tap-gesture")
 }
