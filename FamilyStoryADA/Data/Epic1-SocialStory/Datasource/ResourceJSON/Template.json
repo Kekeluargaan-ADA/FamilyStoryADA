@@ -343,6 +343,275 @@
             "MenggosokGigiScene5",
             "MenggosokGigiScene6",
         ]
+    },
+    
+    {
+        "templateId": "97b175f0-453b-467f-90b7-7557b3ec9bc1",
+        "templateName": "Cara Buang Air Kecil",
+        "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
+        "templateCategory": "Hygiene",
+        "templatePage": [
+            {
+                "pageType": "Opening",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo! Namaku <CHILD_NAME>. Saat ini, aku mau mempelajari tentang buang air kecil!",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Introduction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo! Ini Ben.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben mengangkat dudukan toilet.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben membuang air kecil di toilet.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben menyiram toilet.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben menutup dudukan toilet.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben mencuci tangan dengan sabun.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben mengeringkan tangan dengan lap.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Closing",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini, aku sudah mempelajari tentang buang air kecil! ",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
+        ],
+        "templateCoverImagePath": "MenggosokGigiScene1",
+        "templateOptionCoverImagePath": [
+            "MenggosokGigiScene1",
+            "MenggosokGigiScene2",
+            "MenggosokGigiScene3",
+            "MenggosokGigiScene4",
+            "MenggosokGigiScene5",
+            "MenggosokGigiScene6",
+        ],
+        "templatePreviewImagePath": [
+            "MenggosokGigiScene1",
+            "MenggosokGigiScene2",
+            "MenggosokGigiScene3",
+            "MenggosokGigiScene4",
+            "MenggosokGigiScene5",
+            "MenggosokGigiScene6",
+        ]
     }
 
 ]

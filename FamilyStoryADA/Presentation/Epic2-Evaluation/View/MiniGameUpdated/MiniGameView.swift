@@ -18,11 +18,12 @@ struct MiniGameView: View {
     }
     
     var body: some View {
-            GeometryReader { geometry in
-                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
-                let heightRatio = ratios.heightRatio
-                let widthRatio = ratios.widthRatio
-                
+        GeometryReader { geometry in
+            let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+            let heightRatio = ratios.heightRatio
+            let widthRatio = ratios.widthRatio
+            
+            ZStack {
                 VStack {
                     PlayStoryNavigationView(heightRatio: heightRatio, title: viewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                         dismiss()
@@ -56,27 +57,53 @@ struct MiniGameView: View {
                             .environmentObject(viewModel)
                     }
                 }
+                
+                HandTapOverlay()
+                    .opacity(viewModel.isTutorialShown ? 1 : 0)
+                    .transition(.opacity)
+                    .onTapGesture {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            viewModel.isTutorialShown = false
+                        }
+                        viewModel.restartTutorialTimer()
+                    }
             }
-            .background(Color("FSYellow1"))
+        }
+        .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
         .onChange(of: viewModel.currentlyCheckedIndex) { value in
             if value == viewModel.correctAnswer.count {
                 viewModel.isAllCorrect = true
             }
         }
-        .sheet(isPresented: $viewModel.isAllCorrect, content: {
+        .sheet(isPresented: $viewModel.isAllCorrect,
+               onDismiss: {
+            viewModel.isTutorialShown = false
+            viewModel.startTutorialTimer()
+        },
+               content: {
             ZStack {
                 Color("FSYellow1")
                 MiniQuizModalView()
                     .environmentObject(viewModel)
             }
-            .onAppear(perform: {textToSpeechHelper.stopSpeaking()})
-                .presentationDetents([.height(727)])
+            .onAppear(perform: {
+                viewModel.tutorialTimer?.invalidate()
+                textToSpeechHelper.stopSpeaking()
+            })
+            .presentationDetents([.height(727)])
         })
         .onChange(of: viewModel.isDismissed) { value in
             if value {
                 dismiss()
             }
+        }
+        .onAppear {
+            viewModel.isTutorialShown = false
+            viewModel.startTutorialTimer()
+        }
+        .onDisappear {
+            viewModel.tutorialTimer?.invalidate()
         }
     }
 }

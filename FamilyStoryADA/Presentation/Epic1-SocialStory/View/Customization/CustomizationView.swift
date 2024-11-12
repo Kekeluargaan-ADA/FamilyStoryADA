@@ -109,7 +109,7 @@ struct CustomizationView: View {
                         }
                         
                         NavigationLink(isActive: $viewModel.isMiniQuizOpened, destination: {
-                            MiniQuizView(story: viewModel.story)
+                            MiniGameView(story: viewModel.story)
                         }, label: {})
                         
                         NavigationLink(isActive: $cameraViewModel.navigateToCamera, destination: {
