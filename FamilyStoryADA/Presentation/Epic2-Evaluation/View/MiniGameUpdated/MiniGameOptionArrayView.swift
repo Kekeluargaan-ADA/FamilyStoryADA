@@ -46,6 +46,8 @@ struct MiniGameOptionArrayView: View {
                                     }
                                 }
                             }
+                            viewModel.isTutorialShown = false
+                            viewModel.restartTutorialTimer()
                         }
                     //TODO: Fix left and right toggle
 //                        .onChange(of: wiggleDegree[index]) { value in
