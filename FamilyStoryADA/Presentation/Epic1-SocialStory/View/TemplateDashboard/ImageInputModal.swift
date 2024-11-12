@@ -1,7 +1,6 @@
 import PhotosUI
 import SwiftUI
 
-
 struct ImageInputModal: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
@@ -70,15 +69,12 @@ struct ImageInputModal: View {
                     }
 
                     
-                    
-                    Text("Foto ini akan digunakan pada bagian intro dan closing dari story ini.")
-                        .multilineTextAlignment(.center)
-                        .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                    Text("Pilih foto anak untuk perkenalan dan penutup.")
+                        .font(Font.custom("Fredoka", size: 20))
                         .fontWeight(.medium)
                         .foregroundStyle(Color(.fsBlack))
-                        .frame(width: 381,height: 50, alignment: .center)
 
-                    
+                    Spacer().frame(height: 28)
                     
                     VStack {
                         if let uiImage = templateViewModel.chosenImage {
@@ -144,8 +140,19 @@ struct ImageInputModal: View {
                                     .foregroundColor(.gray)
                             }
                         }
-                        .padding()
-                        
+                        Spacer().frame(height: 20)
+                        if templateViewModel.chosenImage == nil || templateViewModel.childName.isEmpty {
+                            HStack {
+                                Image(systemName: "exclamationmark.triangle")
+                                    .foregroundStyle(Color("FSPrimaryOrange5"))
+                                Text("Foto dan nama wajib diisi.")
+                                  .font(Font.custom("SF Pro", size: 16))
+                                  .multilineTextAlignment(.center)
+                                  .foregroundColor(Color("FSPrimaryOrange5"))
+                            }
+
+                        }
+
                         Button(action: {
                             
                             viewModel.savedImage = templateViewModel.chosenImage
@@ -153,7 +160,7 @@ struct ImageInputModal: View {
                             templateViewModel.isImageInputModalPresented = false
                             templateViewModel.isPagePreviewModalPresented = false
                             templateViewModel.isTemplateClosed = true
-                            if (editedText.trimmingCharacters(in: .whitespacesAndNewlines) == ""){
+                            if editedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                                 editedText = templateViewModel.selectedTemplate!.templateName
                             }
                             templateViewModel.createdStory?.storyName = editedText
@@ -164,10 +171,11 @@ struct ImageInputModal: View {
                                 .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                                 .fontWeight(.medium)
                                 .foregroundStyle(Color(.fsWhite))
-                                .frame(width: 160,height: 60)
-                                .background(Color(.fsBlue9))
+                                .frame(width: 160, height: 60)
+                                .background(templateViewModel.chosenImage != nil && !templateViewModel.childName.isEmpty ? Color(.fsBlue9) : Color.gray)
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
+                        .disabled(templateViewModel.chosenImage == nil || templateViewModel.childName.isEmpty)
                         .padding()
                         .frame(width: 728, alignment: .trailing)
                     }
