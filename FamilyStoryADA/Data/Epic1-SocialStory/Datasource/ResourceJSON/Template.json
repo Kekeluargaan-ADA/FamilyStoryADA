@@ -401,7 +401,18 @@
                 ],
                 "pageVideo":
                 [
-                    
+                    {
+                        "componentContent": "ss02-animated-scene01-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -428,7 +439,56 @@
                 ],
                 "pageVideo":
                 [
+                    {
+                        "componentContent": "ss02-animated-scene02-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben membuka celana sebelum buang air kecil.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
                     
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "ss02-animated-scene03-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -455,7 +515,56 @@
                 ],
                 "pageVideo":
                 [
+                    {
+                        "componentContent": "ss02-animated-scene04-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ben memakai celana kembali.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
                     
+                ],
+                "pageVideo":
+                [
+                    {
+                        "componentContent": "ss02-animated-scene05-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -482,7 +591,18 @@
                 ],
                 "pageVideo":
                 [
-                    
+                    {
+                        "componentContent": "ss02-animated-scene06-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -509,7 +629,18 @@
                 ],
                 "pageVideo":
                 [
-                    
+                    {
+                        "componentContent": "ss02-animated-scene07-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -536,7 +667,18 @@
                 ],
                 "pageVideo":
                 [
-                    
+                    {
+                        "componentContent": "ss02-animated-scene08-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -563,7 +705,18 @@
                 ],
                 "pageVideo":
                 [
-                    
+                    {
+                        "componentContent": "ss02-animated-scene09-v01",
+                        "componentCategory": "Video",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
                 ],
                 "pageSoundPath": ""
             },
@@ -595,22 +748,28 @@
                 "pageSoundPath": "",
             },
         ],
-        "templateCoverImagePath": "MenggosokGigiScene1",
+        "templateCoverImagePath": "ss02-animated-scene09-v01",
         "templateOptionCoverImagePath": [
-            "MenggosokGigiScene1",
-            "MenggosokGigiScene2",
-            "MenggosokGigiScene3",
-            "MenggosokGigiScene4",
-            "MenggosokGigiScene5",
-            "MenggosokGigiScene6",
+            "ss02-animated-scene01-v01",
+            "ss02-animated-scene02-v01",
+            "ss02-animated-scene03-v01",
+            "ss02-animated-scene04-v01",
+            "ss02-animated-scene05-v01",
+            "ss02-animated-scene06-v01",
+            "ss02-animated-scene07-v01",
+            "ss02-animated-scene08-v01",
+            "ss02-animated-scene09-v01",
         ],
         "templatePreviewImagePath": [
-            "MenggosokGigiScene1",
-            "MenggosokGigiScene2",
-            "MenggosokGigiScene3",
-            "MenggosokGigiScene4",
-            "MenggosokGigiScene5",
-            "MenggosokGigiScene6",
+            "ss02-animated-scene01-v01",
+            "ss02-animated-scene02-v01",
+            "ss02-animated-scene03-v01",
+            "ss02-animated-scene04-v01",
+            "ss02-animated-scene05-v01",
+            "ss02-animated-scene06-v01",
+            "ss02-animated-scene07-v01",
+            "ss02-animated-scene08-v01",
+            "ss02-animated-scene09-v01",
         ]
     }
 
