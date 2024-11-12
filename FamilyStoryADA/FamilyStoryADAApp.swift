@@ -11,6 +11,14 @@ import SwiftData
 @main
 struct FamilyStoryADAApp: App {
     
+    init() {
+            if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
+                UserDefaults.standard.set(true, forKey: "customizationTutorial")
+                UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+                UserDefaults.standard.synchronize()
+            }
+        }
+    
     var body: some Scene {
         WindowGroup {
 //            ExampleView()
