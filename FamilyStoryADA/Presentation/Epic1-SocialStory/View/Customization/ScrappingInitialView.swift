@@ -30,7 +30,7 @@ struct ScrappingInitialView: View {
                     .cornerRadius(20 * heightRatio)
                     .overlay(
                         VStack {
-                            HStack {
+                            HStack(alignment: .top) {
                                 ZStack {
                                     HStack {
                                         Button(action: {
@@ -61,59 +61,50 @@ struct ScrappingInitialView: View {
                             }
                             .zIndex(1)
                             if !networkMonitor.isConnected {
-                                VStack {
-                                    Spacer().frame(height: 124)
-                                    LostConnectionView()
-                                        .foregroundStyle(Color("FSBorderBlue7"))
-                                        .frame(width: 127.65, height: 127.65)
-                                    Spacer().frame(height: 32)
-                                    Text("Koneksi hilang")
-                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
-                                        .foregroundColor(Color("FSBorderBlue7"))
-                                    Spacer().frame(height: 8)
-                                    Text("Cek koneksi internet dan coba lagi.")
-                                        .font(Font.custom("Fredoka", size: 20))
-                                        .foregroundColor(Color("FSBorderBlue7"))
-                                }
-                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                                Spacer().frame(height: 124)
+                                LostConnectionView()
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                    .frame(width: 127.65, height: 127.65)
+                                Spacer().frame(height: 32)
+                                Text("Koneksi hilang")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Cek koneksi internet dan coba lagi.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer()
                             } else if crawlViewModel.isLoading {
-                                VStack {
-                                    Spacer().frame(height: 188)
-                                    LottieView(animationName: "load-state-icon", width: 68, height: 72)
-                                }
-                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                                LottieView(animationName: "load-state-icon", width: 68, height: 72)
+                                Spacer()
                             } else if crawlViewModel.processedImages.isEmpty {
-                                VStack {
-                                    Spacer().frame(height: 100)
-                                    ImageSearchView()
-                                        .frame(width: 152, height: 131.25)
-                                        .foregroundStyle(Color("FSBorderBlue7"))
-                                    Spacer().frame(height: 8)
-                                    Text("Masih kosong, nih")
-                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
-                                        .foregroundStyle(Color("FSBorderBlue7"))
-                                    Spacer().frame(height: 8)
-                                    Text("Masukkan kata kunci yang sesuai untuk\nmenampilkan hasil.")
-                                        .font(Font.custom("Fredoka", size: 20))
-                                        .foregroundStyle(Color("FSBorderBlue7"))
-                                }
-                                .multilineTextAlignment(.center)
+                                Spacer().frame(height: 100)
+                                ImageSearchView()
+                                    .frame(width: 152, height: 131.25)
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Masih kosong, nih")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Masukkan kata kunci yang sesuai untuk\nmenampilkan hasil.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer()
                             } else if crawlViewModel.isImageUnprocessable {
-                                VStack {
-                                    Spacer().frame(height: 100)
-                                    ImageNoResultView()
-                                        .frame(width: 152, height: 131.25)
-                                        .foregroundStyle(Color("FSBorderBlue7"))
-                                    Spacer().frame(height: 8)
-                                    Text("Ups, tidak ada hasil")
-                                        .font(Font.custom("Fredoka", size: 24).weight(.medium))
-                                        .foregroundColor(Color("FSBorderBlue7"))
-                                    Spacer().frame(height: 8)
-                                    Text("Coba masukkan kata kunci lain.")
-                                        .font(Font.custom("Fredoka", size: 20))
-                                        .foregroundColor(Color("FSBorderBlue7"))
-                                }
-                                .frame(width: 728 * widthRatio, height: 743 * heightRatio)
+                                Spacer().frame(height: 100)
+                                ImageNoResultView()
+                                    .frame(width: 152, height: 131.25)
+                                    .foregroundStyle(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Ups, tidak ada hasil")
+                                    .font(Font.custom("Fredoka", size: 24).weight(.medium))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer().frame(height: 8)
+                                Text("Coba masukkan kata kunci lain.")
+                                    .font(Font.custom("Fredoka", size: 20))
+                                    .foregroundColor(Color("FSBorderBlue7"))
+                                Spacer()
                             } else {
                                 LazyVGrid(
                                     columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
@@ -141,7 +132,6 @@ struct ScrappingInitialView: View {
                                                     RoundedRectangle(cornerRadius: 12 * heightRatio)
                                                         .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
                                                 )
-
                                                 if crawlViewModel.selectedImage == image {
                                                     ZStack {
                                                         Circle()
@@ -159,31 +149,29 @@ struct ScrappingInitialView: View {
                                     }
                                 }
                                 .frame(width: 666 * widthRatio, height: 284 * heightRatio)
-                            }
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                if let selectedImage = crawlViewModel.selectedImage {
-                                    cameraViewModel.savedImage = selectedImage
-                                    cameraViewModel.isPhotoCaptured = true
-                                    crawlViewModel.deleteImages()
-                                    viewModel.isGotoScrapImage = false
-                                }
-                            }) {
-                                ZStack {
-                                    Rectangle()
-                                        .frame(width: 160, height: 60)
-                                        .foregroundStyle(Color("FSBlue9"))
-                                        .cornerRadius(40)
-                                        .overlay(
-                                            Text("Pilih")
-                                                .foregroundColor(.white)
-                                        )
+                                Spacer()
+                                Button(action: {
+                                    if let selectedImage = crawlViewModel.selectedImage {
+                                        cameraViewModel.savedImage = selectedImage
+                                        cameraViewModel.isPhotoCaptured = true
+                                        crawlViewModel.deleteImages()
+                                        viewModel.isGotoScrapImage = false
+                                    }
+                                }) {
+                                    ZStack {
+                                        Rectangle()
+                                            .frame(width: 160, height: 60)
+                                            .foregroundStyle(Color("FSBlue9"))
+                                            .cornerRadius(40)
+                                            .overlay(
+                                                Text("Pilih")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
                                 }
                             }
                         }
-                        .padding(24 * heightRatio)
+                            .padding(24 * heightRatio)
                     )
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
