@@ -17,18 +17,26 @@ struct PlayStoryNavigationView: View {
     let showAudioButton: Bool
 
     var body: some View {
-        HStack {
+        HStack(spacing: 346) {
             Button(action: {
                 onTapHomeButton()
             }, label: {
                 ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
             })
-            Spacer()
-            Text(title)
-                .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
-                .fontWeight(.bold)
-                .foregroundStyle(Color("FSBlack"))
-            Spacer()
+            ZStack {
+                RoundedRectangle(cornerRadius: 28)
+                    .foregroundStyle(Color("FSWhite"))
+                    .frame(height: 53)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 28)
+                            .stroke(Color("FSBlueBorder1"), lineWidth: 4)
+                    )
+                Text(title)
+                    .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color("FSBlack"))
+            }
+            .frame(height: 53)
             if showAudioButton {
                 Button(action: {
                     onTapAudioButton()
