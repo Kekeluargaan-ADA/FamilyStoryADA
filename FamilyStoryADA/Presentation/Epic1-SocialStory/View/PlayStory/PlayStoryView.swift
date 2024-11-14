@@ -110,7 +110,6 @@ struct PlayStoryView: View {
                                     textToSpeechHelper.speakIndonesian(text)
                                 }
                             }, showAudioButton: true)
-                            //ga ngikutin designer
                             .padding(.top, 38 * heightRatio)
                             .padding(.horizontal, 46 * widthRatio)
                             Spacer()
