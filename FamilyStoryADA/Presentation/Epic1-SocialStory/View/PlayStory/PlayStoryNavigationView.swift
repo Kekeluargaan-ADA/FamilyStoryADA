@@ -43,6 +43,8 @@ struct PlayStoryNavigationView: View {
                 }, label: {
                     ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
                 })
+            } else {
+                Spacer()
             }
         }
     }
