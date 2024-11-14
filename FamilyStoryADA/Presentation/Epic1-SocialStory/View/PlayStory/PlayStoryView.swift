@@ -109,7 +109,9 @@ struct PlayStoryView: View {
                                 if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
                                     textToSpeechHelper.speakIndonesian(text)
                                 }
-                            }, showAudioButton: true)
+                            }, showAudioButton: true,
+                                                    titleOverlayReversed: false
+                            )
                             .padding(.top, 38 * heightRatio)
                             .padding(.horizontal, 46 * widthRatio)
                             Spacer()

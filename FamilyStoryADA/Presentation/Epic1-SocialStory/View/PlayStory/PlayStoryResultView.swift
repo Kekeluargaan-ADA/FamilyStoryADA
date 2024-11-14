@@ -27,7 +27,8 @@ struct PlayStoryResultView: View {
                 VStack {
                     PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                         playStoryViewModel.isStoryCompleted = true
-                    }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(playStoryViewModel.story.isStoryGameable ? "Selesai! Apakah kamu ingin bermain susun kartu sekarang?" : "Selesai! Kamu sudah menyelesaikan cerita \(playStoryViewModel.story.storyName)!")}, showAudioButton: true)
+                    }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(playStoryViewModel.story.isStoryGameable ? "Selesai! Apakah kamu ingin bermain susun kartu sekarang?" : "Selesai! Kamu sudah menyelesaikan cerita \(playStoryViewModel.story.storyName)!")}, showAudioButton: true,
+                                            titleOverlayReversed: false)
                     .padding(.top, 38 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
                     Spacer()
