@@ -19,7 +19,7 @@ struct CustomizedBackButton: View {
                     .resizable()
                     .frame(width: 45, height: 43)
                     .foregroundStyle(Color("FSBlack"))
-                Text("My Story")
+                Text("Ceritaku")
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
                     .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))

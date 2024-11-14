@@ -153,20 +153,20 @@ struct CustomizationContentView: View {
                                 cameraViewModel.isPhotoCaptured = false
                                 cameraViewModel.navigateToCamera = true
                             }) {
-                                Label("Take Photo", systemImage: "camera")
+                                Label("Ambil Foto", systemImage: "camera")
                             }
                             
                             Button(action: {
                                 cameraViewModel.isPhotoCaptured = false
                                 cameraViewModel.showingImagePicker = true
                             }) {
-                                Label("Choose Photo", systemImage: "photo")
+                                Label("Pilih Foto", systemImage: "photo")
                             }
                             
                             Button(action: {
                                 viewModel.isGotoScrapImage = true
                             }) {
-                                Label("Generate Photo", systemImage: "photo.on.rectangle.angled")
+                                Label("Cari Foto", systemImage: "photo.on.rectangle.angled")
                             }
                         } label: {
                             Image(systemName: "ellipsis")
@@ -246,7 +246,7 @@ struct CustomizationContentView: View {
                         )
                         .overlay(alignment: .topLeading) {
                             HStack(spacing: 4) {
-                                Text("\(wordCount)/15 words")
+                                Text("\(wordCount)/15 kata")
                                     .font(Font.custom("Fredoka", size: 16))
                                     .foregroundColor(isLimitReached ? Color("FSPrimaryOrange5") : Color("FSGrey"))
                                     .animation(.easeInOut(duration: 0.2), value: isLimitReached)

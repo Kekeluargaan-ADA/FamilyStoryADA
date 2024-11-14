@@ -33,7 +33,7 @@ struct TemplateCardView: View {
                             )
                             .foregroundColor(Color("FSBlack"))
                         Spacer()
-                        Text("3 mins")
+                        Text("3 m")
                             .font(Font.custom("Fredoka", size: 14))
                             .foregroundColor(Color("FSGrey"))
                     }

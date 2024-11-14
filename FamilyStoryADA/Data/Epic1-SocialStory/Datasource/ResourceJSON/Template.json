@@ -2,8 +2,8 @@
     {
         "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
         "templateName": "Cara Menyikat Gigi",
-        "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
-        "templateCategory": "Hygiene",
+        "templateDescription": "Template ini menceritakan petualangan seru Bima dalam belajar menggosok gigi bersama anak Anda. Bima akan menunjukkan langkah-langkah menggosok gigi yang benar, menjadikannya pengalaman yang menyenangkan dan edukatif untuk mengajarkan kebiasaan sehat kepada anak secara interaktif.",
+        "templateCategory": "Kebersihan",
         "isTemplateGameable": true,
         "templatePage": [
             {
@@ -351,7 +351,7 @@
         "templateId": "97b175f0-453b-467f-90b7-7557b3ec9bc1",
         "templateName": "Cara Buang Air Kecil",
         "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
-        "templateCategory": "Hygiene",
+        "templateCategory": "Toileting",
         "isTemplateGameable": true,
         "templatePage": [
             {

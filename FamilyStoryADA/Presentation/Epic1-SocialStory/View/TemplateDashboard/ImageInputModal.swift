@@ -104,7 +104,7 @@ struct ImageInputModal: View {
                         HStack {
                             if templateViewModel.isEditingTextField {
                                 // Show TextField for editing name
-                                TextField("Enter name", text: $templateViewModel.childName)
+                                TextField("Masukkan nama", text: $templateViewModel.childName)
                                     .background(Color("FSWhite"))
                                     .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                     .fontWeight(.semibold)
@@ -114,7 +114,7 @@ struct ImageInputModal: View {
                                 
                             } else {
                                 if templateViewModel.childName.isEmpty {
-                                    Text("Enter name")
+                                    Text("Masukkan nama")
                                         .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                                         .fontWeight(.semibold)
                                         .foregroundStyle(Color(.fsBlack))
@@ -242,14 +242,14 @@ struct ChangePictureButton: View {
                     viewModel.isPhotoCaptured = false
                     viewModel.showingImagePicker = true
                 }) {
-                    Label("Choose Photo", systemImage: "photo")
+                    Label("Pilih foto", systemImage: "photo")
                 }
                 
                 Button(action: {
                     viewModel.isPhotoCaptured = false
                     viewModel.navigateToCamera = true
                 }) {
-                    Label("Take Photo", systemImage: "camera")
+                    Label("Ambil foto", systemImage: "camera")
                 }
             } label: {
                 Text("Ubah foto")

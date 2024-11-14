@@ -28,7 +28,7 @@ struct NewStoryCardView: View {
                                 .foregroundColor(Color("FSBlue9"))
                         )
                     
-                    Text("Create story")
+                    Text("Buat Cerita")
                         .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                         .fontWeight(.medium)
                         .foregroundColor(Color("FSBlue9"))

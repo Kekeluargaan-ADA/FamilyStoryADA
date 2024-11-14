@@ -26,7 +26,7 @@ struct ParaphraseModal: View {
                         Image(systemName: "sparkles")
                             .font(Font.system(size: 32))
                             .foregroundColor(Color.purple)
-                        Text("Parafrase")
+                        Text("Rekomendasi kalimat")
                             .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
                             .fontWeight(.semibold)
                             .foregroundStyle(Color("FSBlack"))
@@ -66,7 +66,7 @@ struct ParaphraseModal: View {
                                 Image(systemName: "arrow.clockwise")
                                     .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                                     .fontWeight(.medium)
-                                Text("Rephrase")
+                                Text("Refresh")
                                     .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
                                     .fontWeight(.medium)
                             }

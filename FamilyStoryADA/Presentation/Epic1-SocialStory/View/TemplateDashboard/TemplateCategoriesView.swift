@@ -29,7 +29,7 @@ struct TemplateCategoriesView: View {
                     heightRatio: heightRatio,
                     widthRatio: widthRatio,
                     buttonImage: "square.grid.2x2",
-                    text: "All",
+                    text: "Semua",
                     isSelected: selectedCategory == nil
                 ) {
                     selectedCategory = nil
@@ -39,41 +39,41 @@ struct TemplateCategoriesView: View {
                     heightRatio: heightRatio,
                     widthRatio: widthRatio,
                     buttonImage: "figure.walk",
-                    text: "Ambulating",
-                    isSelected: selectedCategory == "Ambulating" //
+                    text: "Bergerak",
+                    isSelected: selectedCategory == "Bergerak" //
                 ) {
-                    selectedCategory = "Ambulating"
-                    onCategorySelected("Ambulating")
+                    selectedCategory = "Bergerak"
+                    onCategorySelected("Bergerak")
                 }
                 CategoryCircleView(
                     heightRatio: heightRatio,
                     widthRatio: widthRatio,
                     buttonImage: "shower",
-                    text: "Hygiene",
-                    isSelected: selectedCategory == "Hygiene"
+                    text: "Kebersihan",
+                    isSelected: selectedCategory == "Kebersihan"
                 ) {
-                    selectedCategory = "Hygiene"
-                    onCategorySelected("Hygiene")
+                    selectedCategory = "Kebersihan"
+                    onCategorySelected("Kebersihan")
                 }
                 CategoryCircleView(
                     heightRatio: heightRatio,
                     widthRatio: widthRatio,
                     buttonImage: "fork.knife",
-                    text: "Feeding",
-                    isSelected: selectedCategory == "Feeding"
+                    text: "Makan",
+                    isSelected: selectedCategory == "Makan"
                 ) {
-                    selectedCategory = "Feeding"
-                    onCategorySelected("Feeding")
+                    selectedCategory = "Makan"
+                    onCategorySelected("Makan")
                 }
                 CategoryCircleView(
                     heightRatio: heightRatio,
                     widthRatio: widthRatio,
                     buttonImage: "tshirt",
-                    text: "Dressing",
-                    isSelected: selectedCategory == "Dressing"
+                    text: "Berpakaian",
+                    isSelected: selectedCategory == "Berpakaian"
                 ) {
-                    selectedCategory = "Dressing"
-                    onCategorySelected("Dressing")
+                    selectedCategory = "Berpakaian"
+                    onCategorySelected("Berpakaian")
                 }
                 CategoryCircleView(
                     heightRatio: heightRatio,
