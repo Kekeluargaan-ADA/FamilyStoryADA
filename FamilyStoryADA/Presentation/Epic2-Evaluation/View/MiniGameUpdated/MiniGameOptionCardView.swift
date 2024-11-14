@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MiniGameOptionCardView: View {
-    @State var image: UIImage?
+    @Binding var image: UIImage?
     var isOption: Bool
     
     var body: some View {
@@ -22,6 +22,7 @@ struct MiniGameOptionCardView: View {
                         .clipShape(
                             RoundedRectangle(cornerRadius: 16)
                         )
+                    
                 }else {
                     RoundedRectangle(cornerRadius: 16)
                         .frame(width: 340, height: 191)
@@ -44,7 +45,7 @@ struct MiniGameOptionCardView: View {
 #Preview {
     ZStack {
         Color(.red)
-        MiniGameOptionCardView(image: UIImage(imageLiteralResourceName: "ss01-animated-scene01"), isOption: true)
+        MiniGameOptionCardView(image: .constant(UIImage(imageLiteralResourceName: "ss01-animated-scene01")), isOption: true)
         
     }
 }

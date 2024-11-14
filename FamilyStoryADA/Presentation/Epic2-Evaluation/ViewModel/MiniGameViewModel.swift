@@ -27,6 +27,7 @@ class MiniGameViewModel: Imageable, ObservableObject {
     }
     
     public func displayImage(fileName: String) -> UIImage? {
+        print("\(fileName)")
         var image = UIImage()
         guard fileName != "" else { return nil }
         if let imageAppStorage = loadImageFromDiskWith(fileName: fileName) {
@@ -39,9 +40,11 @@ class MiniGameViewModel: Imageable, ObservableObject {
     }
     
     public func resetGame() {
+        self.correctAnswer = DraggablePage.fetchDraggedPage(story: story)
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story).shuffled()
         self.currentlyCheckedIndex = 0
         self.isAllCorrect = false
+        printID()
     }
     
     public func startTutorialTimer() {
@@ -59,5 +62,17 @@ class MiniGameViewModel: Imageable, ObservableObject {
     public func restartTutorialTimer() {
         self.isTutorialShown = false // Set tutorial to false on tap
         startTutorialTimer() // Restart the timer for another 10 seconds
+    }
+    
+    private func printID() {
+        print("Correct Answer")
+        for page in correctAnswer {
+            print("\(String(describing: page.id)): \(page.picturePath)")
+        }
+        print("Shuffled Answer")
+        for page in draggedPages {
+            print("\(String(describing: page.id)): \(page.picturePath)")
+        }
+        print("---------------------------------------------")
     }
 }
