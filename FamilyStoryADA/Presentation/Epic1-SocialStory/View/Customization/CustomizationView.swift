@@ -222,6 +222,7 @@ struct CustomizationView: View {
                                          storyLastRead: Date(),
                                          templateId: UUID(),
                                          templateCategory: "Hygiene",
+                                         isStoryGameable: true,
                                          pages: [
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Opening",

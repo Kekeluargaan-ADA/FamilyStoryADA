@@ -39,24 +39,31 @@ struct PlayStoryResultView: View {
                     .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
                     .padding(.bottom, 25 * heightRatio)
                 
-                Text("Apakah kamu ingin bermain susun kartu sekarang?")
-                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                    .fontWeight(.medium)
-                    .foregroundStyle(Color("FSBlack"))
-                
-                HStack (spacing: 20) {
-                    Button(action: {
-                        playStoryViewModel.isStoryCompleted = true
-                    }, label: {
-                        ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
-                    })
-                    Button(action: {
-                        
-                        isMiniQuizPresented = true
-                        textToSpeechHelper.stopSpeaking()
-                    }, label: {
-                        ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
-                    })
+                if playStoryViewModel.story.isStoryGameable {
+                    Text("Apakah kamu ingin bermain susun kartu sekarang?")
+                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color("FSBlack"))
+                    
+                    HStack (spacing: 20) {
+                        Button(action: {
+                            playStoryViewModel.isStoryCompleted = true
+                        }, label: {
+                            ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
+                        })
+                        Button(action: {
+                            
+                            isMiniQuizPresented = true
+                            textToSpeechHelper.stopSpeaking()
+                        }, label: {
+                            ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
+                        })
+                    }
+                } else {
+                    Text("Kamu sudah menyelesaikan cerita \(playStoryViewModel.story.storyName)!")
+                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                        .fontWeight(.medium)
+                        .foregroundStyle(Color("FSBlack"))
                 }
             }
         }

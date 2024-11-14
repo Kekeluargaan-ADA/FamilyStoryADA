@@ -52,6 +52,7 @@ class StoryViewModel: ObservableObject {
                                           storyLastRead: Date(),
                                           templateId: UUID(),
                                           templateCategory: "",
+                                          isStoryGameable: false,
                                           pages: []
                                          )
         )
@@ -79,6 +80,7 @@ class StoryViewModel: ObservableObject {
                                           storyLastRead: Date(),
                                           templateId: UUID(),
                                           templateCategory: "",
+                                          isStoryGameable: false,
                                           pages: []
                                          ), at: 0)
             objectWillChange.send() // Notify observers

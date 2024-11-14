@@ -63,19 +63,21 @@ struct CustomizationHeaderView: View {
                         )
                 })
                 
-                Button(action: {
-                    isMiniQuizPresented = true
-                }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
-                        .highlight(
-                            order: 8,
-                            title: "Mainkan Mini-Quiz",
-                            description: "Tes pemahaman anak anda dengan mini-quiz dari cerita yang dibuat.",
-                            cornerRadius: 40,
-                            style: .circular,
-                            position: .bottomLeading
-                        )
-                })
+                if story.isStoryGameable {
+                    Button(action: {
+                        isMiniQuizPresented = true
+                    }, label: {
+                        ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
+                            .highlight(
+                                order: 8,
+                                title: "Mainkan Mini-Quiz",
+                                description: "Tes pemahaman anak anda dengan mini-quiz dari cerita yang dibuat.",
+                                cornerRadius: 40,
+                                style: .circular,
+                                position: .bottomLeading
+                            )
+                    })
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ class StoryEntity: IEntityAble, Identifiable {
     var storyLastRead: Date
     var templateId: UUID
     var templateCategory: String
+    var isStoryGameable: Bool
     var pages: [PageEntity]
     
     var storyLength: Double {
@@ -29,13 +30,14 @@ class StoryEntity: IEntityAble, Identifiable {
         return length < 1.0 ? 1 : length
     }
     
-    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [PageEntity]) {
+    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, isStoryGameable: Bool, pages: [PageEntity]) {
         self.storyId = storyId
         self.storyName = storyName
         self.storyCoverImagePath = storyCoverImagePath
         self.storyLastRead = storyLastRead
         self.templateId = templateId
         self.templateCategory = templateCategory
+        self.isStoryGameable = isStoryGameable
         self.pages = pages
     }
 }
