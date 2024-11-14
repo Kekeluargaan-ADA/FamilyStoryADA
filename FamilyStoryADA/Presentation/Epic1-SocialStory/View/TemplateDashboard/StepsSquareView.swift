@@ -57,6 +57,6 @@ struct StepsSquareView: View {
 
 
 #Preview {
-    StepsSquareView(heightRatio: 1, widthRatio: 1, order: 1, text: "Ambil sikat gigi dan makan makanan bergizi bersama sama dengan orang lain.", imageAssetName: "MenggosokGigiScene1")
+    StepsSquareView(heightRatio: 1, widthRatio: 1, order: 1, text: "Ambil sikat gigi dan makan makanan bergizi bersama sama dengan orang lain.", imageAssetName: "ss01-animated-scene01")
 }
 

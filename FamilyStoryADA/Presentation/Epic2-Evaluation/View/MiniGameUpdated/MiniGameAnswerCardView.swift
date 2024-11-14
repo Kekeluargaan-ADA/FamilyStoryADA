@@ -69,5 +69,5 @@ struct MiniGameAnswerCardView: View {
 }
 
 #Preview {
-    MiniGameAnswerCardView(order: 1, imagePath: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), answerCardStatus: .blank)
+    MiniGameAnswerCardView(order: 1, imagePath: UIImage(imageLiteralResourceName: "ss01-animated-scene01"), answerCardStatus: .blank)
 }
