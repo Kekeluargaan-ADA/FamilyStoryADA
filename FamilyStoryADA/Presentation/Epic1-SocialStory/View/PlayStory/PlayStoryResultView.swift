@@ -20,7 +20,7 @@ struct PlayStoryResultView: View {
             let widthRatio = ratios.widthRatio
             
             VStack {
-                PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                     playStoryViewModel.isStoryCompleted = true
                 }, onTapAudioButton: {textToSpeechHelper.speakIndonesian("Apakah kamu ingin bermain susun kartu sekarang?")}, showAudioButton: true)
                     .padding(.horizontal, 46 * widthRatio)

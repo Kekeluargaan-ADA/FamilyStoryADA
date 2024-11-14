@@ -58,7 +58,7 @@ struct ImageInputModal: View {
                                     templateViewModel.chosenImage = nil
                                     templateViewModel.isImageInputModalPresented.toggle()
                                 }) {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
+                                    ButtonCircle(widthRatio: 1.0, heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
                                 }
                                 Spacer()
                             }

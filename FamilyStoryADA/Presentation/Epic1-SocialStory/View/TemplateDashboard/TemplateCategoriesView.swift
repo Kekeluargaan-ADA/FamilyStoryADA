@@ -20,7 +20,7 @@ struct TemplateCategoriesView: View {
                 Button(action: {
                     viewModel.isTemplateClosed = true
                 }, label: {
-                    ButtonCircle(heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
+                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                 })
                 Spacer()
             }

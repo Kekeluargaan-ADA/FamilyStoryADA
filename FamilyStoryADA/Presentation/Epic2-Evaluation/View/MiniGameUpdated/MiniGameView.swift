@@ -26,6 +26,7 @@ struct MiniGameView: View {
             ZStack {
                 VStack {
                     PlayStoryNavigationView(
+                        widthRatio: widthRatio, 
                         heightRatio: heightRatio,
                         title: viewModel.story.storyName,
                         buttonColor: .yellow,

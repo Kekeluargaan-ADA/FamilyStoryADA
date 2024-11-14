@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PlayStoryNavigationView: View {
+    let widthRatio: CGFloat
     let heightRatio: CGFloat
     let title: String
     let buttonColor: ButtonPreset
@@ -20,7 +21,7 @@ struct PlayStoryNavigationView: View {
             Button(action: {
                 onTapHomeButton()
             }, label: {
-                ButtonCircle(heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
+                ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
             })
             Spacer()
             Text(title)
@@ -32,7 +33,7 @@ struct PlayStoryNavigationView: View {
                 Button(action: {
                     onTapAudioButton()
                 }, label: {
-                    ButtonCircle(heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
+                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
                 })
             }
         }
@@ -41,6 +42,7 @@ struct PlayStoryNavigationView: View {
 
 #Preview {
     PlayStoryNavigationView(
+        widthRatio: 1.0,
         heightRatio: 1,
         title: "Title",
         buttonColor: .blue,

@@ -31,7 +31,7 @@ struct UploadPhotoModalView: View {
                                         Button(action: {
                                             viewModel.isMediaOverlayOpened = false
                                         }, label: {
-                                            ButtonCircle(heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
+                                            ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
                                         })
                                         Spacer()
                                     }

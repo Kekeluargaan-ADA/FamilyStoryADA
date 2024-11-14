@@ -28,7 +28,7 @@ struct PlayStoryView: View {
                 let widthRatio = ratios.widthRatio
                 
                 VStack {
-                    PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                    PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
                         playStoryViewModel.isStoryCompleted = true
                     }, onTapAudioButton: {
                         //TODO: Read aloud voice synthensizer
@@ -111,7 +111,7 @@ struct PlayStoryView: View {
                                     playStoryViewModel.continueToPreviousPage()
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .yellow)
                                 })
                                 .padding(.leading, -32 * heightRatio)
                             }
@@ -123,7 +123,7 @@ struct PlayStoryView: View {
                                     playStoryViewModel.continueToNextPage()
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
                                 
                                 .padding(.trailing, -32 * heightRatio)
@@ -134,7 +134,7 @@ struct PlayStoryView: View {
                                     playStoryIsActive = true
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
                                         .padding(.trailing, -32 * heightRatio)
                                 })
                                 
