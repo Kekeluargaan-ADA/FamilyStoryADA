@@ -13,8 +13,7 @@ struct MiniQuizModalView: View {
     @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack {
-            // TODO: Put this into db
-            Image("MiniQuizResultMenggosokGigi")
+            Image("result-quiz-v01")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 541, height: 304)

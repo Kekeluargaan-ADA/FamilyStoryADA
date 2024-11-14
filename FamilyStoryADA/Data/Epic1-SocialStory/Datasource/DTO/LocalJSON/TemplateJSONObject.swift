@@ -17,4 +17,5 @@ struct TemplateJSONObject: Codable, IJSONAble {
     let templateCoverImagePath: String
     let templateOptionCoverImagePath: [String]
     let templatePreviewImagePath: [String]
+    let templateResultImagePath: String
 }

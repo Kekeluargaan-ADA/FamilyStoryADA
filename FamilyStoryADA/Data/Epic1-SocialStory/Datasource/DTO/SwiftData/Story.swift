@@ -18,8 +18,9 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
     var templateCategory: String
     var isStoryGameable: Bool
     var pages: [UUID]
+    var storyResultImagePath: String
     
-    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, isStoryGameable: Bool, pages: [UUID]) {
+    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, isStoryGameable: Bool, pages: [UUID], storyResultImagePath: String) {
         self.storyId = storyId
         self.storyName = storyName
         self.storyCoverImagePath = storyCoverImagePath
@@ -28,6 +29,7 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
         self.templateCategory = templateCategory
         self.isStoryGameable = isStoryGameable
         self.pages = pages
+        self.storyResultImagePath = storyResultImagePath
     }
     
     //    init (template: TemplateJSONObject) {
@@ -69,7 +71,8 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
                               templateCategory: jsonTemplate.templateCategory,
                               isStoryGameable: jsonTemplate.isTemplateGameable,
                               pages: convertToUUIDArray(templatePages: jsonTemplate.templatePage
-                                                       )
+                                                       ), 
+                              storyResultImagePath: jsonTemplate.templateResultImagePath
         )
     }
     
@@ -89,7 +92,8 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
                               templateId: entity.templateId,
                               templateCategory: entity.templateCategory,
                               isStoryGameable: entity.isStoryGameable,
-                              pages: convertToUUIDArray(pageEntities: entity.pages)
+                              pages: convertToUUIDArray(pageEntities: entity.pages),
+                              storyResultImagePath: entity.storyResultImagePath
         )
     }
     
@@ -115,7 +119,8 @@ public class StorySwiftData: Identifiable, ISwiftDataAble {
                            templateId: self.templateId,
                            templateCategory: self.templateCategory,
                            isStoryGameable: self.isStoryGameable,
-                           pages: convertToEntitiesArray(pageIds: self.pages)
+                           pages: convertToEntitiesArray(pageIds: self.pages),
+                           storyResultImagePath: self.storyResultImagePath
         )
     }
 }

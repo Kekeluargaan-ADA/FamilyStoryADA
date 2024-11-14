@@ -33,7 +33,7 @@ struct PlayStoryResultView: View {
                     .foregroundStyle(Color("FSBlack"))
                     .padding(.bottom, 20 * heightRatio)
                 
-                Image("FinishStoryMenggosokGigi")
+                Image(playStoryViewModel.story.storyResultImagePath)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
