@@ -37,7 +37,7 @@ struct ScrappingInitialView: View {
                                             crawlViewModel.deleteImages()
                                             viewModel.isGotoScrapImage = false
                                         }) {
-                                            ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .blue)
+                                            ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .blue)
                                         }
                                         Spacer()
                                     }
@@ -56,7 +56,7 @@ struct ScrappingInitialView: View {
                                     crawlViewModel.deleteImages()
                                     crawlViewModel.crawlImages()
                                 }, label: {
-                                    ButtonCircle(heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                                 })
                             }
                             .zIndex(1)

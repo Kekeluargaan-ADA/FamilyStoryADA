@@ -18,7 +18,7 @@ struct MiniGameOptionArrayView: View {
     
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHGrid(rows: flexibleRow, spacing: 12) {
+            LazyHGrid(rows: flexibleRow, spacing: 8) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
                     MiniGameOptionCardView(image: viewModel.displayImage(fileName: value.picturePath), isOption: value.id != nil)
 //                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))

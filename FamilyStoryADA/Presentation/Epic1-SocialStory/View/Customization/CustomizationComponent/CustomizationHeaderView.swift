@@ -25,6 +25,7 @@ struct CustomizationHeaderView: View {
                     })
                 } label: {
                     ButtonCircle(
+                        widthRatio: 1.0,
                         heightRatio: 1.0,
                         buttonImage: "trash",
                         buttonColor: isDeleteSelected ? .yellow : .blue
@@ -52,7 +53,7 @@ struct CustomizationHeaderView: View {
                 NavigationLink(destination: {
                     PlayStoryView(story: story, isMiniQuizPresented: $isMiniQuizPresented)
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
+                    ButtonCircle(widthRatio: 1.0, heightRatio: 1.0, buttonImage: "play", buttonColor: .blue)
                         .highlight(
                             order: 7,
                             title: "Mulai Cerita",
@@ -67,7 +68,7 @@ struct CustomizationHeaderView: View {
                     Button(action: {
                         isMiniQuizPresented = true
                     }, label: {
-                        ButtonCircle(heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
+                        ButtonCircle(widthRatio: 1.0, heightRatio: 1.0, buttonImage: "gamecontroller", buttonColor: .blue)
                             .highlight(
                                 order: 8,
                                 title: "Mainkan Mini-Quiz",

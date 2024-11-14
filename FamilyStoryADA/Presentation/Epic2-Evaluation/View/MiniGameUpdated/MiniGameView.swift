@@ -24,8 +24,13 @@ struct MiniGameView: View {
             let widthRatio = ratios.widthRatio
             
             ZStack {
+                
+                Image("background-mini-quiz-v01")
+                    .ignoresSafeArea()
+                
                 VStack {
                     PlayStoryNavigationView(
+                        widthRatio: widthRatio,
                         heightRatio: heightRatio,
                         title: viewModel.story.storyName,
                         buttonColor: .yellow,
@@ -35,12 +40,15 @@ struct MiniGameView: View {
                         onTapAudioButton: {
                             textToSpeechHelper.speakIndonesian(instruction)
                         },
-                        showAudioButton: false // Pass 'false' to hide the audio button
+                        showAudioButton: false, // Pass 'false' to hide the audio button
+                        titleOverlayReversed: true
                     )
-                    .padding(.top, 47 * heightRatio)
+                    .padding(.top, 38 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
-                    .padding(.bottom, 16 * heightRatio)
-                    
+                    Spacer()
+                }
+                
+                VStack {
                     Text(instruction)
                         .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                         .fontWeight(.semibold)
@@ -48,10 +56,17 @@ struct MiniGameView: View {
                         .padding(.bottom, 16 * heightRatio)
                     
                     MiniGameOptionArrayView()
-                        .padding(.leading, 80 * widthRatio)
+                        .padding(.leading, 12 * widthRatio)
                         .padding(.bottom, 27 * heightRatio)
                         .environmentObject(viewModel)
                     
+                    Spacer()
+                }
+                .frame(width: 1097 * widthRatio)
+                .padding(.top, 127 * heightRatio)
+                
+                VStack {
+                    Spacer()
                     ZStack {
                         RoundedRectangle(cornerRadius: 40)
                             .foregroundStyle(Color("FSWhite"))

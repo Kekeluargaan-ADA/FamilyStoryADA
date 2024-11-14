@@ -44,7 +44,7 @@ struct MiniGameOptionCardView: View {
 #Preview {
     ZStack {
         Color(.red)
-        MiniGameOptionCardView(image: UIImage(imageLiteralResourceName: "MenggosokGigiScene1"), isOption: true)
+        MiniGameOptionCardView(image: UIImage(imageLiteralResourceName: "ss01-animated-scene01"), isOption: true)
         
     }
 }

@@ -24,7 +24,7 @@ struct PagePreviewModalView: View {
                                         viewModel.isImageInputModalPresented = false
                                         //presentationMode.wrappedValue.dismiss()
                                     }) {
-                                        ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue) // Use fixed height for button
+                                        ButtonCircle(widthRatio: 1.0, heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue) // Use fixed height for button
                                     }
                                     Spacer()
                                 }

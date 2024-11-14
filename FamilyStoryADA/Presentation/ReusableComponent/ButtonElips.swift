@@ -59,14 +59,23 @@ struct ButtonElips: View {
     }
     var body: some View {
         ZStack {
-            buttonColor
-            Text(text)
-                .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
-                .fontWeight(.medium)
-                .foregroundStyle(textColor)
+            Color("FSWhite")
+            ZStack {
+                buttonColor
+                Text(text)
+                    .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                    .fontWeight(.medium)
+                    .foregroundStyle(textColor)
+            }
+            .frame(width: 190, height: 70)
+            .clipShape(
+                RoundedRectangle(cornerRadius: 40)
+            )
         }
-        .frame(width: 160, height: 60)
-        .clipShape(RoundedRectangle(cornerRadius: 40))
+        .frame(width: 200, height: 80)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 40)
+        )
     }
 }
 

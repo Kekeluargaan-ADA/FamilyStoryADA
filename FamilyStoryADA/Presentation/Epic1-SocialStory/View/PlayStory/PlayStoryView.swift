@@ -27,20 +27,14 @@ struct PlayStoryView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 
-                VStack {
-                    PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        playStoryViewModel.isStoryCompleted = true
-                    }, onTapAudioButton: {
-                        //TODO: Read aloud voice synthensizer
-                        if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
-                            textToSpeechHelper.speakIndonesian(text)
-                        }
-                    }, showAudioButton: true)
-                    .padding(.top, 47 * heightRatio)
-                    .padding(.horizontal, 46 * widthRatio)
-                    .padding(.bottom, 21 * heightRatio)
                     
                     ZStack {
+                        //background for opening and closing
+                        if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                            Image("checkered-background")
+                                .ignoresSafeArea()
+                        }
+                        
                         //Content
                         ZStack {
                             if let image = playStoryViewModel.selectedPage?.pagePicture.first {
@@ -48,8 +42,8 @@ struct PlayStoryView: View {
                                     if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
                                         Image(image.componentContent)
                                             .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 300 * widthRatio, height: 400 * heightRatio)
+                                            .scaledToFit()
+                                            .frame(width: 309 * widthRatio, height: 412 * heightRatio)
                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                     } else {
                                         Image(image.componentContent)
@@ -103,88 +97,112 @@ struct PlayStoryView: View {
                         }
                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                         
-                        //Button
-                        HStack {
-                            if playStoryViewModel.currentPageNumber > 0 {
-                                Button(action: {
-                                    textToSpeechHelper.stopSpeaking()
-                                    playStoryViewModel.continueToPreviousPage()
-                                    
-                                }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
-                                })
-                                .padding(.leading, -32 * heightRatio)
-                            }
-                            
+                        //background
+                        Image("background-play-story")
+//                            .resizable()
+                            .ignoresSafeArea()
+                        
+                        VStack {
+                            PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                                playStoryViewModel.isStoryCompleted = true
+                            }, onTapAudioButton: {
+                                if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
+                                    textToSpeechHelper.speakIndonesian(text)
+                                }
+                            }, showAudioButton: true,
+                                                    titleOverlayReversed: false
+                            )
+                            .padding(.top, 38 * heightRatio)
+                            .padding(.horizontal, 46 * widthRatio)
                             Spacer()
-                            if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
-                                Button(action: {
-                                    textToSpeechHelper.stopSpeaking()
-                                    playStoryViewModel.continueToNextPage()
-                                    
-                                }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
-                                })
+                        }
+                        
+                        VStack {
+                            //Button
+                            HStack {
+                                if playStoryViewModel.currentPageNumber > 0 {
+                                    Button(action: {
+                                        textToSpeechHelper.stopSpeaking()
+                                        playStoryViewModel.continueToPreviousPage()
+                                        
+                                    }, label: {
+                                        ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .yellow)
+                                    })
+                                    .padding(.leading, -32 * heightRatio)
+                                }
                                 
-                                .padding(.trailing, -32 * heightRatio)
+                                Spacer()
+                                if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
+                                    Button(action: {
+                                        textToSpeechHelper.stopSpeaking()
+                                        playStoryViewModel.continueToNextPage()
+                                        
+                                    }, label: {
+                                        ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
+                                    })
+                                    
+                                    .padding(.trailing, -32 * heightRatio)
+                                } else {
+                                    
+                                    Button(action: {
+                                        textToSpeechHelper.stopSpeaking()
+                                        playStoryIsActive = true
+                                        
+                                    }, label: {
+                                        ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
+                                            .padding(.trailing, -32 * heightRatio)
+                                    })
+                                    
+                                    NavigationLink(isActive: $playStoryIsActive,destination: {
+                                        PlayStoryResultView(isMiniQuizPresented: $isMiniQuizPresented)
+                                            .environmentObject(playStoryViewModel)
+                                    }, label: {})
+                                }
+                            }
+                                .padding(.horizontal, 88 * widthRatio)
+                                .padding(.bottom, 28 * heightRatio)
+                        }
+                        
+                        VStack {
+                            Spacer()
+                            //Text
+                            if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                                
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 80)
+                                        .foregroundStyle(Color("FSWhite"))
+                                        .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
+                                        .shadow(radius: 4, y: 4)
+                                    Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                        .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                        .lineLimit(nil)
+                                        .multilineTextAlignment(.center)
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color("FSBlack"))
+                                }
+                                .padding(.bottom, 32 * heightRatio)
+                                
                             } else {
                                 
-                                Button(action: {
-                                    textToSpeechHelper.stopSpeaking()
-                                    playStoryIsActive = true
-                                    
-                                }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
-                                        .padding(.trailing, -32 * heightRatio)
-                                })
-                                
-                                NavigationLink(isActive: $playStoryIsActive,destination: {
-                                    PlayStoryResultView(isMiniQuizPresented: $isMiniQuizPresented)
-                                        .environmentObject(playStoryViewModel)
-                                }, label: {})
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 40)
+                                        .foregroundStyle(Color("FSWhite"))
+                                        .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
+                                        .shadow(radius: 10, y: -4)
+                                    Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                        .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                        .lineLimit(nil)
+                                        .multilineTextAlignment(.center)
+                                        .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(Color("FSBlack"))
+                                }
                             }
                         }
-                        .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
+                        .ignoresSafeArea()
+//                        .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
                     }
-                    
-                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
-                        Spacer().frame(height: 19 * heightRatio)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 80)
-                                .foregroundStyle(Color("FSWhite"))
-                                .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
-                                .shadow(radius: 4, y: 4)
-                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
-                                .lineLimit(nil)
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color("FSBlack"))
-                        }
-                        Spacer().frame(height: 55 * heightRatio)
-                        
-                    } else {
-                        Spacer().frame(height: 24 * heightRatio)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(Color("FSWhite"))
-                                .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
-                                .shadow(radius: 10, y: -4)
-                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
-                                .lineLimit(nil)
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color("FSBlack"))
-                        }
-                    }
-                    
-                    
-                }
             }
             .background(Color("FSYellow1"))
         }
