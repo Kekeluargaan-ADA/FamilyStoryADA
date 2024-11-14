@@ -29,6 +29,12 @@ struct PlayStoryView: View {
                 
                     
                     ZStack {
+                        //background for opening and closing
+                        if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                            Image("checkered-background")
+                                .ignoresSafeArea()
+                        }
+                        
                         //Content
                         ZStack {
                             if let image = playStoryViewModel.selectedPage?.pagePicture.first {
