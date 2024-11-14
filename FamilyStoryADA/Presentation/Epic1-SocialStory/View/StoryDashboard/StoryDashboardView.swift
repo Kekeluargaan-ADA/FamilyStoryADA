@@ -37,7 +37,7 @@ struct StoryDashboardView: View {
                     .frame(height: 804)
                     VStack {
                         HStack {
-                            Text("My Story")
+                            Text("Ceritaku")
                                 .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))

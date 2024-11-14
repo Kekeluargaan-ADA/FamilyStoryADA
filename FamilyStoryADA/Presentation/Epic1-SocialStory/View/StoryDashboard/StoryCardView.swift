@@ -33,7 +33,7 @@ struct StoryCardView: View {
                             .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
                             .foregroundStyle(Color("FSBlack"))
                         Spacer()
-                        Text("\(storyLength, specifier: "%.1f") min")
+                        Text("\(storyLength, specifier: "%.1f") m")
                             .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
                             .foregroundStyle(Color("FSGrey"))
                     }
