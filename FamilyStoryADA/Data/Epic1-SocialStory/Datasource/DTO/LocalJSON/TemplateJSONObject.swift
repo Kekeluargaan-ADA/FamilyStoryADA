@@ -12,6 +12,7 @@ struct TemplateJSONObject: Codable, IJSONAble {
     let templateName: String
     let templateDescription: String
     let templateCategory: String
+    let isTemplateGameable: Bool
     let templatePage: [PageJSONObject]
     let templateCoverImagePath: String
     let templateOptionCoverImagePath: [String]

@@ -29,16 +29,16 @@ enum PositionStyle {
 
     static func calculateYOffset(for position: PositionStyle, highlightRect: CGRect, height: CGFloat) -> CGFloat {
         switch position {
-        case .topCenter:
+        case .topCenter, .topLeading, .topTrailing:
             return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) - 10
-        case .bottomCenter:
+        case .bottomCenter, .bottomLeading, .bottomTrailing:
             return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) + 10
         case .centerLeading, .centerTrailing:
             return highlightRect.midY - height / 2
-        case .topLeading, .topTrailing:
-            return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) + highlightRect.height
-        case .bottomLeading, .bottomTrailing:
-            return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) - highlightRect.height
+//        case .topLeading, .topTrailing:
+//            return highlightRect.midY - height / 2  - (highlightRect.height / 2 + 80) + highlightRect.height
+//        case .bottomLeading, .bottomTrailing:
+//            return highlightRect.midY - height / 2  + (highlightRect.height / 2 + 80) - highlightRect.height
         }
     }
 }

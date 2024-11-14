@@ -97,7 +97,7 @@ struct HighlightRoot: ViewModifier {
                                     .multilineTextAlignment(.leading)
                                 Spacer()
                                 if currentHighlightOrder >= highlightOrder.count - 1 {
-                                    Text("Done")
+                                    Text("Selesai")
                                         .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
                                         .fontWeight(.regular)
                                         .foregroundStyle(Color("FSBlue9"))
