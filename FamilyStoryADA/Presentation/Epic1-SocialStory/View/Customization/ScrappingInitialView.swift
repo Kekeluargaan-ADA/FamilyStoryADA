@@ -77,7 +77,7 @@ struct ScrappingInitialView: View {
                             } else if crawlViewModel.isLoading {
                                 LottieView(animationName: "load-state-icon", width: 68, height: 72)
                                 Spacer()
-                            } else if crawlViewModel.processedImages.isEmpty {
+                            } else if crawlViewModel.imageUrls.isEmpty { // Change processedImage to imageUrls
                                 Spacer().frame(height: 100)
                                 ImageSearchView()
                                     .frame(width: 152, height: 131.25)
