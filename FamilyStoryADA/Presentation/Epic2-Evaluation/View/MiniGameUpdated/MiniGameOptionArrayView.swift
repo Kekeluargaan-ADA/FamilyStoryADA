@@ -20,7 +20,7 @@ struct MiniGameOptionArrayView: View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: flexibleRow, spacing: 8) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
-                    MiniGameOptionCardView(image: viewModel.displayImage(fileName: value.picturePath), isOption: value.id != nil)
+                    MiniGameOptionCardView(image: .constant(viewModel.displayImage(fileName: value.picturePath)), isOption: value.id != nil)
 //                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))
 //                        .animation(wiggleStates[index] == true ? Animation.linear(duration: 0.5).repeatCount(2, autoreverses: true) : .default, value: wiggleStates[index])
                         .rotationEffect(.degrees(wiggleStates[index] == true ? 5 : 0))
@@ -48,6 +48,11 @@ struct MiniGameOptionArrayView: View {
                             }
                             viewModel.isTutorialShown = false
                             viewModel.restartTutorialTimer()
+                        }
+                        .onChange(of: viewModel.isAllCorrect) { _, value in
+                            if value {
+                                wiggleStates[index] = false
+                            }
                         }
                     //TODO: Fix left and right toggle
 //                        .onChange(of: wiggleDegree[index]) { value in

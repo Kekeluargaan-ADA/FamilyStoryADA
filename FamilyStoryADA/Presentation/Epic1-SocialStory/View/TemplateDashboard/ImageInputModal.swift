@@ -90,15 +90,46 @@ struct ImageInputModal: View {
                                 }
                         } else {
                             // Placeholder if no image is found
-                            Rectangle()
-                                .frame(width: 300, height: 400)
-                                .foregroundColor(.gray)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .overlay(alignment: .bottom) {
-                                    ChangePictureButton()
-                                        .environmentObject(viewModel)
-                                        .environmentObject(templateViewModel)
+//                            Rectangle()
+//                                .frame(width: 300, height: 400)
+//                                .foregroundColor(.gray)
+//                                .clipShape(RoundedRectangle(cornerRadius: 12))
+//                                .overlay(alignment: .bottom) {
+//                                    ChangePictureButton()
+//                                        .environmentObject(viewModel)
+//                                        .environmentObject(templateViewModel)
+//                                }
+                            Menu {
+                                Button(action: {
+                                    viewModel.isPhotoCaptured = false
+                                    viewModel.showingImagePicker = true
+                                }) {
+                                    Label("Pilih foto", systemImage: "photo")
                                 }
+                                
+                                Button(action: {
+                                    viewModel.isPhotoCaptured = false
+                                    viewModel.navigateToCamera = true
+                                }) {
+                                    Label("Ambil foto", systemImage: "camera")
+                                }
+                            } label: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
+                                        .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                        
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "photo")
+                                            .font(.system(size: 36))
+                                            .foregroundStyle(Color("FSBlue9"))
+                                        Text("Upload Photo")
+                                            .font(.system(size: 24, weight: .medium))
+                                            .foregroundStyle(Color("FSBlue9"))
+                                    }
+                                }
+                                .frame(width: 300, height: 400)
+                            }
                         }
                         
                         HStack {
@@ -202,8 +233,35 @@ struct ImageInputModal: View {
             .padding()
             
         }
+        .sheet(isPresented: $viewModel.showingImagePicker, onDismiss: {
+            if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
+                // Show crop view once an image is selected
+                viewModel.showCropView = true
+                viewModel.isPhotoCaptured = false
+            }
+        }) {
+            ImagePicker()
+                .environmentObject(viewModel)
+        }
         .navigationViewStyle(.stack)
         .environmentObject(viewModel)
+        
+        // NavigationLink for CameraView
+        NavigationLink(destination: CameraView.shared
+            .environmentObject(viewModel),
+                       isActive: $viewModel.navigateToCamera) {
+        }
+                       .onChange(of: viewModel.navigateToCamera) { value in
+                           if !value, viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
+                               // Show crop view once an image is selected
+                               templateViewModel.chosenImage = selectedImage
+                               viewModel.savedImage = selectedImage
+//                                                                      viewModel.showCropView = true
+                               //TODO: Fix crop view for this, for now lets say langsung foto
+                               viewModel.isPhotoCaptured = false
+                               
+                           }
+                       }
         
         NavigationLink (
             destination: CropImageView(croppingStyle: .portrait)
@@ -263,34 +321,10 @@ struct ChangePictureButton: View {
             }
             .padding(.bottom, 20)
             
-            // NavigationLink for CameraView
-            NavigationLink(destination: CameraView.shared
-                .environmentObject(viewModel),
-                           isActive: $viewModel.navigateToCamera) {
-            }
-                           .onChange(of: viewModel.navigateToCamera) { value in
-                               if !value, viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
-                                   // Show crop view once an image is selected
-                                   templateViewModel.chosenImage = selectedImage
-                                   viewModel.savedImage = selectedImage
-//                                                                      viewModel.showCropView = true
-                                   //TODO: Fix crop view for this, for now lets say langsung foto
-                                   viewModel.isPhotoCaptured = false
-                                   
-                               }
-                           }
+            
             
         }
-        .sheet(isPresented: $viewModel.showingImagePicker, onDismiss: {
-            if viewModel.isPhotoCaptured, let selectedImage = viewModel.savedImage {
-                // Show crop view once an image is selected
-                viewModel.showCropView = true
-                viewModel.isPhotoCaptured = false
-            }
-        }) {
-            ImagePicker()
-                .environmentObject(viewModel)
-        }
+        
         
     }
 }

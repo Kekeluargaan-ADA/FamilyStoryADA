@@ -41,6 +41,7 @@ struct StoryDashboardView: View {
                                 .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
+                                .padding(.leading, 32)
                             Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {

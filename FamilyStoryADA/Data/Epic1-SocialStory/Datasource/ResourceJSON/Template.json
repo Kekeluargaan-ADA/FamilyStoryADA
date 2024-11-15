@@ -2,7 +2,7 @@
     {
         "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
         "templateName": "Cara Menyikat Gigi",
-        "templateDescription": "Template ini menceritakan petualangan seru Bima dalam belajar menggosok gigi bersama anak Anda.",
+        "templateDescription": "Template ini menceritakan petualangan seru Ben dalam belajar menggosok gigi bersama anak Anda.",
         "templateCategory": "Kebersihan",
         "isTemplateGameable": true,
         "templatePage": [
@@ -38,7 +38,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Halo! Ini Bima.",
+                        "componentContent": "Halo! Ini Ben.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -76,7 +76,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengambil sikat gigi di kamar mandi.",
+                        "componentContent": "Ben mengambil sikat gigi di kamar mandi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -114,7 +114,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menuangkan sedikit pasta gigi pada sikat gigi.",
+                        "componentContent": "Ben menuangkan sedikit pasta gigi pada sikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -152,7 +152,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menggosok gigi ke atas dan bawah.",
+                        "componentContent": "Ben menggosok gigi ke atas dan bawah.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -190,7 +190,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menuangkan air dari keran ke gelas.",
+                        "componentContent": "Ben menuangkan air dari keran ke gelas.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -228,7 +228,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengkumur setelah menyikat gigi.",
+                        "componentContent": "Ben mengkumur setelah menyikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -266,7 +266,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengeluarkan air kumur dari mulut ke wastafel.",
+                        "componentContent": "Ben mengeluarkan air kumur dari mulut ke wastafel.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
