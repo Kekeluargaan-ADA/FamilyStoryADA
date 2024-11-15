@@ -18,7 +18,7 @@ struct CameraView: View {
     private var didCrop: ((CropView.CroppedRect) -> ())?
     private var didCancel: (() -> ())?
     
-    public static var shared = CameraView()
+    public static var shared = CameraView() // MARK: Turn off due to constant camera turning on
     
     var body: some View {
         NavigationView {
@@ -36,7 +36,7 @@ struct CameraView: View {
                         .accentColor(viewModel.isFlashOn ? .yellow : .white)
                         
                         ZStack {
-                            CameraPreview(session: viewModel.session) { tapPoint in
+                            CameraPreview(session: viewModel.session, position: viewModel.cameraManager.position) { tapPoint in
                                 isFocused = true
                                 focusLocation = tapPoint
                                 viewModel.setFocus(point: tapPoint)
@@ -72,15 +72,15 @@ struct CameraView: View {
                             //                            CroppedPhotosPicker(selection: $viewModel.capturedImage, isCapturedImage: $viewModel.isPhotoCaptured, photosPickerItem: $viewModel.photosPickerItem) {
                             //                                PhotoThumbnail(selectedImage: $viewModel.capturedImage)
                             //                            }
-                            NavigationLink(destination: {
-                                ImagePicker()
-                                    .environmentObject(viewModel)
-                            }, label: {
-                                PhotoThumbnail(selectedImage: $viewModel.savedImage)
-                            })
-                            .onAppear() {
-                                viewModel.savedImage = nil
-                            }
+//                            NavigationLink(destination: {
+//                                ImagePicker()
+//                                    .environmentObject(viewModel)
+//                            }, label: {
+//                                PhotoThumbnail(selectedImage: $viewModel.savedImage)
+//                            })
+//                            .onAppear() {
+//                                viewModel.savedImage = nil
+//                            }
                             Spacer()
                             CaptureButton {
                                 Task {
@@ -114,6 +114,9 @@ struct CameraView: View {
             }
             .onChange(of: viewModel.savedImage) { value in
                 guard value != nil && viewModel.isPhotoCaptured else { return }
+//                if viewModel.cameraManager.position == .front {
+//                    viewModel.cameraManager.position = .back
+//                }
                 viewModel.navigateToCamera = false
             }
             .navigationBarHidden(true)

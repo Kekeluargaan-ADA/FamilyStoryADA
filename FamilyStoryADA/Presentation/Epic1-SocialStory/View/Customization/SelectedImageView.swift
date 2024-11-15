@@ -53,7 +53,7 @@ struct SelectedImageView: View {
         let fileName = "\(UUID().uuidString).jpg" // Use UUID for a unique filename
         let fileURL = documentDirectory.appendingPathComponent(fileName)
 
-        print(fileName)
+//        print(fileName)
         do {
             try data.write(to: fileURL)
             print("Image saved successfully at \(fileURL)")
