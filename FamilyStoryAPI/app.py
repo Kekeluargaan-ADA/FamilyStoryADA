@@ -44,6 +44,8 @@ def query(payload):
     return response.content
 
 async def generateImage(keyword: str,user_id):
+    user_dir = os.path.join('images', user_id if user_id else str(uuid.uuid4()))
+    os.makedirs(user_dir, exist_ok=True)
     translator = Translator()
 
     # Text to translate (Indonesian to English)
@@ -125,8 +127,8 @@ async def crawl_images(
     all_urls.clear()
     
     tasks = [
-    asyncio.create_task(async_download_images(keyword, max_num, user_id)),
-    asyncio.create_task(generateImage(keyword=keyword, user_id=user_id))
+    asyncio.create_task(generateImage(keyword=keyword, user_id=user_id)),
+    asyncio.create_task(async_download_images(keyword, max_num, user_id))   
 ]
     results = await asyncio.gather(*tasks)
     folder_path = os.path.join("images", user_id)
