@@ -56,14 +56,14 @@ struct PlayStoryResultView: View {
                             Button(action: {
                                 playStoryViewModel.isStoryCompleted = true
                             }, label: {
-                                ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
+                                ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             Button(action: {
                                 
                                 isMiniQuizPresented = true
                                 textToSpeechHelper.stopSpeaking()
                             }, label: {
-                                ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
+                                ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                         }
                     } else {

@@ -46,7 +46,7 @@ struct StoryDashboardView: View {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                     viewModel.searchText = keywords
                                     viewModel.searchStories()
-                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", widthRatio: widthRatio, heightRatio: heightRatio)
                                 ProfileButtonView(imageName: "", widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }

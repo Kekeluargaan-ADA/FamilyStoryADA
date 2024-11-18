@@ -50,7 +50,7 @@ struct ScrappingInitialView: View {
                             SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
                                 crawlViewModel.deleteImages()
                                 crawlViewModel.crawlImages()
-                            }, searchPlaceholder: "Cari")
+                            }, searchPlaceholder: "Cari", widthRatio: widthRatio, heightRatio: heightRatio)
                             Button(action: {
                                 crawlViewModel.deleteImages()
                                 crawlViewModel.crawlImages()

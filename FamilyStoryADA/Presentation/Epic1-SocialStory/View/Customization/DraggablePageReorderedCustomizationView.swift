@@ -111,6 +111,7 @@ struct DraggablePageReorderedCustomizationView: View {
         .padding(.top, 0 * heightRatio) // Removes top padding
         .padding(.horizontal, 20 * widthRatio)
         .padding(.leading, 5  * widthRatio)
+        .padding(.bottom, 108 * heightRatio)
         .scrollIndicators(.hidden)
     }
 }

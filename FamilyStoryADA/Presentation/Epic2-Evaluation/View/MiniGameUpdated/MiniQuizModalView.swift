@@ -36,13 +36,13 @@ struct MiniQuizModalView: View {
                     viewModel.isDismissed = true
                     dismiss()
                 }, label: {
-                    ButtonElips(text: "Tidak", buttonPreset: .yellow, buttonStyle: .secondary)
+                    ButtonElips(text: "Tidak", buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                 })
                 Button(action: {
 //                    viewModel.resetQuiz()
                     viewModel.resetGame()
                 }, label: {
-                    ButtonElips(text: "Main Lagi", buttonPreset: .yellow, buttonStyle: .primary)
+                    ButtonElips(text: "Main Lagi", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                 })
             }
         }

@@ -80,7 +80,7 @@ struct MiniGameView: View {
                     }
                 }
                 
-                HandTapOverlay()
+                HandTapOverlay(widthRatio: widthRatio, heightRatio: heightRatio)
                     .opacity(viewModel.isTutorialShown ? 1 : 0)
                     .transition(.opacity)
                     .onTapGesture {
