@@ -52,7 +52,7 @@ struct PlayStoryResultView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(Color("FSBlack"))
                         
-                        HStack (spacing: 20) {
+                        HStack (spacing: 20 * widthRatio) {
                             Button(action: {
                                 playStoryViewModel.isStoryCompleted = true
                             }, label: {
@@ -77,12 +77,12 @@ struct PlayStoryResultView: View {
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
-        .onChange(of: playStoryViewModel.isStoryCompleted) { value in
+        .onChange(of: playStoryViewModel.isStoryCompleted) { _, value in
             if value {
                 dismiss()
             }
         }
-        .onChange(of: isMiniQuizPresented) { value in
+        .onChange(of: isMiniQuizPresented) { _, value in
             if !value {
                 playStoryViewModel.isStoryCompleted = true
             }

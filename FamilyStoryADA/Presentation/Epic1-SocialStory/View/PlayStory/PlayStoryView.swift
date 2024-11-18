@@ -44,20 +44,20 @@ struct PlayStoryView: View {
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 309 * widthRatio, height: 412 * heightRatio)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     } else {
                                         Image(image.componentContent)
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     }
                                 } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
                                     Image(uiImage: imageAppStorage)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                 }else {
                                     RoundedRectangle(cornerRadius: 12)
                                         .foregroundStyle(Color("FSWhite"))
@@ -67,7 +67,7 @@ struct PlayStoryView: View {
                                 
                                 CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     .onAppear() {
                                         playStoryViewModel.videoPlayer = AVPlayer(url: url)
                                         playStoryViewModel.videoPlayer.play()
@@ -90,7 +90,7 @@ struct PlayStoryView: View {
                                 
                                 
                             } else {
-                                RoundedRectangle(cornerRadius: 12)
+                                RoundedRectangle(cornerRadius: 12 * heightRatio)
                                     .foregroundStyle(Color("FSWhite"))
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
                             }
@@ -169,10 +169,10 @@ struct PlayStoryView: View {
                             if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
                                 
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 80)
+                                    RoundedRectangle(cornerRadius: 80 * heightRatio)
                                         .foregroundStyle(Color("FSWhite"))
                                         .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
-                                        .shadow(radius: 4, y: 4)
+                                        .shadow(radius: 4, y: 4 * heightRatio)
                                     Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
                                         .frame(width: 700 * widthRatio, height: 160 * heightRatio)
                                         .lineLimit(nil)
@@ -186,10 +186,10 @@ struct PlayStoryView: View {
                             } else {
                                 
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 40)
+                                    RoundedRectangle(cornerRadius: 40 * heightRatio)
                                         .foregroundStyle(Color("FSWhite"))
                                         .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
-                                        .shadow(radius: 10, y: -4)
+                                        .shadow(radius: 10, y: -4 * heightRatio)
                                     Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
                                         .frame(width: 700 * widthRatio, height: 160 * heightRatio)
                                         .lineLimit(nil)
