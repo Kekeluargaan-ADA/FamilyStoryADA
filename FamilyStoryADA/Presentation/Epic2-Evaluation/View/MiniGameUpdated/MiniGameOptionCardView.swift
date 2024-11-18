@@ -10,6 +10,8 @@ import SwiftUI
 struct MiniGameOptionCardView: View {
     @Binding var image: UIImage?
     var isOption: Bool
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var body: some View {
         if isOption {
@@ -18,25 +20,25 @@ struct MiniGameOptionCardView: View {
                     Image(uiImage: displayedImage)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: 340, height: 191)
+                        .frame(width: 340 * widthRatio, height: 191 * heightRatio)
                         .clipShape(
-                            RoundedRectangle(cornerRadius: 16)
+                            RoundedRectangle(cornerRadius: 16 * heightRatio)
                         )
                     
                 }else {
-                    RoundedRectangle(cornerRadius: 16)
-                        .frame(width: 340, height: 191)
+                    RoundedRectangle(cornerRadius: 16 * heightRatio)
+                        .frame(width: 340 * widthRatio, height: 191 * heightRatio)
                         .foregroundStyle(Color("FSWhite"))
                 }
                 
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(style: StrokeStyle(lineWidth: 5))
-                    .frame(width: 340, height: 191)
+                RoundedRectangle(cornerRadius: 16 * heightRatio)
+                    .stroke(style: StrokeStyle(lineWidth: 5 * heightRatio))
+                    .frame(width: 340 * widthRatio, height: 191 * heightRatio)
                     .foregroundStyle(Color("FSWhite"))
             }
         } else {
-            RoundedRectangle(cornerRadius: 16)
-                .frame(width: 340, height: 191)
+            RoundedRectangle(cornerRadius: 16 * heightRatio)
+                .frame(width: 340 * widthRatio, height: 191 * heightRatio)
                 .foregroundStyle(.clear)
         }
     }
@@ -45,7 +47,7 @@ struct MiniGameOptionCardView: View {
 #Preview {
     ZStack {
         Color(.red)
-        MiniGameOptionCardView(image: .constant(UIImage(imageLiteralResourceName: "ss01-animated-scene01")), isOption: true)
+        MiniGameOptionCardView(image: .constant(UIImage(imageLiteralResourceName: "ss01-animated-scene01")), isOption: true, widthRatio: 1, heightRatio: 1)
         
     }
 }

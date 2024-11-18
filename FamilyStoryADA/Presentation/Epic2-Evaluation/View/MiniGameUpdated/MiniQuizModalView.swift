@@ -11,24 +11,27 @@ struct MiniQuizModalView: View {
 //    @EnvironmentObject var viewModel: MiniQuizViewModel
     @EnvironmentObject var viewModel: MiniGameViewModel
     @Environment(\.dismiss) var dismiss
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         VStack {
             Image("result-quiz-v01")
                 .resizable()
                 .scaledToFill()
-                .frame(width: 541, height: 304)
-                .padding(.bottom, 8)
+                .frame(width: 541 * widthRatio, height: 304 * heightRatio)
+                .padding(.bottom, 8 * heightRatio)
             Text("Kamu Keren!")
-                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                .font(Font.custom("Fredoka", size: 40 * heightRatio, relativeTo: .largeTitle))
                 .fontWeight(.semibold)
                 .foregroundStyle(Color("FSBlack"))
-                .padding(.bottom, 23)
+                .padding(.bottom, 23 * heightRatio)
             Text("Apakah kamu ingin bermain susun kartu lagi?")
-                .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
                 .fontWeight(.medium)
                 .foregroundStyle(Color("FSBlack"))
-                .padding(.bottom, 24)
-            HStack(spacing: 20) {
+                .padding(.bottom, 24 * heightRatio)
+            HStack(spacing: 20 * widthRatio) {
                 Button(action: {
                     viewModel.isDismissed = true
                     dismiss()
@@ -43,13 +46,13 @@ struct MiniQuizModalView: View {
                 })
             }
         }
-        .padding(.horizontal, 93)
-        .padding(.top, 24)
-        .padding(.bottom, 20)
+        .padding(.horizontal, 93 * widthRatio)
+        .padding(.top, 24 * heightRatio)
+        .padding(.bottom, 20 * heightRatio)
 //        .background(Color("FSYellow1"))
     }
 }
 
 #Preview {
-    MiniQuizModalView()
+    MiniQuizModalView(widthRatio: 1, heightRatio: 1)
 }
