@@ -116,7 +116,7 @@ struct CustomizationView: View {
                             CameraView.shared
                                 .environmentObject(cameraViewModel)
                         }, label: {})
-                        .onChange(of: cameraViewModel.navigateToCamera) { value in
+                        .onChange(of: cameraViewModel.navigateToCamera) { _, value in
                             if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                                 // Show crop view once an image is selected
                                 cameraViewModel.showCropView = true
@@ -130,7 +130,7 @@ struct CustomizationView: View {
                             isActive: $cameraViewModel.showCropView,
                             label: {}
                         )
-                        .onChange(of: cameraViewModel.savedImage) { value in
+                        .onChange(of: cameraViewModel.savedImage) { _, value in
                             
                             if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
                                 if currentPage.pagePicture.isEmpty {
@@ -146,7 +146,7 @@ struct CustomizationView: View {
                         }
                     }
                     .sheet(isPresented: $cameraViewModel.showingImagePicker, onDismiss: {
-                        if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                        if cameraViewModel.isPhotoCaptured, let _ = cameraViewModel.savedImage {
                             // Show crop view once an image is selected
                             cameraViewModel.showCropView = true
                         }
@@ -158,7 +158,7 @@ struct CustomizationView: View {
                     .ignoresSafeArea()
                     .background(Color("FSBlue6"))
                     .environmentObject(viewModel)
-                    .onChange(of: viewModel.selectedPage) { newSelectedPage in
+                    .onChange(of: viewModel.selectedPage) { _, newSelectedPage in
                         if let newPage = newSelectedPage {
                             currentText = newPage.pageText.first?.componentContent ?? ""
                         } else {
@@ -202,7 +202,7 @@ struct CustomizationView: View {
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
-        .onChange(of: viewModel.isGotoScrapImage) { value in
+        .onChange(of: viewModel.isGotoScrapImage) { _, value in
             if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                 cameraViewModel.showCropView = true
             }

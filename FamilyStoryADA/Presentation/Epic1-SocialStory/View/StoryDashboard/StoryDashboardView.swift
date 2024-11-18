@@ -12,11 +12,6 @@ struct StoryDashboardView: View {
     @State private var keywords: String = ""
     
     @StateObject private var viewModel: StoryViewModel = StoryViewModel()
-    private let flexibleColumn = [
-        GridItem(.fixed(354)),
-        GridItem(.fixed(354)),
-        GridItem(.fixed(354))
-    ]
     
     var body: some View {
         NavigationView {
@@ -67,7 +62,11 @@ struct StoryDashboardView: View {
                                 }
                                 .padding(.horizontal, 20 * widthRatio)
                                 ScrollView {
-                                    LazyVGrid(columns: flexibleColumn, spacing: 26 * heightRatio) {
+                                    LazyVGrid(columns: [
+                                        GridItem(.fixed(354 * widthRatio)),
+                                        GridItem(.fixed(354 * widthRatio)),
+                                        GridItem(.fixed(354 * widthRatio))
+                                    ], spacing: 26 * heightRatio) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
                                                 Button(action: {

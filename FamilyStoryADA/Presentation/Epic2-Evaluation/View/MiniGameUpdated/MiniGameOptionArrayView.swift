@@ -9,10 +9,6 @@ import SwiftUI
 
 struct MiniGameOptionArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
-    private let flexibleRow = [
-        GridItem(.fixed(191)),
-        GridItem(.fixed(191))
-    ]
     @State private var wiggleStates: [Int: Bool] = [:]
     //    @State private var wiggleDegree: [Int: Double] = [:]
     let widthRatio: CGFloat
@@ -20,7 +16,10 @@ struct MiniGameOptionArrayView: View {
     
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHGrid(rows: flexibleRow, spacing: 8 * widthRatio) {
+            LazyHGrid(rows: [
+                GridItem(.fixed(191 * heightRatio)),
+                GridItem(.fixed(191 * heightRatio))
+            ], spacing: 8 * widthRatio) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
                     MiniGameOptionCardView(image: .constant(viewModel.displayImage(fileName: value.picturePath)), isOption: value.id != nil, widthRatio: widthRatio, heightRatio: heightRatio)
 //                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))
