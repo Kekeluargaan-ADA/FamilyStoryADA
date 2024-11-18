@@ -15,20 +15,20 @@ struct BriefSquareView: View {
     var body: some View {
         if let template = viewModel.selectedTemplate {
             ZStack{
-                HStack(spacing: 20) {
+                HStack(spacing: 20 * widthRatio) {
                     Image(template.templateCoverImagePath)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 280, height: 172)
-                        .cornerRadius(12)
+                        .frame(width: 280 * widthRatio, height: 172 * heightRatio)
+                        .cornerRadius(12 * heightRatio)
                     VStack {
                         Text(template.templateDescription)
                             .font(
-                                Font.custom("Fredoka", size: 16)
+                                Font.custom("Fredoka", size: 16 * heightRatio)
                                     .weight(.medium)
                             )
                             .foregroundColor(.black)
-                            .frame(width: 228, height: 160 ,alignment: .trailing)
+                            .frame(width: 228 * widthRatio, height: 160 * heightRatio, alignment: .trailing)
                             .multilineTextAlignment(.leading)
                         
                         Button(action: {
@@ -36,13 +36,13 @@ struct BriefSquareView: View {
                         }) {
                             Text("Gunakan template")
                                 .font(
-                                    Font.custom("Fredoka", size: 20)
+                                    Font.custom("Fredoka", size: 20 * heightRatio)
                                         .weight(.medium)
                                 )
                                 .foregroundStyle(.white)
-                                .frame(width: 224,height: 40)
+                                .frame(width: 224 * widthRatio, height: 40 * heightRatio)
                                 .background((Color("FSBlue9")))
-                                .cornerRadius(20)
+                                .cornerRadius(20 * heightRatio)
                         }
                         
                         // Change logic, requested by designer
@@ -53,15 +53,15 @@ struct BriefSquareView: View {
 //                            
 //                        })
                     }
-                    .frame(width: 224,height: 160,alignment: .bottom)
+                    .frame(width: 224 * widthRatio, height: 160 * heightRatio, alignment: .bottom)
                 }
-                .frame(width: 580,height: 228)
+                .frame(width: 580 * widthRatio, height: 228 * heightRatio)
                 .background(.white)
-                .cornerRadius(20)
+                .cornerRadius(20 * heightRatio)
                 
                 if viewModel.isImageInputModalPresented{
-                    ImageInputModal()
-                        .frame(height: 743,alignment: .center)
+                    ImageInputModal(widthRatio: widthRatio, heightRatio: heightRatio)
+                        .frame(height: 743 * heightRatio, alignment: .center)
                 }
                 
             }
