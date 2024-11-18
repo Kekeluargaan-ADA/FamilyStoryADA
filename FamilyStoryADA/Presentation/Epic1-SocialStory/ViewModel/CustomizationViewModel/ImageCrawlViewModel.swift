@@ -23,7 +23,7 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var selectedImage: UIImage? = nil
     @Published var savedImageFilename: String? = nil
     private var userID: String = ""
-    private var backendURL: String = "https://2eb1-202-10-61-41.ngrok-free.app"
+    private var backendURL: String = "https://tinitales-tinytalesapi.hf.space"
     
     private let imageProcessor = CrawlImageHelper()
     
