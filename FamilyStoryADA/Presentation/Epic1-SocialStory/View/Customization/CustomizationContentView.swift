@@ -26,7 +26,7 @@ struct CustomizationContentView: View {
     var body: some View {
         VStack{
             if let page = viewModel.selectedPage {
-                VStack(alignment: .center, spacing: 19 * heightRatio) {
+                VStack(alignment: .center, spacing: 32 * heightRatio) {
                     ZStack(alignment: .topTrailing) {
                         if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
                             

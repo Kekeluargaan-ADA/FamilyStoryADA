@@ -32,7 +32,7 @@ struct CustomizationView: View {
                 let widthRatio = ratios.widthRatio
                 ZStack{
                     HStack(alignment: .top) {
-                        VStack(spacing: 32) {
+                        VStack(spacing: 32 * heightRatio) {
                             Button(action: {
                                 viewModel.updatePage()
                                 dismiss()
@@ -41,13 +41,13 @@ struct CustomizationView: View {
                             })
                             //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                             //                                .disabled(keyboardHelper.isKeyboardShown)
-                            ZStack {
+                            ZStack(alignment: .top) {
                                 DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, widthRatio: widthRatio, heightRatio: heightRatio)
                                     .disabled(keyboardHelper.isKeyboardShown)
                                 
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 685 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
                                     .highlight(
                                         order: 2,
                                         title: "Edit Halaman",
@@ -58,7 +58,7 @@ struct CustomizationView: View {
                                     )
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 685 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
                                     .highlight(
                                         order: 1,
                                         title: "Lihat Semua Halaman",
@@ -68,7 +68,6 @@ struct CustomizationView: View {
                                         position: .centerTrailing
                                     )
                             }
-                                
                         }
                         
                         

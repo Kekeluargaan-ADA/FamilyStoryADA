@@ -13,6 +13,7 @@ struct DraggablePageReorderedCustomizationView: View {
     @Binding var introPages: [DraggablePage]
     let widthRatio: CGFloat
     let heightRatio: CGFloat
+    let edgeInset = EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0)
     
     var body: some View {
         List {
@@ -27,6 +28,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
                     DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                     order: page.order+1,
@@ -37,6 +39,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 } else {
                     DraggedPageView(order: page.order+1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
@@ -46,6 +49,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 }
             }
             
@@ -60,6 +64,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
                     DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                     order: page.order + introPages.count + 1,
@@ -70,6 +75,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 } else {
                     DraggedPageView(order: page.order  + introPages.count + 1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
@@ -79,6 +85,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     .onTapGesture {
                         viewModel.selectPage(page: page)
                     }
+                    .listRowInsets(edgeInset)
                 }
             }
             .onMove { indexSet, destination in
@@ -95,10 +102,16 @@ struct DraggablePageReorderedCustomizationView: View {
                 })
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
+                .listRowInsets(edgeInset)
             }
         }
         .background(Color.clear)
         .scrollContentBackground(.hidden)
+        .listStyle(PlainListStyle()) // Use PlainListStyle to remove default padding around the List
+        .padding(.top, 0 * heightRatio) // Removes top padding
+        .padding(.horizontal, 20 * widthRatio)
+        .padding(.leading, 5  * widthRatio)
+        .scrollIndicators(.hidden)
     }
 }
 
