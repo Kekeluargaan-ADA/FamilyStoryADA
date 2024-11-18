@@ -15,7 +15,7 @@ class ExampleViewModel: ObservableObject {
     
     init(id: UUID?) {
         self.exampleUseCase = ImplementedExampleUseCase()
-        let (data, errorCode) = exampleUseCase.getExampleDataById(req: .init(id: id!))
+        let (data, _) = exampleUseCase.getExampleDataById(req: .init(id: id!))
         exampleData = data
     }
 }

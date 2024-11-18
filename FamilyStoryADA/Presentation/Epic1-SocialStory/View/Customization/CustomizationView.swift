@@ -27,6 +27,9 @@ struct CustomizationView: View {
     var body: some View {
         NavigationView {
             GeometryReader{ geometry in
+                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+                let heightRatio = ratios.heightRatio
+                let widthRatio = ratios.widthRatio
                 ZStack{
                     HStack(alignment: .top) {
                         VStack(spacing: 32) {
@@ -34,33 +37,33 @@ struct CustomizationView: View {
                                 viewModel.updatePage()
                                 dismiss()
                             }, label: {
-                                CustomizedBackButton()
+                                CustomizedBackButton(widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                             //                                .disabled(keyboardHelper.isKeyboardShown)
                             ZStack {
-                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
+                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, widthRatio: widthRatio, heightRatio: heightRatio)
                                     .disabled(keyboardHelper.isKeyboardShown)
                                 
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170, height: 685)
+                                    .frame(width: 170 * widthRatio, height: 685 * heightRatio)
                                     .highlight(
                                         order: 2,
                                         title: "Edit Halaman",
                                         description: "Tahan dan geser halaman untuk mengganti sequence.",
-                                        cornerRadius: 8,
+                                        cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170, height: 685)
+                                    .frame(width: 170 * widthRatio, height: 685 * heightRatio)
                                     .highlight(
                                         order: 1,
                                         title: "Lihat Semua Halaman",
                                         description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
-                                        cornerRadius: 8,
+                                        cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
@@ -73,15 +76,15 @@ struct CustomizationView: View {
                             ZStack(alignment: .top) {
                                 Image("CustomizationBackground")
                                 ZStack (alignment: .center) {
-                                    RoundedRectangle(cornerRadius: 28)
+                                    RoundedRectangle(cornerRadius: 28 * heightRatio)
                                         .fill(Color("FSYellow"))
                                     Text(viewModel.story.storyName)
-                                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                                        .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
                                         .fontWeight(.medium)
                                         .foregroundStyle(Color("FSBlack"))
                                 }
-                                .frame(width: 268, height: 45)
-                                VStack(spacing: 23) {
+                                .frame(width: 268 * widthRatio, height: 45 * heightRatio)
+                                VStack(spacing: 23 * heightRatio) {
                                     CustomizationHeaderView(
                                         story: viewModel.story,
                                         selectedPage: viewModel.selectedPage,
@@ -91,10 +94,10 @@ struct CustomizationView: View {
                                             viewModel.deletePage()
                                         }
                                     )
-                                    .padding(.top, 20)
-                                    .padding(.horizontal, 46)
+                                    .padding(.top, 20 * heightRatio)
+                                    .padding(.horizontal, 46 * widthRatio)
                                     
-                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
+                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached, widthRatio: widthRatio, heightRatio: heightRatio)
                                         .environmentObject(keyboardHelper)
                                         .environmentObject(cameraViewModel)
                                 }
@@ -154,7 +157,7 @@ struct CustomizationView: View {
                         ImagePicker()
                             .environmentObject(cameraViewModel)
                     }
-                    .padding(.top, 26)
+                    .padding(.top, 26 * heightRatio)
                     .ignoresSafeArea()
                     .background(Color("FSBlue6"))
                     .environmentObject(viewModel)
@@ -169,7 +172,7 @@ struct CustomizationView: View {
                         if viewModel.isMediaOverlayOpened {
                             ZStack {
                                 Color("FSBlack").opacity(0.4)
-                                UploadPhotoModalView()
+                                UploadPhotoModalView(widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                             .ignoresSafeArea()
                             .environmentObject(viewModel)
@@ -177,7 +180,7 @@ struct CustomizationView: View {
                         }
                     }
                     if viewModel.isGotoScrapImage {
-                        ScrappingInitialView()
+                        ScrappingInitialView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .background(.black.opacity(0.4))
                             .environmentObject(viewModel)
                             .environmentObject(cameraViewModel)
@@ -187,11 +190,11 @@ struct CustomizationView: View {
                     
                     if isParaphrasingPresented{
                         ZStack{
-                            ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented)
-                                .frame(width: 1200,height: 450)
-                                .cornerRadius(32)
+                            ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented, widthRatio: widthRatio, heightRatio: heightRatio)
+                                .frame(width: 1200 * widthRatio, height: 450 * heightRatio)
+                                .cornerRadius(32 * heightRatio)
                                 .background(.white)
-                        }.frame(height: 900,alignment: .bottom)
+                        }.frame(height: 900 * heightRatio, alignment: .bottom)
                         
                     }
                     
