@@ -131,7 +131,12 @@ class ImageCrawlViewModel: ObservableObject {
     }
     
     func deleteImages() {
-        let url = URL(string: "\(backendURL)/delete_images/?user_id=\(userID)")!
+        
+        guard let url = URL(string: "\(backendURL)/delete_images/?user_id=\(userID)") else {
+            self.statusMessage = "Invalid URL"
+            return
+        }
+        
         
         isLoading = true
         var request = URLRequest(url: url)

@@ -110,42 +110,16 @@ struct ScrappingInitialView: View {
                                     columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
                                     spacing: 10
                                 ) {
-                                    ForEach(Array(zip(crawlViewModel.processedImages.prefix(6), crawlViewModel.imageUrls.prefix(6))), id: \.1) { image, url in
-                                        VStack {
-                                            ZStack {
-                                                Button(action: {
-                                                    crawlViewModel.selectedImage = image
-                                                }) {
-                                                    AsyncImage(url: URL(string: url)) { image in
-                                                        image
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fill)
-                                                            .frame(width: 214 * widthRatio, height: 132 * heightRatio)
-                                                            .clipped()
-                                                            .cornerRadius(12)
-                                                            .shadow(radius: 2, y: 4)
-                                                    } placeholder: {
-                                                        Color.gray
-                                                    }
-                                                }
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                                        .stroke(crawlViewModel.selectedImage == image ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
-                                                )
-                                                if crawlViewModel.selectedImage == image {
-                                                    ZStack {
-                                                        Circle()
-                                                            .foregroundStyle(Color("FSWhite"))
-                                                            .frame(width: 20 * widthRatio, height: 20 * heightRatio)
-                                                        Image(systemName: "checkmark.circle")
-                                                            .foregroundStyle(Color("FSBlue9"))
-                                                            .font(.system(size: 20 * heightRatio))
-                                                            .bold()
-                                                    }
-                                                    .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
-                                                }
-                                            }
-                                        }
+                                    ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
+                                        GridItemView(
+                                            image: image,
+                                            isSelected: crawlViewModel.selectedImage == image,
+                                            onTap: {
+                                                crawlViewModel.selectedImage = image
+                                            },
+                                            heightRatio:  heightRatio,
+                                            widthRatio:  widthRatio
+                                        )
                                     }
                                 }
                                 .frame(width: 666 * widthRatio, height: 284 * heightRatio)
@@ -178,3 +152,43 @@ struct ScrappingInitialView: View {
         }
     }
 }
+
+struct GridItemView: View {
+    let image: UIImage
+    let isSelected: Bool
+    let onTap: () -> Void
+    let heightRatio: Double
+    let widthRatio: Double
+    var body: some View {
+            
+            Button(action: onTap) {
+                ZStack {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 214 * widthRatio, height: 132 * heightRatio)
+                        .clipped()
+                        .cornerRadius(12)
+                        .shadow(radius: 2, y: 4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                .stroke(isSelected ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)
+                        )
+                    if isSelected {
+                        ZStack {
+                            Circle()
+                                .foregroundStyle(Color("FSWhite"))
+                                .frame(width: 20 * widthRatio, height: 20 * heightRatio)
+                            Image(systemName: "checkmark.circle")
+                                .foregroundStyle(Color("FSBlue9"))
+                                .font(.system(size: 20 * heightRatio))
+                                .bold()
+                        }
+                        .position(x: 214 * widthRatio - 17 * widthRatio, y: 17 * heightRatio)
+                    }
+                }
+        }
+    }
+}
+
+

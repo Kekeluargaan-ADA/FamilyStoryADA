@@ -206,7 +206,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     
     public func getParaphrasing(for text: String) async throws -> [String] {
         let prompt = """
-                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
+                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif yang sederhana dan mudah dipahami oleh anak kecil dengan autism spectrum disorder, tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
 
                 {
                     "original_text": "{teks}",
