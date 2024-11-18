@@ -21,56 +21,60 @@ struct StoryDashboardView: View {
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
+                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+                let heightRatio = ratios.heightRatio
+                let widthRatio = ratios.widthRatio
+                
                 ZStack {
                     ZStack {
                         StoryDashboardBackgroundView()
                             .foregroundStyle(Color("FSYellow"))
-                            .padding(.top, 30)
-                            .padding(.horizontal, 24)
+                            .padding(.top, 30 * heightRatio)
+                            .padding(.horizontal, 24 * widthRatio)
                             .ignoresSafeArea()
                         StoryDashboardBackgroundView()
                             .foregroundStyle(Color("FSWhite"))
-                            .padding(.top, 38)
-                            .padding(.horizontal, 24)
+                            .padding(.top, 38 * heightRatio)
+                            .padding(.horizontal, 24 * widthRatio)
                             .ignoresSafeArea()
                     }
                     .frame(height: 804)
                     VStack {
                         HStack {
                             Text("Ceritaku")
-                                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                                .font(Font.custom("Fredoka", size: 40 * heightRatio, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
-                                .padding(.leading, 32)
+                                .padding(.leading, 32 * widthRatio)
                             Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                     viewModel.searchText = keywords
                                     viewModel.searchStories()
                                 }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
-                                ProfileButtonView(imageName: "")
+                                ProfileButtonView(imageName: "", widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }
-                        .padding(.horizontal, 46)
-                        .padding(.top, 24)
+                        .padding(.horizontal, 46 * widthRatio)
+                        .padding(.top, 24 * heightRatio)
                         ZStack {
                             VStack {
-                                HStack (spacing: 12) {
+                                HStack (spacing: 12 * widthRatio) {
                                     Spacer()
                                     Text("Urutkan")
                                         .foregroundStyle(.black)
-                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption)
+                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption, widthRatio: widthRatio, heightRatio: heightRatio)
                                 }
-                                .padding(.horizontal, 20)
+                                .padding(.horizontal, 20 * widthRatio)
                                 ScrollView {
-                                    LazyVGrid(columns: flexibleColumn, spacing: 26) {
+                                    LazyVGrid(columns: flexibleColumn, spacing: 26 * heightRatio) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
                                                 Button(action: {
                                                     viewModel.isTemplateDashboardOpened = true
                                                 }, label: {
-                                                    NewStoryCardView()
-                                                        .padding(.horizontal, 10)
+                                                    NewStoryCardView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                                        .padding(.horizontal, 10 * widthRatio)
                                                 })
                                             } else {
                                                 ZStack(alignment: .topTrailing) {
@@ -85,10 +89,12 @@ struct StoryDashboardView: View {
                                                             category: item.templateCategory,
                                                             storyLength: item.storyLength,
                                                             lastRead: item.storyLastRead,
-                                                            story: item
+                                                            story: item,
+                                                            widthRatio: widthRatio,
+                                                            heightRatio: heightRatio
                                                         )
                                                         .foregroundStyle(Color("FSBlack"))
-                                                        .padding(.horizontal, 10)
+                                                        .padding(.horizontal, 10 * widthRatio)
                                                     })
                                                     Menu {
                                                         Button(action: {
@@ -106,7 +112,7 @@ struct StoryDashboardView: View {
                                                         }
                                                     } label: {
                                                         Image(systemName: "ellipsis")
-                                                            .font(.system(size: 24))
+                                                            .font(.system(size: 24 * heightRatio))
                                                             .fontWeight(.bold)
                                                             .foregroundStyle(Color("FSBlack"))
                                                             .padding()
@@ -120,8 +126,8 @@ struct StoryDashboardView: View {
                                     }
                                 }
                             }
-                            .padding(.top, 12)
-                            .padding(.horizontal, 22)
+                            .padding(.top, 12 * heightRatio)
+                            .padding(.horizontal, 22 * widthRatio)
                         }
                         .ignoresSafeArea()
                     }
@@ -136,9 +142,13 @@ struct StoryDashboardView: View {
                         ZStack {
                             Color("FSBlue1")
                                 .ignoresSafeArea()
-                            EditCoverModalView(story: story, imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId))
+                            EditCoverModalView(story: story,
+                                               imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId),
+                                               widthRatio: widthRatio,
+                                               heightRatio: heightRatio
+                            )
                         }
-                        .presentationDetents([.height(700)])
+                        .presentationDetents([.height(700 * heightRatio)])
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {

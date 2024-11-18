@@ -11,6 +11,8 @@ struct DropdownFilterView: View {
     
     @ObservedObject var viewModel: StoryViewModel
     @Binding var selectedOption: SortOption
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var body: some View {
         Menu {
@@ -32,15 +34,15 @@ struct DropdownFilterView: View {
         } label: {
             HStack {
                 Text(selectedOption.rawValue)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.system(size: 16 * heightRatio, weight: .medium))
                     .foregroundStyle(Color("FSBlack"))
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 12 * heightRatio, weight: .medium))
             }
             .padding()
             .background(Color("FSBlue1"))
-            .frame(width: 117, height: 28)
-            .cornerRadius(20)
+            .frame(width: 117 * widthRatio, height: 28 * heightRatio)
+            .cornerRadius(20 * heightRatio)
         }
     }
 }
