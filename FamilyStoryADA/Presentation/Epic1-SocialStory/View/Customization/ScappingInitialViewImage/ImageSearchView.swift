@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct ImageSearchView: Shape {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let width = rect.size.width
-        let height = rect.size.height
+        let width = 138.89 * widthRatio
+        let height = 131.39 * heightRatio
         path.move(to: CGPoint(x: 0.42464*width, y: 0.98615*height))
         path.addCurve(to: CGPoint(x: 0.30797*width, y: 0.98538*height), control1: CGPoint(x: 0.38551*width, y: 0.98615*height), control2: CGPoint(x: 0.34638*width, y: 0.98615*height))
         path.addLine(to: CGPoint(x: 0.27464*width, y: 0.98538*height))

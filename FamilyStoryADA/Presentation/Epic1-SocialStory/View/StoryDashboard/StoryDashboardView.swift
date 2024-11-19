@@ -149,6 +149,7 @@ struct StoryDashboardView: View {
                             )
                         }
                         .presentationDetents([.height(700 * heightRatio)])
+                        .ignoresSafeArea(.keyboard)
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {

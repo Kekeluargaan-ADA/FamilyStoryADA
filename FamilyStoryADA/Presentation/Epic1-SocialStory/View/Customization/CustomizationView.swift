@@ -30,7 +30,7 @@ struct CustomizationView: View {
                 let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
-                ZStack{
+                ZStack (alignment: .center){
                     HStack(alignment: .top) {
                         VStack(spacing: 32 * heightRatio) {
                             Button(action: {
@@ -74,6 +74,9 @@ struct CustomizationView: View {
                         ZStack {
                             ZStack(alignment: .top) {
                                 Image("CustomizationBackground")
+                                    .resizable()
+                                    .frame(width: 1000 * widthRatio, height: 854 * heightRatio)
+//                                    .ignoresSafeArea()
                                 ZStack (alignment: .center) {
                                     RoundedRectangle(cornerRadius: 28 * heightRatio)
                                         .fill(Color("FSYellow"))

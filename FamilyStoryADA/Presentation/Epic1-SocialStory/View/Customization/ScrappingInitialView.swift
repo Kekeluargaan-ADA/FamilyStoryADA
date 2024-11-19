@@ -21,8 +21,7 @@ struct ScrappingInitialView: View {
     let heightRatio: CGFloat
     
     var body: some View {
-        
-        ZStack {
+        VStack{
             Rectangle()
                 .foregroundColor(Color(red: 0.96, green: 0.99, blue: 0.99))
                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
@@ -61,16 +60,18 @@ struct ScrappingInitialView: View {
                         .zIndex(1)
                         if !networkMonitor.isConnected {
                             Spacer().frame(height: 124 * heightRatio)
-                            LostConnectionView()
+                            LostConnectionView(widthRatio: widthRatio, heightRatio: heightRatio)
                                 .foregroundStyle(Color("FSBorderBlue7"))
-                                .frame(width: 127.65 * widthRatio, height: 127.65 * heightRatio)
+                                .frame(width: 132 * widthRatio, height: 132 * heightRatio)
                             Spacer().frame(height: 32 * heightRatio)
                             Text("Koneksi hilang")
                                 .font(Font.custom("Fredoka", size: 24 * heightRatio).weight(.medium))
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(Color("FSBorderBlue7"))
                             Spacer().frame(height: 8 * heightRatio)
                             Text("Cek koneksi internet dan coba lagi.")
                                 .font(Font.custom("Fredoka", size: 20 * heightRatio))
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(Color("FSBorderBlue7"))
                             Spacer()
                         } else if crawlViewModel.isLoading {
@@ -78,30 +79,34 @@ struct ScrappingInitialView: View {
                             Spacer()
                         } else if crawlViewModel.processedImages.isEmpty {
                             Spacer().frame(height: 100 * heightRatio)
-                            ImageSearchView()
-                                .frame(width: 152 * widthRatio, height: 131.25 * heightRatio)
+                            ImageSearchView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                .frame(width: 180 * widthRatio, height: 180 * heightRatio)
                                 .foregroundStyle(Color("FSBorderBlue7"))
                             Spacer().frame(height: 8 * heightRatio)
                             Text("Masih kosong, nih")
                                 .font(Font.custom("Fredoka", size: 24 * heightRatio).weight(.medium))
+                                .multilineTextAlignment(.center)
                                 .foregroundStyle(Color("FSBorderBlue7"))
                             Spacer().frame(height: 8 * heightRatio)
                             Text("Masukkan kata kunci yang sesuai untuk\nmenampilkan hasil.")
                                 .font(Font.custom("Fredoka", size: 20 * heightRatio))
+                                .multilineTextAlignment(.center)
                                 .foregroundStyle(Color("FSBorderBlue7"))
                             Spacer()
                         } else if crawlViewModel.isImageUnprocessable {
                             Spacer().frame(height: 100 * heightRatio)
-                            ImageNoResultView()
-                                .frame(width: 152 * widthRatio, height: 131.25 * heightRatio)
+                            ImageNoResultView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                .frame(width: 180 * widthRatio, height: 180 * heightRatio)
                                 .foregroundStyle(Color("FSBorderBlue7"))
                             Spacer().frame(height: 8 * heightRatio)
                             Text("Ups, tidak ada hasil")
                                 .font(Font.custom("Fredoka", size: 24 * heightRatio).weight(.medium))
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(Color("FSBorderBlue7"))
                             Spacer().frame(height: 8 * heightRatio)
                             Text("Coba masukkan kata kunci lain.")
                                 .font(Font.custom("Fredoka", size: 20 * heightRatio))
+                                .multilineTextAlignment(.center)
                                 .foregroundColor(Color("FSBorderBlue7"))
                             Spacer()
                         } else {
@@ -146,8 +151,11 @@ struct ScrappingInitialView: View {
                     }
                         .padding(24 * heightRatio)
                 )
+                .padding(.top, 48 * heightRatio)
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // TODO: Fix alignment
     }
 }
 
