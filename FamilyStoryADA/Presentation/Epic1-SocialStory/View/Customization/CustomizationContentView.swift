@@ -90,58 +90,89 @@ struct CustomizationContentView: View {
                             
 //                            let videoPlayer = AVPlayer(url: url)
                             
-                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
-                                CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                                    .mask(Rectangle().padding(.top, 390 * heightRatio))
-                                    .overlay(
-                                        VignetteEffectView()
-                                            .clipShape(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                            ZStack {
+                                if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                                    CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                                        .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .mask(Rectangle().padding(.top, 390 * heightRatio))
+                                        .overlay(
+                                            VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                )
+                                        )
+                                        .onAppear() {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onDisappear() {
+                                            viewModel.videoPlayer.pause()
+                                        }
+                                        .onChange(of: url) {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onTapGesture() {
+                                            viewModel.videoPlayer.seek(to: .zero)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                } else {
+                                    CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                                        .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .overlay(
+                                            VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                )
+                                        )
+                                        .onAppear() {
+                                            
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onDisappear() {
+                                            viewModel.videoPlayer.pause()
+                                        }
+                                        .onChange(of: url) {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onTapGesture() {
+                                            viewModel.videoPlayer.seek(to: .zero)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                }
+                                
+                                if !viewModel.isVideoReadyToPlay, let imagePath = page.pageVideo.first?.componentContent {
+                                    if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .mask(Rectangle().padding(.top, 390 * heightRatio))
+                                            .overlay(
+                                                VignetteEffectView()
+                                                    .clipShape(
+                                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    )
                                             )
-                                    )
-                                    .onAppear() {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onDisappear() {
-                                        viewModel.videoPlayer.pause()
-                                    }
-                                    .onChange(of: url) {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onTapGesture() {
-                                        viewModel.videoPlayer.seek(to: .zero)
-                                        viewModel.videoPlayer.play()
-                                    }
-                            } else {
-                                CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                                    .overlay(
-                                        VignetteEffectView()
-                                            .clipShape(
-                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                    } else {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .overlay(
+                                                VignetteEffectView()
+                                                    .clipShape(
+                                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    )
                                             )
-                                    )
-                                    .onAppear() {
-                                        
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
                                     }
-                                    .onDisappear() {
-                                        viewModel.videoPlayer.pause()
-                                    }
-                                    .onChange(of: url) {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onTapGesture() {
-                                        viewModel.videoPlayer.seek(to: .zero)
-                                        viewModel.videoPlayer.play()
-                                    }
+                                }
                             }
                         } else {
                             Button(action: {

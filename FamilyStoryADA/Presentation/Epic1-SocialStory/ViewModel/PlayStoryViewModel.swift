@@ -14,6 +14,7 @@ class PlayStoryViewModel: Imageable, ObservableObject {
     @Published var currentPageNumber: Int
     @Published var isStoryCompleted: Bool = false
     @Published var videoPlayer: AVPlayer = AVPlayer()
+    @Published var isVideoReadyToPlay: Bool = false
     
     init(story: StoryEntity) {
         self.story = story

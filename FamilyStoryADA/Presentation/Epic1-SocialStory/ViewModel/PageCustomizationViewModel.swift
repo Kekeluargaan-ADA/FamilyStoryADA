@@ -26,6 +26,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var videoPlayer: AVPlayer = AVPlayer()
     @Published var paraphrasedOptions: [String] = []
     @Published var paraphraseModalIsLoading: Bool = false
+    @Published var isVideoReadyToPlay: Bool = false
     
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase

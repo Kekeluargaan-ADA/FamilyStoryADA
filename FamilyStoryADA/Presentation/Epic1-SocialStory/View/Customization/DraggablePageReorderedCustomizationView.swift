@@ -11,6 +11,7 @@ struct DraggablePageReorderedCustomizationView: View {
     @EnvironmentObject var viewModel: PageCustomizationViewModel
     @Binding var draggedPages: [DraggablePage]
     @Binding var introPages: [DraggablePage]
+    @Binding var isVideoReadyToPlay: Bool
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     let edgeInset = EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0)
@@ -27,6 +28,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
@@ -38,6 +40,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 } else {
@@ -48,6 +51,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 }
@@ -63,6 +67,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
@@ -74,6 +79,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 } else {
@@ -84,6 +90,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     )
                     .onTapGesture {
                         viewModel.selectPage(page: page)
+                        viewModel.isVideoReadyToPlay = false
                     }
                     .listRowInsets(edgeInset)
                 }
@@ -97,6 +104,7 @@ struct DraggablePageReorderedCustomizationView: View {
             if  viewModel.isAddButtonAppeared() {
                 Button(action: {
                     viewModel.addNewBlankPage()
+                    viewModel.isVideoReadyToPlay = false
                 }, label: {
                     AddNewPageButtonView(widthRatio: widthRatio, heightRatio: heightRatio)
                 })
