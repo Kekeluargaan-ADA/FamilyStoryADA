@@ -173,7 +173,7 @@ struct CustomizationContentView: View {
                             }
                         } label: {
                             Image(systemName: "ellipsis")
-                                .font(.system(size: 26))
+                                .font(.system(size: 26 * heightRatio))
                                 .fontWeight(.bold)
                                 .foregroundStyle(Color("FSWhite"))
                                 .padding()
@@ -248,7 +248,7 @@ struct CustomizationContentView: View {
                             }
                         )
                         .overlay(alignment: .topLeading) {
-                            HStack(spacing: 4) {
+                            HStack(spacing: 4 * widthRatio) {
                                 Text("\(wordCount)/15 kata")
                                     .font(Font.custom("Fredoka", size: 16 * widthRatio))
                                     .foregroundColor(isLimitReached ? Color("FSPrimaryOrange5") : Color("FSGrey"))

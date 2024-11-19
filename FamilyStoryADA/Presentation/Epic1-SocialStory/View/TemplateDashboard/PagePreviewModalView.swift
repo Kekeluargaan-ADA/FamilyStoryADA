@@ -61,7 +61,7 @@ struct PagePreviewModalView: View {
 //                .padding(24)
                 .frame(width: 728 * widthRatio, height: 743 * heightRatio)
                 .background(Color("FSBlue1"))
-                .cornerRadius(20)
+                .cornerRadius(20 * heightRatio)
                 .padding()
                 
             }
