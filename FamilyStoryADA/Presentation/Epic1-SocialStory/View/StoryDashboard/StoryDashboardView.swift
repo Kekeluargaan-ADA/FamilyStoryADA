@@ -20,20 +20,21 @@ struct StoryDashboardView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 
-                ZStack {
-                    ZStack {
-                        StoryDashboardBackgroundView()
+                ZStack(alignment: .top) {
+                    ZStack(alignment: .top) {
+                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSYellow"))
-                            .padding(.top, 30 * heightRatio)
+//                            .padding(.top, 24 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
-                            .ignoresSafeArea()
-                        StoryDashboardBackgroundView()
+//                            .ignoresSafeArea()
+                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSWhite"))
-                            .padding(.top, 38 * heightRatio)
+                            .padding(.top, 8 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
-                            .ignoresSafeArea()
+//                            .ignoresSafeArea()
                     }
-                    .frame(height: 804)
+                    .frame(height: 804 * heightRatio)
+                    
                     VStack {
                         HStack {
                             Text("Ceritaku")
