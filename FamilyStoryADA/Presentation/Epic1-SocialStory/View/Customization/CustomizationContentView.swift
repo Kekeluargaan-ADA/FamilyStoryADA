@@ -358,7 +358,7 @@ struct CustomizationContentView: View {
                 }
                 
                 .disabled(isParaphrasingPresented)
-//                .offset(y: !viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 * heightRatio : 0)
+                .offset(y: !viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 * heightRatio : 0)
             }
         }
         

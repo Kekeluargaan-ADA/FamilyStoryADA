@@ -101,7 +101,6 @@ struct CustomizationView: View {
                                         .environmentObject(cameraViewModel)
                                 }
                             }
-                            
                         }
                         .onTapGesture {
                             if keyboardHelper.isKeyboardShown {
@@ -200,6 +199,7 @@ struct CustomizationView: View {
                 }
                 
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
         }
         .navigationViewStyle(.stack)

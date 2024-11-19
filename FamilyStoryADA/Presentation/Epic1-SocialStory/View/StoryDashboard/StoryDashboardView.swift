@@ -188,6 +188,7 @@ struct StoryDashboardView: View {
                     EmptyView()
                 })
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden(true)
