@@ -344,7 +344,7 @@
             "ss01-animated-scene05",
             "ss01-animated-scene06",
         ],
-        "templateResultImagePath": "ss01-finish-image-v01"
+        "templateResultImagePath": "ss01-finish-image"
     },
     
     {
@@ -405,7 +405,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene01-v01",
+                        "componentContent": "ss02-animated-scene01",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -443,7 +443,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene02-v01",
+                        "componentContent": "ss02-animated-scene02",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -481,7 +481,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene03-v01",
+                        "componentContent": "ss02-animated-scene03",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -519,7 +519,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene04-v01",
+                        "componentContent": "ss02-animated-scene04",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -557,7 +557,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene05-v01",
+                        "componentContent": "ss02-animated-scene05",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -595,7 +595,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene06-v01",
+                        "componentContent": "ss02-animated-scene06",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -633,7 +633,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene07-v01",
+                        "componentContent": "ss02-animated-scene07",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -671,7 +671,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene08-v01",
+                        "componentContent": "ss02-animated-scene08",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -709,7 +709,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene09-v01",
+                        "componentContent": "ss02-animated-scene09",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -751,30 +751,30 @@
                 "pageSoundPath": "",
             },
         ],
-        "templateCoverImagePath": "ss02-animated-scene09-v01",
+        "templateCoverImagePath": "ss02-animated-scene09",
         "templateOptionCoverImagePath": [
-            "ss02-animated-scene01-v01",
-            "ss02-animated-scene02-v01",
-            "ss02-animated-scene03-v01",
-            "ss02-animated-scene04-v01",
-            "ss02-animated-scene05-v01",
-            "ss02-animated-scene06-v01",
-            "ss02-animated-scene07-v01",
-            "ss02-animated-scene08-v01",
-            "ss02-animated-scene09-v01",
+            "ss02-animated-scene01",
+            "ss02-animated-scene02",
+            "ss02-animated-scene03",
+            "ss02-animated-scene04",
+            "ss02-animated-scene05",
+            "ss02-animated-scene06",
+            "ss02-animated-scene07",
+            "ss02-animated-scene08",
+            "ss02-animated-scene09",
         ],
         "templatePreviewImagePath": [
-            "ss02-animated-scene01-v01",
-            "ss02-animated-scene02-v01",
-            "ss02-animated-scene03-v01",
-            "ss02-animated-scene04-v01",
-            "ss02-animated-scene05-v01",
-            "ss02-animated-scene06-v01",
-            "ss02-animated-scene07-v01",
-            "ss02-animated-scene08-v01",
-            "ss02-animated-scene09-v01",
+            "ss02-animated-scene01",
+            "ss02-animated-scene02",
+            "ss02-animated-scene03",
+            "ss02-animated-scene04",
+            "ss02-animated-scene05",
+            "ss02-animated-scene06",
+            "ss02-animated-scene07",
+            "ss02-animated-scene08",
+            "ss02-animated-scene09",
         ],
-        "templateResultImagePath": "ss02-finish-image-v01"
+        "templateResultImagePath": "ss02-finish-image"
     }
 
 ]

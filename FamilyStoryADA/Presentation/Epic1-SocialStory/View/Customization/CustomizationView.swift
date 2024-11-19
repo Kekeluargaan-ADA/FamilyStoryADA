@@ -293,5 +293,5 @@ struct CustomizationView: View {
                                                        pageSoundPath: "Sound", pageTextClassification: ""
                                                       )
                                          ],
-                                         storyResultImagePath: "ss01-finish-image-v01"))
+                                         storyResultImagePath: "ss01-finish-image"))
 }
