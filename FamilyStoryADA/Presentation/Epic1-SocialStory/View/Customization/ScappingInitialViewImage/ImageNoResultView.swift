@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ImageNoResultView: Shape {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let width = rect.size.width
-        let height = rect.size.height
+        let width = 153.75 * widthRatio
+        let height = 131.25 * heightRatio
         path.move(to: CGPoint(x: 0.41447*width, y: 0.98462*height))
         path.addCurve(to: CGPoint(x: 0.27039*width, y: 0.98385*height), control1: CGPoint(x: 0.36645*width, y: 0.98462*height), control2: CGPoint(x: 0.31776*width, y: 0.98462*height))
         path.addLine(to: CGPoint(x: 0.24671*width, y: 0.98385*height))

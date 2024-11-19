@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SelectedImageView: View {
     var image: UIImage // Passed selected image
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
 
     var body: some View {
         VStack {
@@ -20,8 +22,8 @@ struct SelectedImageView: View {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 300, height: 300)
-                .border(Color.green, width: 4) // Green border for selected image
+                .frame(width: 300 * widthRatio, height: 300 * heightRatio)
+                .border(Color.green, width: 4 * widthRatio) // Green border for selected image
                 .padding()
 
             Spacer()
@@ -34,7 +36,7 @@ struct SelectedImageView: View {
                     .foregroundColor(.white)
                     .padding()
                     .background(Color.blue)
-                    .cornerRadius(10)
+                    .cornerRadius(10 * heightRatio)
             }
             .padding()
         }

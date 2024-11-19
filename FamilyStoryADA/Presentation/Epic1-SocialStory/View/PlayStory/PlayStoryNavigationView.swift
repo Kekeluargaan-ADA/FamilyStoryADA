@@ -18,18 +18,18 @@ struct PlayStoryNavigationView: View {
     let titleOverlayReversed: Bool
 
     var body: some View {
-        HStack(spacing: 346) {
+        HStack(spacing: 346 * widthRatio) {
             Button(action: {
                 onTapHomeButton()
             }, label: {
                 ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
             })
             ZStack {
-                RoundedRectangle(cornerRadius: 28)
+                RoundedRectangle(cornerRadius: 28 * heightRatio)
                     .foregroundStyle(Color(titleOverlayReversed ? "FSBlueBorder2" : "FSWhite"))
-                    .frame(height: 53)
+                    .frame(height: 53 * heightRatio)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 28)
+                        RoundedRectangle(cornerRadius: 28 * heightRatio)
                             .stroke(Color(titleOverlayReversed ? "FSWhite" : "FSBlueBorder1"), lineWidth: 4)
                     )
                 Text(title)
@@ -37,7 +37,7 @@ struct PlayStoryNavigationView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(Color(titleOverlayReversed ? "FSWhite" : "FSBlack"))
             }
-            .frame(height: 53)
+            .frame(height: 53 * heightRatio)
             if showAudioButton {
                 Button(action: {
                     onTapAudioButton()

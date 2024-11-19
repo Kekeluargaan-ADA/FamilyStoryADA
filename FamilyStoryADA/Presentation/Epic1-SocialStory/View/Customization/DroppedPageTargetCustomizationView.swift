@@ -9,22 +9,25 @@ import SwiftUI
 
 struct DroppedPageTargetCustomizationView: View {
     var isSelected: Bool
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         VStack {
             if isSelected {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: StrokeStyle(lineWidth: 2, dash: [5, 5]))
+                    RoundedRectangle(cornerRadius: 8 * heightRatio)
+                        .stroke(style: StrokeStyle(lineWidth: 2 * widthRatio, dash: [5, 5]))
                         .foregroundStyle(Color("FSBlue9"))
                         .background(Color("FSWhite"))
-                        .frame(width: 152, height: 40)
+                        .frame(width: 152 * widthRatio, height: 40 * heightRatio)
                     Image(systemName: "plus.circle")
                         .foregroundStyle(Color("FSBlue9"))
                 }
             } else {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 8 * heightRatio)
                     .fill(Color("FSBlue6"))
-                    .frame(width: 152, height: 12)
+                    .frame(width: 152 * widthRatio, height: 12 * heightRatio)
             }
         }
         .background(Color.clear)
@@ -32,5 +35,5 @@ struct DroppedPageTargetCustomizationView: View {
 }
 
 #Preview {
-    DroppedPageTargetCustomizationView(isSelected: true)
+    DroppedPageTargetCustomizationView(isSelected: true, widthRatio: 1, heightRatio: 1)
 }

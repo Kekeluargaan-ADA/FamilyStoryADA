@@ -21,8 +21,10 @@ struct PlayStoryResultView: View {
             
             ZStack {
                 Image("checkered-background")
+                    .resizable()
                     .ignoresSafeArea()
                 Image("background-play-story")
+                    .resizable()
                     .ignoresSafeArea()
                 VStack {
                     PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
@@ -52,18 +54,18 @@ struct PlayStoryResultView: View {
                             .fontWeight(.medium)
                             .foregroundStyle(Color("FSBlack"))
                         
-                        HStack (spacing: 20) {
+                        HStack (spacing: 20 * widthRatio) {
                             Button(action: {
                                 playStoryViewModel.isStoryCompleted = true
                             }, label: {
-                                ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary)
+                                ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             Button(action: {
                                 
                                 isMiniQuizPresented = true
                                 textToSpeechHelper.stopSpeaking()
                             }, label: {
-                                ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary)
+                                ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                         }
                     } else {
@@ -77,12 +79,12 @@ struct PlayStoryResultView: View {
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
-        .onChange(of: playStoryViewModel.isStoryCompleted) { value in
+        .onChange(of: playStoryViewModel.isStoryCompleted) { _, value in
             if value {
                 dismiss()
             }
         }
-        .onChange(of: isMiniQuizPresented) { value in
+        .onChange(of: isMiniQuizPresented) { _, value in
             if !value {
                 playStoryViewModel.isStoryCompleted = true
             }

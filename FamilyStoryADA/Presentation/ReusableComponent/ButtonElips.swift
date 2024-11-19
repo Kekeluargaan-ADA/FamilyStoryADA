@@ -15,6 +15,8 @@ struct ButtonElips: View {
     var text: String
     var buttonPreset: ButtonPreset
     var buttonStyle: ButtonStyle
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var buttonColor: Color {
         switch buttonPreset {
@@ -63,22 +65,22 @@ struct ButtonElips: View {
             ZStack {
                 buttonColor
                 Text(text)
-                    .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                    .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
                     .fontWeight(.medium)
                     .foregroundStyle(textColor)
             }
-            .frame(width: 190, height: 70)
+            .frame(width: 190 * widthRatio, height: 70 * heightRatio)
             .clipShape(
-                RoundedRectangle(cornerRadius: 40)
+                RoundedRectangle(cornerRadius: 40 * heightRatio)
             )
         }
-        .frame(width: 200, height: 80)
+        .frame(width: 200 * widthRatio, height: 80 * heightRatio)
         .clipShape(
-            RoundedRectangle(cornerRadius: 40)
+            RoundedRectangle(cornerRadius: 40 * heightRatio)
         )
     }
 }
 
 #Preview {
-    ButtonElips(text: "Text", buttonPreset: .yellow, buttonStyle: .primary)
+    ButtonElips(text: "Text", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: 1, heightRatio: 1)
 }

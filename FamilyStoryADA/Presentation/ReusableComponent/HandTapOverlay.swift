@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct HandTapOverlay: View {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     var body: some View {
         ZStack {
             Color("FSBlack")
                 .opacity(0.5)
                 .ignoresSafeArea()
             VStack (spacing: 11) {
-                LottieView(animationName: "hand-tap-gesture", width: 217, height: 218)
-                    .frame(width: 217, height: 218)
+                LottieView(animationName: "hand-tap-gesture", width: 217 * widthRatio, height: 218 * heightRatio)
+                    .frame(width: 217 * widthRatio, height: 218 * heightRatio)
                 Text("Tekan kartu untuk memilih")
-                    .font(Font.custom("Fredoka", size: 48, relativeTo: .largeTitle))
+                    .font(Font.custom("Fredoka", size: 48 * heightRatio, relativeTo: .largeTitle))
                     .fontWeight(.semibold)
                     .foregroundStyle(Color("FSWhite"))
             }
@@ -26,5 +28,5 @@ struct HandTapOverlay: View {
 }
 
 #Preview {
-    HandTapOverlay()
+    HandTapOverlay(widthRatio: 1, heightRatio: 1)
 }

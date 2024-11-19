@@ -18,22 +18,22 @@ struct StepsSquareView: View {
         ZStack(alignment: .topLeading) {
             Rectangle()
                 .foregroundColor(Color("FSWhite"))
-                .frame(width: 280, height: 172)
-                .cornerRadius(8)
+                .frame(width: 280 * widthRatio, height: 172 * heightRatio)
+                .cornerRadius(8 * heightRatio)
                 .overlay {
-                    VStack (alignment: .center, spacing: 6) {
+                    VStack (alignment: .center, spacing: 6 * heightRatio) {
                         Image(imageAssetName ?? "")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 186, height: 115)
-                            .cornerRadius(8)
+                            .frame(width: 186 * widthRatio, height: 115 * heightRatio)
+                            .cornerRadius(8 * heightRatio)
                         Text(text ?? "")
                           .font(
-                            Font.custom("Fredoka", size: 14)
+                            Font.custom("Fredoka", size: 14 * heightRatio)
                               .weight(.medium)
                           )
                           .multilineTextAlignment(.center)
-                          .frame(width: 214)
+                          .frame(width: 214 * widthRatio)
                           .lineLimit(2)
                           .foregroundColor(Color("FSBlack"))
                     }
@@ -46,7 +46,7 @@ struct StepsSquareView: View {
                 .foregroundStyle(Color("FSBlue3"))
                 .overlay(
                     Text("\(order)")
-                      .font(Font.custom("Fredoka", size: 12))
+                        .font(Font.custom("Fredoka", size: 12 * heightRatio))
                       .foregroundColor(Color("FSBlue9"))
                       .offset(x: 4 * widthRatio, y: 4 * heightRatio)
                 )
