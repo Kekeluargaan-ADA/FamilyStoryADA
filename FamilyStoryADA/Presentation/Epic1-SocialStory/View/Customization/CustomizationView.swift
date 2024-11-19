@@ -42,7 +42,7 @@ struct CustomizationView: View {
                             //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                             //                                .disabled(keyboardHelper.isKeyboardShown)
                             ZStack(alignment: .top) {
-                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, widthRatio: widthRatio, heightRatio: heightRatio)
+                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, isVideoReadyToPlay: $viewModel.isVideoReadyToPlay, widthRatio: widthRatio, heightRatio: heightRatio)
                                     .disabled(keyboardHelper.isKeyboardShown)
                                 
                                 Rectangle()

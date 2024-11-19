@@ -66,28 +66,37 @@ struct PlayStoryView: View {
                                 }
                             } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
                                 
-                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
-                                    .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                                    .onAppear() {
-                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
-                                        playStoryViewModel.videoPlayer.play()
-                                    }
-                                    .onDisappear() {
-                                        playStoryViewModel.videoPlayer.pause()
-                                    }
-                                    .onChange(of: url) {
-                                        playStoryViewModel.videoPlayer = AVPlayer(url: url)
-                                        playStoryViewModel.videoPlayer.play()
-                                    }
-                                    .onTapGesture() {
-                                        playStoryViewModel.videoPlayer.seek(to: .zero)
-                                        playStoryViewModel.videoPlayer.play()
-                                        Task {
-                                            //MARK: turn this on when we need play sound effect
-//                                            await soundEffectHelper.playSound(fileName: )
+                                ZStack {
+                                    CustomVideoPlayerView(player: playStoryViewModel.videoPlayer, isReadyToPlay: $playStoryViewModel.isVideoReadyToPlay)
+                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .onAppear() {
+                                            playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                            playStoryViewModel.videoPlayer.play()
                                         }
+                                        .onDisappear() {
+                                            playStoryViewModel.videoPlayer.pause()
+                                        }
+                                        .onChange(of: url) {
+                                            playStoryViewModel.videoPlayer = AVPlayer(url: url)
+                                            playStoryViewModel.videoPlayer.play()
+                                        }
+                                        .onTapGesture() {
+                                            playStoryViewModel.videoPlayer.seek(to: .zero)
+                                            playStoryViewModel.videoPlayer.play()
+                                            Task {
+                                                //MARK: turn this on when we need play sound effect
+    //                                            await soundEffectHelper.playSound(fileName: )
+                                            }
+                                        }
+                                    if !playStoryViewModel.isVideoReadyToPlay {
+                                        Image(video.componentContent)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     }
+                                }
                                 
                                 
                             } else {
@@ -123,6 +132,7 @@ struct PlayStoryView: View {
                             HStack {
                                 if playStoryViewModel.currentPageNumber > 0 {
                                     Button(action: {
+                                        playStoryViewModel.isVideoReadyToPlay = false
                                         textToSpeechHelper.stopSpeaking()
                                         playStoryViewModel.continueToPreviousPage()
                                         
@@ -135,6 +145,7 @@ struct PlayStoryView: View {
                                 Spacer()
                                 if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
                                     Button(action: {
+                                        playStoryViewModel.isVideoReadyToPlay = false
                                         textToSpeechHelper.stopSpeaking()
                                         playStoryViewModel.continueToNextPage()
                                         
@@ -148,6 +159,7 @@ struct PlayStoryView: View {
                                     Button(action: {
                                         textToSpeechHelper.stopSpeaking()
                                         playStoryIsActive = true
+                                        playStoryViewModel.isVideoReadyToPlay = false
                                         
                                     }, label: {
                                         ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
