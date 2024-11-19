@@ -21,8 +21,10 @@ struct PlayStoryResultView: View {
             
             ZStack {
                 Image("checkered-background")
+                    .resizable()
                     .ignoresSafeArea()
                 Image("background-play-story")
+                    .resizable()
                     .ignoresSafeArea()
                 VStack {
                     PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {

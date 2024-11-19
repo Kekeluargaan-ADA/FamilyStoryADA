@@ -32,6 +32,7 @@ struct PlayStoryView: View {
                         //background for opening and closing
                         if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
                             Image("checkered-background")
+                                .resizable()
                                 .ignoresSafeArea()
                         }
                         
@@ -99,7 +100,7 @@ struct PlayStoryView: View {
                         
                         //background
                         Image("background-play-story")
-//                            .resizable()
+                            .resizable()
                             .ignoresSafeArea()
                         
                         VStack {

@@ -26,6 +26,7 @@ struct MiniGameView: View {
             ZStack {
                 
                 Image("background-mini-quiz-v01")
+                    .resizable()
                     .ignoresSafeArea()
                 
                 VStack {
