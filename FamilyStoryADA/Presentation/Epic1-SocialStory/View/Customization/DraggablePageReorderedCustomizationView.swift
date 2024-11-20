@@ -27,8 +27,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
@@ -39,8 +41,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 } else {
@@ -50,8 +54,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 }
@@ -66,8 +72,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 } else if page.picturePath != "" {
@@ -78,8 +86,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 } else {
@@ -89,8 +99,10 @@ struct DraggablePageReorderedCustomizationView: View {
                                     heightRatio: heightRatio
                     )
                     .onTapGesture {
-                        viewModel.selectPage(page: page)
-                        viewModel.isVideoReadyToPlay = false
+                        if page.id != viewModel.selectedPage?.pageId {
+                            viewModel.selectPage(page: page)
+                            viewModel.isVideoReadyToPlay = false
+                        }
                     }
                     .listRowInsets(edgeInset)
                 }
