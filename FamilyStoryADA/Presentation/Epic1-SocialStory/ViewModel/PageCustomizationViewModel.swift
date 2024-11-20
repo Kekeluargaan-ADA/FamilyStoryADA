@@ -251,26 +251,45 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
 
-    
     public func getTextClassification(for text: String) async throws -> String {
-        let prompt = """
-        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
-        
-        Contoh deskriptif: aku menggosok gigi.  
-        Contoh instruktif: ayo gosok gigi.  
-        
-        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
-        text: \(text)
-        """
-        
+        // Safely unwrap userID
+        guard let userID = UserDefaults.standard.string(forKey: "UserID") else {
+            throw NSError(domain: "AppError", code: 1, userInfo: [NSLocalizedDescriptionKey: "UserID not found"])
+        }
+
+        // Construct the URL with query parameters
+        guard let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "\(backendURL)/classify_text/\(userID)?text=\(encodedText)") else {
+            throw NSError(domain: "AppError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+
+        // Create a URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
         do {
-            let response = try await getResponse(prompt: prompt)
-            return response
+            // Fetch data asynchronously
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // Debug: Print received data
+            print("Received Data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
+
+            // Validate HTTP response
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                throw NSError(domain: "HTTPError", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"])
+            }
+
+            // Decode JSON response
+            let classificationData = try JSONDecoder().decode(ClassificationData.self, from: data)
+
+            // Return the paraphrased options
+            return classificationData.classification
         } catch {
+            print("Error fetching or decoding data: \(error.localizedDescription)")
             throw error
         }
     }
-    
     
 }
 

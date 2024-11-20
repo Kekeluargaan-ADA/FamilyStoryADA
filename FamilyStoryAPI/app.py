@@ -20,11 +20,46 @@ import os
 import google.generativeai as genai
 from google.ai.generativelanguage_v1beta.types import content
 import json
+
 class paraphrased(typing.TypedDict):
     original_text: str
     paraphrased_texts: list[str]
     
-genai.configure(api_key="AIzaSyAOHsE8hHp5G0zx6kM-dnmp4YuI_gaHBGE")
+class textClassification(typing.TypedDict):
+    original_text: str
+    classification: str
+    
+genai.configure(api_key="AIzaSyC16AN-fYC6HVb5VXj8YWwm4PJKzAkfD_A")
+
+classfication_config = {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 40,
+        "max_output_tokens": 8192,
+        "response_schema": textClassification,
+        "response_mime_type": "application/json"
+    }
+
+classfication = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    generation_config=classfication_config,
+)
+
+paraphrasing_config = {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 40,
+        "max_output_tokens": 8192,
+        "response_schema": paraphrased,
+        "response_mime_type": "application/json"
+    }
+
+paraphrasing = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    generation_config=paraphrasing_config,
+)
+    
+    
 model_id = "stabilityai/stable-diffusion-3.5-large-turbo"
 API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
 headers = {"Authorization": "Bearer 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"}
@@ -221,20 +256,6 @@ async def root():
 async def generate_paraphrasing(
     text: str = Query(..., min_length=1, description="Text to be simplified.")
 ):
-
-    generation_config = {
-        "temperature": 1,
-        "top_p": 0.95,
-        "top_k": 40,
-        "max_output_tokens": 8192,
-        "response_schema": paraphrased,
-        "response_mime_type": "application/json"
-    }
-
-    model = genai.GenerativeModel(
-        model_name="gemini-1.5-pro",
-        generation_config=generation_config,
-    )
     try:
         # Define the prompt using the user-provided text
         prompt = (
@@ -245,7 +266,39 @@ async def generate_paraphrasing(
         )
         
         # Generate response
-        response = model.generate_content(prompt)
+        response = paraphrasing.generate_content(prompt)
+
+        # Ensure response content is available
+        if not response or not response.text:
+            raise HTTPException(status_code=500, detail="Failed to generate content.")
+        try:
+            response_json = json.loads(response.text)
+        except json.JSONDecodeError as e:
+            raise HTTPException(status_code=500, detail=f"Failed to parse JSON: {str(e)}")
+        
+        return response_json
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+@app.get("/classify_text/{user_id}")
+async def generate_paraphrasing(
+    text: str = Query(..., min_length=1, description="Text to be classify.")
+):
+    try:
+        # Define the prompt using the user-provided text
+        prompt = """
+        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
+        
+        Contoh deskriptif: aku menggosok gigi.  
+        Contoh instruktif: ayo gosok gigi.  
+        Contoh Tidak Terdefinisi: Mengandung bahasa kasar atau tidak jelas.
+        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
+        text: {text}
+        """.format(text=text)
+            
+        
+        # Generate response
+        response = classfication.generate_content(prompt)
 
         # Ensure response content is available
         if not response or not response.text:
