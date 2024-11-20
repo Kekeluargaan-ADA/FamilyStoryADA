@@ -12,7 +12,7 @@ import CoreImage.CIFilterBuiltins
 
 class ImageCrawlViewModel: ObservableObject {
     @Published var keyword: String = ""
-    @Published var maxNum: String = "6"
+    @Published var maxNum: String = "5"
     @Published var statusMessage: String = ""
     @Published var isLoading: Bool = false
     @Published var isImageUnprocessable: Bool = false
@@ -24,7 +24,6 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var savedImageFilename: String? = nil
     private var userID: String = ""
     private var backendURL: String = "https://tinitales-tinytalesapi.hf.space"
-    
     private let imageProcessor = CrawlImageHelper()
     
     func crawlImages() {
@@ -36,60 +35,72 @@ class ImageCrawlViewModel: ObservableObject {
             return
         }
         
-        // Update UI state
-        isLoading = true
-        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         // Start the URL session
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {  // Optional delay
-                self.isLoading = false
                 
                 // Handle request error
                 if let error = error {
-                    self.statusMessage = "Request failed: \(error.localizedDescription)"
+                    DispatchQueue.main.async {
+                        self.statusMessage = "Request failed: \(error.localizedDescription)"
+                        self.isLoading = false // Ensure this is on the main thread
+                    }
                     return
                 }
                 
                 // Handle HTTP response status codes
                 if let httpResponse = response as? HTTPURLResponse {
-                    switch httpResponse.statusCode {
-                    case 200:
-                        break // Continue processing on success
-                    case 422:
-                        self.isImageUnprocessable = true
-                        self.statusMessage = "Unprocessable Image Error (HTTP 422)"
-                        return
-                    default:
-                        self.statusMessage = "HTTP Error \(httpResponse.statusCode)"
-                        return
+                    DispatchQueue.main.async {
+                        switch httpResponse.statusCode {
+                        case 200:
+                            break // Continue processing on success
+                        case 422:
+                            self.isImageUnprocessable = true
+                            self.statusMessage = "Unprocessable Image Error (HTTP 422)"
+                            self.isLoading = false
+                            return
+                        default:
+                            self.statusMessage = "HTTP Error \(httpResponse.statusCode)"
+                            self.isLoading = false
+                            return
+                        }
                     }
                 }
                 
                 // Check for data availability
                 guard let data = data else {
-                    self.statusMessage = "No data received"
+                    DispatchQueue.main.async {
+                        self.statusMessage = "No data received"
+                        self.isLoading = false
+                    }
                     return
                 }
                 
                 do {
                     let decodedResponse = try JSONDecoder().decode(CrawlResponseObject.self, from: data)
-                    self.statusMessage = decodedResponse.status
-                    self.userID = decodedResponse.userID // Capture hashedUserId
-                    self.imageUrls = decodedResponse.imageUrls
-                    
-                    print("Fetched Image URLs: \(decodedResponse.imageUrls)")
-                    
-                    // Process each image URL
-                    for imageUrl in decodedResponse.imageUrls {
-                        if let url = URL(string: imageUrl) {
-                            self.downloadAndProcessImage(from: url)
+                    DispatchQueue.main.async {
+                        self.statusMessage = decodedResponse.status
+                        self.userID = decodedResponse.userID // Capture hashedUserId
+                        self.imageUrls = decodedResponse.imageUrls
+                        
+                        print("Fetched Image URLs: \(decodedResponse.imageUrls)")
+                        
+                        // Process each image URL
+                        for imageUrl in decodedResponse.imageUrls {
+                            if let url = URL(string: imageUrl) {
+                                self.downloadAndProcessImage(from: url)
+                            }
                         }
+                        self.isLoading = false
                     }
                 } catch {
-                    self.statusMessage = "Failed to parse response: \(error.localizedDescription)"
+                    DispatchQueue.main.async {
+                        self.statusMessage = "Failed to parse response: \(error.localizedDescription)"
+                        self.isLoading = false
+                    }
                 }
             }
         }.resume()
@@ -138,13 +149,11 @@ class ImageCrawlViewModel: ObservableObject {
         }
         
         
-        isLoading = true
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                self.isLoading = false
                 if let error = error {
                     self.statusMessage = "Request failed: \(error.localizedDescription)"
                     return

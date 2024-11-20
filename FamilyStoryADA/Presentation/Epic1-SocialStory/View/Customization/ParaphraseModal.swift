@@ -36,9 +36,7 @@ struct ParaphraseModal: View {
 
                     // Loading indicator or paraphrased text options
                     if viewModel.paraphraseModalIsLoading {
-                        ProgressView("Loading...")
-                            .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-                            .frame(width: 980 * widthRatio, alignment: .center)
+                        LottieView(animationName: "load-state-icon", width: 68 * widthRatio, height: 72 * heightRatio)
                     } else {
                         VStack(alignment: .leading, spacing: 4 * heightRatio) {
                             ForEach(viewModel.paraphrasedOptions, id: \.self) { paraphrasedText in

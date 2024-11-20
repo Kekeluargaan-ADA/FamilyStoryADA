@@ -47,12 +47,18 @@ struct ScrappingInitialView: View {
                         }
                         HStack {
                             SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
-                                crawlViewModel.deleteImages()
-                                crawlViewModel.crawlImages()
+                                if !crawlViewModel.isLoading{
+                                    crawlViewModel.isLoading = true
+                                    crawlViewModel.deleteImages()
+                                    crawlViewModel.crawlImages()
+                                }
                             }, searchPlaceholder: "Cari", widthRatio: widthRatio, heightRatio: heightRatio)
                             Button(action: {
-                                crawlViewModel.deleteImages()
-                                crawlViewModel.crawlImages()
+                                if !crawlViewModel.isLoading{
+                                    crawlViewModel.isLoading = true
+                                    crawlViewModel.deleteImages()
+                                    crawlViewModel.crawlImages()
+                                }
                             }, label: {
                                 ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                             })
@@ -114,7 +120,7 @@ struct ScrappingInitialView: View {
                                 columns: Array(repeating: GridItem(.flexible(), spacing: 10 * heightRatio), count: 3),
                                 spacing: 10 * widthRatio
                             ) {
-                                ForEach(crawlViewModel.processedImages.prefix(6), id: \.self) { image in
+                                ForEach(crawlViewModel.processedImages, id: \.self) { image in
                                     GridItemView(
                                         image: image,
                                         isSelected: crawlViewModel.selectedImage == image,
