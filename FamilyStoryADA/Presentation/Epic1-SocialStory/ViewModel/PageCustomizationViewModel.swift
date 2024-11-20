@@ -241,7 +241,9 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: data)
 
             // Return the paraphrased options
-            paraphrasedOptions = paraphraseData.paraphrasedOptions
+            DispatchQueue.main.async {
+                self.paraphrasedOptions = paraphraseData.paraphrasedOptions
+            }
             return paraphrasedOptions
         } catch {
             print("Error fetching or decoding data: \(error.localizedDescription)")
