@@ -111,6 +111,14 @@ struct PlayStoryView: View {
                         Image("background-play-story")
                             .resizable()
                             .ignoresSafeArea()
+                            .onTapGesture {
+                                playStoryViewModel.videoPlayer.seek(to: .zero)
+                                playStoryViewModel.videoPlayer.play()
+                                Task {
+                                    //MARK: turn this on when we need play sound effect
+//                                            await soundEffectHelper.playSound(fileName: )
+                                }
+                            }
                         
                         VStack {
                             PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
