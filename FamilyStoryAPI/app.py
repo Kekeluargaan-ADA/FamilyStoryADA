@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Request
+from fastapi import FastAPI, Query, Request, HTTPException
 import os
 from fastapi.responses import FileResponse, JSONResponse
 import time
@@ -15,8 +15,16 @@ import io
 from PIL import Image
 import base64
 from googletrans import Translator
-
-
+import typing_extensions as typing
+import os
+import google.generativeai as genai
+from google.ai.generativelanguage_v1beta.types import content
+import json
+class paraphrased(typing.TypedDict):
+    original_text: str
+    paraphrased_texts: list[str]
+    
+genai.configure(api_key="AIzaSyAOHsE8hHp5G0zx6kM-dnmp4YuI_gaHBGE")
 model_id = "stabilityai/stable-diffusion-3.5-large-turbo"
 API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
 headers = {"Authorization": "Bearer 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"}
@@ -208,3 +216,45 @@ async def fetch_image(user_id: str, filename: str):
 @app.get("/")
 async def root():
     return {"message": "FastAPI server is working with dynamic base URL!"}
+
+@app.get("/generate_paraphrasing/{user_id}")
+async def generate_paraphrasing(
+    text: str = Query(..., min_length=1, description="Text to be simplified.")
+):
+
+    generation_config = {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 40,
+        "max_output_tokens": 8192,
+        "response_schema": paraphrased,
+        "response_mime_type": "application/json"
+    }
+
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-pro",
+        generation_config=generation_config,
+    )
+    try:
+        # Define the prompt using the user-provided text
+        prompt = (
+            f"Ubahlah kalimat berikut '{text}' menjadi tiga kalimat sederhana yang mudah dipahami oleh anak kecil "
+            "dengan autism spectrum disorder. Gunakan gaya bahasa deskriptif yang menggambarkan tindakan atau situasi, "
+            "tanpa memberikan instruksi langsung. Pastikan jumlah kata dalam hasil akhir hampir sama dengan jumlah "
+            "kata pada kalimat asli."
+        )
+        
+        # Generate response
+        response = model.generate_content(prompt)
+
+        # Ensure response content is available
+        if not response or not response.text:
+            raise HTTPException(status_code=500, detail="Failed to generate content.")
+        try:
+            response_json = json.loads(response.text)
+        except json.JSONDecodeError as e:
+            raise HTTPException(status_code=500, detail=f"Failed to parse JSON: {str(e)}")
+        
+        return response_json
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
