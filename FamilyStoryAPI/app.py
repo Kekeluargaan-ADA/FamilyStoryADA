@@ -41,7 +41,7 @@ classfication_config = {
     }
 
 classfication = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-8b",
     generation_config=classfication_config,
 )
 
@@ -55,7 +55,7 @@ paraphrasing_config = {
     }
 
 paraphrasing = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-8b",
     generation_config=paraphrasing_config,
 )
     
@@ -281,7 +281,7 @@ async def generate_paraphrasing(
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 @app.get("/classify_text/{user_id}")
-async def generate_paraphrasing(
+async def classify_text(
     text: str = Query(..., min_length=1, description="Text to be classify.")
 ):
     try:
