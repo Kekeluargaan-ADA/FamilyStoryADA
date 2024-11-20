@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct AddNewPageButtonView: View {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 8 * heightRatio)
                 .foregroundStyle(Color("FSBorderBlue7"))
             Image(systemName: "plus")
                 .resizable()
-                .frame(width: 34, height: 38)
+                .frame(width: 34 * widthRatio, height: 38 * heightRatio)
                 .foregroundStyle(Color("FSBlue9"))
         }
-        .frame(width: 152, height: 93.37)
+        .frame(width: 152 * widthRatio, height: 93.37 * heightRatio)
     }
 }
 
 #Preview {
-    AddNewPageButtonView()
+    AddNewPageButtonView(widthRatio: 1, heightRatio: 1)
 }

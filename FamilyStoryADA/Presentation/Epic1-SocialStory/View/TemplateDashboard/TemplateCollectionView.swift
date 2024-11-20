@@ -38,7 +38,7 @@ struct TemplateCollectionView: View {
                                         ScrollView {
                                             LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
                                                 ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
-                                                    TemplateCardView(template: template) {
+                                                    TemplateCardView(template: template, widthRatio: widthRatio, heightRatio: heightRatio) {
                                                         viewModel.selectedTemplate = template
                                                         viewModel.isPagePreviewModalPresented = true
                                                     }
@@ -50,8 +50,8 @@ struct TemplateCollectionView: View {
                                 )
                         }
                     }
-                    if viewModel.isPagePreviewModalPresented, let template = Binding($viewModel.selectedTemplate) {
-                        PagePreviewModalView()
+                    if viewModel.isPagePreviewModalPresented, let _ = Binding($viewModel.selectedTemplate) {
+                        PagePreviewModalView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .environmentObject(viewModel)
                         
                     }
@@ -63,7 +63,7 @@ struct TemplateCollectionView: View {
                 viewModel.fetchTemplates()
                 viewModel.filterTemplates(by: nil)
             }
-            .onChange(of: viewModel.isTemplateClosed) { value in
+            .onChange(of: viewModel.isTemplateClosed) { _, value in
                 if value {
                     storyViewModel.currentlySelectedStory = viewModel.createdStory
                     if viewModel.createdStory != nil {

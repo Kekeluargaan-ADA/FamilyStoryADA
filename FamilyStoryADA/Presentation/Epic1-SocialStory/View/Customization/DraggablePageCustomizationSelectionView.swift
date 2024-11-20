@@ -10,12 +10,14 @@ import SwiftUI
 struct DraggablePageCustomizationSelectionView: View {
     @EnvironmentObject var viewModel: PageCustomizationViewModel
     @Binding var draggedPages: [DraggablePage]
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     @State private var targetedIndex: Int? = nil
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                DroppedPageTargetCustomizationView(isSelected: targetedIndex == -1)
+                DroppedPageTargetCustomizationView(isSelected: targetedIndex == -1, widthRatio: widthRatio, heightRatio: heightRatio)
                     .dropDestination(for: DraggablePage.self) { droppedPage, location in
                         if let page = droppedPage.first {
                             viewModel.movePage(page, toIndex: -1)
@@ -34,7 +36,9 @@ struct DraggablePageCustomizationSelectionView: View {
                     if let image = viewModel.loadImageFromDiskWith(fileName: page.picturePath) {
                         DraggedPageView(imagePath: image,
                                         order: index+1,
-                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                                        isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        widthRatio: widthRatio,
+                                        heightRatio: heightRatio
                         )
                         .draggable(page)
                         .onTapGesture {
@@ -43,7 +47,9 @@ struct DraggablePageCustomizationSelectionView: View {
                     } else if page.picturePath != "" {
                         DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                         order: index+1,
-                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                                        isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        widthRatio: widthRatio,
+                                        heightRatio: heightRatio
                         )
                         .draggable(page)
                         .onTapGesture {
@@ -51,7 +57,9 @@ struct DraggablePageCustomizationSelectionView: View {
                         }
                     } else {
                         DraggedPageView(order: index+1,
-                                        isSelected: viewModel.selectedPage?.pageId == page.id
+                                        isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        widthRatio: widthRatio,
+                                        heightRatio: heightRatio
                         )
                         .draggable(page)
                         .onTapGesture {
@@ -59,7 +67,7 @@ struct DraggablePageCustomizationSelectionView: View {
                         }
                     }
                         
-                    DroppedPageTargetCustomizationView(isSelected: targetedIndex == index)
+                    DroppedPageTargetCustomizationView(isSelected: targetedIndex == index, widthRatio: widthRatio, heightRatio: heightRatio)
                         .dropDestination(for: DraggablePage.self) { droppedPage, location in
                             
                             if let page = droppedPage.first {
@@ -81,7 +89,7 @@ struct DraggablePageCustomizationSelectionView: View {
                     Button(action: {
                         viewModel.addNewBlankPage()
                     }, label: {
-                        AddNewPageButtonView()
+                        AddNewPageButtonView(widthRatio: widthRatio, heightRatio: heightRatio)
                     })
                 }
             }

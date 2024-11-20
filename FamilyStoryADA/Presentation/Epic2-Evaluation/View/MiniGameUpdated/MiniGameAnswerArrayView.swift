@@ -9,11 +9,14 @@ import SwiftUI
 
 struct MiniGameAnswerArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         ScrollView(.horizontal) {
-            HStack(spacing: 20) {
+            HStack(spacing: 20 * widthRatio) {
                 ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
-                    MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index))
+                    MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index), widthRatio: widthRatio, heightRatio: heightRatio)
                 }
             }
         }
@@ -31,5 +34,5 @@ struct MiniGameAnswerArrayView: View {
 }
 
 #Preview {
-    MiniGameAnswerArrayView()
+    MiniGameAnswerArrayView(widthRatio: 1, heightRatio: 1)
 }

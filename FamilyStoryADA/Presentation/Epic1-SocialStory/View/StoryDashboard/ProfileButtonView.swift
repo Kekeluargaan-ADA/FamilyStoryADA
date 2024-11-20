@@ -9,19 +9,23 @@ import SwiftUI
 
 struct ProfileButtonView: View {
     var imageName: String
+    
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         ZStack {
             Circle()
-                .frame(width: 60, height: 60)
+                .frame(width: 60 * widthRatio, height: 60 * heightRatio)
                 .foregroundStyle(Color("FSSecondaryBlue4"))
             if imageName != "" {
                 Image(imageName)
                     .resizable()
-                    .frame(width: 55, height: 55)
+                    .frame(width: 55 * widthRatio, height: 55 * heightRatio)
                     .clipShape(Circle())
             } else {
                 Image(systemName: "person")
-                    .font(.system(size: 26, weight: .bold))
+                    .font(.system(size: 26 * heightRatio, weight: .bold))
                     .foregroundStyle(Color("FSBlue9"))
             }
         }
@@ -29,5 +33,5 @@ struct ProfileButtonView: View {
 }
 
 #Preview {
-    ProfileButtonView(imageName: "DummyImage")
+    ProfileButtonView(imageName: "DummyImage", widthRatio: 1, heightRatio: 1)
 }

@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct LostConnectionView: Shape {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let width = rect.size.width
-        let height = rect.size.height
+        let width = 127.64 * widthRatio
+        let height = 127.65 * heightRatio
         path.move(to: CGPoint(x: 0.03089*width, y: 0.99512*height))
         path.addCurve(to: CGPoint(x: 0.00732*width, y: 0.97967*height), control1: CGPoint(x: 0.02114*width, y: 0.99512*height), control2: CGPoint(x: 0.01138*width, y: 0.98862*height))
         path.addCurve(to: CGPoint(x: 0.01382*width, y: 0.94959*height), control1: CGPoint(x: 0.00325*width, y: 0.96992*height), control2: CGPoint(x: 0.00488*width, y: 0.96016*height))

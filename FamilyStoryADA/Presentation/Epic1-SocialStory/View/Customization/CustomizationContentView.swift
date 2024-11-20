@@ -20,10 +20,13 @@ struct CustomizationContentView: View {
     
     @State private var typingTimer: Timer? = nil
     
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         VStack{
             if let page = viewModel.selectedPage {
-                VStack(alignment: .center, spacing: 19) {
+                VStack(alignment: .center, spacing: 32 * heightRatio) {
                     ZStack(alignment: .topTrailing) {
                         if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
                             
@@ -31,25 +34,25 @@ struct CustomizationContentView: View {
                                 Image(imagePath)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .mask(Rectangle().padding(.top, 390))
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .mask(Rectangle().padding(.top, 390 * heightRatio))
                                     .overlay(
                                         VignetteEffectView()
                                             .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
                                             )
                                     )
                             } else {
                                 Image(imagePath)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     .overlay(
                                         VignetteEffectView()
                                             .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
                                             )
                                     )
                             }
@@ -60,91 +63,122 @@ struct CustomizationContentView: View {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .mask(Rectangle().padding(.top, 390))
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .mask(Rectangle().padding(.top, 390 * heightRatio))
                                     .overlay(
                                         VignetteEffectView()
                                             .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
                                             )
                                     )
                             } else {
                                 Image(uiImage: image)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     .overlay(
                                         VignetteEffectView()
                                             .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
                                             )
                                     )
                             }
                             
                         } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
                             
-                            let videoPlayer = AVPlayer(url: url)
+//                            let videoPlayer = AVPlayer(url: url)
                             
-                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
-                                CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .mask(Rectangle().padding(.top, 390))
-                                    .overlay(
-                                        VignetteEffectView()
-                                            .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                            ZStack {
+                                if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                                    CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                                        .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .mask(Rectangle().padding(.top, 390 * heightRatio))
+                                        .overlay(
+                                            VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                )
+                                        )
+                                        .onAppear() {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onDisappear() {
+                                            viewModel.videoPlayer.pause()
+                                        }
+                                        .onChange(of: url) {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onTapGesture() {
+                                            viewModel.videoPlayer.seek(to: .zero)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                } else {
+                                    CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                                        .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .overlay(
+                                            VignetteEffectView()
+                                                .clipShape(
+                                                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                )
+                                        )
+                                        .onAppear() {
+                                            
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onDisappear() {
+                                            viewModel.videoPlayer.pause()
+                                        }
+                                        .onChange(of: url) {
+                                            viewModel.videoPlayer = AVPlayer(url: url)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                        .onTapGesture() {
+                                            viewModel.videoPlayer.seek(to: .zero)
+                                            viewModel.videoPlayer.play()
+                                        }
+                                }
+                                
+                                if !viewModel.isVideoReadyToPlay, let imagePath = page.pageVideo.first?.componentContent {
+                                    if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .mask(Rectangle().padding(.top, 390 * heightRatio))
+                                            .overlay(
+                                                VignetteEffectView()
+                                                    .clipShape(
+                                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    )
                                             )
-                                    )
-                                    .onAppear() {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onDisappear() {
-                                        viewModel.videoPlayer.pause()
-                                    }
-                                    .onChange(of: url) {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onTapGesture() {
-                                        viewModel.videoPlayer.seek(to: .zero)
-                                        viewModel.videoPlayer.play()
-                                    }
-                            } else {
-                                CustomVideoPlayerView(player: viewModel.videoPlayer)
-                                    .frame(width: 760, height: 468)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    .overlay(
-                                        VignetteEffectView()
-                                            .clipShape(
-                                                RoundedRectangle(cornerRadius: 12)
+                                    } else {
+                                        Image(imagePath)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .overlay(
+                                                VignetteEffectView()
+                                                    .clipShape(
+                                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    )
                                             )
-                                    )
-                                    .onAppear() {
-                                        
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
                                     }
-                                    .onDisappear() {
-                                        viewModel.videoPlayer.pause()
-                                    }
-                                    .onChange(of: url) {
-                                        viewModel.videoPlayer = AVPlayer(url: url)
-                                        viewModel.videoPlayer.play()
-                                    }
-                                    .onTapGesture() {
-                                        viewModel.videoPlayer.seek(to: .zero)
-                                        viewModel.videoPlayer.play()
-                                    }
+                                }
                             }
                         } else {
                             Button(action: {
                                 viewModel.isMediaOverlayOpened = true
                             }, label: {
-                                EmptyImageCustomizationView(isParaphrasingPresented: $isParaphrasingPresented, viewModel: viewModel)
+                                EmptyImageCustomizationView(isParaphrasingPresented: $isParaphrasingPresented, viewModel: viewModel, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                         }
                         
@@ -170,7 +204,7 @@ struct CustomizationContentView: View {
                             }
                         } label: {
                             Image(systemName: "ellipsis")
-                                .font(.system(size: 26))
+                                .font(.system(size: 26 * heightRatio))
                                 .fontWeight(.bold)
                                 .foregroundStyle(Color("FSWhite"))
                                 .padding()
@@ -179,7 +213,7 @@ struct CustomizationContentView: View {
                             order: 3,
                             title: "Ganti Gambar",
                             description: "Ganti gambar yang disediakan dengan foto atau video sendiri.",
-                            cornerRadius: 20,
+                            cornerRadius: 20 * heightRatio,
                             style: .circular,
                             position: .bottomLeading
                         )
@@ -211,22 +245,22 @@ struct CustomizationContentView: View {
                             ))
                             .scrollContentBackground(.hidden)
                             .background(Color.clear)
-                            .padding(.horizontal, 19)
-                            .padding(.vertical, 15)
-                            .padding(.top, 24) // Additional padding for word count
-                            .frame(width: 760, height: 168)
-                            .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                            .padding(.horizontal, 19 * widthRatio)
+                            .padding(.vertical, 15 * heightRatio)
+                            .padding(.top, 24 * heightRatio) // Additional padding for word count
+                            .frame(width: 760 * widthRatio, height: 168 * heightRatio)
+                            .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                             .fontWeight(.semibold)
                             .foregroundStyle(Color("FSBlack"))
                             
                             if currentText.isEmpty {
                                 Text("Masukkan teks di sini")
-                                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                     .fontWeight(.semibold)
                                     .foregroundColor(Color("FSGrey").opacity(0.5))
-                                    .padding(.horizontal, 19)
-                                    .padding(.vertical, 15)
-                                    .padding(.top, 28)
+                                    .padding(.horizontal, 19 * widthRatio)
+                                    .padding(.vertical, 15 * heightRatio)
+                                    .padding(.top, 28 * heightRatio)
                                     .allowsHitTesting(false)
                             }
                         }
@@ -234,20 +268,20 @@ struct CustomizationContentView: View {
                             Group {
                                 if viewModel.selectedPage?.pageTextClassification == "Instructive" {
                                     TextBoxBackgroundView()
-                                        .stroke(Color("FSPrimaryOrange5"), lineWidth: 2)
+                                        .stroke(Color("FSPrimaryOrange5"), lineWidth: 2 * widthRatio)
                                 } else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
                                     TextBoxBackgroundView()
-                                        .stroke(Color(.fsBorderBlue7), lineWidth: 2)
+                                        .stroke(Color(.fsBorderBlue7), lineWidth: 2 * widthRatio)
                                 } else {
                                     TextBoxBackgroundView()
-                                        .stroke(Color(.fsBlack), lineWidth: 2)
+                                        .stroke(Color(.fsBlack), lineWidth: 2 * widthRatio)
                                 }
                             }
                         )
                         .overlay(alignment: .topLeading) {
-                            HStack(spacing: 4) {
+                            HStack(spacing: 4 * widthRatio) {
                                 Text("\(wordCount)/15 kata")
-                                    .font(Font.custom("Fredoka", size: 16))
+                                    .font(Font.custom("Fredoka", size: 16 * widthRatio))
                                     .foregroundColor(isLimitReached ? Color("FSPrimaryOrange5") : Color("FSGrey"))
                                     .animation(.easeInOut(duration: 0.2), value: isLimitReached)
                                 
@@ -257,19 +291,19 @@ struct CustomizationContentView: View {
                                         .transition(.scale.combined(with: .opacity))
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.top, 8)
+                            .padding(.horizontal, 20 * widthRatio)
+                            .padding(.top, 8 * heightRatio)
                         }
                         .overlay(alignment: .bottomTrailing) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 40)
+                                RoundedRectangle(cornerRadius: 40 * heightRatio)
                                     .foregroundStyle(.clear)
-                                    .frame(width: 123, height: 30)
+                                    .frame(width: 123 * widthRatio, height: 30 * heightRatio)
                                     .highlight(
                                         order: 5,
                                         title: "Gunakan AI",
                                         description: "Optimisasi konten menggunakan parafrase dengan AI.",
-                                        cornerRadius: 40,
+                                        cornerRadius: 40 * heightRatio,
                                         style: .continuous,
                                         position: .topCenter
                                     )
@@ -280,7 +314,7 @@ struct CustomizationContentView: View {
                                         viewModel.paraphraseModalIsLoading = true
                                         Task {
                                             do {
-                                                let result = try await viewModel.getParaphrasing(for: currentText)
+                                                let _ = try await viewModel.getParaphrasing(for: currentText)
                                                 keyboardHelper.isKeyboardShown = false
                                                 viewModel.paraphraseModalIsLoading = false
                                             } catch {
@@ -289,19 +323,19 @@ struct CustomizationContentView: View {
                                             }
                                         }
                                     }, label: {
-                                        HStack(spacing: 8) {
+                                        HStack(spacing: 8 * widthRatio) {
                                             Image(systemName: "sparkles")
                                             Text("Optimalkan")
-                                                .font(.system(size: 16))
+                                                .font(Font.custom("Fredoka", size: 16 * heightRatio))
                                                 .fontWeight(.medium)
                                         }
                                         .foregroundStyle(Color(.fsBlue9))
                                         .padding()
                                         .background(
-                                            RoundedRectangle(cornerRadius: 40)
-                                                .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2)
+                                            RoundedRectangle(cornerRadius: 40 * heightRatio)
+                                                .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2 * widthRatio)
                                                 .background(
-                                                    RoundedRectangle(cornerRadius: 40)
+                                                    RoundedRectangle(cornerRadius: 40 * heightRatio)
                                                         .fill(Color.white)
                                                 )
                                         )
@@ -320,32 +354,32 @@ struct CustomizationContentView: View {
                             HStack {
                                 if viewModel.selectedPage?.pageTextClassification == "Instructive" {
                                     Image(systemName: "exclamationmark.triangle")
-                                        .font(Font.custom("Fredoka", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                     Text("Instruksional")
-                                        .font(Font.custom("Fredoka", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
                                         .foregroundStyle(Color(.fsPrimaryOrange5))
                                 }
                                 else if viewModel.selectedPage?.pageTextClassification == "Descriptive" {
                                     Image(systemName: "hand.thumbsup")
-                                        .font(Font.custom("Fredoka", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                     Text("Deskriptif")
-                                        .font(Font.custom("Fredoka", size: 16))
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
                                         .foregroundStyle(Color(.fsBorderBlue7))
                                 }
                             }
-                            .padding(.top, 8)
-                            .padding(.leading, 136)
+                            .padding(.top, 8 * heightRatio)
+                            .padding(.leading, 136 * widthRatio)
                         }
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 10 * heightRatio)
                             .foregroundStyle(.clear)
-                            .frame(width: 760, height: 170)
+                            .frame(width: 760 * widthRatio, height: 170 * heightRatio)
                             .highlight(
                                 order: 4,
                                 title: "Edit Teks",
                                 description: "Tekan untuk mengedit teks jika dibutuhkan dan atur sesuai kebiasaan anak.",
-                                cornerRadius: 10,
+                                cornerRadius: 10 * heightRatio,
                                 style: .continuous,
                                 position: .topCenter
                             )
@@ -355,7 +389,7 @@ struct CustomizationContentView: View {
                 }
                 
                 .disabled(isParaphrasingPresented)
-                .offset(y: !viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 : 0)
+                .offset(y: !viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented) ? -404 * heightRatio : 0)
             }
         }
         
@@ -370,7 +404,7 @@ struct CustomizationContentView: View {
                     let result = try await viewModel.getTextClassification(for: currentText)
                     // Uncomment to assign the result if needed
                     // currentText = result
-                    viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                    await viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
                 } catch {
                     print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                     // Handle error here, possibly by setting an error message in viewModel
