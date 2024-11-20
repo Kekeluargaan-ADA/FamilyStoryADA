@@ -7,8 +7,8 @@ struct ParaphraseModal: View {
     @State var selectedOption: String?
     let widthRatio: CGFloat
     let heightRatio: CGFloat
-    // State to track loading
-    
+     // State to track loading
+
     var body: some View {
         ZStack(alignment: .topLeading) {
             HStack(alignment: .top, spacing: 16 * widthRatio) {
@@ -21,7 +21,7 @@ struct ParaphraseModal: View {
                         .foregroundColor(Color.gray)
                         .padding()
                 })
-                
+
                 VStack(alignment: .leading, spacing: 8 * heightRatio) {
                     // Title with icon
                     HStack(spacing: 8 * widthRatio) {
@@ -33,14 +33,10 @@ struct ParaphraseModal: View {
                             .fontWeight(.semibold)
                             .foregroundStyle(Color("FSBlack"))
                     }
-                    
+
                     // Loading indicator or paraphrased text options
                     if viewModel.paraphraseModalIsLoading {
-                        VStack{
-                            Spacer()
-                            LottieView(animationName: "load-state-icon", width: 68 * widthRatio, height: 72 * heightRatio)
-                            Spacer()
-                        }.frame(width: 980 * widthRatio,height: 150*heightRatio,alignment: .center)
+                        LottieView(animationName: "load-state-icon", width: 68 * widthRatio, height: 72 * heightRatio)
                     } else {
                         VStack(alignment: .leading, spacing: 4 * heightRatio) {
                             ForEach(viewModel.paraphrasedOptions, id: \.self) { paraphrasedText in
@@ -49,68 +45,67 @@ struct ParaphraseModal: View {
                         }
                         .frame(width: 980 * widthRatio)
                         .foregroundColor(.black)
-                        HStack(spacing: 16 * widthRatio) {
-                            // Rephrase Button
-                            Button(action: {
-                                viewModel.paraphraseModalIsLoading = true // Start loading
-                                Task {
-                                    do {
-                                        let result = try await viewModel.getParaphrasing(for: viewModel.selectedPage!.pageText.first!.componentContent)
-                                        // Update view model's options here
-                                        viewModel.paraphraseModalIsLoading = false // Stop loading after fetching
-                                    } catch {
-                                        print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                        viewModel.paraphraseModalIsLoading = false // Stop loading on error
-                                    }
+                    }
+
+                    HStack(spacing: 16 * widthRatio) {
+                        // Rephrase Button
+                        Button(action: {
+                            viewModel.paraphraseModalIsLoading = true // Start loading
+                            Task {
+                                do {
+                                    let result = try await viewModel.getParaphrasing(for: viewModel.selectedPage!.pageText.first!.componentContent)
+                                    // Update view model's options here
+                                    viewModel.paraphraseModalIsLoading = false // Stop loading after fetching
+                                } catch {
+                                    print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                    viewModel.paraphraseModalIsLoading = false // Stop loading on error
                                 }
-                            }) {
-                                HStack(spacing: 4 * widthRatio) {
-                                    Image(systemName: "arrow.clockwise")
-                                        .font(Font.system(size: 20 * heightRatio))
-                                        .fontWeight(.medium)
-                                    Text("Refresh")
-                                        .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
-                                        .fontWeight(.medium)
-                                }
-                                .font(.body)
-                                .frame(width: 160 * widthRatio, height: 60 * heightRatio)
-                                .background(Color(.fsSecondaryBlue4))
-                                .foregroundColor(Color(.fsBlue9))
-                                .cornerRadius(20 * heightRatio)
                             }
-                            
-                            // Select Button
-                            Button(action: {
-                                if let option = selectedOption {
-                                    viewModel.selectedPage?.pageText.first?.componentContent = option
-                                    // TODO: Refactor this
-                                    Task {
-                                        do {
-                                            let result = try await viewModel.getTextClassification(for: option)
-                                            viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
-                                        } catch {
-                                            print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                            // Handle error here, possibly by setting an error message in viewModel
-                                        }
-                                    }
-                                    isParaphrasingPresented = false
-                                }
-                            }) {
-                                Text("Pilih")
+                        }) {
+                            HStack(spacing: 4 * widthRatio) {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(Font.system(size: 20 * heightRatio))
+                                    .fontWeight(.medium)
+                                Text("Refresh")
                                     .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
                                     .fontWeight(.medium)
-                                    .frame(width: 160 * widthRatio, height: 60 * heightRatio)
-                                    .background(Color.teal)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(20 * heightRatio)
                             }
+                            .font(.body)
+                            .frame(width: 160 * widthRatio, height: 60 * heightRatio)
+                            .background(Color(.fsSecondaryBlue4))
+                            .foregroundColor(Color(.fsBlue9))
+                            .cornerRadius(20 * heightRatio)
                         }
-                        .frame(width: 980 * widthRatio, alignment: .bottomTrailing)
+
+                        // Select Button
+                        Button(action: {
+                            if let option = selectedOption {
+                                viewModel.selectedPage?.pageText.first?.componentContent = option
+                                // TODO: Refactor this
+                                Task {
+                                    do {
+                                        let result = try await viewModel.getTextClassification(for: option)
+                                        viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    } catch {
+                                        print("Failed to fetch paraphrasing: \(error.localizedDescription)")
+                                        // Handle error here, possibly by setting an error message in viewModel
+                                    }
+                                }
+                                isParaphrasingPresented = false
+                            }
+                        }) {
+                            Text("Pilih")
+                                .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
+                                .fontWeight(.medium)
+                                .frame(width: 160 * widthRatio, height: 60 * heightRatio)
+                                .background(Color.teal)
+                                .foregroundColor(.white)
+                                .cornerRadius(20 * heightRatio)
+                        }
                     }
-                    
-                    
+                    .frame(width: 980 * widthRatio, alignment: .bottomTrailing)
                 }
-                
+
                 Spacer()
             }
         }
@@ -124,7 +119,7 @@ struct ParaphraseOptionButton: View {
     @Binding var selectedOption: String?
     let widthRatio: CGFloat
     let heightRatio: CGFloat
-    
+
     var body: some View {
         Button(action: {
             selectedOption = option
