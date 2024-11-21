@@ -34,6 +34,7 @@ struct BriefSquareView: View {
                         Spacer()
                         
                         Button(action: {
+                            viewModel.templateEditName = template.templateName
                             viewModel.isImageInputModalPresented.toggle()
                         }) {
                             Text("Gunakan template")

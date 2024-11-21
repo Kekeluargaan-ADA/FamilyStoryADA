@@ -17,9 +17,9 @@ struct MiniGameOptionArrayView: View {
     var body: some View {
         ScrollView(.horizontal) {
             LazyHGrid(rows: [
-                GridItem(.fixed(191 * heightRatio)),
+                GridItem(.fixed(191 * heightRatio), spacing: 12 * heightRatio),
                 GridItem(.fixed(191 * heightRatio))
-            ], spacing: 8 * widthRatio) {
+            ], spacing: 12 * widthRatio) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
                     MiniGameOptionCardView(image: .constant(viewModel.displayImage(fileName: value.picturePath)), isOption: value.id != nil, widthRatio: widthRatio, heightRatio: heightRatio)
 //                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))
@@ -73,6 +73,7 @@ struct MiniGameOptionArrayView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 

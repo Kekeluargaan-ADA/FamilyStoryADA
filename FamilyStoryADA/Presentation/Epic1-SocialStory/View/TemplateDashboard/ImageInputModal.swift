@@ -9,7 +9,6 @@ struct ImageInputModal: View {
     @StateObject private var keyboardHelper = KeyboardHelper()
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @StateObject var storyViewModel = StoryViewModel()
-    @State var editedText = ""
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     
@@ -21,12 +20,12 @@ struct ImageInputModal: View {
                     ZStack {
                         if templateViewModel.isEditingStoryName {
                             // Editable TextField with auto-save on every keystroke
-                            TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $editedText)
+                            TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $templateViewModel.templateEditName)
                                 .font(Font.custom("Fredoka", size: 32 * heightRatio).weight(.semibold))
                                 .foregroundColor(Color("FSBlack"))
                                 .multilineTextAlignment(.center)
-                                .onChange(of: editedText) { _, newValue in
-                                    editedText = newValue
+                                .onChange(of: templateViewModel.templateEditName) { _, newValue in
+                                    templateViewModel.templateEditName = newValue
                                 }
                             
                                 .focused($isTextFieldFocused) // Bind focus state to TextField
@@ -42,7 +41,7 @@ struct ImageInputModal: View {
                                 }
                         } else {
                             // Non-editable Text view
-                            Text(editedText)
+                            Text(templateViewModel.templateEditName)
                                 .font(Font.custom("Fredoka", size: 32 * heightRatio).weight(.semibold))
                             
                                 .foregroundColor(Color("FSBlack"))
@@ -68,9 +67,6 @@ struct ImageInputModal: View {
                 }
                 .padding(.horizontal, 24 * widthRatio)
                 .padding(.top, 24 * heightRatio)
-                .onAppear(){
-                    editedText = templateViewModel.selectedTemplate?.templateName ?? ""
-                }
                 
                 
                 Text("Pilih foto anak untuk perkenalan dan penutup.")
@@ -201,10 +197,10 @@ struct ImageInputModal: View {
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
                         templateViewModel.isTemplateClosed = true
-                        if editedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            editedText = templateViewModel.selectedTemplate!.templateName
+                        if templateViewModel.templateEditName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            templateViewModel.templateEditName = templateViewModel.selectedTemplate!.templateName
                         }
-                        templateViewModel.createdStory?.storyName = editedText
+                        templateViewModel.createdStory?.storyName = templateViewModel.templateEditName
                         storyViewModel.updateStory(story: templateViewModel.createdStory!)
                         dismiss()
                     }) {
