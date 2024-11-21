@@ -31,7 +31,7 @@ struct CustomizationView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 ZStack (alignment: .center){
-                    HStack(alignment: .top, spacing: 16 * widthRatio) {
+                    HStack(alignment: .top) {
                         VStack(spacing: 32 * heightRatio) {
                             Button(action: {
                                 viewModel.updatePage()

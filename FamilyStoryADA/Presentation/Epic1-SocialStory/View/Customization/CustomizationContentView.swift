@@ -249,13 +249,13 @@ struct CustomizationContentView: View {
                             .padding(.vertical, 15 * heightRatio)
                             .padding(.top, 24 * heightRatio) // Additional padding for word count
                             .frame(width: 760 * widthRatio, height: 168 * heightRatio)
-                            .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                            .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title))
                             .fontWeight(.semibold)
                             .foregroundStyle(Color("FSBlack"))
                             
                             if currentText.isEmpty {
                                 Text("Masukkan teks di sini")
-                                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                    .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title))
                                     .fontWeight(.semibold)
                                     .foregroundColor(Color("FSGrey").opacity(0.5))
                                     .padding(.horizontal, 19 * widthRatio)
