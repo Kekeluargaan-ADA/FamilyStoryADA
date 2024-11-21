@@ -170,7 +170,7 @@ async def crawl_images(
     all_urls.clear()
     
     tasks = [
-    asyncio.create_task(generateImage(keyword=keyword, user_id=user_id)),
+    # asyncio.create_task(generateImage(keyword=keyword, user_id=user_id)),
     asyncio.create_task(async_download_images(keyword, max_num, user_id))   
 ]
     results = await asyncio.gather(*tasks)
