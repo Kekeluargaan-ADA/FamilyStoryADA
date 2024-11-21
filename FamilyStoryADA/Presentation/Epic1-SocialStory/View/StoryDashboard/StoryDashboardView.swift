@@ -22,18 +22,19 @@ struct StoryDashboardView: View {
                 
                 ZStack(alignment: .top) {
                     ZStack(alignment: .top) {
-                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        StoryDashboardBackgroundSecondaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSYellow"))
 //                            .padding(.top, 24 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
 //                            .ignoresSafeArea()
-                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        StoryDashboardBackgroundPrimaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSWhite"))
                             .padding(.top, 8 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
 //                            .ignoresSafeArea()
                     }
                     .frame(height: 804 * heightRatio)
+                    .padding(.top, 30 * heightRatio)
                     
                     VStack {
                         HStack {
@@ -52,7 +53,8 @@ struct StoryDashboardView: View {
                             }
                         }
                         .padding(.horizontal, 46 * widthRatio)
-                        .padding(.top, 24 * heightRatio)
+                        .padding(.top, 54 * heightRatio)
+                        
                         ZStack {
                             VStack {
                                 HStack (spacing: 14 * widthRatio) {

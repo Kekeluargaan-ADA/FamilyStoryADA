@@ -27,6 +27,7 @@ struct FamilyStoryADAApp: App {
 //            CameraView()
 //            MiniQuizView()
             StoryDashboardView()
+                .statusBar(hidden: true)
                 .preferredColorScheme(.light)
 //            TemplateCollectionView()
 //            ImageCrawlView()
