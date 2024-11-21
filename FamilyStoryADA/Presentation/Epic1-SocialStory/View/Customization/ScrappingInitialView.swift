@@ -181,7 +181,7 @@ struct GridItemView: View {
                     .frame(width: 214 * widthRatio, height: 132 * heightRatio)
                     .clipped()
                     .cornerRadius(12 * heightRatio)
-                    .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12 * heightRatio)
                             .stroke(isSelected ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)

@@ -72,7 +72,7 @@ struct MiniGameView: View {
                         RoundedRectangle(cornerRadius: 40 * heightRatio)
                             .foregroundStyle(Color("FSWhite"))
                             .frame(width: 1195 * widthRatio, height: 220 * heightRatio)
-                            .shadow(radius: 10, y: -4 * heightRatio)
+                            .shadow(color: Color(.fsBlack).opacity(0.1), radius: 10, y: -4 * heightRatio)
                         MiniGameAnswerArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .padding(.leading, 80 * widthRatio)
                             .padding(.top, 20 * heightRatio)

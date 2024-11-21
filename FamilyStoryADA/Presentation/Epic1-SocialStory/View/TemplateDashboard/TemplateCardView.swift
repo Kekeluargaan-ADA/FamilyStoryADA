@@ -17,13 +17,14 @@ struct TemplateCardView: View {
             .foregroundStyle(Color("FSWhite"))
             .frame(width: 354 * widthRatio, height: 280 * heightRatio)
             .cornerRadius(12 * heightRatio)
-            .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
+            .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
             .overlay(
                 VStack(alignment: .leading) {
                     ZStack(alignment: .top) {
                         Image(template.templateCoverImagePath)
                             .resizable()
-                            .frame(height: 220 * heightRatio)
+                            .scaledToFill()
+                            .frame(width: 354 * widthRatio, height: 220 * heightRatio)
                             .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio, style: .continuous))
                     }
                     Spacer()
@@ -35,7 +36,7 @@ struct TemplateCardView: View {
                             )
                             .foregroundColor(Color("FSBlack"))
                         Spacer()
-                        Text("3 m")
+                        Text("\(template.templateLength, specifier: "%.0f") m")
                             .font(Font.custom("Fredoka", size: 14 * heightRatio))
                             .foregroundColor(Color("FSGrey"))
                     }

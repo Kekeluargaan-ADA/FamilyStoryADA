@@ -13,8 +13,6 @@ struct TemplateCollectionView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var storyViewModel: StoryViewModel
     
-    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
-    
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -36,7 +34,11 @@ struct TemplateCollectionView: View {
                                         }
                                         .environmentObject(viewModel)
                                         ScrollView {
-                                            LazyVGrid(columns: columns, spacing: 20 * heightRatio) {
+                                            LazyVGrid(columns: [
+                                                GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
+                                                GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
+                                                GridItem(.fixed(354 * widthRatio))
+                                            ], spacing: 26 * heightRatio) {
                                                 ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
                                                     TemplateCardView(template: template, widthRatio: widthRatio, heightRatio: heightRatio) {
                                                         viewModel.selectedTemplate = template

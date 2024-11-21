@@ -22,7 +22,7 @@ struct ButtonSquare: View {
                 .foregroundStyle(Color("FSWhite"))
                 .frame(width: 153 * widthRatio, height: 133 * heightRatio)
                 .cornerRadius(20 * heightRatio)
-                .shadow(radius: 2, y: 4)
+                .shadow(color: Color(.fsBlack).opacity(0.1), radius: 2, y: 4 * heightRatio)
                 .overlay(
                     VStack {
                         Image(systemName: buttonImage)

@@ -24,7 +24,7 @@ struct UploadPhotoSquareView: View {
                     .foregroundColor(.clear)
                     .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                     .cornerRadius(12 * heightRatio)
-                    .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                     .overlay(
                         ZStack {
                             RoundedRectangle(cornerRadius: 12 * heightRatio)

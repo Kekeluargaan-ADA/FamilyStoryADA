@@ -12,6 +12,10 @@ class PageTemplatePreviewEntity: IEntityAble {
     var templateImage: String?
     var templatePageCategory: String
     
+    var componentTextWordCount: Int {
+        return (templateText?.count(where: { $0 == " "}) ?? 0) + 1
+    }
+    
     init(templateText: String?, templateImage: String?, templatePageCategory: String) {
         self.templateText = templateText
         self.templateImage = templateImage
