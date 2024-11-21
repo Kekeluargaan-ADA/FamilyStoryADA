@@ -121,8 +121,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     // TODO: Delete all component and ratio
     public func deletePage() {
         if let page = selectedPage {
-            if let storyIndex = story.pages.firstIndex(where: {page.pageId == $0.pageId}) {
-                //remove page swiftdata
+            if let storyIndex = story.pages.firstIndex(where: { page.pageId == $0.pageId }) {
+                deleteAssociatedMedia(for: page)
                 guard pageUsecase.removePage(pageId: page.pageId) else { return }
                 
                 //remove page in story entity
@@ -154,11 +154,48 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                         self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
                     }
                 }
-                
             }
         }
     }
-    
+
+    private func deleteAssociatedMedia(for page: PageEntity) {
+        for picture in page.pagePicture {
+            if let filePath = getFilePath(for: picture.componentContent) {
+                deleteFile(at: filePath)
+            }
+            componentUsecase.removeComponent(componentId: picture.componentId)
+        }
+
+        for video in page.pageVideo {
+            if let filePath = getFilePath(for: video.componentContent) {
+                deleteFile(at: filePath)
+            }
+            componentUsecase.removeComponent(componentId: video.componentId)
+        }
+
+        for text in page.pageText {
+            componentUsecase.removeComponent(componentId: text.componentId)
+        }
+    }
+
+    private func getFilePath(for filename: String) -> URL? {
+        let fileManager = FileManager.default
+        let appDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        return appDirectory?.appendingPathComponent(filename)
+    }
+
+    private func deleteFile(at path: URL) {
+        let fileManager = FileManager.default
+        do {
+            if fileManager.fileExists(atPath: path.path) {
+                try fileManager.removeItem(at: path)
+                print("Deleted file at \(path)")
+            }
+        } catch {
+            print("Error deleting file at \(path): \(error.localizedDescription)")
+        }
+    }
+
     public func updatePage() {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
