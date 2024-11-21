@@ -40,11 +40,9 @@ struct PagePreviewModalView: View {
                         .padding(.horizontal, 24 * widthRatio)
                         .padding(.top, 24 * heightRatio)
                     }
-                    //                            Spacer().frame(height: 24)
                     
                     BriefSquareView(heightRatio: heightRatio, widthRatio: widthRatio)
                         .environmentObject(viewModel)
-                    //                            Spacer().frame(height: 24)
                     ScrollView {
                         LazyVGrid(
                             columns: [GridItem(.flexible(), spacing: 20 * heightRatio), GridItem(.flexible(), spacing: 20 * heightRatio)],
@@ -54,7 +52,9 @@ struct PagePreviewModalView: View {
                                 StepsSquareView(heightRatio: heightRatio, widthRatio: widthRatio, order: index + 1, text: value.templateText, imageAssetName: value.templateImage)
                                 }
                         }
+                        .padding(.bottom, 28 * heightRatio)
                     }
+                    .scrollIndicators(.hidden)
                     .frame(width: 580 * widthRatio)
 //                    .padding(.horizontal, 45)
                 }

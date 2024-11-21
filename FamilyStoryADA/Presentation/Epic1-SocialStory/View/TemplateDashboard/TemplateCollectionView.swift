@@ -27,29 +27,27 @@ struct TemplateCollectionView: View {
                             UnevenRoundedRectangle(cornerRadii: .init(topLeading: 40 * heightRatio, topTrailing: 40 * heightRatio))
                                 .frame(height: 756 * heightRatio)
                                 .foregroundStyle(Color("FSWhite"))
-                                .overlay(
-                                    VStack {
-                                        TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) { category in
-                                            viewModel.filterTemplates(by: category)
-                                        }
-                                        .environmentObject(viewModel)
-                                        ScrollView {
-                                            LazyVGrid(columns: [
-                                                GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
-                                                GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
-                                                GridItem(.fixed(354 * widthRatio))
-                                            ], spacing: 26 * heightRatio) {
-                                                ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
-                                                    TemplateCardView(template: template, widthRatio: widthRatio, heightRatio: heightRatio) {
-                                                        viewModel.selectedTemplate = template
-                                                        viewModel.isPagePreviewModalPresented = true
-                                                    }
-                                                }
+                            VStack {
+                                TemplateCategoriesView(heightRatio: heightRatio, widthRatio: widthRatio) { category in
+                                    viewModel.filterTemplates(by: category)
+                                }
+                                .environmentObject(viewModel)
+                                ScrollView {
+                                    LazyVGrid(columns: [
+                                        GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio))
+                                    ], spacing: 26 * heightRatio) {
+                                        ForEach(viewModel.filteredTemplates, id: \.templateId) { template in
+                                            TemplateCardView(template: template, widthRatio: widthRatio, heightRatio: heightRatio) {
+                                                viewModel.selectedTemplate = template
+                                                viewModel.isPagePreviewModalPresented = true
                                             }
-                                            .padding(46 * widthRatio)
                                         }
                                     }
-                                )
+                                    .padding(46 * widthRatio)
+                                }
+                            }
                         }
                     }
                     if viewModel.isPagePreviewModalPresented, let _ = Binding($viewModel.selectedTemplate) {

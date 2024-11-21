@@ -31,6 +31,8 @@ struct BriefSquareView: View {
                             .frame(width: 228 * widthRatio, height: 160 * heightRatio, alignment: .trailing)
                             .multilineTextAlignment(.leading)
                         
+                        Spacer()
+                        
                         Button(action: {
                             viewModel.isImageInputModalPresented.toggle()
                         }) {
@@ -39,24 +41,16 @@ struct BriefSquareView: View {
                                     Font.custom("Fredoka", size: 20 * heightRatio)
                                         .weight(.medium)
                                 )
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color(.fsWhite))
                                 .frame(width: 224 * widthRatio, height: 40 * heightRatio)
                                 .background((Color("FSBlue9")))
                                 .cornerRadius(20 * heightRatio)
                         }
-                        
-                        // Change logic, requested by designer
-//                        .simultaneousGesture(TapGesture().onEnded {
-//                            if let id = viewModel.addNewStory(templateId: template.templateId) {
-//                                viewModel.createdStory = viewModel.fetchStoryById(storyId: id)
-//                            }
-//                            
-//                        })
                     }
-                    .frame(width: 224 * widthRatio, height: 160 * heightRatio, alignment: .bottom)
+                    .frame(width: 224 * widthRatio, height: 172 * heightRatio, alignment: .bottom)
                 }
                 .frame(width: 580 * widthRatio, height: 228 * heightRatio)
-                .background(.white)
+                .background(Color(.fsWhite))
                 .cornerRadius(20 * heightRatio)
                 
                 if viewModel.isImageInputModalPresented{
@@ -70,6 +64,3 @@ struct BriefSquareView: View {
     }
 }
 
-//#Preview {
-//    BriefSquareView(heightRatio: 1, widthRatio: 1)
-//}
