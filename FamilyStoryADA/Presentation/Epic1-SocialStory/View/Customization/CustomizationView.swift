@@ -75,7 +75,7 @@ struct CustomizationView: View {
                         
                         ZStack {
                             ZStack(alignment: .top) {
-                                Image("CustomizationBackground")
+                                Image("create-story-background")
                                     .resizable()
                                     .frame(width: 1000 * widthRatio, height: 854 * heightRatio)
 //                                    .ignoresSafeArea()
@@ -88,6 +88,7 @@ struct CustomizationView: View {
                                         .foregroundStyle(Color("FSBlack"))
                                 }
                                 .frame(width: 268 * widthRatio, height: 45 * heightRatio)
+                                .offset(y: 5 * heightRatio)
                                 VStack(spacing: 23 * heightRatio) {
                                     CustomizationHeaderView(
                                         story: viewModel.story,
