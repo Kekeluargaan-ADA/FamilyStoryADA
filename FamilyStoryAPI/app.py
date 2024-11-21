@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, Request, HTTPException
+from fastapi import FastAPI, Query, Request
 import os
 from fastapi.responses import FileResponse, JSONResponse
 import time
@@ -15,30 +15,6 @@ import io
 from PIL import Image
 import base64
 from googletrans import Translator
-import typing_extensions as typing
-import os
-import google.generativeai as genai
-from google.ai.generativelanguage_v1beta.types import content
-import json
-
-class paraphrased(typing.TypedDict):
-    original_text: str
-    paraphrased_texts: list[str]
-    
-class textClassification(typing.TypedDict):
-    original_text: str
-    classification: str
-    
-genai.configure(api_key="AIzaSyC16AN-fYC6HVb5VXj8YWwm4PJKzAkfD_A")
-
-classfication_config = {
-        "temperature": 1,
-        "top_p": 0.95,
-        "top_k": 40,
-        "max_output_tokens": 8192,
-        "response_schema": textClassification,
-        "response_mime_type": "application/json"
-    }
 
 classfication = genai.GenerativeModel(
     model_name="gemini-1.5-flash-8b",
@@ -58,8 +34,7 @@ paraphrasing = genai.GenerativeModel(
     model_name="gemini-1.5-flash-8b",
     generation_config=paraphrasing_config,
 )
-    
-    
+
 model_id = "stabilityai/stable-diffusion-3.5-large-turbo"
 API_URL = f"https://api-inference.huggingface.co/models/{model_id}"
 headers = {"Authorization": "Bearer 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"}

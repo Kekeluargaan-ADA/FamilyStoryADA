@@ -13,7 +13,6 @@ import AVFoundation
 
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
-    @Published var statusMessage: String = ""
     @Published var introPages: [DraggablePage] = []
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
@@ -28,8 +27,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var paraphrasedOptions: [String] = []
     @Published var paraphraseModalIsLoading: Bool = false
     @Published var isVideoReadyToPlay: Bool = false
-    private var userID: String = ""
-    private var backendURL: String = "https://tinitales-tinytalesapi.hf.space"
+    
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
     var componentUsecase: ComponentUsecase
@@ -179,11 +177,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             } else if componentUsecase.addNewComponent(component: text) != nil {
                 page.pageText = []
                 page.pageText.append(text)
-                //                    if let classification = selectedPage?.pageTextClassification {
-                //                        page.pageTextClassification = classification
-                //                    } else {
-                //                        page.pageTextClassification = ""
-                //                    }
+//                    if let classification = selectedPage?.pageTextClassification {
+//                        page.pageTextClassification = classification
+//                    } else {
+//                        page.pageTextClassification = ""
+//                    }
             }
         }
     }
@@ -207,88 +205,72 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
     
-    public func getParaphrasing(for text: String) async throws -> [String]? {
-        // Safely unwrap userID
-        guard let userID = UserDefaults.standard.string(forKey: "UserID") else {
-            throw NSError(domain: "AppError", code: 1, userInfo: [NSLocalizedDescriptionKey: "UserID not found"])
-        }
+    public func getParaphrasing(for text: String) async throws -> [String] {
+        let prompt = """
+                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif yang sederhana dan mudah dipahami oleh anak kecil dengan autism spectrum disorder, tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
 
-        // Construct the URL with query parameters
-        guard let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "\(backendURL)/generate_paraphrasing/\(userID)?text=\(encodedText)") else {
-            throw NSError(domain: "AppError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-        }
+                {
+                    "original_text": "{teks}",
+                    "paraphrased_options": [
+                        {
+                            "option_1": "{parafrase_1}"
+                        },
+                        {
+                            "option_2": "{parafrase_2}"
+                        },
+                        {
+                            "option_3": "{parafrase_3}"
+                        }
+                    ]
+                }
 
-        // Create a URLRequest
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                Kalimat: \(text)
 
-        do {
-            // Fetch data asynchronously
-            let (data, response) = try await URLSession.shared.data(for: request)
+                Contoh deskriptif: "aku menggosok gigi."
+                Contoh instruksional (yang harus dihindari): "ayo gosok gigi."
+                """
+        
+        let response = try await getResponse(prompt: prompt)
             
-            // Debug: Print received data
-            print("Received Data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
-
-            // Validate HTTP response
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                throw NSError(domain: "HTTPError", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"])
+        guard let jsonData = response.data(using: .utf8) else {
+                throw NSError(domain: "Invalid JSON format", code: -1, userInfo: nil)
             }
-
-            // Decode JSON response
-            let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: data)
-
-            // Return the paraphrased options
-            DispatchQueue.main.async {
-                self.paraphrasedOptions = paraphraseData.paraphrasedOptions
+            
+            do {
+                let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: jsonData)
+                let options = paraphraseData.paraphrasedOptions.map { $0.option }
+                
+                // Update the @Published property on the main thread
+                DispatchQueue.main.async {
+                    self.paraphrasedOptions = options
+                }
+                
+                return options
+            } catch {
+                print("Failed to parse JSON: \(error.localizedDescription)")
+                throw error
             }
-            return paraphrasedOptions
-        } catch {
-            print("Error fetching or decoding data: \(error.localizedDescription)")
-            throw error
-        }
     }
 
     public func getTextClassification(for text: String) async throws -> String {
-        // Safely unwrap userID
-        guard let userID = UserDefaults.standard.string(forKey: "UserID") else {
-            throw NSError(domain: "AppError", code: 1, userInfo: [NSLocalizedDescriptionKey: "UserID not found"])
-        }
+        let prompt = """
+        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
 
-        // Construct the URL with query parameters
-        guard let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "\(backendURL)/classify_text/\(userID)?text=\(encodedText)") else {
-            throw NSError(domain: "AppError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-        }
+        Contoh deskriptif: aku menggosok gigi.  
+        Contoh instruktif: ayo gosok gigi.  
 
-        // Create a URLRequest
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
+        text: \(text)
+        """
+        
         do {
-            // Fetch data asynchronously
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            // Debug: Print received data
-            print("Received Data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
-
-            // Validate HTTP response
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                throw NSError(domain: "HTTPError", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"])
-            }
-
-            // Decode JSON response
-            let classificationData = try JSONDecoder().decode(ClassificationData.self, from: data)
-
-            // Return the paraphrased options
-            return classificationData.classification
+            let response = try await getResponse(prompt: prompt)
+            return response
         } catch {
-            print("Error fetching or decoding data: \(error.localizedDescription)")
             throw error
         }
     }
+    
     
 }
 

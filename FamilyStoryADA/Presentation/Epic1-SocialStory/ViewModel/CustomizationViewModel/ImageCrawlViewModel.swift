@@ -12,7 +12,7 @@ import CoreImage.CIFilterBuiltins
 
 class ImageCrawlViewModel: ObservableObject {
     @Published var keyword: String = ""
-    @Published var maxNum: String = "5"
+    @Published var maxNum: String = "6"
     @Published var statusMessage: String = ""
     @Published var isLoading: Bool = false
     @Published var isImageUnprocessable: Bool = false
@@ -23,7 +23,7 @@ class ImageCrawlViewModel: ObservableObject {
     @Published var selectedImage: UIImage? = nil
     @Published var savedImageFilename: String? = nil
     private var userID: String = ""
-    private var backendURL: String = "https://tinitales-tinytalesapi.hf.space"
+    private var backendURL: String = "https://tinytalesapi.onrender.com"
     private let imageProcessor = CrawlImageHelper()
     
     func crawlImages() {
@@ -208,3 +208,4 @@ class ImageCrawlViewModel: ObservableObject {
     
     
 }
+

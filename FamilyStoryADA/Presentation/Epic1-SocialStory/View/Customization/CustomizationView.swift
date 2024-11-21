@@ -31,7 +31,7 @@ struct CustomizationView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 ZStack (alignment: .center){
-                    HStack(alignment: .top) {
+                    HStack(alignment: .top, spacing: 16 * widthRatio) {
                         VStack(spacing: 32 * heightRatio) {
                             Button(action: {
                                 viewModel.updatePage()
@@ -92,6 +92,8 @@ struct CustomizationView: View {
                                         selectedPage: viewModel.selectedPage,
                                         isMiniQuizPresented: $viewModel.isMiniQuizOpened,
                                         isDeleteSelected: $viewModel.isDeleteSelected,
+                                        widthRatio: widthRatio,
+                                        heightRatio: heightRatio,
                                         deletePage: {
                                             viewModel.deletePage()
                                         }
@@ -211,6 +213,10 @@ struct CustomizationView: View {
             if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                 cameraViewModel.showCropView = true
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("RestartTutorial"))) { _ in
+            UserDefaults.standard.set(true, forKey: "customizationTutorial")
+            UserDefaults.standard.synchronize()
         }
         .modifier(HighlightRoot(showHighlights: UserDefaults.standard.bool(forKey: "customizationTutorial"), onFinished: {
             UserDefaults.standard.set(false, forKey: "customizationTutorial")
