@@ -23,6 +23,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     DraggedPageView(imagePath: image,
                                     order: page.order+1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: true,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -37,6 +38,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                     order: page.order+1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: true,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -50,6 +52,7 @@ struct DraggablePageReorderedCustomizationView: View {
                 } else {
                     DraggedPageView(order: page.order+1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: true,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -68,6 +71,7 @@ struct DraggablePageReorderedCustomizationView: View {
                     DraggedPageView(imagePath: image,
                                     order: page.order + introPages.count + 1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: false,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -78,10 +82,12 @@ struct DraggablePageReorderedCustomizationView: View {
                         }
                     }
                     .listRowInsets(edgeInset)
+                    .listRowBackground(Color(.fsBlue6))
                 } else if page.picturePath != "" {
                     DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                     order: page.order + introPages.count + 1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: false,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -92,9 +98,11 @@ struct DraggablePageReorderedCustomizationView: View {
                         }
                     }
                     .listRowInsets(edgeInset)
+                    .listRowBackground(Color(.fsBlue6))
                 } else {
                     DraggedPageView(order: page.order  + introPages.count + 1,
                                     isSelected: viewModel.selectedPage?.pageId == page.id,
+                                    isIntroduction: false,
                                     widthRatio: widthRatio,
                                     heightRatio: heightRatio
                     )
@@ -105,6 +113,7 @@ struct DraggablePageReorderedCustomizationView: View {
                         }
                     }
                     .listRowInsets(edgeInset)
+                    .listRowBackground(Color(.fsBlue6))
                 }
             }
             .onMove { indexSet, destination in
@@ -127,15 +136,11 @@ struct DraggablePageReorderedCustomizationView: View {
         }
         .background(Color.clear)
         .scrollContentBackground(.hidden)
-        .listStyle(PlainListStyle()) // Use PlainListStyle to remove default padding around the List
-        .padding(.top, 0 * heightRatio) // Removes top padding
+        .listStyle(PlainListStyle())
+        .padding(.top, 0 * heightRatio)
         .padding(.horizontal, 20 * widthRatio)
         .padding(.leading, 5  * widthRatio)
-        .padding(.bottom, 108 * heightRatio)
+        .padding(.bottom, 150 * heightRatio)
         .scrollIndicators(.hidden)
     }
 }
-
-//#Preview {
-//    DraggablePageReorderedCustomizationView()
-//}

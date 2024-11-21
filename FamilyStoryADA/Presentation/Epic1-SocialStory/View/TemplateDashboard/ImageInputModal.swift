@@ -9,7 +9,6 @@ struct ImageInputModal: View {
     @StateObject private var keyboardHelper = KeyboardHelper()
     @StateObject var viewModel = CameraViewModel()  // Shared ViewModel
     @StateObject var storyViewModel = StoryViewModel()
-    @State var editedText = ""
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     
@@ -21,12 +20,12 @@ struct ImageInputModal: View {
                     ZStack {
                         if templateViewModel.isEditingStoryName {
                             // Editable TextField with auto-save on every keystroke
-                            TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $editedText)
+                            TextField("\(templateViewModel.selectedTemplate!.templateName)", text: $templateViewModel.templateEditName)
                                 .font(Font.custom("Fredoka", size: 32 * heightRatio).weight(.semibold))
                                 .foregroundColor(Color("FSBlack"))
                                 .multilineTextAlignment(.center)
-                                .onChange(of: editedText) { _, newValue in
-                                    editedText = newValue
+                                .onChange(of: templateViewModel.templateEditName) { _, newValue in
+                                    templateViewModel.templateEditName = newValue
                                 }
                             
                                 .focused($isTextFieldFocused) // Bind focus state to TextField
@@ -42,7 +41,7 @@ struct ImageInputModal: View {
                                 }
                         } else {
                             // Non-editable Text view
-                            Text(editedText)
+                            Text(templateViewModel.templateEditName)
                                 .font(Font.custom("Fredoka", size: 32 * heightRatio).weight(.semibold))
                             
                                 .foregroundColor(Color("FSBlack"))
@@ -68,9 +67,6 @@ struct ImageInputModal: View {
                 }
                 .padding(.horizontal, 24 * widthRatio)
                 .padding(.top, 24 * heightRatio)
-                .onAppear(){
-                    editedText = templateViewModel.selectedTemplate?.templateName ?? ""
-                }
                 
                 
                 Text("Pilih foto anak untuk perkenalan dan penutup.")
@@ -93,16 +89,6 @@ struct ImageInputModal: View {
                                     .environmentObject(templateViewModel)
                             }
                     } else {
-                        // Placeholder if no image is found
-                        //                            Rectangle()
-                        //                                .frame(width: 300, height: 400)
-                        //                                .foregroundColor(.gray)
-                        //                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                        //                                .overlay(alignment: .bottom) {
-                        //                                    ChangePictureButton()
-                        //                                        .environmentObject(viewModel)
-                        //                                        .environmentObject(templateViewModel)
-                        //                                }
                         Menu {
                             Button(action: {
                                 viewModel.isPhotoCaptured = false
@@ -120,7 +106,7 @@ struct ImageInputModal: View {
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                    .fill(Color("FSWhite").shadow(.drop(radius: 4 * heightRatio, y: 4 * heightRatio)))
+                                    .fill(Color("FSWhite").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
                                     .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2 * widthRatio)
                                 
                                 VStack(spacing: 8 * heightRatio) {
@@ -140,13 +126,13 @@ struct ImageInputModal: View {
                     HStack {
                         if templateViewModel.isEditingTextField {
                             // Show TextField for editing name
-                            TextField("Masukkan nama", text: $templateViewModel.childName)
+                            TextField("Nama anak", text: $templateViewModel.childName)
                                 .background(Color("FSWhite"))
                                 .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color(.fsBlack))
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 200 * widthRatio)
+                                .frame(width: 200 * widthRatio, height: 32 * heightRatio)
                                 .onSubmit {
                                     templateViewModel.isEditingTextField = false
                                 }
@@ -155,10 +141,11 @@ struct ImageInputModal: View {
                                         templateViewModel.isEditingTextField = false
                                     }
                                 }
+                                .padding(.top, 10 * heightRatio)
                             
                         } else {
                             if templateViewModel.childName.isEmpty {
-                                Text("Masukkan nama")
+                                Text("Nama anak")
                                     .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                                     .fontWeight(.semibold)
                                     .foregroundStyle(Color(.fsBlack))
@@ -180,8 +167,10 @@ struct ImageInputModal: View {
                             templateViewModel.isEditingTextField.toggle()  // Toggle editing state
                         }) {
                             Image(systemName: "pencil")
+                                .font(.system(size: 20 * heightRatio))
+                                .fontWeight(.bold)
                                 .frame(width: 22 * widthRatio, height: 22 * heightRatio)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color(.fsGrey))
                         }
                     }
                     Spacer().frame(height: 20 * heightRatio)
@@ -195,6 +184,10 @@ struct ImageInputModal: View {
                                 .foregroundColor(Color("FSPrimaryOrange5"))
                         }
                         
+                    } else {
+                        Rectangle()
+                            .fill(.clear)
+                            .frame(height: 16 * heightRatio)
                     }
                     
                     Button(action: {
@@ -204,10 +197,10 @@ struct ImageInputModal: View {
                         templateViewModel.isImageInputModalPresented = false
                         templateViewModel.isPagePreviewModalPresented = false
                         templateViewModel.isTemplateClosed = true
-                        if editedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            editedText = templateViewModel.selectedTemplate!.templateName
+                        if templateViewModel.templateEditName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            templateViewModel.templateEditName = templateViewModel.selectedTemplate!.templateName
                         }
-                        templateViewModel.createdStory?.storyName = editedText
+                        templateViewModel.createdStory?.storyName = templateViewModel.templateEditName
                         storyViewModel.updateStory(story: templateViewModel.createdStory!)
                         dismiss()
                     }) {
@@ -217,11 +210,12 @@ struct ImageInputModal: View {
                             .foregroundStyle(Color(.fsWhite))
                             .frame(width: 160 * widthRatio, height: 60 * heightRatio)
                             .background(templateViewModel.chosenImage != nil && !templateViewModel.childName.isEmpty ? Color(.fsBlue9) : Color.gray)
-                            .clipShape(RoundedRectangle(cornerRadius: 20 * heightRatio))
+                            .clipShape(RoundedRectangle(cornerRadius: 40 * heightRatio))
                     }
                     .disabled(templateViewModel.chosenImage == nil || templateViewModel.childName.isEmpty)
-                    .padding()
                     .frame(width: 728 * widthRatio, alignment: .trailing)
+                    .padding()
+                    .padding(.trailing, 56 * widthRatio)
                 }
                 .background(
                     // Overlay that detects taps outside the TextField
@@ -301,8 +295,9 @@ struct ImageInputModal: View {
 }
 
 struct ChangePictureButton: View {
-    @EnvironmentObject var viewModel: CameraViewModel  // Shared ViewModel
-    @EnvironmentObject var templateViewModel: TemplateViewModel  // Shared ViewModel
+    @EnvironmentObject var viewModel: CameraViewModel
+    @EnvironmentObject var templateViewModel: TemplateViewModel
+    @State var isMenuPresented: Bool = false
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     
@@ -328,12 +323,18 @@ struct ChangePictureButton: View {
                     .fontWeight(.regular)
                     .foregroundStyle(Color(.fsBlack))
                     .frame(width: 140 * widthRatio, height: 40 * heightRatio)
-                    .padding()
-                    .background(Color(.fsSecondaryBlue4))  // Custom background color
-                    .cornerRadius(40 * heightRatio)
+                    .background(isMenuPresented ? Color(.fsActiveYellow) : Color(.fsSecondaryBlue4))
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 40 * heightRatio)
+                    )
             }
             .padding(.bottom, 20 * heightRatio)
-            
+            .onAppear {
+                isMenuPresented = false
+            }
+            .onTapGesture {
+                isMenuPresented.toggle()
+            }
             
             
         }

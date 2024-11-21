@@ -45,6 +45,7 @@ struct ScrappingInitialView: View {
                                     .fontWeight(.bold)
                             }
                         }
+                        .frame(width: 666 * widthRatio)
                         HStack {
                             SearchBarView(searchText: $crawlViewModel.keyword, onCommit: {
                                 if !crawlViewModel.isLoading{
@@ -52,7 +53,8 @@ struct ScrappingInitialView: View {
                                     crawlViewModel.deleteImages()
                                     crawlViewModel.crawlImages()
                                 }
-                            }, searchPlaceholder: "Cari", widthRatio: widthRatio, heightRatio: heightRatio)
+                            }, searchPlaceholder: "Cari", width: 585.5, widthRatio: widthRatio, heightRatio: heightRatio)
+                            Spacer()
                             Button(action: {
                                 if !crawlViewModel.isLoading{
                                     crawlViewModel.isLoading = true
@@ -63,7 +65,9 @@ struct ScrappingInitialView: View {
                                 ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "arrow.clockwise", buttonColor: .blue)
                             })
                         }
+                        .frame(width: 666 * widthRatio)
                         .zIndex(1)
+                        .padding(.bottom, 24 * heightRatio)
                         if !networkMonitor.isConnected {
                             Spacer().frame(height: 124 * heightRatio)
                             LostConnectionView(widthRatio: widthRatio, heightRatio: heightRatio)
@@ -149,6 +153,8 @@ struct ScrappingInitialView: View {
                                         .cornerRadius(40 * heightRatio)
                                         .overlay(
                                             Text("Pilih")
+                                                .font(Font.custom("Fredoka", size: 20 * heightRatio))
+                                                .fontWeight(.medium)
                                                 .foregroundColor(.white)
                                         )
                                 }
@@ -181,7 +187,7 @@ struct GridItemView: View {
                     .frame(width: 214 * widthRatio, height: 132 * heightRatio)
                     .clipped()
                     .cornerRadius(12 * heightRatio)
-                    .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12 * heightRatio)
                             .stroke(isSelected ? Color("FSBlue9") : Color.clear, lineWidth: 2 * heightRatio)

@@ -15,6 +15,7 @@ struct EditCoverModalView: View {
     
     @State var imagePath: String = ""
     @State var storyName: String = ""
+    @FocusState private var isTextFieldFocused: Bool
     
     let widthRatio: CGFloat
     let heightRatio: CGFloat
@@ -31,8 +32,9 @@ struct EditCoverModalView: View {
                 Spacer()
                 
                 Text("Edit Cover")
-                    .font(.system(size: 32 * heightRatio))
-                    .fontWeight(.bold)
+                    .font(Font.custom("Fredoka", size: 32 * heightRatio))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color(.fsBlack))
                 Spacer()
                 
                 Button(action: {
@@ -45,27 +47,36 @@ struct EditCoverModalView: View {
                 
             }
             
-            ZStack() {
+            ZStack {
                 TextField("Judul Story...", text: $storyName)
-                    .background(Color("FSWhite"))
+                    .focused($isTextFieldFocused) // Bind the focus state
+                    
                     .multilineTextAlignment(.center)
                     .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                     .fontWeight(.medium)
-                    .frame(width: 580 * widthRatio, height: 80 * heightRatio)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 550 * widthRatio, height: 50 * heightRatio)
+                    .background(Color("FSWhite"))
                     .padding(.horizontal)
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        storyName = ""
-                    }, label: {
-                        Image(systemName: "x.circle")
-                            .resizable()
-                            .frame(width: 29 * widthRatio, height: 29 * heightRatio)
-                            .foregroundStyle(Color("FSGrey"))
-                    })
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.fsBlue9), lineWidth: 2)
+                            .frame(width: 550 * widthRatio, height: 50 * heightRatio)
+                    )
+                    .animation(.easeInOut, value: isTextFieldFocused)
+                if isTextFieldFocused {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            storyName = ""
+                        }, label: {
+                            Image(systemName: "x.circle")
+                                .font(.system(size: 24 * heightRatio))
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color("FSGrey"))
+                        })
+                    }
+                    .padding(.horizontal, 50 * widthRatio)
                 }
-                .padding(.horizontal, 60 * widthRatio)
             }
             
             
@@ -77,36 +88,41 @@ struct EditCoverModalView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                     .aspectRatio(contentMode: .fill)
                     .clipped()
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                 
-                ScrollView(.horizontal) {
-                    HStack(spacing: 20 * widthRatio) {
-                        ForEach(imageOptionPath, id: \.self) { imageOption in
-                            Button(action:{
-                                imagePath = imageOption
-                            }, label: {
-                                ZStack {
-                                    Image(imageOption)
-                                        .resizable()
-                                        .frame(width: 200 * widthRatio, height: 124 * heightRatio)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                                        .aspectRatio(contentMode: .fill)
-                                        .clipped()
-                                    if imagePath == imageOption {
-                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
-                                            .strokeBorder(Color("FSBlue9"), lineWidth: 3 * widthRatio)
-                                            .foregroundStyle(Color.clear)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                        .fill(Color(.fsWhite).shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
+                        .frame(width: 580 * widthRatio, height: 180 * heightRatio)
+                    
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 20 * widthRatio) {
+                            ForEach(imageOptionPath, id: \.self) { imageOption in
+                                Button(action:{
+                                    imagePath = imageOption
+                                }, label: {
+                                    ZStack {
+                                        Image(imageOption)
+                                            .resizable()
                                             .frame(width: 200 * widthRatio, height: 124 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .aspectRatio(contentMode: .fill)
+                                            .clipped()
+                                        if imagePath == imageOption {
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                .strokeBorder(Color("FSBlue9"), lineWidth: 3 * widthRatio)
+                                                .foregroundStyle(Color.clear)
+                                                .frame(width: 200 * widthRatio, height: 124 * heightRatio)
                                             
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
                         }
+                        .padding(28 * heightRatio)
                     }
-                    .padding(28 * heightRatio)
                 }
-                .background(Color("FSWhite").shadow(.drop(radius: 4 * heightRatio, y: 4 * heightRatio)))
                 .frame(width: 580 * widthRatio, height: 180 * heightRatio)
-                .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                 .padding(.horizontal)
             }
         }

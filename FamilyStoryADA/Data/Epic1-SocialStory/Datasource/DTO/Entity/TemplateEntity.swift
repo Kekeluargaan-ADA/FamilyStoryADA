@@ -17,6 +17,19 @@ class TemplateEntity: IEntityAble {
     var templatePreviewImagePath: [String]
     var templatePagePreview: [PageTemplatePreviewEntity]
     
+    var templateLength: Double {
+        guard !templatePagePreview.isEmpty else  {
+            return 0
+        }
+        var wordCount = 0
+        for page in templatePagePreview {
+            wordCount += page.componentTextWordCount
+        }
+        
+        let length = Double(wordCount) / 50 // TODO: Research about WPM
+        return length < 1.0 ? 1 : length
+    }
+    
     init(templateId: UUID, templateName: String, templateCategory: String, templateDescription: String, templateCoverImagePath: String, templateOptionCoverImagePath: [String], templatePreviewImagePath: [String], templatePagePreview: [PageTemplatePreviewEntity]) {
         self.templateId = templateId
         self.templateName = templateName

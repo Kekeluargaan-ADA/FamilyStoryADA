@@ -19,7 +19,9 @@ struct MiniGameAnswerArrayView: View {
                     MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index), widthRatio: widthRatio, heightRatio: heightRatio)
                 }
             }
+            .padding(.horizontal, 20 * widthRatio)
         }
+        .scrollIndicators(.hidden)
     }
     
     func getCardStatus(index: Int) -> AnswerCardStatus {

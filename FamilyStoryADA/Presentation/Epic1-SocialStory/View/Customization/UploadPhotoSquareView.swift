@@ -24,7 +24,7 @@ struct UploadPhotoSquareView: View {
                     .foregroundColor(.clear)
                     .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                     .cornerRadius(12 * heightRatio)
-                    .shadow(radius: 2 * heightRatio, y: 4 * heightRatio)
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                     .overlay(
                         ZStack {
                             RoundedRectangle(cornerRadius: 12 * heightRatio)
@@ -37,7 +37,7 @@ struct UploadPhotoSquareView: View {
                                     .bold()
                                 Spacer().frame(height: 8 * heightRatio)
                                 Text("Upload Foto")
-                                    .font(.system(size: 24 * heightRatio))
+                                    .font(Font.custom("Fredoka", size: 24 * heightRatio))
                                     .fontWeight(.medium)
                                     .foregroundColor(Color("FSBlue9"))
                             }

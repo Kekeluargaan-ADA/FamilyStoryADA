@@ -58,14 +58,14 @@ struct PlayStoryResultView: View {
                             Button(action: {
                                 playStoryViewModel.isStoryCompleted = true
                             }, label: {
-                                ButtonElips(text: "Nanti", buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
+                                ButtonElips(text: "Nanti", textSize: 32, buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             Button(action: {
                                 
                                 isMiniQuizPresented = true
                                 textToSpeechHelper.stopSpeaking()
                             }, label: {
-                                ButtonElips(text: "Main", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
+                                ButtonElips(text: "Main", textSize: 32, buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                         }
                     } else {
@@ -75,7 +75,9 @@ struct PlayStoryResultView: View {
                             .foregroundStyle(Color("FSBlack"))
                     }
                 }
+                .padding(.top, 60 * heightRatio)
             }
+            
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()

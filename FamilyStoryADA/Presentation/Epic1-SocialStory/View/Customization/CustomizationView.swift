@@ -31,7 +31,7 @@ struct CustomizationView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 ZStack (alignment: .center){
-                    HStack(alignment: .top, spacing: 16 * widthRatio) {
+                    HStack(alignment: .top) {
                         VStack(spacing: 32 * heightRatio) {
                             Button(action: {
                                 viewModel.updatePage()
@@ -43,11 +43,11 @@ struct CustomizationView: View {
                             //                                .disabled(keyboardHelper.isKeyboardShown)
                             ZStack(alignment: .top) {
                                 DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, isVideoReadyToPlay: $viewModel.isVideoReadyToPlay, widthRatio: widthRatio, heightRatio: heightRatio)
-                                    .disabled(keyboardHelper.isKeyboardShown)
+                                    .disabled(keyboardHelper.isKeyboardShown || isParaphrasingPresented)
                                 
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 2,
                                         title: "Edit Halaman",
@@ -56,24 +56,26 @@ struct CustomizationView: View {
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 1,
                                         title: "Lihat Semua Halaman",
-                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
+                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru.",
                                         cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                             }
                         }
                         
                         
                         ZStack {
                             ZStack(alignment: .top) {
-                                Image("CustomizationBackground")
+                                Image("create-story-background")
                                     .resizable()
                                     .frame(width: 1000 * widthRatio, height: 854 * heightRatio)
 //                                    .ignoresSafeArea()
@@ -86,6 +88,7 @@ struct CustomizationView: View {
                                         .foregroundStyle(Color("FSBlack"))
                                 }
                                 .frame(width: 268 * widthRatio, height: 45 * heightRatio)
+                                .offset(y: 5 * heightRatio)
                                 VStack(spacing: 23 * heightRatio) {
                                     CustomizationHeaderView(
                                         story: viewModel.story,
@@ -108,9 +111,10 @@ struct CustomizationView: View {
                             }
                         }
                         .onTapGesture {
-                            if keyboardHelper.isKeyboardShown {
+                            if keyboardHelper.isKeyboardShown || isParaphrasingPresented {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 keyboardHelper.isKeyboardShown = false
+                                isParaphrasingPresented = false
                             }
                         }
                         

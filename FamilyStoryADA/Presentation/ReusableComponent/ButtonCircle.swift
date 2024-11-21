@@ -16,6 +16,7 @@ struct ButtonCircle: View {
     let heightRatio: CGFloat
     let buttonImage: String
     let buttonColor: ButtonPreset
+    var size: CGFloat?
     
     var body: some View {
         Circle()
@@ -26,7 +27,8 @@ struct ButtonCircle: View {
                     if buttonColor == .yellow {
                         Image("button")
                             .resizable()
-                            .frame(width: 79 * widthRatio, height: 79 * heightRatio)
+                            .scaledToFill()
+                            .frame(width: size != nil ? size : 91 * widthRatio, height: size != nil ? size : 91 * heightRatio)
                     }
                     Image(systemName: buttonImage)
                         .foregroundStyle(buttonColor == .blue ? Color("FSBlue9") : Color("FSWhite"))

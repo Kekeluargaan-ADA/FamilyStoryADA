@@ -37,6 +37,7 @@ struct DraggablePageCustomizationSelectionView: View {
                         DraggedPageView(imagePath: image,
                                         order: index+1,
                                         isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        isIntroduction: false,
                                         widthRatio: widthRatio,
                                         heightRatio: heightRatio
                         )
@@ -48,6 +49,7 @@ struct DraggablePageCustomizationSelectionView: View {
                         DraggedPageView(imagePath: UIImage(imageLiteralResourceName: page.picturePath),
                                         order: index+1,
                                         isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        isIntroduction: false,
                                         widthRatio: widthRatio,
                                         heightRatio: heightRatio
                         )
@@ -58,6 +60,7 @@ struct DraggablePageCustomizationSelectionView: View {
                     } else {
                         DraggedPageView(order: index+1,
                                         isSelected: viewModel.selectedPage?.pageId == page.id,
+                                        isIntroduction: false,
                                         widthRatio: widthRatio,
                                         heightRatio: heightRatio
                         )

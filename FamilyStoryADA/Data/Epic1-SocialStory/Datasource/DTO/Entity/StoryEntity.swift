@@ -27,7 +27,7 @@ class StoryEntity: IEntityAble, Identifiable {
             wordCount += page.componentTextWordCount
         }
         
-        let length = Double(wordCount) / 100 // TODO: Research about WPM
+        let length = Double(wordCount) / 50 // TODO: Research about WPM
         return length < 1.0 ? 1 : length
     }
     

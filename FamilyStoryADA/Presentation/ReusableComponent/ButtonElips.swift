@@ -13,6 +13,7 @@ enum ButtonStyle {
 
 struct ButtonElips: View {
     var text: String
+    var textSize: CGFloat?
     var buttonPreset: ButtonPreset
     var buttonStyle: ButtonStyle
     let widthRatio: CGFloat
@@ -65,7 +66,7 @@ struct ButtonElips: View {
             ZStack {
                 buttonColor
                 Text(text)
-                    .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
+                    .font(Font.custom("Fredoka", size: textSize ?? 20 * heightRatio, relativeTo: .title3))
                     .fontWeight(.medium)
                     .foregroundStyle(textColor)
             }

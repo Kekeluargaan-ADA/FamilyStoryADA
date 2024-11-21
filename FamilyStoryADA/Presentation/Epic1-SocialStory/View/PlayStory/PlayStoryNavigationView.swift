@@ -22,7 +22,7 @@ struct PlayStoryNavigationView: View {
             Button(action: {
                 onTapHomeButton()
             }, label: {
-                ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor)
+                ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "house", buttonColor: buttonColor, size: 79)
             })
             ZStack {
                 RoundedRectangle(cornerRadius: 28 * heightRatio)
@@ -34,15 +34,15 @@ struct PlayStoryNavigationView: View {
                     )
                 Text(title)
                     .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color(titleOverlayReversed ? "FSWhite" : "FSBlack"))
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color(titleOverlayReversed ? .fsWhite : .fsBlueBorder2))
             }
             .frame(height: 53 * heightRatio)
             if showAudioButton {
                 Button(action: {
                     onTapAudioButton()
                 }, label: {
-                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor)
+                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "speaker.wave.2", buttonColor: buttonColor, size: 79)
                 })
             } else {
                 Spacer()

@@ -11,6 +11,7 @@ struct SearchBarView: View {
     @Binding var searchText: String
     var onCommit: () -> Void
     var searchPlaceholder: String
+    let width: CGFloat
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     
@@ -45,11 +46,11 @@ struct SearchBarView: View {
             }
             .padding(.horizontal, 24 * widthRatio)
         }
-        .frame(width: 540 * widthRatio, height: 60 * heightRatio)
+        .frame(width: width * widthRatio, height: 60 * heightRatio)
     }
 }
 
 #Preview {
     @Previewable @State var searchText = ""
-    SearchBarView(searchText: $searchText, onCommit: {}, searchPlaceholder: "Caris", widthRatio: 1, heightRatio: 1)
+    SearchBarView(searchText: $searchText, onCommit: {}, searchPlaceholder: "Caris", width: 540, widthRatio: 1, heightRatio: 1)
 }

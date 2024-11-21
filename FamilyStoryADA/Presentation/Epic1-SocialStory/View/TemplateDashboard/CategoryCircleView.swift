@@ -78,7 +78,8 @@ struct CategoryCircleView: View {
                     .foregroundColor(Color("FSBlack"))
             }
         }
-        .padding(20 * heightRatio)
+        .frame(width: 107 * widthRatio, height: 112 * heightRatio)
+        .padding(.horizontal, 10 * widthRatio)
     }
 }
 

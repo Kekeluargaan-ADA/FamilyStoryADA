@@ -63,23 +63,24 @@ struct MiniGameView: View {
                     
                     Spacer()
                 }
-                .frame(width: 1097 * widthRatio)
+                .frame(width: 1105 * widthRatio)
                 .padding(.top, 127 * heightRatio)
                 
                 VStack {
                     Spacer()
                     ZStack {
-                        RoundedRectangle(cornerRadius: 40 * heightRatio)
+                        PlayStoryUpperRoundedRectangle(cornerRadius: 40 * heightRatio)
                             .foregroundStyle(Color("FSWhite"))
                             .frame(width: 1195 * widthRatio, height: 220 * heightRatio)
-                            .shadow(radius: 10, y: -4 * heightRatio)
+                            .shadow(color: Color(.fsBlack).opacity(0.1), radius: 10, y: -4 * heightRatio)
                         MiniGameAnswerArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
-                            .padding(.leading, 80 * widthRatio)
+                            .padding(.leading, 60 * widthRatio)
                             .padding(.top, 20 * heightRatio)
                             .padding(.bottom, 36 * heightRatio)
                             .environmentObject(viewModel)
                     }
                 }
+                .ignoresSafeArea()
                 
                 HandTapOverlay(widthRatio: widthRatio, heightRatio: heightRatio)
                     .opacity(viewModel.isTutorialShown ? 1 : 0)

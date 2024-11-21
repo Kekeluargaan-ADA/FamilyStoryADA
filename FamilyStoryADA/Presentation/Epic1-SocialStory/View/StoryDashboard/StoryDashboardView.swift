@@ -22,18 +22,19 @@ struct StoryDashboardView: View {
                 
                 ZStack(alignment: .top) {
                     ZStack(alignment: .top) {
-                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        StoryDashboardBackgroundSecondaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSYellow"))
 //                            .padding(.top, 24 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
 //                            .ignoresSafeArea()
-                        StoryDashboardBackgroundView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        StoryDashboardBackgroundPrimaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSWhite"))
                             .padding(.top, 8 * heightRatio)
                             .padding(.horizontal, 24 * widthRatio)
 //                            .ignoresSafeArea()
                     }
                     .frame(height: 804 * heightRatio)
+                    .padding(.top, 30 * heightRatio)
                     
                     VStack {
                         HStack {
@@ -41,31 +42,32 @@ struct StoryDashboardView: View {
                                 .font(Font.custom("Fredoka", size: 40 * heightRatio, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
-                                .padding(.leading, 32 * widthRatio)
+                                .padding(.leading, 40 * widthRatio)
                             Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                     viewModel.searchText = keywords
                                     viewModel.searchStories()
-                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", widthRatio: widthRatio, heightRatio: heightRatio)
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", width: 540, widthRatio: widthRatio, heightRatio: heightRatio)
                                 ProfileButtonView(imageName: "", widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }
                         .padding(.horizontal, 46 * widthRatio)
-                        .padding(.top, 24 * heightRatio)
+                        .padding(.top, 54 * heightRatio)
+                        
                         ZStack {
                             VStack {
-                                HStack (spacing: 12 * widthRatio) {
+                                HStack (spacing: 14 * widthRatio) {
                                     Spacer()
                                     Text("Urutkan")
-                                        .foregroundStyle(.black)
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
+                                        .foregroundStyle(Color("FSBlack"))
                                     DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption, widthRatio: widthRatio, heightRatio: heightRatio)
                                 }
-                                .padding(.horizontal, 20 * widthRatio)
                                 ScrollView {
                                     LazyVGrid(columns: [
-                                        GridItem(.fixed(354 * widthRatio)),
-                                        GridItem(.fixed(354 * widthRatio)),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
                                         GridItem(.fixed(354 * widthRatio))
                                     ], spacing: 26 * heightRatio) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
@@ -74,7 +76,7 @@ struct StoryDashboardView: View {
                                                     viewModel.isTemplateDashboardOpened = true
                                                 }, label: {
                                                     NewStoryCardView(widthRatio: widthRatio, heightRatio: heightRatio)
-                                                        .padding(.horizontal, 10 * widthRatio)
+                                                        
                                                 })
                                             } else {
                                                 ZStack(alignment: .topTrailing) {
@@ -94,7 +96,7 @@ struct StoryDashboardView: View {
                                                             heightRatio: heightRatio
                                                         )
                                                         .foregroundStyle(Color("FSBlack"))
-                                                        .padding(.horizontal, 10 * widthRatio)
+                                                        
                                                     })
                                                     Menu {
                                                         Button(action: {
@@ -115,7 +117,9 @@ struct StoryDashboardView: View {
                                                             .font(.system(size: 24 * heightRatio))
                                                             .fontWeight(.bold)
                                                             .foregroundStyle(Color("FSBlack"))
-                                                            .padding()
+                                                            .frame(width: 28 * widthRatio, height: 29 * heightRatio)
+                                                            .padding(.trailing, 13 * widthRatio)
+                                                            .padding(.top, 8 * heightRatio)
                                                     }
                                                     
                                                 }
@@ -124,10 +128,11 @@ struct StoryDashboardView: View {
                                             }
                                         }
                                     }
+                                    .padding(.top, 20 * heightRatio)
                                 }
                             }
                             .padding(.top, 12 * heightRatio)
-                            .padding(.horizontal, 22 * widthRatio)
+                            .padding(.horizontal, 46 * widthRatio)
                         }
                         .ignoresSafeArea()
                     }

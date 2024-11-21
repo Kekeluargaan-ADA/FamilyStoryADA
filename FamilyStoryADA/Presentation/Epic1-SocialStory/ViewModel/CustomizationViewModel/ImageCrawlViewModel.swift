@@ -28,7 +28,11 @@ class ImageCrawlViewModel: ObservableObject {
     
     func crawlImages() {
         clearImageCache()
-        userID = UserDefaults.standard.string(forKey: "UserID")!
+        guard let id = UserDefaults.standard.string(forKey: "UserID") else {
+            self.statusMessage = "Invalid user id"
+            return
+        }
+        userID = id
         // Construct the URL
         guard let url = URL(string: "\(backendURL)/crawl_images/\(userID)/?keyword=\(keyword)&max_num=\(maxNum)") else {
             self.statusMessage = "Invalid URL"
