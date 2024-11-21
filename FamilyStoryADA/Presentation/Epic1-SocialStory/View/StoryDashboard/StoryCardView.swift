@@ -24,19 +24,22 @@ struct StoryCardView: View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 16 * heightRatio)
                 .frame(width: 354 * widthRatio, height: 320 * heightRatio)
-                    .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4 * heightRatio, y: 4 * heightRatio)))
-            VStack(alignment: .leading, spacing: 6 * heightRatio) {
+                .foregroundStyle(Color("FSWhite").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
+            VStack(alignment: .leading, spacing: 12 * heightRatio) {
                 Image(imagePath)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 354 * widthRatio, height: 220 * heightRatio)
-                VStack(alignment: .leading, spacing: 6 * heightRatio) {
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 12)
+                    )
+                VStack(alignment: .leading, spacing: 4 * heightRatio) {
                     HStack {
                         Text(category)
                             .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                             .foregroundStyle(Color("FSBlack"))
                         Spacer()
-                        Text("\(storyLength, specifier: "%.1f") m")
+                        Text("\(storyLength, specifier: "%.0f") m")
                             .font(Font.custom("Fredoka", size: 14 * heightRatio, relativeTo: .footnote))
                             .foregroundStyle(Color("FSGrey"))
                     }

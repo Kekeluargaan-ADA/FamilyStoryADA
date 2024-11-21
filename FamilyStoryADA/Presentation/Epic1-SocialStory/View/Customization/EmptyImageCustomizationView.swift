@@ -18,7 +18,7 @@ struct EmptyImageCustomizationView: View {
         if keyboardHelper.isKeyboardShown || isParaphrasingPresented {
             ZStack {
                 RoundedRectangle(cornerRadius: 12 * heightRatio)
-                    .fill(Color("FSWhite").shadow(.drop(radius: 4 * heightRatio, y: 4 * heightRatio)))
+                    .fill(Color("FSWhite").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
                     .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2 * widthRatio)
                     .mask(Rectangle().padding(.top, 390 * heightRatio))
                 VStack(spacing: 8 * heightRatio) {
@@ -35,7 +35,7 @@ struct EmptyImageCustomizationView: View {
         else {
             ZStack {
                 RoundedRectangle(cornerRadius: 12 * heightRatio)
-                    .fill(Color("FSWhite").shadow(.drop(radius: 4 * heightRatio, y: 4 * heightRatio)))
+                    .fill(Color("FSWhite").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
                     .strokeBorder(Color("FSBorderBlue7"), lineWidth: 2 * widthRatio)
                     
                 VStack(spacing: 8 * heightRatio) {
