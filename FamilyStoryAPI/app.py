@@ -41,7 +41,7 @@ classfication_config = {
     }
 
 classfication = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-8b",
     generation_config=classfication_config,
 )
 
@@ -55,7 +55,7 @@ paraphrasing_config = {
     }
 
 paraphrasing = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-1.5-flash-8b",
     generation_config=paraphrasing_config,
 )
     
@@ -252,7 +252,6 @@ async def fetch_image(user_id: str, filename: str):
 async def root():
     return {"message": "FastAPI server is working with dynamic base URL!"}
 
-            raise HTTPException(status_code=500, detail=f"Failed to parse JSON: {str(e)}")
 @app.get("/generate_paraphrasing/{user_id}")
 async def generate_paraphrasing(
     text: str = Query(..., min_length=1, description="Text to be simplified.")
