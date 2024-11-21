@@ -47,7 +47,7 @@ struct StoryDashboardView: View {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                     viewModel.searchText = keywords
                                     viewModel.searchStories()
-                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", widthRatio: widthRatio, heightRatio: heightRatio)
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", width: 540, widthRatio: widthRatio, heightRatio: heightRatio)
                                 ProfileButtonView(imageName: "", widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }
@@ -64,8 +64,8 @@ struct StoryDashboardView: View {
                                 }
                                 ScrollView {
                                     LazyVGrid(columns: [
-                                        GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
-                                        GridItem(.fixed(354 * widthRatio), spacing: 20 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
                                         GridItem(.fixed(354 * widthRatio))
                                     ], spacing: 26 * heightRatio) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
@@ -126,6 +126,7 @@ struct StoryDashboardView: View {
                                             }
                                         }
                                     }
+                                    .padding(.top, 20 * heightRatio)
                                 }
                             }
                             .padding(.top, 12 * heightRatio)

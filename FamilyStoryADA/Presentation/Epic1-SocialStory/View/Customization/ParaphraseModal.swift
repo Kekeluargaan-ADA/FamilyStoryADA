@@ -55,12 +55,13 @@ struct ParaphraseModal: View {
                                 viewModel.paraphraseModalIsLoading = true // Start loading
                                 Task {
                                     do {
-                                        let result = try await viewModel.getParaphrasing(for: viewModel.selectedPage!.pageText.first!.componentContent)
-                                        // Update view model's options here
-                                        viewModel.paraphraseModalIsLoading = false // Stop loading after fetching
+                                        if let page = viewModel.selectedPage, let text = page.pageText.first?.componentContent {
+                                            _ = try await viewModel.getParaphrasing(for: text)
+                                        }
+                                        viewModel.paraphraseModalIsLoading = false
                                     } catch {
                                         print("Failed to fetch paraphrasing: \(error.localizedDescription)")
-                                        viewModel.paraphraseModalIsLoading = false // Stop loading on error
+                                        viewModel.paraphraseModalIsLoading = false
                                     }
                                 }
                             }) {
@@ -76,7 +77,9 @@ struct ParaphraseModal: View {
                                 .frame(width: 160 * widthRatio, height: 60 * heightRatio)
                                 .background(Color(.fsSecondaryBlue4))
                                 .foregroundColor(Color(.fsBlue9))
-                                .cornerRadius(20 * heightRatio)
+                                .clipShape(
+                                    RoundedRectangle(cornerRadius: 40 * heightRatio)
+                                )
                             }
                             
                             // Select Button
@@ -96,13 +99,7 @@ struct ParaphraseModal: View {
                                     isParaphrasingPresented = false
                                 }
                             }) {
-                                Text("Pilih")
-                                    .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
-                                    .fontWeight(.medium)
-                                    .frame(width: 160 * widthRatio, height: 60 * heightRatio)
-                                    .background(Color.teal)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(20 * heightRatio)
+                                ButtonElips(text: "Pilih", buttonPreset: .blue, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }
                         .frame(width: 980 * widthRatio, alignment: .bottomTrailing)

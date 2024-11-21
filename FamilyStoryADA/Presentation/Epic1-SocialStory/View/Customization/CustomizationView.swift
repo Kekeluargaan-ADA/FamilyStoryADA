@@ -43,11 +43,11 @@ struct CustomizationView: View {
                             //                                .disabled(keyboardHelper.isKeyboardShown)
                             ZStack(alignment: .top) {
                                 DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, isVideoReadyToPlay: $viewModel.isVideoReadyToPlay, widthRatio: widthRatio, heightRatio: heightRatio)
-                                    .disabled(keyboardHelper.isKeyboardShown)
+                                    .disabled(keyboardHelper.isKeyboardShown || isParaphrasingPresented)
                                 
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 2,
                                         title: "Edit Halaman",
@@ -56,17 +56,19 @@ struct CustomizationView: View {
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170 * widthRatio, height: 800 * heightRatio)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 1,
                                         title: "Lihat Semua Halaman",
-                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
+                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru.",
                                         cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                             }
                         }
                         
@@ -108,9 +110,10 @@ struct CustomizationView: View {
                             }
                         }
                         .onTapGesture {
-                            if keyboardHelper.isKeyboardShown {
+                            if keyboardHelper.isKeyboardShown || isParaphrasingPresented {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 keyboardHelper.isKeyboardShown = false
+                                isParaphrasingPresented = false
                             }
                         }
                         

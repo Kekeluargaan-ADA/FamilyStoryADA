@@ -37,7 +37,7 @@ struct UploadPhotoSquareView: View {
                                     .bold()
                                 Spacer().frame(height: 8 * heightRatio)
                                 Text("Upload Foto")
-                                    .font(.system(size: 24 * heightRatio))
+                                    .font(Font.custom("Fredoka", size: 24 * heightRatio))
                                     .fontWeight(.medium)
                                     .foregroundColor(Color("FSBlue9"))
                             }

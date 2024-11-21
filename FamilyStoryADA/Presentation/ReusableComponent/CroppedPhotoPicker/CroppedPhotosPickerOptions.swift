@@ -25,7 +25,7 @@ struct CroppedPhotosPickerOptions {
     var toolbarPosition: CropViewControllerToolbarPosition?
     var rotateClockwiseButtonHidden: Bool? = true
     var rotateButtonsHidden: Bool? = true
-    var resetButtonHidden: Bool?
+    var resetButtonHidden: Bool? = true
     var aspectRatioPickerButtonHidden: Bool? = true
     var doneButtonHidden: Bool?
     var cancelButtonHidden: Bool?
