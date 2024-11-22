@@ -29,7 +29,7 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var paraphraseModalIsLoading: Bool = false
     @Published var isVideoReadyToPlay: Bool = false
     private var userID: String = ""
-    private var backendURL: String = "https://tinitales-tinytalesapi.hf.space"
+    private var backendURL: String = "https://tinytalesapi.onrender.com"
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
     var componentUsecase: ComponentUsecase
