@@ -20,76 +20,160 @@ struct CustomizationMediaView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             if let page = viewModel.selectedPage {
-                if let imagePath = page.pagePicture.first?.componentContent {
-                    if page.pagePicture.first?.componentCategory == "AssetPicture" {
+                if page.pagePicture.first?.componentCategory == "AssetPicture", let imagePath = page.pagePicture.first?.componentContent {
+                    
+                    if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
                         Image(imagePath)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                             .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                            .applyMask(isKeyboardShown: keyboardHelper.isKeyboardShown, isParaphrasingPresented: isParaphrasingPresented, heightRatio: heightRatio)
+                            .mask(Rectangle().padding(.top, 390 * heightRatio))
                             .overlay(
                                 VignetteEffectView()
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                    )
                             )
-                    } else if page.pagePicture.first?.componentCategory == "AppStoragePicture",
-                              let uiImage = viewModel.loadImageFromDiskWith(fileName: imagePath) {
-                        Image(uiImage: uiImage)
+                    } else {
+                        Image(imagePath)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                             .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                            .applyMask(isKeyboardShown: keyboardHelper.isKeyboardShown, isParaphrasingPresented: isParaphrasingPresented, heightRatio: heightRatio)
                             .overlay(
                                 VignetteEffectView()
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                    )
                             )
                     }
-                }
-                else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first,
-                        let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
-                    ZStack {
-                        CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                    
+                } else if page.pagePicture.first?.componentCategory == "AppStoragePicture", let imagePath = page.pagePicture.first?.componentContent, let image = viewModel.loadImageFromDiskWith(fileName: imagePath) {
+                    
+                    if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                             .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                            .applyMask(isKeyboardShown: keyboardHelper.isKeyboardShown, isParaphrasingPresented: isParaphrasingPresented, heightRatio: heightRatio)
+                            .mask(Rectangle().padding(.top, 390 * heightRatio))
                             .overlay(
                                 VignetteEffectView()
-                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                    )
                             )
-                            .onAppear {
-                                viewModel.videoPlayer = AVPlayer(url: url)
-                                viewModel.videoPlayer.play()
-                            }
-                            .onDisappear {
-                                viewModel.videoPlayer.pause()
-                            }
-                            .onTapGesture {
-                                viewModel.videoPlayer.seek(to: .zero)
-                                viewModel.videoPlayer.play()
-                            }
-                        
-                        if !viewModel.isVideoReadyToPlay, let fallbackImage = page.pageVideo.first?.componentContent {
-                            Image(fallbackImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
+                    } else {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                            .overlay(
+                                VignetteEffectView()
+                                    .clipShape(
+                                        RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                    )
+                            )
+                    }
+                    
+                } else if !page.pageVideo.isEmpty, let videoComponent = page.pageVideo.first, let url = Bundle.main.url(forResource: videoComponent.componentContent, withExtension: "mp4") {
+                    
+                    //                            let videoPlayer = AVPlayer(url: url)
+                    
+                    ZStack {
+                        if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                            CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
                                 .frame(width: 760 * widthRatio, height: 468 * heightRatio)
                                 .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
-                                .applyMask(isKeyboardShown: keyboardHelper.isKeyboardShown, isParaphrasingPresented: isParaphrasingPresented, heightRatio: heightRatio)
+                                .mask(Rectangle().padding(.top, 390 * heightRatio))
                                 .overlay(
                                     VignetteEffectView()
-                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                        )
                                 )
+                                .onAppear() {
+                                    viewModel.videoPlayer = AVPlayer(url: url)
+                                    viewModel.videoPlayer.play()
+                                }
+                                .onDisappear() {
+                                    viewModel.videoPlayer.pause()
+                                }
+                                .onChange(of: url) {
+                                    viewModel.videoPlayer = AVPlayer(url: url)
+                                    viewModel.videoPlayer.play()
+                                }
+                                .onTapGesture() {
+                                    viewModel.videoPlayer.seek(to: .zero)
+                                    viewModel.videoPlayer.play()
+                                }
+                        } else {
+                            CustomVideoPlayerView(player: viewModel.videoPlayer, isReadyToPlay: $viewModel.isVideoReadyToPlay)
+                                .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                .overlay(
+                                    VignetteEffectView()
+                                        .clipShape(
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                        )
+                                )
+                                .onAppear() {
+                                    
+                                    viewModel.videoPlayer = AVPlayer(url: url)
+                                    viewModel.videoPlayer.play()
+                                }
+                                .onDisappear() {
+                                    viewModel.videoPlayer.pause()
+                                }
+                                .onChange(of: url) {
+                                    viewModel.videoPlayer = AVPlayer(url: url)
+                                    viewModel.videoPlayer.play()
+                                }
+                                .onTapGesture() {
+                                    viewModel.videoPlayer.seek(to: .zero)
+                                    viewModel.videoPlayer.play()
+                                }
+                        }
+                        
+                        if !viewModel.isVideoReadyToPlay, let imagePath = page.pageVideo.first?.componentContent {
+                            if (!viewModel.isGotoScrapImage && (keyboardHelper.isKeyboardShown || isParaphrasingPresented)) {
+                                Image(imagePath)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .mask(Rectangle().padding(.top, 390 * heightRatio))
+                                    .overlay(
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                            )
+                                    )
+                            } else {
+                                Image(imagePath)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 760 * widthRatio, height: 468 * heightRatio)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                    .overlay(
+                                        VignetteEffectView()
+                                            .clipShape(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                            )
+                                    )
+                            }
                         }
                     }
-                }
-                else {
+                } else {
                     Button(action: {
                         viewModel.isMediaOverlayOpened = true
                     }, label: {
                         EmptyImageCustomizationView(isParaphrasingPresented: $isParaphrasingPresented, viewModel: viewModel, widthRatio: widthRatio, heightRatio: heightRatio)
                     })
                 }
+                
                 ZStack {
                     Circle()
                         .fill(.clear)
@@ -130,18 +214,6 @@ struct CustomizationMediaView: View {
                             .padding()
                     }
                 }
-            }
-        }
-    }
-}
-
-extension View {
-    func applyMask(isKeyboardShown: Bool, isParaphrasingPresented: Bool, heightRatio: CGFloat) -> some View {
-        Group {
-            if isKeyboardShown || isParaphrasingPresented {
-                self.mask(Rectangle().padding(.top, 390 * heightRatio))
-            } else {
-                self
             }
         }
     }
