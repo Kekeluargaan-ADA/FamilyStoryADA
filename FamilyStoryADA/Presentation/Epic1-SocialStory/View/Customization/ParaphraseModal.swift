@@ -90,7 +90,8 @@ struct ParaphraseModal: View {
                                     Task {
                                         do {
                                             let result = try await viewModel.getTextClassification(for: option)
-                                            viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            await viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            await viewModel.updatePage()
                                         } catch {
                                             print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                                             // Handle error here, possibly by setting an error message in viewModel

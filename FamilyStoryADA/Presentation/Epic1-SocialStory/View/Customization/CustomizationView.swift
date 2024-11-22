@@ -179,7 +179,10 @@ struct CustomizationView: View {
                         if viewModel.isMediaOverlayOpened {
                             ZStack {
                                 Color("FSBlack").opacity(0.4)
-                                UploadPhotoModalView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                VStack {
+                                    UploadPhotoModalView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                    Spacer().frame(height: 241 * heightRatio)
+                                }
                             }
                             .ignoresSafeArea()
                             .environmentObject(viewModel)
