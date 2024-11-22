@@ -24,8 +24,14 @@ struct MiniGameView: View {
             let widthRatio = ratios.widthRatio
             
             ZStack {
+                
+                Image("background-mini-quiz-v01")
+                    .resizable()
+                    .ignoresSafeArea()
+                
                 VStack {
                     PlayStoryNavigationView(
+                        widthRatio: widthRatio,
                         heightRatio: heightRatio,
                         title: viewModel.story.storyName,
                         buttonColor: .yellow,
@@ -35,37 +41,48 @@ struct MiniGameView: View {
                         onTapAudioButton: {
                             textToSpeechHelper.speakIndonesian(instruction)
                         },
-                        showAudioButton: false // Pass 'false' to hide the audio button
+                        showAudioButton: false, // Pass 'false' to hide the audio button
+                        titleOverlayReversed: true
                     )
-                    .padding(.top, 47 * heightRatio)
+                    .padding(.top, 38 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
-                    .padding(.bottom, 16 * heightRatio)
-                    
+                    Spacer()
+                }
+                
+                VStack {
                     Text(instruction)
                         .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                         .fontWeight(.semibold)
                         .foregroundStyle(Color("FSBlack"))
                         .padding(.bottom, 16 * heightRatio)
                     
-                    MiniGameOptionArrayView()
-                        .padding(.leading, 80 * widthRatio)
+                    MiniGameOptionArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        .padding(.leading, 12 * widthRatio)
                         .padding(.bottom, 27 * heightRatio)
                         .environmentObject(viewModel)
                     
+                    Spacer()
+                }
+                .frame(width: 1105 * widthRatio)
+                .padding(.top, 127 * heightRatio)
+                
+                VStack {
+                    Spacer()
                     ZStack {
-                        RoundedRectangle(cornerRadius: 40)
+                        PlayStoryUpperRoundedRectangle(cornerRadius: 40 * heightRatio)
                             .foregroundStyle(Color("FSWhite"))
                             .frame(width: 1195 * widthRatio, height: 220 * heightRatio)
-                            .shadow(radius: 10, y: -4)
-                        MiniGameAnswerArrayView()
-                            .padding(.leading, 80 * widthRatio)
+                            .shadow(color: Color(.fsBlack).opacity(0.1), radius: 10, y: -4 * heightRatio)
+                        MiniGameAnswerArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
+                            .padding(.leading, 60 * widthRatio)
                             .padding(.top, 20 * heightRatio)
                             .padding(.bottom, 36 * heightRatio)
                             .environmentObject(viewModel)
                     }
                 }
+                .ignoresSafeArea()
                 
-                HandTapOverlay()
+                HandTapOverlay(widthRatio: widthRatio, heightRatio: heightRatio)
                     .opacity(viewModel.isTutorialShown ? 1 : 0)
                     .transition(.opacity)
                     .onTapGesture {
@@ -75,32 +92,32 @@ struct MiniGameView: View {
                         viewModel.restartTutorialTimer()
                     }
             }
+            .sheet(isPresented: $viewModel.isAllCorrect,
+                   onDismiss: {
+                viewModel.isTutorialShown = false
+                viewModel.startTutorialTimer()
+            },
+                   content: {
+                ZStack {
+                    Color("FSYellow1")
+                    MiniQuizModalView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        .environmentObject(viewModel)
+                }
+                .onAppear(perform: {
+                    viewModel.tutorialTimer?.invalidate()
+                    textToSpeechHelper.stopSpeaking()
+                })
+                .presentationDetents([.height(727 * heightRatio)])
+            })
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
-        .onChange(of: viewModel.currentlyCheckedIndex) { value in
+        .onChange(of: viewModel.currentlyCheckedIndex) { _, value in
             if value == viewModel.correctAnswer.count {
                 viewModel.isAllCorrect = true
             }
         }
-        .sheet(isPresented: $viewModel.isAllCorrect,
-               onDismiss: {
-            viewModel.isTutorialShown = false
-            viewModel.startTutorialTimer()
-        },
-               content: {
-            ZStack {
-                Color("FSYellow1")
-                MiniQuizModalView()
-                    .environmentObject(viewModel)
-            }
-            .onAppear(perform: {
-                viewModel.tutorialTimer?.invalidate()
-                textToSpeechHelper.stopSpeaking()
-            })
-            .presentationDetents([.height(727)])
-        })
-        .onChange(of: viewModel.isDismissed) { value in
+        .onChange(of: viewModel.isDismissed) { _, value in
             if value {
                 dismiss()
             }

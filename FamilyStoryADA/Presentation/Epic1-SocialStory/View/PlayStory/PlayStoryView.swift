@@ -27,53 +27,75 @@ struct PlayStoryView: View {
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
                 
-                VStack {
-                    PlayStoryNavigationView(heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        playStoryViewModel.isStoryCompleted = true
-                    }, onTapAudioButton: {
-                        //TODO: Read aloud voice synthensizer
-                        if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
-                            textToSpeechHelper.speakIndonesian(text)
-                        }
-                    }, showAudioButton: true)
-                    .padding(.top, 47 * heightRatio)
-                    .padding(.horizontal, 46 * widthRatio)
-                    .padding(.bottom, 21 * heightRatio)
+                
+                ZStack {
+                    //background for opening and closing
+                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                        Image("checkered-background")
+                            .resizable()
+                            .ignoresSafeArea()
+                    }
                     
+                    //Content
                     ZStack {
-                        //Content
-                        ZStack {
-                            if let image = playStoryViewModel.selectedPage?.pagePicture.first {
-                                if image.componentCategory == "AssetPicture" {
-                                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
-                                        Image(image.componentContent)
+                        if let image = playStoryViewModel.selectedPage?.pagePicture.first {
+                            if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                                ZStack {
+                                    Image("picture-frame")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 395 * widthRatio, height: 480 * heightRatio)
+                                    if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
+                                        Image(uiImage: imageAppStorage)
                                             .resizable()
                                             .scaledToFill()
-                                            .frame(width: 300 * widthRatio, height: 400 * heightRatio)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .frame(width: 309 * widthRatio, height: 412 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    .stroke(Color(.fsBlueBorder2), lineWidth: 3)
+                                            )
                                     } else {
                                         Image(image.componentContent)
                                             .resizable()
                                             .scaledToFill()
-                                            .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            .frame(width: 309 * widthRatio, height: 412 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                    .stroke(Color(.fsBlueBorder2), lineWidth: 3)
+                                            )
                                     }
+                                }
+                                .offset(y: -32 * heightRatio)
+                            } else {
+                                if image.componentCategory == "AssetPicture" {
+                                    Image(image.componentContent)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .offset(y: -48 * heightRatio)
                                 } else if let imageAppStorage = playStoryViewModel.loadImageFromDiskWith(fileName: image.componentContent) {
                                     Image(uiImage: imageAppStorage)
                                         .resizable()
-                                        .scaledToFit()
+                                        .scaledToFill()
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                }else {
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .offset(y: -48 * heightRatio)
+                                } else {
                                     RoundedRectangle(cornerRadius: 12)
                                         .foregroundStyle(Color("FSWhite"))
                                         .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                        .offset(y: -48 * heightRatio)
                                 }
-                            } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
-                                
-                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer)
+                            }
+                        } else if let video = playStoryViewModel.selectedPage?.pageVideo.first, let url = Bundle.main.url(forResource: video.componentContent, withExtension: "mp4") {
+                            
+                            ZStack {
+                                CustomVideoPlayerView(player: playStoryViewModel.videoPlayer, isReadyToPlay: $playStoryViewModel.isVideoReadyToPlay)
                                     .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                                     .onAppear() {
                                         playStoryViewModel.videoPlayer = AVPlayer(url: url)
                                         playStoryViewModel.videoPlayer.play()
@@ -90,28 +112,70 @@ struct PlayStoryView: View {
                                         playStoryViewModel.videoPlayer.play()
                                         Task {
                                             //MARK: turn this on when we need play sound effect
-//                                            await soundEffectHelper.playSound(fileName: )
+                                            //                                            await soundEffectHelper.playSound(fileName: )
                                         }
                                     }
-                                
-                                
-                            } else {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .foregroundStyle(Color("FSWhite"))
-                                    .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                    .offset(y: -48 * heightRatio)
+                                if !playStoryViewModel.isVideoReadyToPlay {
+                                    Image(video.componentContent)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                        .offset(y: -48 * heightRatio)
+                                }
+                            }
+                            
+                            
+                        } else {
+                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                .foregroundStyle(Color("FSWhite"))
+                                .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                                .offset(y: -48 * heightRatio)
+                        }
+                    }
+                    .frame(width: 876 * widthRatio, height: 540 * heightRatio)
+                    
+                    //background
+                    Image("background-play-story")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            playStoryViewModel.videoPlayer.seek(to: .zero)
+                            playStoryViewModel.videoPlayer.play()
+                            Task {
+                                //MARK: turn this on when we need play sound effect
+                                //                                            await soundEffectHelper.playSound(fileName: )
                             }
                         }
-                        .frame(width: 876 * widthRatio, height: 540 * heightRatio)
-                        
+                    
+                    VStack {
+                        PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
+                            playStoryViewModel.isStoryCompleted = true
+                        }, onTapAudioButton: {
+                            if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
+                                textToSpeechHelper.speakIndonesian(text)
+                            }
+                        }, showAudioButton: true,
+                                                titleOverlayReversed: false
+                        )
+                        .padding(.top, 38 * heightRatio)
+                        .padding(.horizontal, 46 * widthRatio)
+                        Spacer()
+                    }
+                    
+                    VStack {
                         //Button
                         HStack {
                             if playStoryViewModel.currentPageNumber > 0 {
                                 Button(action: {
+                                    playStoryViewModel.isVideoReadyToPlay = false
                                     textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToPreviousPage()
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.left", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.left", buttonColor: .yellow)
                                 })
                                 .padding(.leading, -32 * heightRatio)
                             }
@@ -119,11 +183,12 @@ struct PlayStoryView: View {
                             Spacer()
                             if playStoryViewModel.currentPageNumber < playStoryViewModel.story.pages.count - 1 {
                                 Button(action: {
+                                    playStoryViewModel.isVideoReadyToPlay = false
                                     textToSpeechHelper.stopSpeaking()
                                     playStoryViewModel.continueToNextPage()
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
                                 })
                                 
                                 .padding(.trailing, -32 * heightRatio)
@@ -132,9 +197,10 @@ struct PlayStoryView: View {
                                 Button(action: {
                                     textToSpeechHelper.stopSpeaking()
                                     playStoryIsActive = true
+                                    playStoryViewModel.isVideoReadyToPlay = false
                                     
                                 }, label: {
-                                    ButtonCircle(heightRatio: 1.0, buttonImage: "chevron.right", buttonColor: .yellow)
+                                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
                                         .padding(.trailing, -32 * heightRatio)
                                 })
                                 
@@ -144,46 +210,49 @@ struct PlayStoryView: View {
                                 }, label: {})
                             }
                         }
-                        .frame(width: 1055 * widthRatio, height: 519 * heightRatio)
+                        .padding(.horizontal, 100 * widthRatio)
+                        .padding(.bottom, 28 * heightRatio)
                     }
+                    .offset(y: 30 * heightRatio)
                     
-                    if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
-                        Spacer().frame(height: 19 * heightRatio)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 80)
-                                .foregroundStyle(Color("FSWhite"))
-                                .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
-                                .shadow(radius: 4, y: 4)
-                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
-                                .lineLimit(nil)
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color("FSBlack"))
-                        }
-                        Spacer().frame(height: 55 * heightRatio)
-                        
-                    } else {
-                        Spacer().frame(height: 24 * heightRatio)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(Color("FSWhite"))
-                                .frame(width: 1194 * widthRatio, height: 200 * heightRatio)
-                                .shadow(radius: 10, y: -4)
-                            Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
-                                .frame(width: 700 * widthRatio, height: 160 * heightRatio)
-                                .lineLimit(nil)
-                                .multilineTextAlignment(.center)
-                                .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color("FSBlack"))
+                    VStack {
+                        Spacer()
+                        //Text
+                        if playStoryViewModel.selectedPage?.pageType == "Opening" || playStoryViewModel.selectedPage?.pageType == "Closing" {
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 80 * heightRatio)
+                                    .foregroundStyle(Color("FSWhite"))
+                                    .frame(width: 1100 * widthRatio, height: 160 * heightRatio)
+                                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
+                                Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                    .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                    .lineLimit(nil)
+                                    .multilineTextAlignment(.center)
+                                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color("FSBlack"))
+                            }
+                            .padding(.bottom, 32 * heightRatio)
+                            
+                        } else {
+                            
+                            ZStack {
+                                PlayStoryUpperRoundedRectangle(cornerRadius: 40 * heightRatio)
+                                    .foregroundStyle(Color("FSWhite"))
+                                    .frame(width: 1194 * widthRatio, height: 159 * heightRatio)
+                                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 10, y: -4 * heightRatio)
+                                Text(playStoryViewModel.selectedPage?.pageText.first?.componentContent ?? "")
+                                    .frame(width: 700 * widthRatio, height: 160 * heightRatio)
+                                    .lineLimit(nil)
+                                    .multilineTextAlignment(.center)
+                                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color("FSBlack"))
+                            }
                         }
                     }
-                    
-                    
+                    .ignoresSafeArea()
                 }
             }
             .background(Color("FSYellow1"))

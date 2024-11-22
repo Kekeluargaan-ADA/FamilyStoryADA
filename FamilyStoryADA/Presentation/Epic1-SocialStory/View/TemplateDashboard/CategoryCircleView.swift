@@ -68,17 +68,18 @@ struct CategoryCircleView: View {
             Spacer().frame(height: 8 * heightRatio)
             if isSelected {
                 Text(text)
-                    .font(Font.custom("Fredoka", size: 20).weight(.medium))
+                    .font(Font.custom("Fredoka", size: 20 * heightRatio).weight(.medium))
                     .foregroundColor(Color("FSBlack"))
                     .offset(y: -16 * heightRatio)
             }
             else {
                 Text(text)
-                    .font(Font.custom("Fredoka", size: 20))
+                    .font(Font.custom("Fredoka", size: 20 * heightRatio))
                     .foregroundColor(Color("FSBlack"))
             }
         }
-        .padding(20 * heightRatio)
+        .frame(width: 107 * widthRatio, height: 112 * heightRatio)
+        .padding(.horizontal, 10 * widthRatio)
     }
 }
 

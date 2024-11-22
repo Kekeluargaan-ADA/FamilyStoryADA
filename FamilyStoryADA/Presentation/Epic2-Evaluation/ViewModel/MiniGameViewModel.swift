@@ -39,6 +39,7 @@ class MiniGameViewModel: Imageable, ObservableObject {
     }
     
     public func resetGame() {
+        self.correctAnswer = DraggablePage.fetchDraggedPage(story: story)
         self.draggedPages = DraggablePage.fetchDraggedPage(story: story).shuffled()
         self.currentlyCheckedIndex = 0
         self.isAllCorrect = false
@@ -59,5 +60,18 @@ class MiniGameViewModel: Imageable, ObservableObject {
     public func restartTutorialTimer() {
         self.isTutorialShown = false // Set tutorial to false on tap
         startTutorialTimer() // Restart the timer for another 10 seconds
+    }
+    
+    // Debug function
+    private func printID() {
+        print("Correct Answer")
+        for page in correctAnswer {
+            print("\(String(describing: page.id)): \(page.picturePath)")
+        }
+        print("Shuffled Answer")
+        for page in draggedPages {
+            print("\(String(describing: page.id)): \(page.picturePath)")
+        }
+        print("---------------------------------------------")
     }
 }

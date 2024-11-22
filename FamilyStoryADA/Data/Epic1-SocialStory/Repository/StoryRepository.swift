@@ -28,7 +28,7 @@ internal final class SwiftDataStoryRepository: StoryRepository {
     func fetchStories() -> ([StorySwiftData], ErrorHandler?) {
         do {
             let stories = try swiftDataManager.context.fetch(FetchDescriptor<StorySwiftData>())
-            print(stories)
+//            print(stories)
             return (stories, nil)
         } catch {
             return ([], ErrorHandler.fileNotFound)

@@ -52,7 +52,9 @@ class StoryViewModel: ObservableObject {
                                           storyLastRead: Date(),
                                           templateId: UUID(),
                                           templateCategory: "",
-                                          pages: []
+                                          isStoryGameable: false,
+                                          pages: [],
+                                          storyResultImagePath: ""
                                          )
         )
         displayedStory.append(contentsOf: stories)
@@ -79,7 +81,9 @@ class StoryViewModel: ObservableObject {
                                           storyLastRead: Date(),
                                           templateId: UUID(),
                                           templateCategory: "",
-                                          pages: []
+                                          isStoryGameable: false,
+                                          pages: [],
+                                          storyResultImagePath: ""
                                          ), at: 0)
             objectWillChange.send() // Notify observers
         }

@@ -2,8 +2,9 @@
     {
         "templateId": "819f2cc6-345d-4bfa-b081-2b0d4afc53ab",
         "templateName": "Cara Menyikat Gigi",
-        "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
-        "templateCategory": "Hygiene",
+        "templateDescription": "Template ini menceritakan petualangan seru Ben dalam belajar menggosok gigi bersama anak Anda.",
+        "templateCategory": "Kebersihan",
+        "isTemplateGameable": true,
         "templatePage": [
             {
                 "pageType": "Opening",
@@ -37,7 +38,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Halo! Ini Bima.",
+                        "componentContent": "Halo! Ini Ben.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -51,8 +52,12 @@
                 ],
                 "pagePicture":
                 [
+                    
+                ],
+                "pageVideo":
+                [
                     {
-                        "componentContent": "MenggosokGigiScene3",
+                        "componentContent": "ss01-animated-scene01",
                         "componentCategory": "AssetPicture",
                         "componentRatio":
                         {
@@ -64,10 +69,6 @@
                         "componentRotation": 0.0
                     }
                 ],
-                "pageVideo":
-                [
-                    
-                ],
                 "pageSoundPath": ""
             },
             {
@@ -75,7 +76,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengambil sikat gigi di kamar mandi.",
+                        "componentContent": "Ben mengambil sikat gigi di kamar mandi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -94,7 +95,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene1",
+                        "componentContent": "ss01-animated-scene02",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -113,7 +114,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menuangkan sedikit pasta gigi pada sikat gigi.",
+                        "componentContent": "Ben menuangkan sedikit pasta gigi pada sikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -132,7 +133,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene2",
+                        "componentContent": "ss01-animated-scene03",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -151,7 +152,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menggosok gigi ke atas dan bawah.",
+                        "componentContent": "Ben menggosok gigi ke atas dan bawah.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -170,7 +171,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene3",
+                        "componentContent": "ss01-animated-scene04",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -189,7 +190,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima menuangkan air dari keran ke gelas.",
+                        "componentContent": "Ben menuangkan air dari keran ke gelas.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -208,7 +209,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene4",
+                        "componentContent": "ss01-animated-scene05",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -227,7 +228,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengkumur setelah menyikat gigi.",
+                        "componentContent": "Ben mengkumur setelah menyikat gigi.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -246,7 +247,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene5",
+                        "componentContent": "ss01-animated-scene06",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -265,7 +266,7 @@
                 "pageText":
                 [
                     {
-                        "componentContent": "Bima mengeluarkan air kumur dari mulut ke wastafel.",
+                        "componentContent": "Ben mengeluarkan air kumur dari mulut ke wastafel.",
                         "componentCategory": "Text",
                         "componentRatio":
                         {
@@ -284,7 +285,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "MenggosokGigiScene6",
+                        "componentContent": "ss01-animated-scene07",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -326,30 +327,34 @@
                 "pageSoundPath": "",
             },
         ],
-        "templateCoverImagePath": "MenggosokGigiScene1",
+        "templateCoverImagePath": "ss01-animated-scene02",
         "templateOptionCoverImagePath": [
-            "MenggosokGigiScene1",
-            "MenggosokGigiScene2",
-            "MenggosokGigiScene3",
-            "MenggosokGigiScene4",
-            "MenggosokGigiScene5",
-            "MenggosokGigiScene6",
+            "ss01-animated-scene01",
+            "ss01-animated-scene02",
+            "ss01-animated-scene03",
+            "ss01-animated-scene04",
+            "ss01-animated-scene05",
+            "ss01-animated-scene06",
+            "ss01-animated-scene07",
         ],
         "templatePreviewImagePath": [
-            "MenggosokGigiScene1",
-            "MenggosokGigiScene2",
-            "MenggosokGigiScene3",
-            "MenggosokGigiScene4",
-            "MenggosokGigiScene5",
-            "MenggosokGigiScene6",
-        ]
+            "ss01-animated-scene01",
+            "ss01-animated-scene02",
+            "ss01-animated-scene03",
+            "ss01-animated-scene04",
+            "ss01-animated-scene05",
+            "ss01-animated-scene06",
+            "ss01-animated-scene07",
+        ],
+        "templateResultImagePath": "ss01-finish-image"
     },
     
     {
         "templateId": "97b175f0-453b-467f-90b7-7557b3ec9bc1",
         "templateName": "Cara Buang Air Kecil",
-        "templateDescription": "Menyikat gigi adalah kebiasaan penting yang perlu diajarkan anak sejak dini. Bimbing mereka untuk menyikat gigi dua kali sehari agar terhindar dari gigi berlubang dan menjaga kesehatan mulut.",
-        "templateCategory": "Hygiene",
+        "templateDescription": "Template ini akan mengajarkan anak Anda untuk buang air kecil secara baik dan benar.",
+        "templateCategory": "Toileting",
+        "isTemplateGameable": true,
         "templatePage": [
             {
                 "pageType": "Opening",
@@ -402,7 +407,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene01-v01",
+                        "componentContent": "ss02-animated-scene01",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -440,7 +445,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene02-v01",
+                        "componentContent": "ss02-animated-scene02",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -478,7 +483,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene03-v01",
+                        "componentContent": "ss02-animated-scene03",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -516,7 +521,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene04-v01",
+                        "componentContent": "ss02-animated-scene04",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -554,7 +559,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene05-v01",
+                        "componentContent": "ss02-animated-scene05",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -592,7 +597,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene06-v01",
+                        "componentContent": "ss02-animated-scene06",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -630,7 +635,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene07-v01",
+                        "componentContent": "ss02-animated-scene07",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -668,7 +673,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene08-v01",
+                        "componentContent": "ss02-animated-scene08",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -706,7 +711,7 @@
                 "pageVideo":
                 [
                     {
-                        "componentContent": "ss02-animated-scene09-v01",
+                        "componentContent": "ss02-animated-scene09",
                         "componentCategory": "Video",
                         "componentRatio":
                         {
@@ -748,29 +753,30 @@
                 "pageSoundPath": "",
             },
         ],
-        "templateCoverImagePath": "ss02-animated-scene09-v01",
+        "templateCoverImagePath": "ss02-animated-scene02",
         "templateOptionCoverImagePath": [
-            "ss02-animated-scene01-v01",
-            "ss02-animated-scene02-v01",
-            "ss02-animated-scene03-v01",
-            "ss02-animated-scene04-v01",
-            "ss02-animated-scene05-v01",
-            "ss02-animated-scene06-v01",
-            "ss02-animated-scene07-v01",
-            "ss02-animated-scene08-v01",
-            "ss02-animated-scene09-v01",
+            "ss02-animated-scene01",
+            "ss02-animated-scene02",
+            "ss02-animated-scene03",
+            "ss02-animated-scene04",
+            "ss02-animated-scene05",
+            "ss02-animated-scene06",
+            "ss02-animated-scene07",
+            "ss02-animated-scene08",
+            "ss02-animated-scene09",
         ],
         "templatePreviewImagePath": [
-            "ss02-animated-scene01-v01",
-            "ss02-animated-scene02-v01",
-            "ss02-animated-scene03-v01",
-            "ss02-animated-scene04-v01",
-            "ss02-animated-scene05-v01",
-            "ss02-animated-scene06-v01",
-            "ss02-animated-scene07-v01",
-            "ss02-animated-scene08-v01",
-            "ss02-animated-scene09-v01",
-        ]
+            "ss02-animated-scene01",
+            "ss02-animated-scene02",
+            "ss02-animated-scene03",
+            "ss02-animated-scene04",
+            "ss02-animated-scene05",
+            "ss02-animated-scene06",
+            "ss02-animated-scene07",
+            "ss02-animated-scene08",
+            "ss02-animated-scene09",
+        ],
+        "templateResultImagePath": "ss02-finish-image"
     }
 
 ]

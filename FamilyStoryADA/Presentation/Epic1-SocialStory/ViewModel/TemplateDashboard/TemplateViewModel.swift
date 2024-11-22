@@ -21,6 +21,7 @@ class TemplateViewModel: ObservableObject {
     @Published var isTemplateClosed = false
     @Published var childName: String = ""
     @Published var chosenImage: UIImage?
+    @Published var templateEditName = ""
     
     private let templateUsecase: TemplateUsecase
     private let storyUsecase: StoryUsecase

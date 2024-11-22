@@ -17,41 +17,47 @@ struct StoryCardView: View {
     var lastRead: Date
     var story: StoryEntity
     
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: 16)
-                .frame(width: 354, height: 320)
-                .foregroundStyle(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
-            VStack(alignment: .leading, spacing: 6) {
+            RoundedRectangle(cornerRadius: 16 * heightRatio)
+                .frame(width: 354 * widthRatio, height: 320 * heightRatio)
+                .foregroundStyle(Color("FSWhite").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
+            VStack(alignment: .leading, spacing: 12 * heightRatio) {
                 Image(imagePath)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 354, height: 220)
-                VStack(alignment: .leading, spacing: 6) {
+                    .frame(width: 354 * widthRatio, height: 220 * heightRatio)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 12)
+                    )
+                VStack(alignment: .leading, spacing: 4 * heightRatio) {
                     HStack {
                         Text(category)
-                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                            .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                             .foregroundStyle(Color("FSBlack"))
                         Spacer()
-                        Text("\(storyLength, specifier: "%.1f") min")
-                            .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
+                        Text("\(storyLength, specifier: "%.0f") m")
+                            .font(Font.custom("Fredoka", size: 14 * heightRatio, relativeTo: .footnote))
                             .foregroundStyle(Color("FSGrey"))
                     }
                     Text(storyName)
-                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                        .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
                         .fontWeight(.semibold)
                     
 //                    Text("Terakhir dilihat \(lastRead.formatted(date: .abbreviated, time: .omitted))")
                     Text("Terakhir dilihat \(lastRead.formatted(.dateTime.day().month()))")
-                        .font(Font.custom("Fredoka", size: 14, relativeTo: .footnote))
+                        .font(Font.custom("Fredoka", size: 14 * heightRatio, relativeTo: .footnote))
                         .foregroundStyle(Color("FSBlue9"))
                         .italic()
                 }
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 12 * widthRatio)
                 Spacer()
             }
-            .frame(width: 354, height: 320)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .frame(width: 354 * widthRatio, height: 320 * heightRatio)
+            .clipShape(RoundedRectangle(cornerRadius: 16 * heightRatio))
         }
     }
 }

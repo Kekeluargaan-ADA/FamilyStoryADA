@@ -13,6 +13,7 @@ import AVFoundation
 
 class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var story: StoryEntity
+    @Published var statusMessage: String = ""
     @Published var introPages: [DraggablePage] = []
     @Published var draggedPages: [DraggablePage] = []
     @Published var selectedPage: PageEntity?
@@ -26,7 +27,9 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     @Published var videoPlayer: AVPlayer = AVPlayer()
     @Published var paraphrasedOptions: [String] = []
     @Published var paraphraseModalIsLoading: Bool = false
-    
+    @Published var isVideoReadyToPlay: Bool = false
+    private var userID: String = ""
+    private var backendURL: String = "https://tinytalesapi.onrender.com"
     var pageUsecase: PageUsecase
     var storyUsecase: StoryUsecase
     var componentUsecase: ComponentUsecase
@@ -118,8 +121,8 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
     // TODO: Delete all component and ratio
     public func deletePage() {
         if let page = selectedPage {
-            if let storyIndex = story.pages.firstIndex(where: {page.pageId == $0.pageId}) {
-                //remove page swiftdata
+            if let storyIndex = story.pages.firstIndex(where: { page.pageId == $0.pageId }) {
+                deleteAssociatedMedia(for: page)
                 guard pageUsecase.removePage(pageId: page.pageId) else { return }
                 
                 //remove page in story entity
@@ -151,11 +154,48 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
                         self.selectedPage = story.pages.first(where: {$0.pageType == "Introduction" || $0.pageType == "Instruction"})
                     }
                 }
-                
             }
         }
     }
-    
+
+    private func deleteAssociatedMedia(for page: PageEntity) {
+        for picture in page.pagePicture {
+            if let filePath = getFilePath(for: picture.componentContent) {
+                deleteFile(at: filePath)
+            }
+            componentUsecase.removeComponent(componentId: picture.componentId)
+        }
+
+        for video in page.pageVideo {
+            if let filePath = getFilePath(for: video.componentContent) {
+                deleteFile(at: filePath)
+            }
+            componentUsecase.removeComponent(componentId: video.componentId)
+        }
+
+        for text in page.pageText {
+            componentUsecase.removeComponent(componentId: text.componentId)
+        }
+    }
+
+    private func getFilePath(for filename: String) -> URL? {
+        let fileManager = FileManager.default
+        let appDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        return appDirectory?.appendingPathComponent(filename)
+    }
+
+    private func deleteFile(at path: URL) {
+        let fileManager = FileManager.default
+        do {
+            if fileManager.fileExists(atPath: path.path) {
+                try fileManager.removeItem(at: path)
+                print("Deleted file at \(path)")
+            }
+        } catch {
+            print("Error deleting file at \(path): \(error.localizedDescription)")
+        }
+    }
+
     public func updatePage() {
         if let currentPage = self.selectedPage {
             updateTextComponent(page: currentPage)
@@ -176,11 +216,11 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
             } else if componentUsecase.addNewComponent(component: text) != nil {
                 page.pageText = []
                 page.pageText.append(text)
-//                    if let classification = selectedPage?.pageTextClassification {
-//                        page.pageTextClassification = classification
-//                    } else {
-//                        page.pageTextClassification = ""
-//                    }
+                //                    if let classification = selectedPage?.pageTextClassification {
+                //                        page.pageTextClassification = classification
+                //                    } else {
+                //                        page.pageTextClassification = ""
+                //                    }
             }
         }
     }
@@ -204,72 +244,88 @@ class PageCustomizationViewModel: Imageable, ObservableObject {
         }
     }
     
-    public func getParaphrasing(for text: String) async throws -> [String] {
-        let prompt = """
-                Cari 3 opsi lain untuk memparafrase kalimat berikut agar menjadi kalimat deskriptif tanpa mengubah makna atau konteksnya. Pastikan jumlah kata mirip, dengan perbedaan maksimal 4 kata. Dilarang keras menggunakan kalimat instruksional seperti ajakan, perintah, atau anjuran. Berikan hasil hanya dalam format JSON tanpa tambahan kata atau penjelasan lain. Formatnya harus seperti berikut:
+    public func getParaphrasing(for text: String) async throws -> [String]? {
+        // Safely unwrap userID
+        guard let userID = UserDefaults.standard.string(forKey: "UserID") else {
+            throw NSError(domain: "AppError", code: 1, userInfo: [NSLocalizedDescriptionKey: "UserID not found"])
+        }
 
-                {
-                    "original_text": "{teks}",
-                    "paraphrased_options": [
-                        {
-                            "option_1": "{parafrase_1}"
-                        },
-                        {
-                            "option_2": "{parafrase_2}"
-                        },
-                        {
-                            "option_3": "{parafrase_3}"
-                        }
-                    ]
-                }
+        // Construct the URL with query parameters
+        guard let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "\(backendURL)/generate_paraphrasing/\(userID)?text=\(encodedText)") else {
+            throw NSError(domain: "AppError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
 
-                Kalimat: \(text)
+        // Create a URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-                Contoh deskriptif: "aku menggosok gigi."
-                Contoh instruksional (yang harus dihindari): "ayo gosok gigi."
-                """
-        
-        let response = try await getResponse(prompt: prompt)
-            
-        guard let jsonData = response.data(using: .utf8) else {
-                throw NSError(domain: "Invalid JSON format", code: -1, userInfo: nil)
-            }
-            
-            do {
-                let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: jsonData)
-                let options = paraphraseData.paraphrasedOptions.map { $0.option }
-                
-                // Update the @Published property on the main thread
-                DispatchQueue.main.async {
-                    self.paraphrasedOptions = options
-                }
-                
-                return options
-            } catch {
-                print("Failed to parse JSON: \(error.localizedDescription)")
-                throw error
-            }
-    }
-
-    public func getTextClassification(for text: String) async throws -> String {
-        let prompt = """
-        Anda bertugas mengidentifikasi apakah teks berikut adalah "Instructive" atau "Descriptive." Jika teks tidak dapat diidentifikasi sebagai salah satu dari keduanya, kembalikan hasil sebagai "Undefined."
-
-        Contoh deskriptif: aku menggosok gigi.  
-        Contoh instruktif: ayo gosok gigi.  
-
-        Kembalikan hasil hanya dalam format: "Instructive," "Descriptive," atau "Undefined."
-        text: \(text)
-        """
-        
         do {
-            let response = try await getResponse(prompt: prompt)
-            return response
+            // Fetch data asynchronously
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // Debug: Print received data
+            print("Received Data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
+
+            // Validate HTTP response
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                throw NSError(domain: "HTTPError", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"])
+            }
+
+            // Decode JSON response
+            let paraphraseData = try JSONDecoder().decode(ParaphraseData.self, from: data)
+
+            // Return the paraphrased options
+            DispatchQueue.main.async {
+                self.paraphrasedOptions = paraphraseData.paraphrasedOptions
+            }
+            return paraphrasedOptions
         } catch {
+            print("Error fetching or decoding data: \(error.localizedDescription)")
             throw error
         }
     }
-    
+
+    public func getTextClassification(for text: String) async throws -> String {
+        // Safely unwrap userID
+        guard let userID = UserDefaults.standard.string(forKey: "UserID") else {
+            throw NSError(domain: "AppError", code: 1, userInfo: [NSLocalizedDescriptionKey: "UserID not found"])
+        }
+
+        // Construct the URL with query parameters
+        guard let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "\(backendURL)/classify_text/\(userID)?text=\(encodedText)") else {
+            throw NSError(domain: "AppError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        }
+
+        // Create a URLRequest
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            // Fetch data asynchronously
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            // Debug: Print received data
+            print("Received Data: \(String(data: data, encoding: .utf8) ?? "No readable data")")
+
+            // Validate HTTP response
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                throw NSError(domain: "HTTPError", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid response from server"])
+            }
+
+            // Decode JSON response
+            let classificationData = try JSONDecoder().decode(ClassificationData.self, from: data)
+
+            // Return the paraphrased options
+            return classificationData.classification
+        } catch {
+            print("Error fetching or decoding data: \(error.localizedDescription)")
+            throw error
+        }
+    }
     
 }
 

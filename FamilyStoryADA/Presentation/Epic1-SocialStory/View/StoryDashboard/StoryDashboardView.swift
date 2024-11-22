@@ -12,64 +12,71 @@ struct StoryDashboardView: View {
     @State private var keywords: String = ""
     
     @StateObject private var viewModel: StoryViewModel = StoryViewModel()
-    private let flexibleColumn = [
-        GridItem(.fixed(354)),
-        GridItem(.fixed(354)),
-        GridItem(.fixed(354))
-    ]
     
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
-                ZStack {
-                    ZStack {
-                        StoryDashboardBackgroundView()
+                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+                let heightRatio = ratios.heightRatio
+                let widthRatio = ratios.widthRatio
+                
+                ZStack(alignment: .top) {
+                    ZStack(alignment: .top) {
+                        StoryDashboardBackgroundSecondaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSYellow"))
-                            .padding(.top, 30)
-                            .padding(.horizontal, 24)
-                            .ignoresSafeArea()
-                        StoryDashboardBackgroundView()
+//                            .padding(.top, 24 * heightRatio)
+                            .padding(.horizontal, 24 * widthRatio)
+//                            .ignoresSafeArea()
+                        StoryDashboardBackgroundPrimaryView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .foregroundStyle(Color("FSWhite"))
-                            .padding(.top, 38)
-                            .padding(.horizontal, 24)
-                            .ignoresSafeArea()
+                            .padding(.top, 8 * heightRatio)
+                            .padding(.horizontal, 24 * widthRatio)
+//                            .ignoresSafeArea()
                     }
-                    .frame(height: 804)
+                    .frame(height: 804 * heightRatio)
+                    .padding(.top, 30 * heightRatio)
+                    
                     VStack {
                         HStack {
-                            Text("My Story")
-                                .font(Font.custom("Fredoka", size: 40, relativeTo: .largeTitle))
+                            Text("Ceritaku")
+                                .font(Font.custom("Fredoka", size: 40 * heightRatio, relativeTo: .largeTitle))
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color("FSBlack"))
+                                .padding(.leading, 40 * widthRatio)
                             Spacer()
                             HStack {
                                 SearchBarView(searchText: $keywords, onCommit: {
                                     viewModel.searchText = keywords
                                     viewModel.searchStories()
-                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...")
-                                ProfileButtonView(imageName: "")
+                                }, searchPlaceholder: "Cari berdasarkan judul, kategori,...", width: 540, widthRatio: widthRatio, heightRatio: heightRatio)
+                                ProfileButtonView(imageName: "", widthRatio: widthRatio, heightRatio: heightRatio)
                             }
                         }
-                        .padding(.horizontal, 46)
-                        .padding(.top, 24)
+                        .padding(.horizontal, 46 * widthRatio)
+                        .padding(.top, 54 * heightRatio)
+                        
                         ZStack {
                             VStack {
-                                HStack (spacing: 12) {
+                                HStack (spacing: 14 * widthRatio) {
                                     Spacer()
                                     Text("Urutkan")
-                                        .foregroundStyle(.black)
-                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption)
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio))
+                                        .foregroundStyle(Color("FSBlack"))
+                                    DropdownFilterView(viewModel: viewModel, selectedOption: $viewModel.selectedOption, widthRatio: widthRatio, heightRatio: heightRatio)
                                 }
-                                .padding(.horizontal, 20)
                                 ScrollView {
-                                    LazyVGrid(columns: flexibleColumn, spacing: 26) {
+                                    LazyVGrid(columns: [
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio), spacing: 15 * widthRatio),
+                                        GridItem(.fixed(354 * widthRatio))
+                                    ], spacing: 26 * heightRatio) {
                                         ForEach (viewModel.displayedStory, id: \.storyId) { item in
                                             if !viewModel.stories.contains(where: {item.storyId == $0.storyId}) {
                                                 Button(action: {
                                                     viewModel.isTemplateDashboardOpened = true
                                                 }, label: {
-                                                    NewStoryCardView()
-                                                        .padding(.horizontal, 10)
+                                                    NewStoryCardView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                                        
                                                 })
                                             } else {
                                                 ZStack(alignment: .topTrailing) {
@@ -84,10 +91,12 @@ struct StoryDashboardView: View {
                                                             category: item.templateCategory,
                                                             storyLength: item.storyLength,
                                                             lastRead: item.storyLastRead,
-                                                            story: item
+                                                            story: item,
+                                                            widthRatio: widthRatio,
+                                                            heightRatio: heightRatio
                                                         )
                                                         .foregroundStyle(Color("FSBlack"))
-                                                        .padding(.horizontal, 10)
+                                                        
                                                     })
                                                     Menu {
                                                         Button(action: {
@@ -105,10 +114,12 @@ struct StoryDashboardView: View {
                                                         }
                                                     } label: {
                                                         Image(systemName: "ellipsis")
-                                                            .font(.system(size: 24))
+                                                            .font(.system(size: 24 * heightRatio))
                                                             .fontWeight(.bold)
                                                             .foregroundStyle(Color("FSBlack"))
-                                                            .padding()
+                                                            .frame(width: 28 * widthRatio, height: 29 * heightRatio)
+                                                            .padding(.trailing, 13 * widthRatio)
+                                                            .padding(.top, 8 * heightRatio)
                                                     }
                                                     
                                                 }
@@ -117,10 +128,11 @@ struct StoryDashboardView: View {
                                             }
                                         }
                                     }
+                                    .padding(.top, 20 * heightRatio)
                                 }
                             }
-                            .padding(.top, 12)
-                            .padding(.horizontal, 22)
+                            .padding(.top, 12 * heightRatio)
+                            .padding(.horizontal, 46 * widthRatio)
                         }
                         .ignoresSafeArea()
                     }
@@ -135,9 +147,14 @@ struct StoryDashboardView: View {
                         ZStack {
                             Color("FSBlue1")
                                 .ignoresSafeArea()
-                            EditCoverModalView(story: story, imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId))
+                            EditCoverModalView(story: story,
+                                               imageOptionPath: viewModel.getImagePreviewSelection(templateId: story.wrappedValue.templateId),
+                                               widthRatio: widthRatio,
+                                               heightRatio: heightRatio
+                            )
                         }
-                        .presentationDetents([.height(700)])
+                        .presentationDetents([.height(700 * heightRatio)])
+                        .ignoresSafeArea(.keyboard)
                     }
                 }
                 .onChange(of: viewModel.currentlyEditedStory?.storyName) {
@@ -178,6 +195,7 @@ struct StoryDashboardView: View {
                     EmptyView()
                 })
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden(true)

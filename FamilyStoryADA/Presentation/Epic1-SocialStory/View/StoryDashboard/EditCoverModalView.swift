@@ -15,21 +15,26 @@ struct EditCoverModalView: View {
     
     @State var imagePath: String = ""
     @State var storyName: String = ""
+    @FocusState private var isTextFieldFocused: Bool
+    
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 20 * heightRatio) {
             HStack() {
                 Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "xmark", buttonColor: .blue)
+                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "xmark", buttonColor: .blue)
                 })
                 
                 Spacer()
                 
                 Text("Edit Cover")
-                    .font(.system(size: 32))
-                    .fontWeight(.bold)
+                    .font(Font.custom("Fredoka", size: 32 * heightRatio))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color(.fsBlack))
                 Spacer()
                 
                 Button(action: {
@@ -37,73 +42,87 @@ struct EditCoverModalView: View {
                     story.storyCoverImagePath = imagePath
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    ButtonCircle(heightRatio: 1.0, buttonImage: "checkmark", buttonColor: .blue)
+                    ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "checkmark", buttonColor: .blue)
                 })
                 
             }
             
-            ZStack() {
+            ZStack {
                 TextField("Judul Story...", text: $storyName)
-                    .background(Color("FSWhite"))
+                    .focused($isTextFieldFocused) // Bind the focus state
+                    
                     .multilineTextAlignment(.center)
-                    .font(Font.custom("Fredoka", size: 32, relativeTo: .title))
+                    .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                     .fontWeight(.medium)
-                    .frame(width: 580, height: 80)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 550 * widthRatio, height: 50 * heightRatio)
+                    .background(Color("FSWhite"))
                     .padding(.horizontal)
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        storyName = ""
-                    }, label: {
-                        Image(systemName: "x.circle")
-                            .resizable()
-                            .frame(width: 29, height: 29)
-                            .foregroundStyle(Color("FSGrey"))
-                    })
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.fsBlue9), lineWidth: 2)
+                            .frame(width: 550 * widthRatio, height: 50 * heightRatio)
+                    )
+                    .animation(.easeInOut, value: isTextFieldFocused)
+                if isTextFieldFocused {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            storyName = ""
+                        }, label: {
+                            Image(systemName: "x.circle")
+                                .font(.system(size: 24 * heightRatio))
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color("FSGrey"))
+                        })
+                    }
+                    .padding(.horizontal, 50 * widthRatio)
                 }
-                .padding(.horizontal, 60)
             }
             
             
             
-            VStack(spacing: 28) {
+            VStack(spacing: 28 * heightRatio) {
                 Image(imagePath)
                     .resizable()
-                    .frame(width: 400, height: 248)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .frame(width: 400 * widthRatio, height: 248 * heightRatio)
+                    .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
                     .aspectRatio(contentMode: .fill)
                     .clipped()
+                    .shadow(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)
                 
-                ScrollView(.horizontal) {
-                    HStack(spacing: 20) {
-                        ForEach(imageOptionPath, id: \.self) { imageOption in
-                            Button(action:{
-                                imagePath = imageOption
-                            }, label: {
-                                ZStack {
-                                    Image(imageOption)
-                                        .resizable()
-                                        .frame(width: 200, height: 124)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .aspectRatio(contentMode: .fill)
-                                        .clipped()
-                                    if imagePath == imageOption {
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(Color("FSBlue9"), lineWidth: 3)
-                                            .foregroundStyle(Color.clear)
-                                            .frame(width: 200, height: 124)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12 * heightRatio)
+                        .fill(Color(.fsWhite).shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
+                        .frame(width: 580 * widthRatio, height: 180 * heightRatio)
+                    
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 20 * widthRatio) {
+                            ForEach(imageOptionPath, id: \.self) { imageOption in
+                                Button(action:{
+                                    imagePath = imageOption
+                                }, label: {
+                                    ZStack {
+                                        Image(imageOption)
+                                            .resizable()
+                                            .frame(width: 200 * widthRatio, height: 124 * heightRatio)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12 * heightRatio))
+                                            .aspectRatio(contentMode: .fill)
+                                            .clipped()
+                                        if imagePath == imageOption {
+                                            RoundedRectangle(cornerRadius: 12 * heightRatio)
+                                                .strokeBorder(Color("FSBlue9"), lineWidth: 3 * widthRatio)
+                                                .foregroundStyle(Color.clear)
+                                                .frame(width: 200 * widthRatio, height: 124 * heightRatio)
                                             
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
                         }
+                        .padding(28 * heightRatio)
                     }
-                    .padding(28)
                 }
-                .background(Color("FSWhite").shadow(.drop(radius: 4, x: 0, y: 4)))
-                .frame(width: 580, height: 180)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(width: 580 * widthRatio, height: 180 * heightRatio)
                 .padding(.horizontal)
             }
         }

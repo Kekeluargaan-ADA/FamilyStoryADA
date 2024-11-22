@@ -47,6 +47,9 @@ struct HighlightRoot: ViewModifier {
         GeometryReader { geometry in
             let highlightRect = geometry[highlight.anchor]
             let safeArea = geometry.safeAreaInsets
+            let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+            let heightRatio = ratios.heightRatio
+            let widthRatio = ratios.widthRatio
             
             ZStack {
                 // Darkened background with cutout for highlight
@@ -71,18 +74,18 @@ struct HighlightRoot: ViewModifier {
                 // Overlayed text for title and description
                 if showTitle {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 13)
+                        RoundedRectangle(cornerRadius: 13 * heightRatio)
                             .foregroundStyle(Color("FSWhite"))
-                            .frame(width: 300, height: 160)
-                            .shadow(radius: 10)
-                        VStack(alignment: .leading, spacing: 8) {
+                            .frame(width: 300 * widthRatio, height: 160 * heightRatio)
+                            .shadow(radius: 10 * heightRatio)
+                        VStack(alignment: .leading, spacing: 8 * heightRatio) {
                             Text(highlight.title)
-                                .font(Font.custom("Fredoka", size: 20, relativeTo: .title3))
+                                .font(Font.custom("Fredoka", size: 20 * heightRatio, relativeTo: .title3))
                                 .fontWeight(.medium)
                                 .foregroundStyle(Color("FSBlack"))
                                 .multilineTextAlignment(.leading)
                             Text(highlight.description)
-                                .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                                 .fontWeight(.regular)
                                 .foregroundStyle(Color("FSBlack"))
                                 .multilineTextAlignment(.leading)
@@ -91,14 +94,14 @@ struct HighlightRoot: ViewModifier {
                             Spacer()
                             HStack {
                                 Text("\(currentHighlightOrder + 1) / \(highlightOrder.count)")
-                                    .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                    .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                                     .fontWeight(.regular)
                                     .foregroundStyle(Color("FSGrey4"))
                                     .multilineTextAlignment(.leading)
                                 Spacer()
                                 if currentHighlightOrder >= highlightOrder.count - 1 {
-                                    Text("Done")
-                                        .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                    Text("Selesai")
+                                        .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                                         .fontWeight(.regular)
                                         .foregroundStyle(Color("FSBlue9"))
                                         .multilineTextAlignment(.leading)
@@ -109,9 +112,9 @@ struct HighlightRoot: ViewModifier {
                                             onFinished()
                                         }
                                 } else {
-                                    HStack(spacing: 32) {
+                                    HStack(spacing: 32 * widthRatio) {
                                         Text("Skip")
-                                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                            .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                                             .fontWeight(.regular)
                                             .foregroundStyle(Color("FSGrey"))
                                             .multilineTextAlignment(.leading)
@@ -122,7 +125,7 @@ struct HighlightRoot: ViewModifier {
                                                 onFinished()
                                             }
                                         Text("Next")
-                                            .font(Font.custom("Fredoka", size: 16, relativeTo: .callout))
+                                            .font(Font.custom("Fredoka", size: 16 * heightRatio, relativeTo: .callout))
                                             .fontWeight(.regular)
                                             .foregroundStyle(Color("FSBlue9"))
                                             .multilineTextAlignment(.leading)
@@ -138,11 +141,11 @@ struct HighlightRoot: ViewModifier {
                                 
                             }
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 16)
-                        .padding(.bottom, 12)
+                        .padding(.horizontal, 16 * widthRatio)
+                        .padding(.top, 16 * heightRatio)
+                        .padding(.bottom, 12 * heightRatio)
                     }
-                    .frame(width: 300, height: 160)
+                    .frame(width: 300 * widthRatio, height: 160 * heightRatio)
                     .offset(x: PositionStyle.calculateXOffset(for: highlight.position, highlightRect: highlightRect, width: geometry.size.width),
                             y: PositionStyle.calculateYOffset(for: highlight.position, highlightRect: highlightRect, height: geometry.size.height))
                     .transition(.opacity)

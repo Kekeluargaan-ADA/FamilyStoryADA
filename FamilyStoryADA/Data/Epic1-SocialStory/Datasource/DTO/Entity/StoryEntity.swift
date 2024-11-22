@@ -14,7 +14,9 @@ class StoryEntity: IEntityAble, Identifiable {
     var storyLastRead: Date
     var templateId: UUID
     var templateCategory: String
+    var isStoryGameable: Bool
     var pages: [PageEntity]
+    var storyResultImagePath: String
     
     var storyLength: Double {
         guard !pages.isEmpty else  {
@@ -25,17 +27,19 @@ class StoryEntity: IEntityAble, Identifiable {
             wordCount += page.componentTextWordCount
         }
         
-        let length = Double(wordCount) / 100 // TODO: Research about WPM
+        let length = Double(wordCount) / 50 // TODO: Research about WPM
         return length < 1.0 ? 1 : length
     }
     
-    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, pages: [PageEntity]) {
+    init(storyId: UUID, storyName: String, storyCoverImagePath: String, storyLastRead: Date, templateId: UUID, templateCategory: String, isStoryGameable: Bool, pages: [PageEntity], storyResultImagePath: String) {
         self.storyId = storyId
         self.storyName = storyName
         self.storyCoverImagePath = storyCoverImagePath
         self.storyLastRead = storyLastRead
         self.templateId = templateId
         self.templateCategory = templateCategory
+        self.isStoryGameable = isStoryGameable
         self.pages = pages
+        self.storyResultImagePath = storyResultImagePath
     }
 }

@@ -9,34 +9,37 @@ import SwiftUICore
 import SwiftUI
 
 struct CustomizedBackButton: View {
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var body: some View {
         ZStack(alignment: .center) {
             BackButtonBackground()
-                .fill(Color("FSSecondaryBlue4"))
-            HStack (spacing: 21) {
+                .fill(Color("FSSecondaryBlue4").shadow(.drop(color: Color(.fsBlack).opacity(0.1), radius: 4, y: 4 * heightRatio)))
+            HStack (alignment: .center, spacing: 21 * widthRatio) {
                 Image(systemName: "arrowshape.turn.up.backward")
-                    .resizable()
-                    .frame(width: 45, height: 43)
+                    .font(.system(size: 36 * heightRatio))
+                    .fontWeight(.medium)
                     .foregroundStyle(Color("FSBlack"))
-                Text("My Story")
+                Text("Ceritaku")
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
-                    .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                    .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
+                    .fontWeight(.semibold)
                     .foregroundStyle(Color("FSBlack"))
                     
             }
-            .padding(.leading, 21)
-            .padding(.trailing, 11)
-            .padding(.vertical, 21)
+            .padding(.leading, 21 * widthRatio)
+            .padding(.trailing, 11 * widthRatio)
+            .padding(.vertical, 28 * heightRatio)
         }
-        .frame(width: 197, height: 100)
+        .frame(width: 197 * widthRatio, height: 100 * heightRatio)
     }
     
 }
 
 #Preview {
-    CustomizedBackButton()
+    CustomizedBackButton(widthRatio: 1, heightRatio: 1)
 }
 
 struct BackButtonBackground: Shape {

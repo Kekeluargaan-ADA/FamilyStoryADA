@@ -9,18 +9,19 @@ import SwiftUI
 
 struct MiniGameOptionArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
-    private let flexibleRow = [
-        GridItem(.fixed(191)),
-        GridItem(.fixed(191))
-    ]
     @State private var wiggleStates: [Int: Bool] = [:]
-//    @State private var wiggleDegree: [Int: Double] = [:]
+    //    @State private var wiggleDegree: [Int: Double] = [:]
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
     var body: some View {
         ScrollView(.horizontal) {
-            LazyHGrid(rows: flexibleRow, spacing: 12) {
+            LazyHGrid(rows: [
+                GridItem(.fixed(191 * heightRatio), spacing: 12 * heightRatio),
+                GridItem(.fixed(191 * heightRatio))
+            ], spacing: 12 * widthRatio) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
-                    MiniGameOptionCardView(image: viewModel.displayImage(fileName: value.picturePath), isOption: value.id != nil)
+                    MiniGameOptionCardView(image: .constant(viewModel.displayImage(fileName: value.picturePath)), isOption: value.id != nil, widthRatio: widthRatio, heightRatio: heightRatio)
 //                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))
 //                        .animation(wiggleStates[index] == true ? Animation.linear(duration: 0.5).repeatCount(2, autoreverses: true) : .default, value: wiggleStates[index])
                         .rotationEffect(.degrees(wiggleStates[index] == true ? 5 : 0))
@@ -49,6 +50,11 @@ struct MiniGameOptionArrayView: View {
                             viewModel.isTutorialShown = false
                             viewModel.restartTutorialTimer()
                         }
+                        .onChange(of: viewModel.isAllCorrect) { _, value in
+                            if value {
+                                wiggleStates[index] = false
+                            }
+                        }
                     //TODO: Fix left and right toggle
 //                        .onChange(of: wiggleDegree[index]) { value in
 //                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -67,10 +73,11 @@ struct MiniGameOptionArrayView: View {
                 }
             }
         }
+        .scrollIndicators(.hidden)
     }
 }
 
 
 #Preview {
-    MiniGameOptionArrayView()
+    MiniGameOptionArrayView(widthRatio: 1, heightRatio: 1)
 }

@@ -27,84 +27,94 @@ struct CustomizationView: View {
     var body: some View {
         NavigationView {
             GeometryReader{ geometry in
-                ZStack{
+                let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
+                let heightRatio = ratios.heightRatio
+                let widthRatio = ratios.widthRatio
+                ZStack (alignment: .center){
                     HStack(alignment: .top) {
-                        VStack(spacing: 32) {
+                        VStack(spacing: 32 * heightRatio) {
                             Button(action: {
                                 viewModel.updatePage()
                                 dismiss()
                             }, label: {
-                                CustomizedBackButton()
+                                CustomizedBackButton(widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             //                            DraggablePageCustomizationSelectionView(draggedPages: $viewModel.draggedPages)
                             //                                .disabled(keyboardHelper.isKeyboardShown)
-                            ZStack {
-                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages)
-                                    .disabled(keyboardHelper.isKeyboardShown)
+                            ZStack(alignment: .top) {
+                                DraggablePageReorderedCustomizationView(draggedPages: $viewModel.draggedPages, introPages: $viewModel.introPages, isVideoReadyToPlay: $viewModel.isVideoReadyToPlay, widthRatio: widthRatio, heightRatio: heightRatio)
+                                    .disabled(keyboardHelper.isKeyboardShown || isParaphrasingPresented)
                                 
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170, height: 685)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 2,
                                         title: "Edit Halaman",
                                         description: "Tahan dan geser halaman untuk mengganti sequence.",
-                                        cornerRadius: 8,
+                                        cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                                 Rectangle()
                                     .foregroundStyle(.clear)
-                                    .frame(width: 170, height: 685)
+                                    .frame(width: 170 * widthRatio, height: 840 * heightRatio)
                                     .highlight(
                                         order: 1,
                                         title: "Lihat Semua Halaman",
-                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru",
-                                        cornerRadius: 8,
+                                        description: "Scroll dan lihat keseluruhan halaman. Tekan 􀏇 untuk menambahkan halaman baru.",
+                                        cornerRadius: 8 * heightRatio,
                                         style: .continuous,
                                         position: .centerTrailing
                                     )
+                                    .offset(y: -10 * heightRatio)
                             }
-                                
                         }
                         
                         
                         ZStack {
                             ZStack(alignment: .top) {
-                                Image("CustomizationBackground")
+                                Image("create-story-background")
+                                    .resizable()
+                                    .frame(width: 1000 * widthRatio, height: 854 * heightRatio)
+//                                    .ignoresSafeArea()
                                 ZStack (alignment: .center) {
-                                    RoundedRectangle(cornerRadius: 28)
+                                    RoundedRectangle(cornerRadius: 28 * heightRatio)
                                         .fill(Color("FSYellow"))
                                     Text(viewModel.story.storyName)
-                                        .font(Font.custom("Fredoka", size: 24, relativeTo: .title2))
+                                        .font(Font.custom("Fredoka", size: 24 * heightRatio, relativeTo: .title2))
                                         .fontWeight(.medium)
                                         .foregroundStyle(Color("FSBlack"))
                                 }
-                                .frame(width: 268, height: 45)
-                                VStack(spacing: 23) {
+                                .frame(width: 268 * widthRatio, height: 45 * heightRatio)
+                                .offset(y: 5 * heightRatio)
+                                VStack(spacing: 23 * heightRatio) {
                                     CustomizationHeaderView(
                                         story: viewModel.story,
                                         selectedPage: viewModel.selectedPage,
                                         isMiniQuizPresented: $viewModel.isMiniQuizOpened,
                                         isDeleteSelected: $viewModel.isDeleteSelected,
+                                        widthRatio: widthRatio,
+                                        heightRatio: heightRatio,
                                         deletePage: {
                                             viewModel.deletePage()
                                         }
                                     )
-                                    .padding(.top, 20)
-                                    .padding(.horizontal, 46)
+                                    .padding(.top, 20 * heightRatio)
+                                    .padding(.horizontal, 46 * widthRatio)
                                     
-                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached)
+                                    CustomizationContentView(viewModel: viewModel, currentText: currentText, isParaphrasingPresented: $isParaphrasingPresented, isLimitReached: isLimitReached, widthRatio: widthRatio, heightRatio: heightRatio)
                                         .environmentObject(keyboardHelper)
                                         .environmentObject(cameraViewModel)
                                 }
                             }
-                            
                         }
                         .onTapGesture {
-                            if keyboardHelper.isKeyboardShown {
+                            if keyboardHelper.isKeyboardShown || isParaphrasingPresented {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 keyboardHelper.isKeyboardShown = false
+                                isParaphrasingPresented = false
                             }
                         }
                         
@@ -116,7 +126,7 @@ struct CustomizationView: View {
                             CameraView.shared
                                 .environmentObject(cameraViewModel)
                         }, label: {})
-                        .onChange(of: cameraViewModel.navigateToCamera) { value in
+                        .onChange(of: cameraViewModel.navigateToCamera) { _, value in
                             if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                                 // Show crop view once an image is selected
                                 cameraViewModel.showCropView = true
@@ -130,7 +140,7 @@ struct CustomizationView: View {
                             isActive: $cameraViewModel.showCropView,
                             label: {}
                         )
-                        .onChange(of: cameraViewModel.savedImage) { value in
+                        .onChange(of: cameraViewModel.savedImage) { _, value in
                             
                             if !cameraViewModel.isPhotoCaptured, let imageFileName = cameraViewModel.saveImage(), let currentPage = viewModel.selectedPage {
                                 if currentPage.pagePicture.isEmpty {
@@ -146,7 +156,7 @@ struct CustomizationView: View {
                         }
                     }
                     .sheet(isPresented: $cameraViewModel.showingImagePicker, onDismiss: {
-                        if cameraViewModel.isPhotoCaptured, let selectedImage = cameraViewModel.savedImage {
+                        if cameraViewModel.isPhotoCaptured, let _ = cameraViewModel.savedImage {
                             // Show crop view once an image is selected
                             cameraViewModel.showCropView = true
                         }
@@ -154,11 +164,11 @@ struct CustomizationView: View {
                         ImagePicker()
                             .environmentObject(cameraViewModel)
                     }
-                    .padding(.top, 26)
+                    .padding(.top, 26 * heightRatio)
                     .ignoresSafeArea()
                     .background(Color("FSBlue6"))
                     .environmentObject(viewModel)
-                    .onChange(of: viewModel.selectedPage) { newSelectedPage in
+                    .onChange(of: viewModel.selectedPage) { _, newSelectedPage in
                         if let newPage = newSelectedPage {
                             currentText = newPage.pageText.first?.componentContent ?? ""
                         } else {
@@ -169,7 +179,10 @@ struct CustomizationView: View {
                         if viewModel.isMediaOverlayOpened {
                             ZStack {
                                 Color("FSBlack").opacity(0.4)
-                                UploadPhotoModalView()
+                                VStack {
+                                    UploadPhotoModalView(widthRatio: widthRatio, heightRatio: heightRatio)
+                                    Spacer().frame(height: 241 * heightRatio)
+                                }
                             }
                             .ignoresSafeArea()
                             .environmentObject(viewModel)
@@ -177,7 +190,7 @@ struct CustomizationView: View {
                         }
                     }
                     if viewModel.isGotoScrapImage {
-                        ScrappingInitialView()
+                        ScrappingInitialView(widthRatio: widthRatio, heightRatio: heightRatio)
                             .background(.black.opacity(0.4))
                             .environmentObject(viewModel)
                             .environmentObject(cameraViewModel)
@@ -187,25 +200,30 @@ struct CustomizationView: View {
                     
                     if isParaphrasingPresented{
                         ZStack{
-                            ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented)
-                                .frame(width: 1200,height: 450)
-                                .cornerRadius(32)
+                            ParaphraseModal(viewModel: viewModel, isParaphrasingPresented: $isParaphrasingPresented, widthRatio: widthRatio, heightRatio: heightRatio)
+                                .frame(width: 1200 * widthRatio, height: 450 * heightRatio)
+                                .cornerRadius(32 * heightRatio)
                                 .background(.white)
-                        }.frame(height: 900,alignment: .bottom)
+                        }.frame(height: 900 * heightRatio, alignment: .bottom)
                         
                     }
                     
                 }
                 
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
         }
         .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden()
-        .onChange(of: viewModel.isGotoScrapImage) { value in
+        .onChange(of: viewModel.isGotoScrapImage) { _, value in
             if !value, cameraViewModel.isPhotoCaptured, cameraViewModel.savedImage != nil {
                 cameraViewModel.showCropView = true
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("RestartTutorial"))) { _ in
+            UserDefaults.standard.set(true, forKey: "customizationTutorial")
+            UserDefaults.standard.synchronize()
         }
         .modifier(HighlightRoot(showHighlights: UserDefaults.standard.bool(forKey: "customizationTutorial"), onFinished: {
             UserDefaults.standard.set(false, forKey: "customizationTutorial")
@@ -222,6 +240,7 @@ struct CustomizationView: View {
                                          storyLastRead: Date(),
                                          templateId: UUID(),
                                          templateCategory: "Hygiene",
+                                         isStoryGameable: true,
                                          pages: [
                                             PageEntity(pageId: UUID(),
                                                        pageType: "Opening",
@@ -286,5 +305,6 @@ struct CustomizationView: View {
                                                        ], pageVideo: [],
                                                        pageSoundPath: "Sound", pageTextClassification: ""
                                                       )
-                                         ]))
+                                         ],
+                                         storyResultImagePath: "ss01-finish-image"))
 }
