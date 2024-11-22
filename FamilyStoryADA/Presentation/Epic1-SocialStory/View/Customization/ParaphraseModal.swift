@@ -74,7 +74,7 @@ struct ParaphraseModal: View {
                                         .fontWeight(.medium)
                                 }
                                 .font(.body)
-                                .frame(width: 160 * widthRatio, height: 60 * heightRatio)
+                                .frame(width: 190 * widthRatio, height: 70 * heightRatio)
                                 .background(Color(.fsSecondaryBlue4))
                                 .foregroundColor(Color(.fsBlue9))
                                 .clipShape(
@@ -91,6 +91,7 @@ struct ParaphraseModal: View {
                                         do {
                                             let result = try await viewModel.getTextClassification(for: option)
                                             viewModel.selectedPage?.pageTextClassification = result.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            viewModel.updatePage()
                                         } catch {
                                             print("Failed to fetch paraphrasing: \(error.localizedDescription)")
                                             // Handle error here, possibly by setting an error message in viewModel

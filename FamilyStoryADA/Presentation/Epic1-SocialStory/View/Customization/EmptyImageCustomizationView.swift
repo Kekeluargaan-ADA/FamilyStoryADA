@@ -30,8 +30,11 @@ struct EmptyImageCustomizationView: View {
                 Image(systemName: "photo")
                     .font(.system(size: 36 * heightRatio))
                     .foregroundStyle(Color("FSBlue9"))
-                Text("Upload Photo")
-                    .font(.system(size: 24 * heightRatio, weight: .medium))
+                Text("Upload Foto")
+                    .font(
+                      Font.custom("Fredoka", size: 24)
+                        .weight(.medium)
+                    )
                     .foregroundStyle(Color("FSBlue9"))
             }
         }

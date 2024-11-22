@@ -113,7 +113,7 @@ struct ImageInputModal: View {
                                     Image(systemName: "photo")
                                         .font(.system(size: 36 * heightRatio))
                                         .foregroundStyle(Color("FSBlue9"))
-                                    Text("Upload Photo")
+                                    Text("Upload Foto")
                                         .font(Font.custom("Fredoka", size: 24 * heightRatio))
                                         .fontWeight(.medium)
                                         .foregroundStyle(Color("FSBlue9"))
