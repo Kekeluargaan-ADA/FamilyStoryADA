@@ -74,7 +74,7 @@ struct ParaphraseModal: View {
                                         .fontWeight(.medium)
                                 }
                                 .font(.body)
-                                .frame(width: 160 * widthRatio, height: 60 * heightRatio)
+                                .frame(width: 190 * widthRatio, height: 70 * heightRatio)
                                 .background(Color(.fsSecondaryBlue4))
                                 .foregroundColor(Color(.fsBlue9))
                                 .clipShape(
