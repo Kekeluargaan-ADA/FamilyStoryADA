@@ -1180,18 +1180,7 @@
                 ],
                 "pagePicture":
                 [
-                    {
-                        "componentContent": "ss04-scene02",
-                        "componentCategory": "AssetPicture",
-                        "componentRatio":
-                        {
-                            "xRatio": 0.0,
-                            "yRatio": 0.0,
-                            "zRatio": 0
-                        },
-                        "componentScale": 1.0,
-                        "componentRotation": 0.0
-                    }
+                    
                 ],
                 "pageVideo":
                 [
@@ -1727,7 +1716,7 @@
                 "pageSoundPath": "",
             },
         ],
-        "templateCoverImagePath": "ss05-scene01",
+        "templateCoverImagePath": "ss05-scene06",
         "templateOptionCoverImagePath": [
             "ss05-scene01",
             "ss05-scene02",
