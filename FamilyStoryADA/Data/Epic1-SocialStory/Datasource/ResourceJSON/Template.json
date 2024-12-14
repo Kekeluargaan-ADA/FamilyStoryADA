@@ -777,6 +777,1314 @@
             "ss02-animated-scene09",
         ],
         "templateResultImagePath": "ss02-finish-image"
-    }
+    },
+    
+    {
+        "templateId": "ede9fbf8-8686-417e-b05b-c46979834f10",
+        "templateName": "Aku Belajar Menunggu",
+        "templateDescription": "Mari kita belajar menunggu giliran!",
+        "templateCategory": "Bergerak",
+        "isTemplateGameable": true,
+        "templatePage": [
+            {
+                "pageType": "Opening",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo <CHILD_NAME>! Mari kita belajar untuk menunggu antrian.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Terkadang kita harus menunggu.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene01",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Menunggu bisa karena banyak hal.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene02",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Menunggu untuk dipanggil giliranku.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene03",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Menunggu saat ada teman lain yang masih bermain.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene04",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Menunggu memang terkadang membosankan.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene05",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Membawa mainan kesukaan akan menyenangkan dan bisa menenangkan.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss03-scene06",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Closing",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini aku belajar tentang menunggu.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
+        ],
+        "templateCoverImagePath": "ss03-scene01",
+        "templateOptionCoverImagePath": [
+            "ss03-scene01",
+            "ss03-scene02",
+            "ss03-scene03",
+            "ss03-scene04",
+            "ss03-scene05",
+            "ss03-scene06",
+        ],
+        "templatePreviewImagePath": [
+            "ss03-scene01",
+            "ss03-scene02",
+            "ss03-scene03",
+            "ss03-scene04",
+            "ss03-scene05",
+            "ss03-scene06",
+        ],
+        "templateResultImagePath": "ss03-finish-image"
+    },
 
+    {
+        "templateId": "45ce15ad-dbf7-4ec7-a3bb-dc3a2867624d",
+        "templateName": "Aku Belajar Pop Up Class Rainbow Castle di Aksara Kemang",
+        "templateDescription": "Halo semuanya! Mari kita belajar Pop Up class Rainbow Castle di Aksara Kemang",
+        "templateCategory": "Bergerak",
+        "isTemplateGameable": true,
+        "templatePage": [
+            {
+                "pageType": "Opening",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo <CHILD_NAME>! Mari kita berkunjung ke Pop Up Class Rainbow Castle di Aksara Kemang.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ini Rainbow Castle.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss04-scene01",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Ini tante-tante yang ada di Rainbow Castle.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Biasanya aku bertemu tante-tante di Rainbow Castle.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss04-scene03",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini aku bertemu tante-tante di Aksara Kemang.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss04-scene04",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Tante-tante Rainbow Castle mengajar di tempat berbeda.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss04-scene05",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Tante-tante Rainbow Castle sedang ada di kelas di tempat yang berbeda.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss04-scene06",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Closing",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini aku sudah mengunjungi Pop Up Class Rainbow Castle di Aksara Kemang!",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
+        ],
+        "templateCoverImagePath": "ss04-scene01",
+        "templateOptionCoverImagePath": [
+            "ss04-scene01",
+            "ss04-scene02",
+            "ss04-scene03",
+            "ss04-scene04",
+            "ss04-scene05",
+            "ss04-scene06",
+        ],
+        "templatePreviewImagePath": [
+            "ss04-scene01",
+            "ss04-scene02",
+            "ss04-scene03",
+            "ss04-scene04",
+            "ss04-scene05",
+            "ss04-scene06",
+        ],
+        "templateResultImagePath": "ss04-finish-image"
+    },
+    
+    {
+        "templateId": "2840091c-b276-4da4-9a8e-2a44d2e0efd5",
+        "templateName": "Aku Belajar Bermain Bergantian",
+        "templateDescription": "Hai Semua! Mari kita belajar untuk bergantian dalam bermain.",
+        "templateCategory": "Bergerak",
+        "isTemplateGameable": true,
+        "templatePage": [
+            {
+                "pageType": "Opening",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo <CHILD_NAME>! Hari ini aku belajar untuk bermain bergantian.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Terkadang aku bermain sendirian.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene01",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Terkadang aku bermain bersama teman.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene02",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Teman yang bermain bersamaku bisa satu orang.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene03",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Teman yang bermain bersamaku bisa dua orang.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene04",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Teman yang bermain bersamaku bisa banyak sekali.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene05",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Bermain bersama teman yang banyak akan membuat kita menunggu untuk bergantian.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene06",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Tante dari Rainbow Castle akan memanggil namaku saat waktunya giliranku bermain.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss05-scene07",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Closing",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini aku belajar untuk bermain bergantian!",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
+        ],
+        "templateCoverImagePath": "ss05-scene06",
+        "templateOptionCoverImagePath": [
+            "ss05-scene01",
+            "ss05-scene02",
+            "ss05-scene03",
+            "ss05-scene04",
+            "ss05-scene05",
+            "ss05-scene06",
+            "ss05-scene07",
+        ],
+        "templatePreviewImagePath": [
+            "ss05-scene01",
+            "ss05-scene02",
+            "ss05-scene03",
+            "ss05-scene04",
+            "ss05-scene05",
+            "ss05-scene06",
+            "ss05-scene07",
+        ],
+        "templateResultImagePath": "ss05-finish-image"
+    },
+    
+    {
+        "templateId": "f9954b79-63c8-4121-af6b-02d2b3d878ce",
+        "templateName": "Mengenal Hal Baru",
+        "templateDescription": "Hai Semua! Mari teman-teman, kita belajar untuk mengenal hal baru.",
+        "templateCategory": "Bergerak",
+        "isTemplateGameable": true,
+        "templatePage": [
+            {
+                "pageType": "Opening",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Halo <CHILD_NAME>! Hari ini aku belajar untuk mengenal hal baru.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hal baru adalah sesuatu yang belum pernah kita coba.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene01",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hal baru adalah sesuatu yang belum pernah kita temui.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene02",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hal baru adalah sesuatu yang belum pernah kita lakukan.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene03",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Mengenal hal baru bisa menegangkan bisa menyenangkan.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene04",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Mengenal hal baru bisa dari jauh dan bisa juga disentuh.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene05",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Mengenal hal baru bisa dipandang dan bisa juga dipegang.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene06",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Instruction",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hampir setiap hari kita akan menemui hal baru.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pagePicture":
+                [
+                    {
+                        "componentContent": "ss06-scene07",
+                        "componentCategory": "AssetPicture",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    }
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": ""
+            },
+            {
+                "pageType": "Closing",
+                "pageText":
+                [
+                    {
+                        "componentContent": "Hari ini aku belajar mengenal hal yang baru.",
+                        "componentCategory": "Text",
+                        "componentRatio":
+                        {
+                            "xRatio": 0.0,
+                            "yRatio": 0.0,
+                            "zRatio": 0
+                        },
+                        "componentScale": 1.0,
+                        "componentRotation": 0.0
+                    },
+                ],
+                "pagePicture":
+                [
+                    
+                ],
+                "pageVideo":
+                [
+                    
+                ],
+                "pageSoundPath": "",
+            },
+        ],
+        "templateCoverImagePath": "ss06-scene01",
+        "templateOptionCoverImagePath": [
+            "ss06-scene01",
+            "ss06-scene02",
+            "ss06-scene03",
+            "ss06-scene04",
+            "ss06-scene05",
+            "ss06-scene06",
+            "ss06-scene07",
+        ],
+        "templatePreviewImagePath": [
+            "ss06-scene01",
+            "ss06-scene02",
+            "ss06-scene03",
+            "ss06-scene04",
+            "ss06-scene05",
+            "ss06-scene06",
+            "ss06-scene07",
+        ],
+        "templateResultImagePath": "ss06-finish-image"
+    },
 ]
