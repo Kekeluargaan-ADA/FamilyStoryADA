@@ -8,10 +8,10 @@
 enum Screen {
     case storyDashboard
     case templateDasboard
-    case customization
-    case playStory
+    case customization(story: StoryEntity)
+    case playStory(story: StoryEntity)
     case playStoryResult
-    case miniGame
+    case miniGame(story: StoryEntity)
     case camera
     case crop
 }

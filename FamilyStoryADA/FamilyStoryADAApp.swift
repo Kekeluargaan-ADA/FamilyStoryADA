@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct FamilyStoryADAApp: App {
-    
+    @StateObject var appRouter: AppRouter = .init()
     init() {
             if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
                 UserDefaults.standard.set(true, forKey: "customizationTutorial")
@@ -22,30 +22,25 @@ struct FamilyStoryADAApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            ExampleView()
-//            ExampleCropView()
-//            CameraView()
-//            MiniQuizView()
-            StoryDashboardView()
+//            StoryDashboardView()
+            NavigationStack(path: $appRouter.path, root: {
+                if let startScreen = appRouter.rootScreen {
+                    appRouter.build(startScreen)
+                        .navigationDestination(for: Screen.self, destination: { screen in
+                            appRouter.build(screen)
+                        })
+                        .overlay(content: {
+                            if let overlay = appRouter.overlay {
+                                appRouter.build(overlay)
+                            }
+                        })
+                }
+            })
+            .onAppear {
+                appRouter.rootScreen = .storyDashboard
+            }
                 .statusBar(hidden: true)
                 .preferredColorScheme(.light)
-//            TemplateCollectionView()
-//            ImageCrawlView()
-//            PNGSequenceView()
-//            ScrappingInitialView()
-
-//                .onAppear() {
-//                    let fileManager = FileManager.default
-//                    let url = "4ECBB088-FD5C-42CF-8C5C-5AE0D6EC5962.jpg"
-//                    if let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-//                        let fileURL = documentsDirectory.appendingPathComponent(url)
-//                        if fileManager.fileExists(atPath: fileURL.path) {
-//                            print("Success: Image saved and verified at \(fileURL.path)")
-//                        } else {
-//                            print("Error: Image file not found at \(fileURL.path) after saving.")
-//                        }
-//                    }
-//                }
                 .modelContainer(for: [
                     StorySwiftData.self, PageSwiftData.self, UserSwiftData.self, StoryComponentSwiftData.self, RatioSwiftData.self
                 ])
