@@ -12,17 +12,17 @@ import SwiftData
 struct FamilyStoryADAApp: App {
     @StateObject var appRouter: AppRouter = .init()
     init() {
-            if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
-                UserDefaults.standard.set(true, forKey: "customizationTutorial")
-                UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
-                UserDefaults.standard.set(UserIDHelper().generateUserID(), forKey: "UserID")
-                UserDefaults.standard.synchronize()
-            }
+        if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
+            UserDefaults.standard.set(true, forKey: "customizationTutorial")
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+            UserDefaults.standard.set(UserIDHelper().generateUserID(), forKey: "UserID")
+            UserDefaults.standard.synchronize()
         }
+    }
     
     var body: some Scene {
         WindowGroup {
-//            StoryDashboardView()
+            //            StoryDashboardView()
             NavigationStack(path: $appRouter.path, root: {
                 if let startScreen = appRouter.rootScreen {
                     appRouter.build(startScreen)
@@ -39,11 +39,13 @@ struct FamilyStoryADAApp: App {
             .onAppear {
                 appRouter.rootScreen = .storyDashboard
             }
-                .statusBar(hidden: true)
-                .preferredColorScheme(.light)
-                .modelContainer(for: [
-                    StorySwiftData.self, PageSwiftData.self, UserSwiftData.self, StoryComponentSwiftData.self, RatioSwiftData.self
-                ])
+            .environmentObject(appRouter)
+            .statusBar(hidden: true)
+            .navigationBarBackButtonHidden(true)
+            .preferredColorScheme(.light)
+            .modelContainer(for: [
+                StorySwiftData.self, PageSwiftData.self, UserSwiftData.self, StoryComponentSwiftData.self, RatioSwiftData.self
+            ])
         }
     }
 }

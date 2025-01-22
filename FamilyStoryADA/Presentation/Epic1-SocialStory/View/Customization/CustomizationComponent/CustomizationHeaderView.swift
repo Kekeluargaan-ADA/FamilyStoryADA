@@ -10,11 +10,12 @@ import SwiftUI
 struct CustomizationHeaderView: View {
     var story: StoryEntity
     var selectedPage: PageEntity?
-    @Binding var isMiniQuizPresented: Bool
     @Binding var isDeleteSelected: Bool
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     var deletePage: () -> Void
+    var onClickMiniGame: () -> Void
+    var onClickPlayStory: () -> Void
     
     var body: some View {
         HStack {
@@ -68,23 +69,23 @@ struct CustomizationHeaderView: View {
             
             HStack(spacing: 12) {
                 if selectedPage != nil {
-                    NavigationLink(destination: {
-                        PlayStoryView(story: story, isMiniQuizPresented: $isMiniQuizPresented)
+                    Button(action: {
+                        onClickPlayStory()
                     }, label: {
                         ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "play", buttonColor: .blue)
-                            .highlight(
-                                order: 7,
-                                title: "Mulai Cerita",
-                                description: "Ceritakan anak anda dengan cerita yang telah dibuat.",
-                                cornerRadius: 40 * heightRatio,
-                                style: .circular,
-                                position: .bottomLeading
-                            )
                     })
+                    .highlight(
+                        order: 7,
+                        title: "Mulai Cerita",
+                        description: "Ceritakan anak anda dengan cerita yang telah dibuat.",
+                        cornerRadius: 40 * heightRatio,
+                        style: .circular,
+                        position: .bottomLeading
+                    )
                     
                     if story.isStoryGameable {
                         Button(action: {
-                            isMiniQuizPresented = true
+                            onClickMiniGame()
                         }, label: {
                             ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "gamecontroller", buttonColor: .blue)
                                 .highlight(

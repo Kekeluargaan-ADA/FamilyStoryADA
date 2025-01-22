@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PlayStoryResultView: View {
-    @EnvironmentObject var playStoryViewModel: PlayStoryViewModel
+    @EnvironmentObject var appRouter: AppRouter
     @Environment(\.dismiss) var dismiss
-    @Binding var isMiniQuizPresented: Bool
+    var story: StoryEntity
     private let textToSpeechHelper = TextToSpeechHelper()
     
     var body: some View {
@@ -27,9 +27,14 @@ struct PlayStoryResultView: View {
                     .resizable()
                     .ignoresSafeArea()
                 VStack {
-                    PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                        playStoryViewModel.isStoryCompleted = true
-                    }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(playStoryViewModel.story.isStoryGameable ? "Selesai! Apakah kamu ingin bermain susun kartu sekarang?" : "Selesai! Kamu sudah menyelesaikan cerita \(playStoryViewModel.story.storyName)!")}, showAudioButton: true,
+                    PlayStoryNavigationView(widthRatio: widthRatio,
+                                            heightRatio: heightRatio,
+                                            title: story.storyName,
+                                            buttonColor: .yellow,
+                                            onTapHomeButton: {
+                        appRouter.popScreen()
+                        appRouter.popScreen()
+                    }, onTapAudioButton: {textToSpeechHelper.speakIndonesian(story.isStoryGameable ? "Selesai! Apakah kamu ingin bermain susun kartu sekarang?" : "Selesai! Kamu sudah menyelesaikan cerita \(story.storyName)!")}, showAudioButton: true,
                                             titleOverlayReversed: false)
                     .padding(.top, 38 * heightRatio)
                     .padding(.horizontal, 46 * widthRatio)
@@ -42,13 +47,13 @@ struct PlayStoryResultView: View {
                         .foregroundStyle(Color("FSBlack"))
                         .padding(.bottom, 20 * heightRatio)
                     
-                    Image(playStoryViewModel.story.storyResultImagePath)
+                    Image(story.storyResultImagePath)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 600 * widthRatio, height: 371.61 * heightRatio)
                         .padding(.bottom, 25 * heightRatio)
                     
-                    if playStoryViewModel.story.isStoryGameable {
+                    if story.isStoryGameable {
                         Text("Apakah kamu ingin bermain susun kartu sekarang?")
                             .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                             .fontWeight(.medium)
@@ -56,20 +61,20 @@ struct PlayStoryResultView: View {
                         
                         HStack (spacing: 20 * widthRatio) {
                             Button(action: {
-                                playStoryViewModel.isStoryCompleted = true
+                                appRouter.popScreenToRoot()
                             }, label: {
                                 ButtonElips(text: "Nanti", textSize: 32, buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                             Button(action: {
-                                
-                                isMiniQuizPresented = true
                                 textToSpeechHelper.stopSpeaking()
+                                appRouter.popScreenToRoot()
+                                appRouter.push(.miniGame(story: story))
                             }, label: {
                                 ButtonElips(text: "Main", textSize: 32, buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                             })
                         }
                     } else {
-                        Text("Kamu sudah menyelesaikan cerita \(playStoryViewModel.story.storyName)!")
+                        Text("Kamu sudah menyelesaikan cerita \(story.storyName)!")
                             .font(Font.custom("Fredoka", size: 32 * heightRatio, relativeTo: .title))
                             .fontWeight(.medium)
                             .foregroundStyle(Color("FSBlack"))
@@ -81,16 +86,6 @@ struct PlayStoryResultView: View {
         }
         .background(Color("FSYellow1"))
         .navigationBarBackButtonHidden()
-        .onChange(of: playStoryViewModel.isStoryCompleted) { _, value in
-            if value {
-                dismiss()
-            }
-        }
-        .onChange(of: isMiniQuizPresented) { _, value in
-            if !value {
-                playStoryViewModel.isStoryCompleted = true
-            }
-        }
     }
 }
 

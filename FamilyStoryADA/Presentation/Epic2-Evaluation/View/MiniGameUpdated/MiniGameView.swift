@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MiniGameView: View {
+    @EnvironmentObject private var appRouter: AppRouter
     @StateObject var viewModel: MiniGameViewModel
-    @Environment(\.dismiss) var dismiss
     private let textToSpeechHelper = TextToSpeechHelper()
     private let instruction = "Tekan kartu sesuai dengan urutan yang benar."
     
@@ -36,7 +36,7 @@ struct MiniGameView: View {
                         title: viewModel.story.storyName,
                         buttonColor: .yellow,
                         onTapHomeButton: {
-                            dismiss()
+                            appRouter.popScreenToRoot()
                         },
                         onTapAudioButton: {
                             textToSpeechHelper.speakIndonesian(instruction)
@@ -119,7 +119,7 @@ struct MiniGameView: View {
         }
         .onChange(of: viewModel.isDismissed) { _, value in
             if value {
-                dismiss()
+                appRouter.popScreenToRoot()
             }
         }
         .onAppear {

@@ -9,24 +9,19 @@ import SwiftUI
 import AVKit
 
 struct PlayStoryView: View {
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var appRouter: AppRouter
     @StateObject var playStoryViewModel: PlayStoryViewModel
-    @Binding var isMiniQuizPresented: Bool
     private let textToSpeechHelper = TextToSpeechHelper()
-    @State var playStoryIsActive = false
     private let soundEffectHelper = SoundEffectHelper()
-    init(story: StoryEntity, isMiniQuizPresented: Binding<Bool>) {
+    init(story: StoryEntity) {
         _playStoryViewModel = StateObject(wrappedValue: PlayStoryViewModel(story: story))
-        _isMiniQuizPresented = isMiniQuizPresented
     }
     
     var body: some View {
-        NavigationView{
             GeometryReader { geometry in
                 let ratios = ScreenSizeHelper.calculateRatios(geometry: geometry)
                 let heightRatio = ratios.heightRatio
                 let widthRatio = ratios.widthRatio
-                
                 
                 ZStack {
                     //background for opening and closing
@@ -152,7 +147,7 @@ struct PlayStoryView: View {
                     
                     VStack {
                         PlayStoryNavigationView(widthRatio: widthRatio, heightRatio: heightRatio, title: playStoryViewModel.story.storyName, buttonColor: .yellow, onTapHomeButton: {
-                            playStoryViewModel.isStoryCompleted = true
+                            appRouter.popScreenToRoot()
                         }, onTapAudioButton: {
                             if let text = playStoryViewModel.selectedPage?.pageText.first?.componentContent {
                                 textToSpeechHelper.speakIndonesian(text)
@@ -196,18 +191,12 @@ struct PlayStoryView: View {
                                 
                                 Button(action: {
                                     textToSpeechHelper.stopSpeaking()
-                                    playStoryIsActive = true
                                     playStoryViewModel.isVideoReadyToPlay = false
-                                    
+                                    appRouter.push(.playStoryResult(story: playStoryViewModel.story))
                                 }, label: {
                                     ButtonCircle(widthRatio: widthRatio, heightRatio: heightRatio, buttonImage: "chevron.right", buttonColor: .yellow)
                                         .padding(.trailing, -32 * heightRatio)
                                 })
-                                
-                                NavigationLink(isActive: $playStoryIsActive,destination: {
-                                    PlayStoryResultView(isMiniQuizPresented: $isMiniQuizPresented)
-                                        .environmentObject(playStoryViewModel)
-                                }, label: {})
                             }
                         }
                         .padding(.horizontal, 100 * widthRatio)
@@ -256,15 +245,7 @@ struct PlayStoryView: View {
                 }
             }
             .background(Color("FSYellow1"))
-        }
-        .navigationBarBackButtonHidden()
-        .navigationViewStyle(.stack)
-        .environmentObject(playStoryViewModel)
-        .onChange(of: playStoryViewModel.isStoryCompleted) {
-            if playStoryViewModel.isStoryCompleted {
-                dismiss()
-            }
-        }
+        
     }
 }
 

@@ -41,18 +41,24 @@ extension AppRouter {
         switch screen {
         case .storyDashboard:
             StoryDashboardView()
+                .navigationBarBackButtonHidden(true)
         case .templateDasboard:
             TemplateCollectionView()
+                .navigationBarBackButtonHidden(true)
         case .customization(let story):
             CustomizationView(story: story)
+                .navigationBarBackButtonHidden(true)
         case .playStory(let story):
             // TODO: Look through binding
-            PlayStoryView(story: story, isMiniQuizPresented: .constant(true))
-        case .playStoryResult:
+            PlayStoryView(story: story)
+                .navigationBarBackButtonHidden(true)
+        case .playStoryResult(let story):
             // TODO: Look through binding
-            PlayStoryResultView(isMiniQuizPresented: .constant(true))
+            PlayStoryResultView(story: story)
+                .navigationBarBackButtonHidden(true)
         case .miniGame(let story):
             MiniGameView(story: story)
+                .navigationBarBackButtonHidden(true)
         case .camera:
             // TODO: handle environment object
             CameraView()
