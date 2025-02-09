@@ -49,11 +49,9 @@ extension AppRouter {
             CustomizationView(story: story)
                 .navigationBarBackButtonHidden(true)
         case .playStory(let story):
-            // TODO: Look through binding
             PlayStoryView(story: story)
                 .navigationBarBackButtonHidden(true)
         case .playStoryResult(let story):
-            // TODO: Look through binding
             PlayStoryResultView(story: story)
                 .navigationBarBackButtonHidden(true)
         case .miniGame(let story):

@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct BriefSquareView: View {
-    @EnvironmentObject var viewModel: TemplateViewModel
     let heightRatio: CGFloat
     let widthRatio: CGFloat
+    let selectedTemplate: TemplateEntity?
+    var onPressUseTemplate: (() -> Void)
+    @Binding var isImageInputModalPresented: Bool
     
     var body: some View {
-        if let template = viewModel.selectedTemplate {
+        if let template = selectedTemplate {
             ZStack{
                 HStack(spacing: 20 * widthRatio) {
                     Image(template.templateCoverImagePath)
@@ -34,8 +36,7 @@ struct BriefSquareView: View {
                         Spacer()
                         
                         Button(action: {
-                            viewModel.templateEditName = template.templateName
-                            viewModel.isImageInputModalPresented.toggle()
+                            onPressUseTemplate()
                         }) {
                             Text("Gunakan template")
                                 .font(
@@ -54,7 +55,7 @@ struct BriefSquareView: View {
                 .background(Color(.fsWhite))
                 .cornerRadius(20 * heightRatio)
                 
-                if viewModel.isImageInputModalPresented{
+                if isImageInputModalPresented {
                     ImageInputModal(widthRatio: widthRatio, heightRatio: heightRatio)
                         .frame(height: 743 * heightRatio, alignment: .center)
                 }
