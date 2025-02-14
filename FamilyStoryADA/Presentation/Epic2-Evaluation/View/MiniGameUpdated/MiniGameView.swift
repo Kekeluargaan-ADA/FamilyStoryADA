@@ -73,11 +73,17 @@ struct MiniGameView: View {
                             .foregroundStyle(Color("FSWhite"))
                             .frame(width: 1195 * widthRatio, height: 220 * heightRatio)
                             .shadow(color: Color(.fsBlack).opacity(0.1), radius: 10, y: -4 * heightRatio)
-                        MiniGameAnswerArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
+                        MiniGameAnswerArrayView(widthRatio: widthRatio,
+                                                heightRatio: heightRatio,
+                                                correctAnswers: $viewModel.correctAnswer,
+                                                currentlyCheckedIndex: $viewModel.currentlyCheckedIndex,
+                                                imageProvider: { fileName in
+                                                    viewModel.displayImage(fileName: fileName)
+                                                }
+                        )
                             .padding(.leading, 60 * widthRatio)
                             .padding(.top, 20 * heightRatio)
                             .padding(.bottom, 36 * heightRatio)
-                            .environmentObject(viewModel)
                     }
                 }
                 .ignoresSafeArea()

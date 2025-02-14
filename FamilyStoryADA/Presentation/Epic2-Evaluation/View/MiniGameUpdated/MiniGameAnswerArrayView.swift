@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct MiniGameAnswerArrayView: View {
-    @EnvironmentObject var viewModel: MiniGameViewModel
     let widthRatio: CGFloat
     let heightRatio: CGFloat
+    @Binding var correctAnswers: [DraggablePage]
+    @Binding var currentlyCheckedIndex: Int
+    let imageProvider: (String) -> UIImage?
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: 20 * widthRatio) {
-                ForEach(Array(viewModel.correctAnswer.enumerated()), id: \.offset) { index, value in
-                    MiniGameAnswerCardView(order: index + 1, imagePath: viewModel.displayImage(fileName: value.picturePath), answerCardStatus: getCardStatus(index: index), widthRatio: widthRatio, heightRatio: heightRatio)
+                ForEach(Array(correctAnswers.enumerated()), id: \.offset) { index, value in
+                    MiniGameAnswerCardView(order: index + 1, imagePath: imageProvider(value.picturePath), answerCardStatus: getCardStatus(index: index), widthRatio: widthRatio, heightRatio: heightRatio)
                 }
             }
             .padding(.horizontal, 20 * widthRatio)
@@ -25,9 +27,9 @@ struct MiniGameAnswerArrayView: View {
     }
     
     func getCardStatus(index: Int) -> AnswerCardStatus {
-        if viewModel.currentlyCheckedIndex == index {
+        if currentlyCheckedIndex == index {
             return .checked
-        } else if index < viewModel.currentlyCheckedIndex {
+        } else if index < currentlyCheckedIndex {
             return .revealed
         } else {
             return .blank
@@ -35,6 +37,6 @@ struct MiniGameAnswerArrayView: View {
     }
 }
 
-#Preview {
-    MiniGameAnswerArrayView(widthRatio: 1, heightRatio: 1)
-}
+//#Preview {
+//    MiniGameAnswerArrayView(widthRatio: 1, heightRatio: 1)
+//}
