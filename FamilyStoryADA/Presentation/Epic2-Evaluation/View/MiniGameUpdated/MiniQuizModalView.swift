@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct MiniQuizModalView: View {
-//    @EnvironmentObject var viewModel: MiniQuizViewModel
-    @EnvironmentObject var viewModel: MiniGameViewModel
+    @EnvironmentObject var appRouter: AppRouter
     @Environment(\.dismiss) var dismiss
     let widthRatio: CGFloat
     let heightRatio: CGFloat
+    @Binding var isDismissed: Bool
+    var onResetGame: () -> Void
     
     var body: some View {
         VStack {
@@ -33,14 +34,16 @@ struct MiniQuizModalView: View {
                 .padding(.bottom, 24 * heightRatio)
             HStack(spacing: 20 * widthRatio) {
                 Button(action: {
-                    viewModel.isDismissed = true
+//                    appRouter.dismissOverlay()
                     dismiss()
+                    isDismissed = true
+                    appRouter.popScreenToRoot()
                 }, label: {
                     ButtonElips(text: "Tidak", buttonPreset: .yellow, buttonStyle: .secondary, widthRatio: widthRatio, heightRatio: heightRatio)
                 })
                 Button(action: {
-//                    viewModel.resetQuiz()
-                    viewModel.resetGame()
+                    onResetGame()
+                    appRouter.dismissOverlay()
                 }, label: {
                     ButtonElips(text: "Main Lagi", buttonPreset: .yellow, buttonStyle: .primary, widthRatio: widthRatio, heightRatio: heightRatio)
                 })
@@ -49,10 +52,9 @@ struct MiniQuizModalView: View {
         .padding(.horizontal, 93 * widthRatio)
         .padding(.top, 24 * heightRatio)
         .padding(.bottom, 20 * heightRatio)
-//        .background(Color("FSYellow1"))
     }
 }
 
-#Preview {
-    MiniQuizModalView(widthRatio: 1, heightRatio: 1)
-}
+//#Preview {
+//    MiniQuizModalView(widthRatio: 1, heightRatio: 1)
+//}

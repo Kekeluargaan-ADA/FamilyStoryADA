@@ -86,9 +86,9 @@ extension AppRouter {
         case .imageInput(let widthRatio, let heightRatio):
             // TODO: Resolve coupling with view model
             EmptyView()
-        case .miniGame(let widthRatio, let heightRatio):
+        case .miniGame(let widthRatio, let heightRatio, let onResetGame):
             // TODO: Resolve coupling with view model
-            MiniQuizModalView(widthRatio: widthRatio, heightRatio: heightRatio)
+            MiniQuizModalView(widthRatio: widthRatio, heightRatio: heightRatio, isDismissed: .constant(false), onResetGame: onResetGame)
         case .handTapOverlay(let widthRatio, let heightRatio):
             HandTapOverlay(widthRatio: widthRatio, heightRatio: heightRatio)
         }

@@ -40,7 +40,7 @@ struct TemplateCategoriesView: View {
                     widthRatio: widthRatio,
                     buttonImage: "figure.walk",
                     text: "Bergerak",
-                    isSelected: selectedCategory == "Bergerak" //
+                    isSelected: selectedCategory == "Bergerak"
                 ) {
                     selectedCategory = "Bergerak"
                     onCategorySelected("Bergerak")

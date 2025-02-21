@@ -41,7 +41,7 @@ struct MiniGameView: View {
                         onTapAudioButton: {
                             textToSpeechHelper.speakIndonesian(instruction)
                         },
-                        showAudioButton: false, // Pass 'false' to hide the audio button
+                        showAudioButton: false,
                         titleOverlayReversed: true
                     )
                     .padding(.top, 38 * heightRatio)
@@ -56,10 +56,12 @@ struct MiniGameView: View {
                         .foregroundStyle(Color("FSBlack"))
                         .padding(.bottom, 16 * heightRatio)
                     
-                    MiniGameOptionArrayView(widthRatio: widthRatio, heightRatio: heightRatio)
-                        .padding(.leading, 12 * widthRatio)
-                        .padding(.bottom, 27 * heightRatio)
-                        .environmentObject(viewModel)
+                    MiniGameOptionArrayView(widthRatio: widthRatio,
+                                            heightRatio: heightRatio
+                    )
+                    .padding(.leading, 12 * widthRatio)
+                    .padding(.bottom, 27 * heightRatio)
+                    .environmentObject(viewModel)
                     
                     Spacer()
                 }
@@ -78,12 +80,12 @@ struct MiniGameView: View {
                                                 correctAnswers: $viewModel.correctAnswer,
                                                 currentlyCheckedIndex: $viewModel.currentlyCheckedIndex,
                                                 imageProvider: { fileName in
-                                                    viewModel.displayImage(fileName: fileName)
-                                                }
+                            viewModel.displayImage(fileName: fileName)
+                        }
                         )
-                            .padding(.leading, 60 * widthRatio)
-                            .padding(.top, 20 * heightRatio)
-                            .padding(.bottom, 36 * heightRatio)
+                        .padding(.leading, 60 * widthRatio)
+                        .padding(.top, 20 * heightRatio)
+                        .padding(.bottom, 36 * heightRatio)
                     }
                 }
                 .ignoresSafeArea()
@@ -106,8 +108,13 @@ struct MiniGameView: View {
                    content: {
                 ZStack {
                     Color("FSYellow1")
-                    MiniQuizModalView(widthRatio: widthRatio, heightRatio: heightRatio)
-                        .environmentObject(viewModel)
+                    MiniQuizModalView(widthRatio: widthRatio,
+                                      heightRatio: heightRatio,
+                                      isDismissed: $viewModel.isDismissed,
+                                      onResetGame: {
+                        viewModel.resetGame()
+                    }
+                    )
                 }
                 .onAppear(perform: {
                     viewModel.tutorialTimer?.invalidate()

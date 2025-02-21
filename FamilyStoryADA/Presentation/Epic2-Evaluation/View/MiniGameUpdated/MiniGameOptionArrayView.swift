@@ -10,7 +10,6 @@ import SwiftUI
 struct MiniGameOptionArrayView: View {
     @EnvironmentObject var viewModel: MiniGameViewModel
     @State private var wiggleStates: [Int: Bool] = [:]
-    //    @State private var wiggleDegree: [Int: Double] = [:]
     let widthRatio: CGFloat
     let heightRatio: CGFloat
     
@@ -22,8 +21,6 @@ struct MiniGameOptionArrayView: View {
             ], spacing: 12 * widthRatio) {
                 ForEach(Array(viewModel.draggedPages.enumerated()), id: \.offset) { index, value in
                     MiniGameOptionCardView(image: .constant(viewModel.displayImage(fileName: value.picturePath)), isOption: value.id != nil, widthRatio: widthRatio, heightRatio: heightRatio)
-//                        .rotationEffect(.degrees(wiggleStates[index] == true ? wiggleDegree[index] ?? 5 : 0))
-//                        .animation(wiggleStates[index] == true ? Animation.linear(duration: 0.5).repeatCount(2, autoreverses: true) : .default, value: wiggleStates[index])
                         .rotationEffect(.degrees(wiggleStates[index] == true ? 5 : 0))
                                                 .animation(
                                                     wiggleStates[index] == true
@@ -39,7 +36,6 @@ struct MiniGameOptionArrayView: View {
                             } else if value.id != nil {
                                 withAnimation {
                                     wiggleStates[index] = true
-//                                    wiggleDegree[index] = 5
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     withAnimation {
@@ -55,21 +51,6 @@ struct MiniGameOptionArrayView: View {
                                 wiggleStates[index] = false
                             }
                         }
-                    //TODO: Fix left and right toggle
-//                        .onChange(of: wiggleDegree[index]) { value in
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                                withAnimation {
-//                                    if let state = wiggleStates[index], state {
-//                                        if wiggleDegree[index] == 5 {
-//                                            wiggleDegree[index] = -5
-//                                        } else {
-//                                            wiggleDegree[index] = 5
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            
-//                        }
                 }
             }
         }

@@ -13,7 +13,7 @@ enum Overlay {
     case editCover(story: Binding<StoryEntity>, imageOptionPath: [String], widthRatio: CGFloat, heightRatio: CGFloat)
     case pagePreview(widthRatio: CGFloat, heightRatio: CGFloat)
     case imageInput(widthRatio: CGFloat, heightRatio: CGFloat)
-    case miniGame(widthRatio: CGFloat, heightRatio: CGFloat)
+    case miniGame(widthRatio: CGFloat, heightRatio: CGFloat, onResetGame: () -> Void)
     case handTapOverlay(widthRatio: CGFloat, heightRatio: CGFloat)
 }
 
